@@ -12,7 +12,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-  name='monopoly_backend',
+  name='backend',
   version='0.0.1',
   description='The backend for the monopoly app',
   classifiers=[
