@@ -9,8 +9,6 @@ matrix:
       before_script:
         - cd backend
       script:
-        - coverage run --source backend -m unittest discover
-      after_success:
-        - coverage report
         - pylint backend
-
+        - coverage run --source backend -m unittest discover
+        - coverage report

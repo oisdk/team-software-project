@@ -6,3 +6,6 @@ def get_random_number():
     4
     """
     return 4
+
+def other():
+    return 5
