@@ -1,0 +1,14 @@
+matrix:
+  include:
+    - language: python
+      python: 3.5
+      install:
+        - pip install -r backend/requirements.txt
+        - pip install pylint
+        - pip install coverage
+      before_script:
+        - cd backend
+      script:
+        - pylint backend
+        - coverage run --source backend -m unittest discover
+        - coverage report
