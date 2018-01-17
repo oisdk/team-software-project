@@ -17,6 +17,8 @@ matrix:
       node_js: 7
       before_install:
         - cd frontend/js
+      after_install:
+        - cd ../..
       before_script:
         - cd frontend/js
       script:
