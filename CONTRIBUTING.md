@@ -62,7 +62,50 @@ Before you can make changes to the code, you'll have to download it to your loca
 
 # Python
 
-The Python portion of this project is stored in the folder "backend"
+For contributing to the Python part of the project, you'll need to follow some conventions so that your code passes the continuous integration tests. These tests are run automatically on every pull request, and the results of them will show up in the code review view on github.
+
+The Python part of the project is stored in the folder called backend: the subfolder also called backend stores the application code, and tests stores the tests.
+
+If you want to add to an already existing file, you'll need to do 4 things to pass the continuous integration tests:
+
+1. Pass the linter.
+
+   pylint is run over any new additions, which will enforce standard python style across the project.
+   
+2. Pass any already-existing tests.
+
+   If your code changes the behaviour of other code which has tests in the project, the previous tests will need to pass.
+
+3. Add tests to pass the coverage level.
+
+   If you're adding a significant amount of new code, you may need to add tests to the code so that the coverage level doesn't drop too low. There are 2 ways to do this:
+   
+   1. Using doctest
+   
+      If your tests are simple and example-based, you can include them in the docstring for your new code and they'll automatically be run when testing. For example:
+      
+      ```python
+      def double(x):
+          """Returns the double of some number.
+          
+          >>> double(3)
+          6
+          
+          >>> double(4)
+          8
+          """
+          return x + x
+      ```
+      
+      More information on doctest and the syntax for different kinds of tests is available at its [documentation page](https://docs.python.org/3.5/library/doctest.html).
+      
+   2. Using unittest
+   
+      Every module will have a corresponding test file in the tests folder. Test files are just the name of the module file prefixed with `test_`. In this file, you'll need to add a new testing method to test the functionality of your code. Information on how to do this is available at [unittest's documentation page](https://docs.python.org/3.5/library/unittest.html).
+      
+4. Add requirements to requirements.txt
+
+   If your code imports a library
 
 # Javascript
 
