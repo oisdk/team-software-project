@@ -45,6 +45,20 @@ Before you can make changes to the code, you'll have to download it to your loca
    Back on the project's web page, you can select "compare and pull request".
    
    ![pull request](contributing-images/pull-request-view.png)
+   
+   From here, you can add a short description of the pull request.
+   
+7. Code review and changes.
+
+   Once you've made your pull request, you can still make changes to the branch it comes from. These will be added to the pull request.
+
+8. Merge.
+
+   Once you're happy that you've addressed everything in the code review, and all the checks have passed, you can merge your code into master.
+   
+9. Delete your branch.
+
+   Don't forget to delete your branch after it was merged!
 
 # Python
 
