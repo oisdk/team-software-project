@@ -28,6 +28,9 @@ Before you can make changes to the code, you'll have to download it to your loca
    
    ![changed files view](contributing-images/desktop-changed-view.png)
 
+   Whenever you've got a small bit of work done, add a summary and hit commit. Try and make commits small, even if you can't think of a good summary for each: catching bugs is a lot easier with a granular commit history.
+   
+   ![committing view](contributing-images/committing-view.png)
 
 # Python
 
