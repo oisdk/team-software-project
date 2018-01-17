@@ -15,11 +15,11 @@ matrix:
     - language: node_js
       node_js: 7
       install:
-        - cd frontend/js
+        - cd frontend
         - npm install
-        - cd ../..
+        - cd ..
       before_script:
-        - cd frontend/js
+        - cd frontend
       script:
         - ./node_modules/.bin/eslint app/
         - npm test
