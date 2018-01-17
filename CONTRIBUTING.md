@@ -36,7 +36,15 @@ Before you can make changes to the code, you'll have to download it to your loca
 
    Periodically, you can hit "push" in the top-right:
    
+   ![push view](contributing-images/push-view.png)
    
+   This will sync your branch with the copy on github's servers.
+   
+6. Make a pull request.
+
+   Back on the project's web page, you can select "compare and pull request".
+   
+   ![pull request](contributing-images/pull-request-view.png)
 
 # Python
 
