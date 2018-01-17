@@ -10,7 +10,7 @@ Before you can make changes to the code, you'll have to download it to your loca
 
    Go to [the main page for the repo](https://github.com/oisdk/team-software-project) and click the green button marked "clone or download", and then click "open in desktop" 
 
-![Downloading screenshot](contributing-images/repo-downloading.png)
+   ![Downloading screenshot](contributing-images/repo-downloading.png)
 
    This should open the project in github desktop. You'll be given a choice of where to save the project locally, and it'll download.
 
@@ -18,11 +18,15 @@ Before you can make changes to the code, you'll have to download it to your loca
 
    At this point, you're going to want to make a branch for your particular feature you want to add. Do this by opening github desktop, selecting the project, and clicking the "current branch" menu, and then "new":
 
-![making a new branch](contributing-images/github-desktop-new-branch.png)
+   ![making a new branch](contributing-images/github-desktop-new-branch.png)
 
    Name your branch after the feature you're adding.
 
 4. Commit to the new branch.
+
+   Now, whenever you make changes to the project, they'll show up in green in the main pane on the right. For instance, while writing this guide, this is what the window looks like:
+   
+   ![changed files view](contributing-images/desktop-changed-view)
 
 
 # Python
