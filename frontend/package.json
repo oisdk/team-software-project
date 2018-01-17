@@ -1,10 +1,11 @@
 {
   "name": "frontend",
   "version": "0.0.1",
-  "description": "",
+  "description": "frontend for the monopoly app",
+  "repository": "https://github.com/oisdk/team-software-project.git",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "author": "",
   "license": "MIT",
@@ -14,6 +15,8 @@
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
+    "babelify": "8.0.0",
+    "browserify": "15.2.0",
     "eslint": "4.15.0",
     "jest-cli": "22.1.2"
   },
@@ -38,7 +41,9 @@
     },
     "overrides": [
       {
-        "files": ["*.test.js"],
+        "files": [
+          "*.test.js"
+        ],
         "env": {
           "jest": true
         }
