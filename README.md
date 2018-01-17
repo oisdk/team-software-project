@@ -3,3 +3,5 @@
 # UCC Team Software Project
 
 January 2018
+
+For instructions on how to add your code etc., see CONTRIBUTING.md
