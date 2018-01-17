@@ -21,5 +21,4 @@ matrix:
       before_script:
         - cd frontend
       script:
-        - ./node_modules/.bin/eslint app/
         - npm test

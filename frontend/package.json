@@ -5,7 +5,8 @@
   "repository": "https://github.com/oisdk/team-software-project.git",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "./node_modules/.bin/eslint app/ && jest --coverage",
+    "start": "if [ -d site_ ]; then rm -r site_; fi && mkdir site_ && cp -r css site_/ && cp -r assets site_/ && cp html/* site_/ && browserify app/index.js -t babelify --outfile site_/bundle.js && cd site_ && http-server"
   },
   "author": "",
   "license": "MIT",
@@ -18,6 +19,7 @@
     "babelify": "8.0.0",
     "browserify": "15.2.0",
     "eslint": "4.15.0",
+    "http-server": "0.11.1",
     "jest-cli": "22.1.2"
   },
   "jest": {
@@ -38,6 +40,9 @@
     "parserOptions": {
       "ecmaVersion": 6,
       "sourceType": "module"
+    },
+    "env": {
+      "browser": true
     },
     "overrides": [
       {
