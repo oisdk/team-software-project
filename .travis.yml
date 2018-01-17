@@ -12,3 +12,13 @@ matrix:
         - pylint backend
         - coverage run --source backend -m unittest discover
         - coverage report
+  include:
+    - language: node_js
+      node_js: 7
+      before_install:
+        - cd frontend/js
+      before_script:
+        - cd frontend/js
+      script:
+        - ./node_modules/.bin/eslint app/
+        - npm test
