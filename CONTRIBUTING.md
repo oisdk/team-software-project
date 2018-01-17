@@ -109,7 +109,7 @@ If you want to add to an already existing file, you'll need to do 4 things to pa
 
 
 
-New modules go in the backend folder inside the backend folder (in other words, team-software-project/backend/backend/). When adding a new module, you'll need to add a corresponding test file in the tests folder. There's a little bit of fiddliness to get this to work correctly, so here's an example. Say we want to create a module called "new". We create a file `new.py` in `team-software-project/backend/backend/`. It might look like this:
+New modules go in the backend folder inside the backend folder (in other words, `team-software-project/backend/backend/`). When adding a new module, you'll need to add a corresponding test file in the tests folder. There's a little bit of fiddliness to get this to work correctly, so here's an example. Say we want to create a module called "new". We create a file `new.py` in `team-software-project/backend/backend/`. It might look like this:
 
 
 ```python
