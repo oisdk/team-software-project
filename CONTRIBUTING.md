@@ -12,6 +12,19 @@ Before you can make changes to the code, you'll have to download it to your loca
 
 ![Downloading screenshot](contributing-images/repo-downloading.png)
 
+   This should open the project in github desktop. You'll be given a choice of where to save the project locally, and it'll download.
+
+3. Make a branch.
+
+   At this point, you're going to want to make a branch for your particular feature you want to add. Do this by opening github desktop, selecting the project, and clicking the "current branch" menu, and then "new":
+
+![making a new branch](contributing-images/github-desktop-new-branch.png)
+
+   Name your branch after the feature you're adding.
+
+4. Commit to the new branch.
+
+
 # Python
 
 The Python portion of this project is stored in the folder "backend"
