@@ -32,6 +32,12 @@ Before you can make changes to the code, you'll have to download it to your loca
    
    ![committing view](contributing-images/committing-view.png)
 
+5. Push to remote.
+
+   Periodically, you can hit "push" in the top-right:
+   
+   
+
 # Python
 
 The Python portion of this project is stored in the folder "backend"
