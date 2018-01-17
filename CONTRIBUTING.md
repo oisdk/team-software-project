@@ -26,7 +26,7 @@ Before you can make changes to the code, you'll have to download it to your loca
 
    Now, whenever you make changes to the project, they'll show up in green in the main pane on the right. For instance, while writing this guide, this is what the window looks like:
    
-   ![changed files view](contributing-images/desktop-changed-view)
+   ![changed files view](contributing-images/desktop-changed-view.png)
 
 
 # Python
