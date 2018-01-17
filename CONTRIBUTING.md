@@ -105,7 +105,51 @@ If you want to add to an already existing file, you'll need to do 4 things to pa
       
 4. Add requirements to requirements.txt
 
-   If your code imports a library
+   If your code imports a library that isn't in the standard library and wasn't already added as a requirement to the project, you'll need to add the name of that library to the requirements.txt file. Just the name of the library is fine, on a new line, with no other information.
+
+
+
+New modules go in the backend folder inside the backend folder (in other words, team-software-project/backend/backend/). When adding a new module, you'll need to add a corresponding test file in the tests folder. There's a little bit of fiddliness to get this to work correctly, so here's an example. Say we want to create a module called "new". We create a file `new.py` in `team-software-project/backend/backend/`. It might look like this:
+
+
+```python
+"""This is a new module"""
+
+def double(x):
+    """Returns the double of some number.
+
+    >>> double(3)
+    6
+
+    >>> double(4)
+    8
+    """
+    return x + x
+```
+
+
+Notice that you need a docstring for the module, otherwise the linter will fail.
+
+Now, in `team-software-project/backend/tests`, create a file `test_new.py`, with this basic template:
+
+```python
+import unittest
+import doctest
+import backend.new
+
+class TestNew(unittest.TestCase):
+    def test_double(self):
+        self.assertEqual(backend.new.double(2), 4)
+
+def load_tests(loader, tests, ignore):
+    tests.addTests(doctest.DocTestSuite(backend.new))
+    return tests
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+You can organize the tests however you want, with test cases and subtests and so on, but unfortunately the `load_tests` function is necessary to run the doctests in the new module. Notice also that in the line `tests.addTests(doctest.DocTestSuite(backend.new))` you pass the name of the new module. It's easy to accidentally pass the name of another module here, so be careful when copying and pasting the above template.
 
 # Javascript
 
