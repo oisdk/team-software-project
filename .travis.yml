@@ -33,7 +33,7 @@ matrix:
     deploy:
       provider: script
       skip_cleanup: true
-      script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/frontend/dist dok4@csgate.ucc.ie:~/
+      script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/frontend/dist/ dok4@csgate.ucc.ie:~/public_html
       on:
         branch: master
 
