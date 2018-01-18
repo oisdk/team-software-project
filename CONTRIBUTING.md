@@ -176,7 +176,9 @@ The site won't be using either of these programs: they're just to allow for test
 
 Once they're both installed, cd into the frontend folder, and run:
 
-
+```bash
+$ npm install
+```
 
 
 To test the file locally:
