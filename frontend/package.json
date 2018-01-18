@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/eslint app/ && jest --coverage",
-    "start": "if [ -d site_ ]; then rm -r site_; fi && mkdir site_ && cp -r css site_/ && cp -r assets site_/ && cp html/* site_/ && browserify app/index.js -t babelify --outfile site_/bundle.js && cd site_ && http-server"
+    "start": "grunt static && (grunt watch & (cd dist && http-server))"
   },
   "author": "",
   "license": "MIT",
