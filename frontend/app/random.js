@@ -1,3 +1,3 @@
 export function getRandomNumber() {
-  return 4;
+    return 4;
 }

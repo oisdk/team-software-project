@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/eslint app/ && jest --coverage",
-    "start": "grunt static && (grunt watch & (cd dist && http-server))"
+    "start": "if [ -d dist ]; then rm -r dist; fi && grunt static"
   },
   "author": "",
   "license": "MIT",
@@ -25,8 +25,6 @@
     "grunt-contrib-copy": "1.0.0",
     "grunt-contrib-cssmin": "2.2.1",
     "grunt-contrib-uglify": "3.3.0",
-    "grunt-contrib-watch": "1.0.0",
-    "http-server": "0.11.1",
     "jest-cli": "22.1.2"
   },
   "jest": {
