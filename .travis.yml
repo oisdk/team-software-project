@@ -21,7 +21,7 @@ matrix:
     deploy:
       provider: script
       skip_cleanup: true
-      script: rsync -r --quiet $TRAVIS_BUILD_DIR/backend dok4@csgate.ucc.ie:~/ && ssh dok4@csgate.ucc.ie 'python3 ~/backend/setup.py develop --install-dir=~/bin --script-dir=~/public_html/bin'
+      script: rsync -r --quiet $TRAVIS_BUILD_DIR/backend dok4@csgate.ucc.ie:~/ && ssh dok4@csgate.ucc.ie 'source .bash_profile && python3 ~/backend/setup.py develop --install-dir=~/bin --script-dir=~/public_html/bin'
       on:
         branch: master
   - language: node_js
