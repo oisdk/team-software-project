@@ -1,7 +1,7 @@
 export function getRandomNumber() {
-  return 4;
+    return 4;
 }
 
 export function getTwoRandomNumbers() {
-  return [getRandomNumber(), getRandomNumber()];
+    return [getRandomNumber(), getRandomNumber()];
 }

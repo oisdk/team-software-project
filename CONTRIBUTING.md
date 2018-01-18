@@ -62,6 +62,16 @@ Before you can make changes to the code, you'll have to download it to your loca
 
 # Python
 
+## Python Code Structure
+
+The Python backend is structured as a package, called `backend`. It's stored in the `backend` folder, which has the contents:
+
+* README.rst
+
+  Just a readme for the package. We won't be using this, but pip prefers when it's included.
+  
+* a
+
 For contributing to the Python part of the project, you'll need to follow some conventions so that your code passes the continuous integration tests. These tests are run automatically on every pull request, and the results of them will show up in the code review view on github.
 
 The Python part of the project is stored in the folder called backend: the subfolder also called backend stores the application code, and tests stores the tests.
@@ -163,9 +173,9 @@ The frontend for the app is divided into 4 folders:
 
 3. CSS files go in `frontend/css/`
 
-4. Assets (images, etc) go in `frontend/assets`
+4. Assets (images, etc) go in `frontend/assets/`
 
-   (the folder `frontend/assets` might not exist in the repository if no-one has put anything in it yet. This isn't a bug: github doesn't sync empty folders. If you need to add an asset, and the folder isn't there, just go ahead and create it, everything else should be handled for you.)
+   (the folder `frontend/assets/` might not exist in the repository if no-one has put anything in it yet. This isn't a bug: github doesn't sync empty folders. If you need to add an asset, and the folder isn't there, just go ahead and create it, everything else should be handled for you.)
    
 ## Installing
 
@@ -176,7 +186,6 @@ To run the tests and serve a static version of the frontend locally, you'll need
 2. [npm](https://www.npmjs.com)
 
 The site won't be using either of these programs: they're just to allow for testing, linting, and transpiling.
-
 
 Once they're both installed, cd into the frontend folder, and run:
 
