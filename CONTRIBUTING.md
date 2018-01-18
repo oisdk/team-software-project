@@ -153,4 +153,20 @@ You can organize the tests however you want, with test cases and subtests and so
 
 # Javascript
 
-TODO
+1. Javascript files go in frontend/app/
+
+2. HTML files go in frontent/html
+
+3. CSS files go in frontend/css
+
+
+To test the file locally:
+
+You need node.js, and npm. 
+
+cd into frontend, and then run "npm install"
+
+Then run "npm test" (for the tests)
+
+Run "npm start" and you'll have a static version of the site in frontend/dist/index.html
+
