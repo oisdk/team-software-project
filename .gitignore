@@ -167,3 +167,7 @@ typings/
 
 # next.js build output
 .next
+
+
+site_/
+dist/

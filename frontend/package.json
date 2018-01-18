@@ -19,8 +19,11 @@
     "babelify": "8.0.0",
     "browserify": "15.2.0",
     "eslint": "4.15.0",
-    "grunt": "1.0.1",
-    "http-server": "0.11.1",
+    "grunt-browserify": "5.2.0",
+    "grunt-cli": "1.2.0",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-cssmin": "2.2.1",
+    "grunt-contrib-watch": "1.0.0",
     "jest-cli": "22.1.2"
   },
   "jest": {
@@ -55,5 +58,9 @@
         }
       }
     ]
+  },
+  "dependencies": {
+    "grunt-contrib-cssmin": "2.2.1",
+    "grunt-contrib-uglify": "3.3.0"
   }
 }
