@@ -133,40 +133,7 @@ The Python backend is structured as a package, called `backend`. It's stored in 
 
   Contains the actual Python package that comprises the backend. All Python code (except tests) should go in here.
   
-When the backend is deployed (sent to the server to start serving the web page), the backend package will be packed up, moved to the server, and any requests will call the file called `__main__.py`. In other words, If you would have written a basic Python server like this previously:
-
-```python
-#!/usr/local/bin/python3
-
-from cgi import FieldStorage
-
-print('Content-Type: text/html')
-print()
-
-form_data = FieldStorage()
-name = form_data.getfirst('firstname')
-
-print("""
-    <!DOCTYPE html>
-```
-
-You would accomplish the same thing by writing the following in `backend/backend/__main__.py`:
-
-
-```python
-from cgi import FieldStorage
-
-print('Content-Type: text/html')
-print()
-
-form_data = FieldStorage()
-name = form_data.getfirst('firstname')
-
-print("""
-    <!DOCTYPE html>
-```
-
-Generally speaking, though, `__main__.py` should be kept pretty clean, so put as much as possible in other files, and then maybe keep `__main__.py` to one or two function calls.
+TODO: entry points
 
 ## Passing the Continuous Integration
 
