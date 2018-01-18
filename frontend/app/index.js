@@ -1,4 +1,1 @@
-import * as random from "./random";
-
-alert(random.getRandomNumber());
-
+import * as random from './random';
