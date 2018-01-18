@@ -153,6 +153,8 @@ You can organize the tests however you want, with test cases and subtests and so
 
 # Javascript
 
+## Structure
+
 The frontend for the app is divided into 4 folders:
 
 1. Javascript files go in `frontend/app/`
@@ -164,6 +166,8 @@ The frontend for the app is divided into 4 folders:
 4. Assets (images, etc) go in `frontend/assets`
 
    (the folder `frontend/assets` might not exist in the repository if no-one has put anything in it yet. This isn't a bug: github doesn't sync empty folders. If you need to add an asset, and the folder isn't there, just go ahead and create it, everything else should be handled for you.)
+   
+## Installing
 
 To run the tests and serve a static version of the frontend locally, you'll need to install 2 things first:
 
@@ -177,17 +181,84 @@ The site won't be using either of these programs: they're just to allow for test
 Once they're both installed, cd into the frontend folder, and run:
 
 ```bash
-$ npm install
+npm install
 ```
 
+This will install everything you need to test and run the site.
 
-To test the file locally:
+## Running Tests
 
-You need node.js, and npm. 
+To run the tests, run:
 
-cd into frontend, and then run "npm install"
+```bash
+npm test
+```
 
-Then run "npm test" (for the tests)
+This will run the linter and the tests. You'll also get a coverage report.
 
-Run "npm start" and you'll have a static version of the site in frontend/dist/index.html
+## Compiling the site locally
 
+To make a static version of the site, run:
+
+```bash
+npm start
+```
+
+Then you can open the file `frontend/dist/index.html` and you will see what the site should look like.
+
+## Making Changes to the JavaScript
+
+All JavaScript in this project is ES6. Sticking to one standard makes it easier to learn and lookup documentation, and since it's transpiled to an older version you don't have to worry about which browser supports what. Just follow some guide for ES6 and you should be good to go.
+
+In this version there are some differences from other versions of JavaScript out there that you might have used ([this](http://es6-features.org/) page has a good summary), but here are a couple that were most important:
+
+1. Imports and Exports
+
+   In the skeleton template for this project, there are two files in the foldr `frontend/app/`. `frontend/app/random.js`:
+   
+   ```javascript
+   export function getRandomNumber() {
+       return 4;
+   }
+   ```
+   
+   and `frontend/app/index.js`:
+   
+   ```javascript
+   import * as random from "./random";
+
+   alert(random.getRandomNumber());
+   ```
+
+   The `random.js` file exports a single function: this is done by prefixing it with the `export` keyword. In the `index.js` file, we import everything (`*`), name it `random` (if we had named it, for instance `numbers`, the function call would be `numbers.getRandomNumber()`), and give the location of the file we're importing from. (**NB**: if you're importing from a library, the path will be `../node_modules/library_name`).
+   
+   Alternatively, we could have not named the import, and specified what function we wanted to import:
+   
+   ```javascript
+   import { getRandomNumber } from "./random";
+   
+   alert(getRandomNumber());
+   ```
+
+2. Lets and constants
+
+   If you create a variable that doesn't get mutated, you can use the `let` keyword (rather than `var`) to create it. This will make sure that you don't mutate it. For instance:
+   
+   ```javascript
+   function addFourTo(n) {
+     var result = n + 4;
+     return result;
+   }
+   ```
+   
+   In this case, the `result` variable is never mutated, so you can instead use `let`:
+   
+   ```javascript
+   function addFourTo(n) {
+     let result = n + 4;
+     return result;
+   }
+   ```
+   
+   Similarly, for constants and so on, you should use `const`.
+   
