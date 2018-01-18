@@ -60,6 +60,49 @@ Before you can make changes to the code, you'll have to download it to your loca
 
    Don't forget to delete your branch after it was merged!
 
+# Continuous Integration
+
+Before any code can be merged into master, a remote server will try and load and test it. The remote server is wiped before every build, and then the configuration file (`.travis.yml`) is run. This is the current contents of `.travis.yml`:
+
+```yaml
+matrix:
+  include:
+    - language: python
+      python: 3.5
+      install:
+        - pip install -r backend/requirements.txt
+        - pip install pylint
+        - pip install coverage
+      before_script:
+        - cd backend
+      script:
+        - pylint backend
+        - coverage run --source backend -m unittest discover
+        - coverage report
+    - language: node_js
+      node_js: 7
+      install:
+        - cd frontend
+        - npm install
+        - cd ..
+      before_script:
+        - cd frontend
+      script:
+        - npm test
+```
+
+If you're having trouble compiling or running the project locally, you can follow the configuration above, and you should get it to work. For instance, to get the Python backend to test, you might first check that you're running Python 3.5, cd into the project's main folder (`team-software-project`), and then run the commands:
+
+```
+pip install -r backend/requirements.txt
+pip install pylint
+pip install coverage
+cd backend
+pylint backend
+coverage run --source backend -m unittest discover
+coverage report
+```
+
 # Python
 
 ## Python Code Structure
@@ -70,57 +113,164 @@ The Python backend is structured as a package, called `backend`. It's stored in 
 
   Just a readme for the package. We won't be using this, but pip prefers when it's included.
   
-* a
+* requirements.txt
 
-For contributing to the Python part of the project, you'll need to follow some conventions so that your code passes the continuous integration tests. These tests are run automatically on every pull request, and the results of them will show up in the code review view on github.
+  This file contains a list of any libraries that the backend needs. If you need to use a library, just put the name of the library in here on a new line. (you don't need to include libraries here if they're in the standard library)
+  
+* setup.py
 
-The Python part of the project is stored in the folder called backend: the subfolder also called backend stores the application code, and tests stores the tests.
+  This is a standard Python setup file. It is unlikely that you'll need to edit it.
+  
+* .coveragerc
 
-If you want to add to an already existing file, you'll need to do 4 things to pass the continuous integration tests:
+  This is a configuration file for code coverage. Basically, it contains a percentage (currently 90%), which is the code coverage requirement. If less than that percent of code is covered by tests, the continuous integration will fail.
 
-1. Pass the linter.
+* tests/
 
-   pylint is run over any new additions, which will enforce standard python style across the project.
+  Contains the tests for the backend.
+  
+* backend/
+
+  Contains the actual Python package that comprises the backend. All Python code (except tests) should go in here.
+  
+When the backend is deployed (sent to the server to start serving the web page), the backend package will be packed up, moved to the server, and any requests will call the file called `__main__.py`. In other words, If you would have written a basic Python server like this previously:
+
+```python
+#!/usr/local/bin/python3
+
+from cgi import FieldStorage
+
+print('Content-Type: text/html')
+print()
+
+form_data = FieldStorage()
+name = form_data.getfirst('firstname')
+
+print("""
+    <!DOCTYPE html>
+```
+
+You would accomplish the same thing by writing the following in `backend/backend/__main__.py`:
+
+
+```python
+from cgi import FieldStorage
+
+print('Content-Type: text/html')
+print()
+
+form_data = FieldStorage()
+name = form_data.getfirst('firstname')
+
+print("""
+    <!DOCTYPE html>
+```
+
+Generally speaking, though, `__main__.py` should be kept pretty clean, so put as much as possible in other files, and then maybe keep `__main__.py` to one or two function calls.
+
+## Passing the Continuous Integration
+
+### Linter
+
+We're using [pylint](https://www.pylint.org). It enforces a standard style, and catches a lot of small bugs that might be in the code. To run it locally, make sure you have it installed (`pip install pylint`), and run it from `team-software-project/backend/` with the command `pylint backend`. It will then run over your code, looking for common errors and so on. As an example, say there's a file `team-software-project/backend/backend/random.py`:
+
+```python
+"""This module provides random numbers"""
+  
+def get_random_number():
+    """chosen by fair dice roll.
+    guaranteed to be random.
+
+    >>> get_random_number()
+    4
+    """
+    return 4
+```
+
+
+Let's change it, by adding a useless statement in the middle:
+
+```python
+"""This module provides random numbers"""
+  
+def get_random_number():
+    """chosen by fair dice roll.
+    guaranteed to be random.
+
+    >>> get_random_number()
+    4
+    """
+    x = 5
+    return 4
+```
+
+We'll get the warning:
+
+```
+************* Module backend.random
+W: 10, 4: Unused variable 'x' (unused-variable)
+
+------------------------------------------------------------------
+Your code has been rated at 3.33/10 (previous run: 2.50/10, +0.83)
+```
+
+To fix your code, follow the instructions from the linter.
+
+### Tests
+
+If your code changes the behaviour of other code which has tests in the project, the previous tests will need to pass. To run previous tests, cd into `team-software-project/backend/` and run:
+
+```
+python -m unittest discover
+```
+
+If your code breaks any tests, you'll need to fix them before it can be merged to master.
+
+### Coverage
+
+Another requirement for continuous integration is that most of the code is covered by tests. To see the coverage level, run:
+
+```
+coverage run --source backend -m unittest discover
+coverage report
+```
+
+This runs the tests from within a program what monitors what source code is executed. Currently, code needs to be 90% covered to be merged into master.
+
+To add tests to your code, you've got 2 options:
+
+1. Using doctest
    
-2. Pass any already-existing tests.
-
-   If your code changes the behaviour of other code which has tests in the project, the previous tests will need to pass.
-
-3. Add tests to pass the coverage level.
-
-   If you're adding a significant amount of new code, you may need to add tests to the code so that the coverage level doesn't drop too low. There are 2 ways to do this:
+   If your tests are simple and example-based, you can include them in the docstring for your new code and they'll automatically be run when testing. For example:
+      
+   ```python
+   def double(x):
+       """Returns the double of some number.
+       
+       >>> double(3)
+       6
+       
+       >>> double(4)
+       8
+       """
+       return x + x
+   ```
+      
+   These tests are great for documentation and helping others understand your code, but they might not be enough to fully test every corner-case.
    
-   1. Using doctest
+   More information on doctest and the syntax for different kinds of tests is available at its [documentation page](https://docs.python.org/3.5/library/doctest.html).
+      
+2. Using unittest
    
-      If your tests are simple and example-based, you can include them in the docstring for your new code and they'll automatically be run when testing. For example:
-      
-      ```python
-      def double(x):
-          """Returns the double of some number.
-          
-          >>> double(3)
-          6
-          
-          >>> double(4)
-          8
-          """
-          return x + x
-      ```
-      
-      More information on doctest and the syntax for different kinds of tests is available at its [documentation page](https://docs.python.org/3.5/library/doctest.html).
-      
-   2. Using unittest
-   
-      Every module will have a corresponding test file in the tests folder. Test files are just the name of the module file prefixed with `test_`. In this file, you'll need to add a new testing method to test the functionality of your code. Information on how to do this is available at [unittest's documentation page](https://docs.python.org/3.5/library/unittest.html).
-      
-4. Add requirements to requirements.txt
+   Every module will have a corresponding test file in the tests folder. Test files are just the name of the module file prefixed with `test_`. In this file, you'll need to add a new testing method to test the functionality of your code. Information on how to do this is available at [unittest's documentation page](https://docs.python.org/3.5/library/unittest.html).
 
-   If your code imports a library that isn't in the standard library and wasn't already added as a requirement to the project, you'll need to add the name of that library to the requirements.txt file. Just the name of the library is fine, on a new line, with no other information.
+## Adding a Dependency
 
+If your code imports a library that isn't in the standard library and wasn't already added as a requirement to the project, you'll need to add the name of that library to the requirements.txt file. Just the name of the library is fine, on a new line, with no other information.
 
+## Adding a New Module
 
-New modules go in the backend folder inside the backend folder (in other words, `team-software-project/backend/backend/`). When adding a new module, you'll need to add a corresponding test file in the tests folder. There's a little bit of fiddliness to get this to work correctly, so here's an example. Say we want to create a module called "new". We create a file `new.py` in `team-software-project/backend/backend/`. It might look like this:
-
+New modules go in `team-software-project/backend/backend/`. When adding a new module, you'll need to add a corresponding test file in the tests folder. There's a little bit of fiddliness to get this to work correctly, so here's an example. Say we want to create a module called "new". We create a file `new.py` in `team-software-project/backend/backend/`. It might look like this:
 
 ```python
 """This is a new module"""
@@ -137,10 +287,9 @@ def double(x):
     return x + x
 ```
 
-
 Notice that you need a docstring for the module, otherwise the linter will fail.
 
-Now, in `team-software-project/backend/tests`, create a file `test_new.py`, with this basic template:
+Now, in `team-software-project/backend/tests/`, create a file `test_new.py`, with this basic template:
 
 ```python
 import unittest
@@ -161,7 +310,7 @@ if __name__ == '__main__':
 
 You can organize the tests however you want, with test cases and subtests and so on, but unfortunately the `load_tests` function is necessary to run the doctests in the new module. Notice also that in the line `tests.addTests(doctest.DocTestSuite(backend.new))` you pass the name of the new module. It's easy to accidentally pass the name of another module here, so be careful when copying and pasting the above template.
 
-# Javascript
+# Javascript and Frontend
 
 ## Structure
 
@@ -177,7 +326,21 @@ The frontend for the app is divided into 4 folders:
 
    (the folder `frontend/assets/` might not exist in the repository if no-one has put anything in it yet. This isn't a bug: github doesn't sync empty folders. If you need to add an asset, and the folder isn't there, just go ahead and create it, everything else should be handled for you.)
    
-## Installing
+All of the contents of these folders will be copied into the actual web page when deployed. That means that references in HTML should assume everything is in the same folder.
+
+The JavaScript, when transpiled and compressed, will be put in a single file called `bundle.js`, next to `index.html` in the final website. We import this in the HTML will the tag:
+
+```html
+<script src="bundle.js"></script>
+```
+
+Similarly, all css will be stuck into one file, called `styles.css`, which is imported with:
+
+```html
+<link rel="stylesheet" href="styles.css">
+```
+
+## Installing and Serving Locally
 
 To run the tests and serve a static version of the frontend locally, you'll need to install 2 things first:
 
@@ -194,18 +357,6 @@ npm install
 ```
 
 This will install everything you need to test and run the site.
-
-## Running Tests
-
-To run the tests, run:
-
-```bash
-npm test
-```
-
-This will run the linter and the tests. You'll also get a coverage report.
-
-## Compiling the site locally
 
 To make a static version of the site, run:
 
@@ -264,42 +415,56 @@ In this version there are some differences from other versions of JavaScript out
    
    ```javascript
    function addFourTo(n) {
-     let result = n + 4;
+     const result = n + 4;
      return result;
    }
    ```
    
    Similarly, for constants and so on, you should use `const`.
+
+## Passing The Continuous Integration
+
+All of the continuous integration tests on the frontend can be performed by cding into `team-software-project/frontend/`, and running:
+
+```
+npm test
+```
+
+This will run the linter, tests, and coverage checks.
+
+### Linter
+
+If the linter fails, the first thing to try is to automatically fix your code. You can do this by running:
+
+```
+npm run-script fix
+```
+
+For instance, in the example above:
    
-### JavaScript structure
+```javascript
+function addFourTo(n) {
+  var result = n + 4;
+  return result;
+}
+```
 
-The main JavaScript file is `frontend/app/index.js`. Any code put here will be put in the main script in the app. Importing from other files, as well as libraries, is fine, as the code will be compressed before serving.
+The linter will change it to the proper form automatically.
 
-### Passing The Continuous Integration
+### Tests
 
-If you're adding new code, there are 3 ways the continuous integration might complain:
+We're using the [Jest](https://facebook.github.io/jest/) testing framework. It's run along with `npm test`. Every JavaScript file should be accompanied by a test file (in the same directory): if your file is called `example.js`, its test file is `example.test.js`. One thing to watch out for with Jest is that the examples are written in the node.js style of imports (using `require`), but you'll use the ES6 style (`import ... as ... from ...`).
 
-1. Linter
+### Adding a Dependency
 
-   The linter will run your code through various checks, looking for common bugs and style issues. If it finds one, it will complain: you can see this if you run `npm test` in `frontend/`. The first thing to do when you get an error is to run `npm run-script fix`: this will attempt to fix the error automatically. For instance, in the example above:
-   
-   ```javascript
-   function addFourTo(n) {
-     var result = n + 4;
-     return result;
-   }
-   ```
+If you need a library for the JavaScript portion of the project, you can add it by cding into `team-software-project/frontend/` and running:
 
-   The linter will change it to the proper form automatically.
+```
+npm install library_name --save
+```
 
-2. Tests
+Then, to import it from a file, you'll need to import from the `node_modules` folder. For instance, in `team-software-project/frontend/app/random.js`:
 
-   Previous tests that rely on your code may fail.
-   
-3. Coverage
-
-   If you add code without tests, the continuous integration may complain that you haven't tested it. Tests are stored next to the normal files, with the extension `.test.js`. So, if you have a file called `example.js`, its tests should be in `example.test.js`. The testing framework we're using is called [Jest](https://facebook.github.io/jest/).
-
-## Editing HTML and CSS
-
-All HTML files are stored in `frontend/html/`, and css files in `frontend/css/`. The current stub html file contains the correct locations for the scripts and css: since they're both compressed before being used, they'll all be in one file in the output.
+```
+import * as library_name from "../node_modules/library_name";
+```
