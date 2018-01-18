@@ -171,3 +171,4 @@ typings/
 
 site_/
 dist/
+*.swp

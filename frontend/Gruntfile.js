@@ -27,9 +27,23 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {src: ['html/**'], dest: 'dist/'},
-          {src: ['assets/**'], dest: 'dist/'}
+          {expand: true, cwd: 'html', src: ['**'], dest: 'dist/'},
+          {expand: true, cwd: 'assets', src: ['**'], dest: 'dist/'}
         ]
+      }
+    },
+    watch: {
+      app: {
+        files: ['app/**/!(*.test).js'],
+        tasks: ['browserify', 'uglify']
+      },
+      assets: {
+        files: ['html/**/*', 'assets/**/*'],
+        tasks: ['copy']
+      },
+      css: {
+        files: ['css/**/*'],
+        tasks: ['cssmin']
       }
     }
   });
@@ -37,6 +51,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('static', ['browserify', 'uglify', 'cssmin', 'copy']);
 };
