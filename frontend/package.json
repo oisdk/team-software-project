@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/eslint app/ && jest --coverage",
-    "start": "if [ -d dist ]; then rm -r dist; fi && grunt static"
+    "start": "if [ -d dist ]; then rm -r dist; fi && grunt static",
+    "fix": "./node_modules/.bin/eslint --fix app/"
   },
   "author": "",
   "license": "MIT",
@@ -19,6 +20,8 @@
     "babelify": "8.0.0",
     "browserify": "15.2.0",
     "eslint": "4.15.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "2.8.0",
     "grunt": "1.0.1",
     "grunt-browserify": "5.2.0",
     "grunt-cli": "1.2.0",
@@ -41,7 +44,7 @@
     }
   },
   "eslintConfig": {
-    "extends": "eslint:recommended",
+    "extends": "airbnb-base",
     "parserOptions": {
       "ecmaVersion": 6,
       "sourceType": "module"
@@ -58,6 +61,34 @@
           "jest": true
         }
       }
-    ]
+    ],
+    "rules": {
+      "no-var": [
+        "error"
+      ],
+      "no-invalid-this": [
+        "error"
+      ],
+      "no-useless-call": [
+        "error"
+      ],
+      "array-bracket-newline": [
+        "error",
+        {
+          "multiline": true
+        }
+      ],
+      "array-bracket-spacing": [
+        "error",
+        "never"
+      ],
+      "array-element-newline": [
+        "error",
+        {
+          "multiline": true
+        }
+      ],
+      "indent": ["error", 4]
+    }
   }
 }
