@@ -153,11 +153,30 @@ You can organize the tests however you want, with test cases and subtests and so
 
 # Javascript
 
-1. Javascript files go in frontend/app/
+The frontend for the app is divided into 4 folders:
 
-2. HTML files go in frontent/html
+1. Javascript files go in `frontend/app/`
 
-3. CSS files go in frontend/css
+2. HTML files go in `frontent/html/`
+
+3. CSS files go in `frontend/css/`
+
+4. Assets (images, etc) go in `frontend/assets`
+
+   (the folder `frontend/assets` might not exist in the repository if no-one has put anything in it yet. This isn't a bug: github doesn't sync empty folders. If you need to add an asset, and the folder isn't there, just go ahead and create it, everything else should be handled for you.)
+
+To run the tests and serve a static version of the frontend locally, you'll need to install 2 things first:
+
+1. [node.js](https://nodejs.org/en/)
+
+2. [npm](https://www.npmjs.com)
+
+The site won't be using either of these programs: they're just to allow for testing, linting, and transpiling.
+
+
+Once they're both installed, cd into the frontend folder, and run:
+
+
 
 
 To test the file locally:
