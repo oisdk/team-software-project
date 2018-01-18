@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/oisdk/team-software-project.svg?token=fXdGpZwjFQ87pr9zynKX&branch=master)](https://travis-ci.com/oisdk/team-software-project)
+[![Build Status](https://travis-ci.org/oisdk/team-software-project.svg?branch=master)](https://travis-ci.org/oisdk/team-software-project)
 
 # UCC Team Software Project
 
