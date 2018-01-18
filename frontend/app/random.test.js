@@ -5,3 +5,9 @@ describe('getRandomNumber', () => {
     expect(random.getRandomNumber()).toBe(4);
   });
 });
+
+describe('getRandomNumbers', () => {
+  it('should be [4,5]', () => {
+    expect(random.getTwoRandomNumbers()).toEqual([4, 4]);
+  });
+});

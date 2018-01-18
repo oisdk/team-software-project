@@ -262,3 +262,35 @@ In this version there are some differences from other versions of JavaScript out
    
    Similarly, for constants and so on, you should use `const`.
    
+### JavaScript structure
+
+The main JavaScript file is `frontend/app/index.js`. Any code put here will be put in the main script in the app. Importing from other files, as well as libraries, is fine, as the code will be compressed before serving.
+
+### Passing The Continuous Integration
+
+If you're adding new code, there are 3 ways the continuous integration might complain:
+
+1. Linter
+
+   The linter will run your code through various checks, looking for common bugs and style issues. If it finds one, it will complain: you can see this if you run `npm test` in `frontend/`. The first thing to do when you get an error is to run `npm run-script fix`: this will attempt to fix the error automatically. For instance, in the example above:
+   
+   ```javascript
+   function addFourTo(n) {
+     var result = n + 4;
+     return result;
+   }
+   ```
+
+   The linter will change it to the proper form automatically.
+
+2. Tests
+
+   Previous tests that rely on your code may fail.
+   
+3. Coverage
+
+   If you add code without tests, the continuous integration may complain that you haven't tested it. Tests are stored next to the normal files, with the extension `.test.js`. So, if you have a file called `example.js`, its tests should be in `example.test.js`. The testing framework we're using is called [Jest](https://facebook.github.io/jest/).
+
+## Editing HTML and CSS
+
+All HTML files are stored in `frontend/html/`, and css files in `frontend/css/`. The current stub html file contains the correct locations for the scripts and css: since they're both compressed before being used, they'll all be in one file in the output.

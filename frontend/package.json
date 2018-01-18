@@ -87,7 +87,8 @@
         {
           "multiline": true
         }
-      ]
+      ],
+      "indent": ["error", 2]
     }
   }
 }
