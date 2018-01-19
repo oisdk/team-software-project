@@ -99,7 +99,9 @@ If you're having trouble compiling or running the project locally, you can follo
 pip install -r backend/requirements.txt
 pip install pylint
 pip install coverage
+pip install flake8
 cd backend
+flake8 ./
 pylint backend
 coverage run --source backend -m unittest discover
 coverage report
