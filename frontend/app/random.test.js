@@ -6,8 +6,8 @@ describe('getRandomNumber', () => {
     });
 });
 
-describe('getRandomNumbers', () => {
-    it('should be [4,5]', () => {
-        expect(random.getTwoRandomNumbers()).toEqual([4, 4]);
+describe('geAnothertRandomNumber', () => {
+    it('should be 4', () => {
+        expect(random.getAnotherRandomNumber()).toBe(4);
     });
 });

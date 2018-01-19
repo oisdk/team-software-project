@@ -1,5 +1,6 @@
 """an example"""
 
+
 def example():
     """serves an example web page
 
@@ -12,7 +13,8 @@ def example():
     <body>this is an example</body>
     </html>
     """
-    print('Content-Type: text/html')
+    print("Content-Type: text/html")
+    x = 4
     print()
     print("""<!DOCTYPE html>
 <html lang="en">
