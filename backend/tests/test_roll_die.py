@@ -8,7 +8,7 @@ class TestDiceRoll(unittest.TestCase):
 
     def testNumbersRolled(self):
         for i in range(100):
-            dice_roll = roll_dice()
+            dice_roll = backend.roll_die.roll_dice()
             self.assertTrue(dice_roll >= 1  and dice_roll <= 6)
 
     def load_tests(loader, tests, ignore):
