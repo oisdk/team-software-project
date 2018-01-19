@@ -12,8 +12,6 @@ matrix:
     - pylint backend
     - coverage run --source backend -m unittest discover
     - coverage report
-    after_success:
-    - python setup.py bdist_egg
     before_deploy:
     - cd $TRAVIS_BUILD_DIR
     - openssl aes-256-cbc -K $encrypted_0d7e077c7dd7_key -iv $encrypted_0d7e077c7dd7_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
@@ -47,7 +45,7 @@ matrix:
     deploy:
       provider: script
       skip_cleanup: true
-      script: rsync -r --exclude cgi-bin && $TRAVIS_BUILD_DIR/frontend/dist/ dok4@csgate.ucc.ie:~/public_html
+      script: rsync -r --exclude cgi-bin $TRAVIS_BUILD_DIR/frontend/dist/ dok4@csgate.ucc.ie:~/public_html
       on:
         branch: master
 
