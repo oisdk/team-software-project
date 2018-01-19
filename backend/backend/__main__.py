@@ -1,9 +1,9 @@
 """an example"""
 
-def example():
+def main():
     """serves an example web page
 
-    >>> example()
+    >>> main()
     Content-Type: text/html
     <BLANKLINE>
     <!DOCTYPE html><html lang="en"><head><title>Example</title></head><body></body></html>
