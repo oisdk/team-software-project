@@ -23,6 +23,6 @@ setup(
     ],
     packages=find_packages(),
     entry_points={
-        'console_scripts': ['%s=%s' % i for i in pages],
+        'console_scripts': list(map('='.join, pages.items())),
     },
 )
