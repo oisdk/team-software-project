@@ -5,7 +5,7 @@ def example():
 
     >>> example()
     Content-Type: text/html
-    
+
     <!DOCTYPE html><html lang="en"><head><title>Example</title></head><body></body></html>
     """
     print('Content-Type: text/html')
