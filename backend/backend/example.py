@@ -1,5 +1,7 @@
 """an example"""
 
+import dateutil.parser
+
 def example():
     """serves an example web page
 
