@@ -23,7 +23,7 @@ matrix:
     deploy:
       provider: script
       skip_cleanup: true
-      script: rsync -r --quiet $TRAVIS_BUILD_DIR/backend/dist/ dok4@csgate.ucc.ie:~/public_html/cgi-bin/
+      script: rsync -r --quiet $TRAVIS_BUILD_DIR/backend/dist/ dok4@csgate.ucc.ie:~/public_html/cgi-bin
       on:
         branch: master
   - language: node_js
