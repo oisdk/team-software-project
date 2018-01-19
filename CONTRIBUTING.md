@@ -382,7 +382,7 @@ For example, the basic `index.js` looks like this:
 import * as random from './random';
 
 window.onload = function setWithRandom() {
-    document.body.innerHTML = random.getRandomNumber();
+    document.body.innerHTML += random.getRandomNumber();
 };
 ```
 
@@ -440,7 +440,7 @@ In this version there are some differences from other versions of JavaScript out
    import * as random from './random';
 
    window.onload = function setWithRandom() {
-       document.body.innerHTML = random.getRandomNumber();
+       document.body.innerHTML += random.getRandomNumber();
    };
    ```
 
@@ -452,7 +452,7 @@ In this version there are some differences from other versions of JavaScript out
    import { getRandomNumber } from './random';
 
    window.onload = function setWithRandom() {
-       document.body.innerHTML = getRandomNumber();
+       document.body.innerHTML += getRandomNumber();
    };
    ```
 
@@ -480,7 +480,7 @@ In this version there are some differences from other versions of JavaScript out
 
 All of the continuous integration tests on the frontend can be performed by cding into `team-software-project/frontend/`, and running:
 
-```
+```bash
 npm test
 ```
 
