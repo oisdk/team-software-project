@@ -20,7 +20,7 @@ setup(
   ],
   packages=find_packages(),
   entry_points={
-    'consolse_scripts': [
+    'console_scripts': [
       'example=backend.example:example',
     ],
   },
