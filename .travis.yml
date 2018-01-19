@@ -12,8 +12,6 @@ matrix:
     - pylint backend
     - coverage run --source backend -m unittest discover
     - coverage report
-    after_success:
-    - python setup.py bdist_egg
     before_deploy:
     - cd $TRAVIS_BUILD_DIR
     - openssl aes-256-cbc -K $encrypted_0d7e077c7dd7_key -iv $encrypted_0d7e077c7dd7_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
@@ -23,7 +21,7 @@ matrix:
     deploy:
       provider: script
       skip_cleanup: true
-      script: rsync -r --quiet $TRAVIS_BUILD_DIR/backend/dist/ dok4@csgate.ucc.ie:~/eggs/ && ssh dok4@csgate.ucc.ie 'source .bash_profile && python3 -m easy_install ~/eggs/backend-0.0.1-py3.5.egg --install-dir=~/bin/ --script-dir=~/public_html/bin/'
+      script: rsync -r --quiet $TRAVIS_BUILD_DIR/backend dok4@csgate.ucc.ie:~/ && ssh dok4@csgate.ucc.ie 'source .bash_profile && python3 ~/backend/setup.py develop --install-dir=~/bin --script-dir=~/public_html/bin'
       on:
         branch: master
   - language: node_js
