@@ -23,7 +23,7 @@ matrix:
     deploy:
       provider: script
       skip_cleanup: true
-      script: scp -r $TRAVIS_BUILD_DIR/backend/dist/ dok4@csgate.ucc.ie:~/public_html/cgi-bin
+      script: rsync -r $TRAVIS_BUILD_DIR/backend dok4@csgate.ucc.ie:~/ && ssh dok4@csgate.ucc.ie './install_backend.sh'
       on:
         branch: master
   - language: node_js
@@ -47,7 +47,7 @@ matrix:
     deploy:
       provider: script
       skip_cleanup: true
-      script: scp -r $TRAVIS_BUILD_DIR/frontend/dist/ dok4@csgate.ucc.ie:~/public_html
+      script: rsync -r --exclude cgi-bin && $TRAVIS_BUILD_DIR/frontend/dist/ dok4@csgate.ucc.ie:~/public_html
       on:
         branch: master
 

@@ -1,9 +1,6 @@
 """Setup module for the monopoly backend
 """
 
-import ez_setup
-ez_setup.use_setuptools()
-
 from setuptools import setup, find_packages
 
 from codecs import open
@@ -23,8 +20,8 @@ setup(
   ],
   packages=find_packages(),
   entry_points={
-    'setuptools.installation': [
-      'eggsecutable = backend.__main__:main',
+    'consolse_scripts': [
+      'example=backend.example:example',
     ],
   },
 )
