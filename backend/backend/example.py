@@ -14,7 +14,7 @@ def example():
     <body>this is an example: 2003-10-11</body>
     </html>
     """
-    now = parse("Sat Oct 11 17:13:46 UTC 2003")
+    now = dateutil.parser.parse("Sat Oct 11 17:13:46 UTC 2003")
     today = now.date()
     print('Content-Type: text/html')
     print()
