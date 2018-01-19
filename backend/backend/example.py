@@ -14,7 +14,6 @@ def example():
     </html>
     """
     print("Content-Type: text/html")
-    x = 4
     print()
     print("""<!DOCTYPE html>
 <html lang="en">
