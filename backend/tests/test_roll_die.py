@@ -3,7 +3,6 @@ import doctest
 import backend.roll_die
 
 
-
 class TestDiceRoll(unittest.TestCase):
 
     def testNumbersRolled(self):
