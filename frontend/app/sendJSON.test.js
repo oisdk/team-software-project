@@ -5,3 +5,9 @@ describe('generateJSON', () => {
         expect(sendJSON.generateJSON()).toBe('{"type":"gameStart"}');
     });
 });
+
+describe('sendJSONToServer', () => {
+    it('should be false', () => {
+        expect(sendJSON.sendJSONToServer()).toBe(false);
+    });
+});
