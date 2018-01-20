@@ -4,12 +4,12 @@
 """
 from cgitb import enable
 from cgi import FieldStorage
-from backend.roll_die import roll_two_dice
 import json
+from backend.roll_die import roll_two_dice
 
 enable()
 
-sample_dictionary_object = {"key": "value"}
+SAMPLE_DICTIONARY_OBJECT = {"key": "value"}
 
 
 def manager_function():
@@ -40,8 +40,8 @@ def interpret_request():
     form_data = FieldStorage()
 
     json_data = form_data.getfirst("jsonrequest")
-    if (json_data is None):
-        client_request = sample_dictionary_object
+    if json_data is None:
+        client_request = SAMPLE_DICTIONARY_OBJECT
     else:
         client_request = json.loads(json_data)
 
