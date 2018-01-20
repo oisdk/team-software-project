@@ -12,7 +12,8 @@ class TestProcessClientJSON(unittest.TestCase):
                           backend.process_client_json.interpret_request)
 
     def test_manager(self):
-        self.assertEqual(backend.process_client_json.manager_function(), "ack")
+        self.assertRaises(TypeError,
+                          backend.process_client_json.manager_function)
 
 
 def load_tests(loader, tests, ignore):
