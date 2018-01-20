@@ -1,14 +1,18 @@
-from roll_die import roll_dice
+""" Module to provide functionality to simulate rolling of two 6-sided dice"""
+
+from backend.roll_die import roll_dice
+
 
 def roll_two_dice():
-    """ Simulates the rolling of two dice.
+    """Simulates the rolling of two 6-sided dice.
 
-        Returns:
-            An int array representing the result of the two dice rolls.
+    Returns:
+        An int array representing the result of the two dice rolls.
+
     """
-
+    number_of_dice = 2
     dice_result = []
-    dice_result += [roll_dice()]
-    dice_result += [roll_dice()]
+    for _ in range(number_of_dice):
+        dice_result += [roll_dice()]
 
     return dice_result
