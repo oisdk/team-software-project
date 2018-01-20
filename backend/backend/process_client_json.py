@@ -22,7 +22,7 @@ def manager_function():
     print('Content-Type: text/html')
     print()
     client_request = interpret_request()
-    dice_result = roll_dice()
+    dice_result = roll_two_dice()
     print((client_request, dice_result))
     return "ack"
 
@@ -46,13 +46,3 @@ def interpret_request():
         client_request = json.loads(json_data)
 
     return client_request
-
-
-def roll_dice():
-    """Function call roll_
-
-    Returns:
-        A dictionary representing the parsed JSON from the client.
-
-    """
-    return roll_two_dice()

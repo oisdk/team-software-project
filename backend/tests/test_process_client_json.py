@@ -7,12 +7,6 @@ sample_dictionary_object = {"key": "value"}
 
 class TestProcessClientJSON(unittest.TestCase):
 
-    def test_roll_dice(self):
-        for i in range(100):
-            dice_roll = backend.process_client_json.roll_dice()
-            self.assertTrue(dice_roll[0] + dice_roll[1] >= 2 and
-                            dice_roll[0] + dice_roll[1] <= 12)
-
     def test_interpret_request(self):
         self.assertEqual(backend.process_client_json.interpret_message(),
                          sample_dictionary_object)
