@@ -30,6 +30,7 @@ def interpret_request():
 
     return client_request
 
+
 def generate_response(dice_roll):
     """Generate a JSON response to send to the client.
 
