@@ -29,3 +29,17 @@ def interpret_request():
     print((client_request, dice_result))
 
     return client_request
+
+def generate_response(dice_roll):
+    """Generate a JSON response to send to the client.
+
+    Arguments:
+        dice_roll: A sequence of two values – the dice roll the client got.
+
+    Returns:
+        The JSON response to send to the client, as a string.
+
+    >>> generate_response([4, 7])
+    "{"diceRoll": [4, 7]}"
+    """
+    return json.dumps({"diceRoll": dice_roll})
