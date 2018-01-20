@@ -34,8 +34,6 @@ def interpret_request():
         A dictionary representing the parsed JSON from the client.
 
     """
-    print('Content-Type: text/html')
-    print()
 
     form_data = FieldStorage()
 
