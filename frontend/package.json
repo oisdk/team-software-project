@@ -1,99 +1,112 @@
 {
-    "name": "frontend",
-    "version": "0.0.1",
-    "description": "frontend for the monopoly app",
-    "repository": "https://github.com/oisdk/team-software-project.git",
-    "main": "index.js",
-    "scripts": {
-        "test": "./node_modules/.bin/eslint app/ && jest --coverage",
-        "start": "if [ -d dist ]; then rm -r dist; fi && grunt static",
-        "fix": "./node_modules/.bin/eslint --fix app/"
+  "name": "frontend",
+  "version": "0.0.1",
+  "description": "frontend for the monopoly app",
+  "repository": "https://github.com/oisdk/team-software-project.git",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/eslint app/ && jest --coverage",
+    "start": "if [ -d dist ]; then rm -r dist; fi && grunt static",
+    "fix": "./node_modules/.bin/eslint --fix app/"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-jest": "22.1.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-register": "6.26.0",
+    "babelify": "8.0.0",
+    "browserify": "15.2.0",
+    "eslint": "4.15.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "2.8.0",
+    "grunt": "1.0.1",
+    "grunt-browserify": "5.2.0",
+    "grunt-cli": "1.2.0",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-cssmin": "2.2.1",
+    "grunt-contrib-uglify": "3.3.0",
+    "jest-cli": "22.1.2"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": -10
+      }
     },
-    "author": "",
-    "license": "MIT",
-    "devDependencies": {
-        "babel-cli": "6.26.0",
-        "babel-jest": "22.1.0",
-        "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
-        "babel-polyfill": "6.26.0",
-        "babel-register": "6.26.0",
-        "babelify": "8.0.0",
-        "browserify": "15.2.0",
-        "eslint": "4.15.0",
-        "eslint-config-airbnb-base": "12.1.0",
-        "eslint-plugin-import": "2.8.0",
-        "grunt": "1.0.1",
-        "grunt-browserify": "5.2.0",
-        "grunt-cli": "1.2.0",
-        "grunt-contrib-copy": "1.0.0",
-        "grunt-contrib-cssmin": "2.2.1",
-        "grunt-contrib-uglify": "3.3.0",
-        "jest-cli": "22.1.2"
-    },
-    "jest": {
-        "coverageThreshold": {
-            "global": {
-                "branches": 90,
-                "functions": 90,
-                "lines": 90,
-                "statements": -10
-            }
-        },
-        "transform": {
-            ".*": "<rootDir>/node_modules/babel-jest"
-        }
-    },
-    "eslintConfig": {
-        "extends": "airbnb-base",
-        "parserOptions": {
-            "ecmaVersion": 6,
-            "sourceType": "module"
-        },
-        "env": {
-            "browser": true
-        },
-        "overrides": [{
-            "files": [
-                "*.test.js"
-            ],
-            "env": {
-                "jest": true
-            }
-        }],
-        "rules": {
-            "func-names": [
-                "error", "as-needed"
-            ],
-            "no-var": [
-                "error"
-            ],
-            "no-invalid-this": [
-                "error"
-            ],
-            "no-useless-call": [
-                "error"
-            ],
-            "array-bracket-newline": [
-                "error",
-                {
-                    "multiline": true
-                }
-            ],
-            "array-bracket-spacing": [
-                "error",
-                "never"
-            ],
-            "array-element-newline": [
-                "error",
-                {
-                    "multiline": true
-                }
-            ],
-            "indent": ["error", 4],
-            "object-curly-spacing": ["error", "never"],
-            "no-unused-vars": ["error", {
-                "argsIgnorePattern": "^_"
-            }]
-        }
+    "transform": {
+      ".*": "<rootDir>/node_modules/babel-jest"
     }
+  },
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "env": {
+      "browser": true
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.test.js"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ],
+    "rules": {
+      "func-names": [
+        "error",
+        "as-needed"
+      ],
+      "no-var": [
+        "error"
+      ],
+      "no-invalid-this": [
+        "error"
+      ],
+      "no-useless-call": [
+        "error"
+      ],
+      "array-bracket-newline": [
+        "error",
+        {
+          "multiline": true
+        }
+      ],
+      "array-bracket-spacing": [
+        "error",
+        "never"
+      ],
+      "array-element-newline": [
+        "error",
+        {
+          "multiline": true
+        }
+      ],
+      "indent": [
+        "error",
+        4
+      ],
+      "object-curly-spacing": [
+        "error",
+        "never"
+      ],
+      "no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "^_"
+        }
+      ]
+    }
+  }
 }
