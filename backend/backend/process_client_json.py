@@ -40,6 +40,6 @@ def generate_response(dice_roll):
         The JSON response to send to the client, as a string.
 
     >>> generate_response([4, 7])
-    "{"diceRoll": [4, 7]}"
+    '{"diceRoll": [4, 7]}'
     """
     return json.dumps({"diceRoll": dice_roll})
