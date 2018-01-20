@@ -9,13 +9,15 @@ import json
 
 enable()
 
+sample_dictionary_object = {"key":"value"}
+
 def manager_function():
     print('Content-Type: text/html')
     print()
     client_request = interpret_request()
     dice_result = roll_dice()
     print("ack")
-    return (client_request, dice_result)
+    return "ack"
 
 def interpret_request():
     print('Content-Type: text/html')
@@ -23,8 +25,11 @@ def interpret_request():
 
     form_data = FieldStorage()
 
-    json_data = form_data.getFirst("jsonrequest")
-    client_request = json.loads(json_data)
+    json_data = form_data.getfirst("jsonrequest")
+    if (json_data == None):
+        client_request = sample_dictionary_object
+    else:
+        client_request = json.loads(json_data)
 
     return client_request
 
