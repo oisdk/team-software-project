@@ -6,17 +6,20 @@ export function generateJSON() {
 }
 
 // Send stringified JSON data to a server through an AJAX request
-export function sendJSONToServer() {
-    const stringifiedData = generateJSON();
+export function sendJSONToServer(dataToSend = null) {
+    let stringifiedData;
+    if (dataToSend === null) {
+        stringifiedData = JSON.stringify({ type: 'gameStart' });
+    } else {
+        stringifiedData = JSON.stringify(dataToSend);
+    }
 
     const ajaxRequest = new XMLHttpRequest();
-    ajaxRequest.onreadystatechange = function receiveResponse() {
-        if (this.readyState === 4 && this.status === 200) {
-            // Take action based on server response
-        }
-    };
-    ajaxRequest.open('POST', '../../backend/backend/example.py', true);
-    ajaxRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    ajaxRequest.send(`x=|${stringifiedData}`);
-    return false;
+    // ajaxRequest.onreadystatechange = function receiveResponse() {
+    //     if (this.readyState === 4 && this.status === 200) {
+    //         // Take action based on server response
+    //     }
+    // };
+    // ajaxRequest.open('GET', '../../backend/backend/example.py', true);
+    return [ajaxRequest.readyState, stringifiedData];
 }
