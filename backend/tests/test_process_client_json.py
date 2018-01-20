@@ -2,7 +2,8 @@ import unittest
 import doctest
 import backend.process_client_json
 
-sample_dictionary_object = {"key":"value"}
+sample_dictionary_object = {"key": "value"}
+
 
 class TestProcessClientJSON(unittest.TestCase):
 
