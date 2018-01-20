@@ -36,11 +36,7 @@ def interpret_request():
     """
 
     form_data = FieldStorage()
-
     json_data = form_data.getfirst("jsonrequest")
-    if json_data is None:
-        client_request = SAMPLE_DICTIONARY_OBJECT
-    else:
-        client_request = json.loads(json_data)
+    client_request = json.loads(json_data)
 
     return client_request
