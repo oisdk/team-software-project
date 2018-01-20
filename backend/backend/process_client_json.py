@@ -13,6 +13,12 @@ sample_dictionary_object = {"key": "value"}
 
 
 def manager_function():
+    """Function to act as start point for client requests sending JSON.
+
+    Returns:
+        An ack string to inform the function terminated successfully.
+
+    """
     print('Content-Type: text/html')
     print()
     client_request = interpret_request()
@@ -22,6 +28,12 @@ def manager_function():
 
 
 def interpret_request():
+    """Function to take in parameters sent in client request and extract JSON.
+
+    Returns:
+        A dictionary representing the parsed JSON from the client.
+
+    """
     print('Content-Type: text/html')
     print()
 
@@ -37,4 +49,10 @@ def interpret_request():
 
 
 def roll_dice():
+    """Function call roll_
+
+    Returns:
+        A dictionary representing the parsed JSON from the client.
+
+    """
     return roll_two_dice()
