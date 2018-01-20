@@ -5,10 +5,10 @@ Before you can make changes to the code, you'll have to download it to your loca
 1. Download and install [github desktop](https://desktop.github.com).
 
    In theory, you can do all of this stuff from the command line, but it's a total headache and github desktop makes it much easier. There's also a lot of github-specific conventions that are difficult to remember (how does github handle rebasing? how exactly are commits squashed?). If you know what you're doing, feel free to ignore all the github-specific stuff, but "there be dragons" etc.
-   
+
 2. Download the repository.
 
-   Go to [the main page for the repo](https://github.com/oisdk/team-software-project) and click the green button marked "clone or download", and then click "open in desktop" 
+   Go to [the main page for the repo](https://github.com/oisdk/team-software-project) and click the green button marked "clone or download", and then click "open in desktop"
 
    ![Downloading screenshot](contributing-images/repo-downloading.png)
 
@@ -25,29 +25,29 @@ Before you can make changes to the code, you'll have to download it to your loca
 4. Commit to the new branch.
 
    Now, whenever you make changes to the project, they'll show up in green in the main pane on the right. For instance, while writing this guide, this is what the window looks like:
-   
+
    ![changed files view](contributing-images/desktop-changed-view.png)
 
    Whenever you've got a small bit of work done, add a summary and hit commit. Try and make commits small, even if you can't think of a good summary for each: catching bugs is a lot easier with a granular commit history.
-   
+
    ![committing view](contributing-images/committing-view.png)
 
 5. Push to remote.
 
    Periodically, you can hit "push" in the top-right:
-   
+
    ![push view](contributing-images/push-view.png)
-   
+
    This will sync your branch with the copy on github's servers.
-   
+
 6. Make a pull request.
 
    Back on the project's web page, you can select "compare and pull request".
-   
+
    ![pull request](contributing-images/pull-request-view.png)
-   
+
    From here, you can add a short description of the pull request.
-   
+
 7. Code review and changes.
 
    Once you've made your pull request, you can still make changes to the branch it comes from. These will be added to the pull request.
@@ -55,7 +55,7 @@ Before you can make changes to the code, you'll have to download it to your loca
 8. Merge.
 
    Once you're happy that you've addressed everything in the code review, and all the checks have passed, you can merge your code into master.
-   
+
 9. Delete your branch.
 
    Don't forget to delete your branch after it was merged!
@@ -116,15 +116,15 @@ The Python backend is structured as a package, called `backend`. It's stored in 
 * README.rst
 
   Just a readme for the package. We won't be using this, but pip prefers when it's included.
-  
+
 * requirements.txt
 
   This file contains a list of any libraries that the backend needs. If you need to use a library, just put the name of the library in here on a new line. (you don't need to include libraries here if they're in the standard library)
-  
+
 * setup.py
 
   This is a standard Python setup file. It contains details of the package, and entry points. You shouldn't need to edit this.
-  
+
 * .coveragerc
 
   This is a configuration file for code coverage. Basically, it contains a percentage (currently 90%), which is the code coverage requirement. If less than that percent of code is covered by tests, the continuous integration will fail.
@@ -136,11 +136,11 @@ The Python backend is structured as a package, called `backend`. It's stored in 
 * tests/
 
   Contains the tests for the backend.
-  
+
 * backend/
 
   Contains the actual Python package that comprises the backend. All Python code (except tests) should go in here.
-  
+
 ## Getting Python Code on the Server
 
 So how does the Python code eventually end up on the server? Because of constraints to do with what can and can't be installed on the server, we're using *entry points*. Let's say we want to serve a simple page with the text "this is an example". The Python code to do that might look like this (in `backend/example.py`):
@@ -276,28 +276,28 @@ This runs the tests from within a program what monitors what source code is exec
 To add tests to your code, you've got 2 options:
 
 1. Using doctest
-   
+
    If your tests are simple and example-based, you can include them in the docstring for your new code and they'll automatically be run when testing. For example:
-      
+
    ```python
    def double(x):
        """Returns the double of some number.
-       
+
        >>> double(3)
        6
-       
+
        >>> double(4)
        8
        """
        return x + x
    ```
-      
+
    These tests are great for documentation and helping others understand your code, but they might not be enough to fully test every corner-case.
-   
+
    More information on doctest and the syntax for different kinds of tests is available at its [documentation page](https://docs.python.org/3.5/library/doctest.html).
-      
+
 2. Using unittest
-   
+
    Every module will have a corresponding test file in the tests folder. Test files are just the name of the module file prefixed with `test_`. In this file, you'll need to add a new testing method to test the functionality of your code. Information on how to do this is available at [unittest's documentation page](https://docs.python.org/3.5/library/unittest.html).
 
 ## Adding a Dependency
@@ -365,7 +365,7 @@ The frontend for the app is divided into 4 folders:
 4. Assets (images, etc) go in `frontend/assets/`
 
    (the folder `frontend/assets/` might not exist in the repository if no-one has put anything in it yet. This isn't a bug: github doesn't sync empty folders. If you need to add an asset, and the folder isn't there, just go ahead and create it, everything else should be handled for you.)
-   
+
 All of the contents of these folders will be copied into the actual web page when deployed. That means that references in HTML should assume everything is in the same folder.
 
 The main JavaScript file is `frontend/app/index.js`. You can think of this as the file that's imported in the script tag in the header of `index.html`. In reality, it will be transpiled and compressed, and put in a single file called `bundle.js`, next to `index.html` in the final website. We import this in the HTML will the tag:
@@ -427,19 +427,19 @@ In this version there are some differences from other versions of JavaScript out
 1. Imports and Exports
 
    Let's look at two files in the folder `frontend/app/`. `frontend/app/random.js`:
-   
+
    ```javascript
    export function getRandomNumber() {
        return 4;
    }
-   
+
    export function getAnotherRandomNumber() {
        return 4;
    }
    ```
-   
+
    and `frontend/app/index.js`:
-   
+
    ```javascript
    import * as random from './random';
 
@@ -449,9 +449,9 @@ In this version there are some differences from other versions of JavaScript out
    ```
 
    The `random.js` file exports a single function: this is done by prefixing it with the `export` keyword. In the `index.js` file, we import everything (`*`), name it `random` (if we had named it, for instance `numbers`, the function call would be `numbers.getRandomNumber()`), and give the location of the file we're importing from. (**NB**: if you're importing from a library, the path will be `../node_modules/library_name`).
-   
+
    Alternatively, we could have not named the import, and specified what function we wanted to import:
-   
+
    ```javascript
    import { getRandomNumber } from './random';
 
@@ -463,16 +463,16 @@ In this version there are some differences from other versions of JavaScript out
 2. Constants
 
    If you create a variable that doesn't get mutated, you can use the `const` keyword (rather than `var` or `let`) to create it. This will make sure that you don't mutate it. For instance:
-   
+
    ```javascript
    function addFourTo(n) {
        var result = n + 4;
        return result;
    }
    ```
-   
+
    In this case, the `result` variable is never mutated, so you can instead use `const`:
-   
+
    ```javascript
    function addFourTo(n) {
        const result = n + 4;
@@ -499,7 +499,7 @@ npm run-script fix
 ```
 
 For instance, in the example above:
-   
+
 ```javascript
 function addFourTo(n) {
     var result = n + 4;
