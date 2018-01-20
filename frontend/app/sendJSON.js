@@ -1,18 +1,17 @@
-// Generate stringified JSON object from JavaScript object
-export function generateJSON() {
-    const data = { type: 'gameStart' };
-    const stringifiedData = JSON.stringify(data);
-    return stringifiedData;
+// Generate stringified JSON from a JavaScript object
+export function generateJSON(dataToStringify) {
+    let JSONData;
+    if (dataToStringify === null) {
+        JSONData = JSON.stringify({ type: 'gameStart' });
+    } else {
+        JSONData = JSON.stringify(dataToStringify);
+    }
+    return JSONData;
 }
 
 // Send stringified JSON data to a server through an AJAX request
-export function sendJSONToServer(dataToSend = null) {
-    let stringifiedData;
-    if (dataToSend === null) {
-        stringifiedData = JSON.stringify({ type: 'gameStart' });
-    } else {
-        stringifiedData = JSON.stringify(dataToSend);
-    }
+export function sendJSONToServer(dataToSend) {
+    const JSONData = generateJSON(dataToSend);
 
     const ajaxRequest = new XMLHttpRequest();
     // ajaxRequest.onreadystatechange = function receiveResponse() {
@@ -21,5 +20,5 @@ export function sendJSONToServer(dataToSend = null) {
     //     }
     // };
     // ajaxRequest.open('GET', '../../backend/backend/example.py', true);
-    return [ajaxRequest.readyState, stringifiedData];
+    return [ajaxRequest.readyState, JSONData];
 }
