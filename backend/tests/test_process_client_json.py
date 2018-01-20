@@ -8,8 +8,8 @@ SAMPLE_DICTIONARY_OBJECT = {"key": "value"}
 class TestProcessClientJSON(unittest.TestCase):
 
     def test_interpret_request(self):
-        self.assertEqual(backend.process_client_json.interpret_request(),
-                         SAMPLE_DICTIONARY_OBJECT)
+        self.assertRaises(TypeError,
+                          backend.process_client_json.interpret_request)
 
     def test_manager(self):
         self.assertEqual(backend.process_client_json.manager_function(), "ack")
