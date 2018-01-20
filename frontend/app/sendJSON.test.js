@@ -7,7 +7,13 @@ describe('generateJSON', () => {
 });
 
 describe('sendJSONToServer', () => {
-    it('should be false', () => {
-        expect(sendJSON.sendJSONToServer()).toBe(false);
+    it('should be [0, \'{"type":"gameStart"}\']', () => {
+        expect(sendJSON.sendJSONToServer()).toEqual([0, '{"type":"gameStart"}']);
+    });
+});
+
+describe('sendJSONToServer', () => {
+    it('should be [0, \'{"testkey":"testValue"}\']', () => {
+        expect(sendJSON.sendJSONToServer({ testkey: 'testValue' })).toEqual([0, '{"testkey":"testValue"}']);
     });
 });
