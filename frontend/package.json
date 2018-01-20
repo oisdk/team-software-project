@@ -89,7 +89,11 @@
                     "multiline": true
                 }
             ],
-            "indent": ["error", 4]
+            "indent": ["error", 4],
+            "object-curly-spacing": ["error", "never"],
+            "no-unused-vars": ["error", {
+                "argsIgnorePattern": "^_"
+            }]
         }
     }
 }

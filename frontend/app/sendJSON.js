@@ -1,25 +1,12 @@
-// Generate stringified JSON from a JavaScript object
-export function generateJSON(dataToStringify) {
-    const testObject = { type: 'gameStart' };
-    let JSONData;
-    if (dataToStringify === null) {
-        JSONData = JSON.stringify(testObject);
-    } else {
-        JSONData = JSON.stringify(dataToStringify);
-    }
-    return JSONData;
+// Generate JSON to send to server on game start.
+export function generateGameStartJSON() {
+    return JSON.stringify({type: 'gameStart'});
 }
 
-// Send stringified JSON data to a server through an AJAX request
-export function sendJSONToServer(dataToSend) {
-    const JSONData = generateJSON(dataToSend);
-
+// Send a POST request to the server for the game start.
+export function gameStartRequest(serverAddress, callback) {
     const ajaxRequest = new XMLHttpRequest();
-    // ajaxRequest.onreadystatechange = function receiveResponse() {
-    //     if (this.readyState === 4 && this.status === 200) {
-    //         // Take action based on server response
-    //     }
-    // };
-    // ajaxRequest.open('GET', '../../backend/backend/example.py', true);
-    return [ajaxRequest.readyState, JSONData];
+    ajaxRequest.onreadystatechange = callback;
+    ajaxRequest.open('POST', serverAddress, true);
+    ajaxRequest.send(generateGameStartJSON());
 }

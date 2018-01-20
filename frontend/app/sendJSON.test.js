@@ -1,21 +1,37 @@
 import * as sendJSON from './sendJSON';
+import * as random from './random';
 
-const testObject = { key: 'value' };
-
-describe('generateJSON', () => {
+describe('generateGameStartJSON', () => {
     it('should be \'{"type":"gameStart"}\'', () => {
-        expect(sendJSON.generateJSON(null)).toBe('{"type":"gameStart"}');
+        expect(JSON.parse(sendJSON.generateGameStartJSON())).toEqual({
+            type: 'gameStart',
+        });
     });
 });
 
-describe('generateJSON', () => {
-    it('should be \'{"testkey":"testValue"}\'', () => {
-        expect(sendJSON.generateJSON(testObject)).toBe('{"key":"value"}');
-    });
-});
+describe('Start request test suite', () => {
+    const oldXMLHttpRequest = window.XMLHttpRequest;
 
-describe('sendJSONToServer', () => {
-    it('should be [0, \'{"key":"value"}\']', () => {
-        expect(sendJSON.sendJSONToServer(testObject)).toEqual([0, '{"key":"value"}']);
+    const mockXHR = {
+        open: jest.fn(),
+        send: jest.fn(),
+    };
+
+    beforeEach(() => {
+        window.XMLHttpRequest = jest.fn(() => mockXHR);
+    });
+
+    afterEach(() => {
+        window.XMLHttpRequest = oldXMLHttpRequest;
+    });
+
+    test('should', (done) => {
+        const callbackfn = {};
+        const mockServerAddress = random.string(5);
+        sendJSON.gameStartRequest(mockServerAddress, callbackfn);
+        expect(mockXHR.open).toHaveBeenCalledWith('POST', mockServerAddress, true);
+        expect(mockXHR.onreadystatechange).toBe(callbackfn);
+        expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({type: 'gameStart'}));
+        done();
     });
 });
