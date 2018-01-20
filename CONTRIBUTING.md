@@ -460,7 +460,7 @@ In this version there are some differences from other versions of JavaScript out
    };
    ```
 
-2. Constants
+2. `const` and `let`
 
    If you create a variable that doesn't get mutated, you can use the `const` keyword (rather than `var` or `let`) to create it. This will make sure that you don't mutate it. For instance:
 
@@ -479,6 +479,8 @@ In this version there are some differences from other versions of JavaScript out
        return result;
    }
    ```
+
+   The `let` keyword can be used to declare a variable that is scoped to the enclosing block, rather than the enclosing function (which is what `var` does). More info [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let).
 
 ## Passing The Continuous Integration
 
