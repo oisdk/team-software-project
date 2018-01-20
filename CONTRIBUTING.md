@@ -460,9 +460,9 @@ In this version there are some differences from other versions of JavaScript out
    };
    ```
 
-2. Lets and constants
+2. Constants
 
-   If you create a variable that doesn't get mutated, you can use the `let` keyword (rather than `var`) to create it. This will make sure that you don't mutate it. For instance:
+   If you create a variable that doesn't get mutated, you can use the `const` keyword (rather than `var` or `let`) to create it. This will make sure that you don't mutate it. For instance:
    
    ```javascript
    function addFourTo(n) {
