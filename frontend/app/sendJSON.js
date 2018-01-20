@@ -1,8 +1,9 @@
 // Generate stringified JSON from a JavaScript object
 export function generateJSON(dataToStringify) {
+    const testObject = { type: 'gameStart' };
     let JSONData;
     if (dataToStringify === null) {
-        JSONData = JSON.stringify({ type: 'gameStart' });
+        JSONData = JSON.stringify(testObject);
     } else {
         JSONData = JSON.stringify(dataToStringify);
     }
