@@ -33,7 +33,7 @@ def generate_response():
     >>> generate_response() # doctest: +ELLIPSIS
     Content-Type: application/json
     <BLANKLINE>
-    '{"diceRoll": [..., ...]}'
+    {"diceRoll": [..., ...]}
     """
     print('Content-Type: application/json')
     print()
