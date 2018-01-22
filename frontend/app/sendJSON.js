@@ -8,5 +8,6 @@ export function gameStartRequest(serverAddress, callback) {
     const ajaxRequest = new XMLHttpRequest();
     ajaxRequest.onreadystatechange = callback;
     ajaxRequest.open('POST', serverAddress, true);
+    ajaxRequest.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     ajaxRequest.send(generateGameStartJSON());
 }

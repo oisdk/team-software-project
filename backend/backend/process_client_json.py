@@ -2,45 +2,42 @@
    roll die functionality.
 
 """
-from cgitb import enable
-from cgi import FieldStorage
 import json
+import sys
 from backend.roll_die import roll_two_dice
+import cgitb
 
-enable()
+cgitb.enable()
 
 
-def interpret_request():
-    """Function to take in parameters sent in client request, extract JSON, and
-       roll dice.
+def request_dice_roll(source=sys.stdin):
+    """Entry point for the service of requesting a dice roll
 
-    Returns:
-        A dictionary representing the parsed JSON from the client.
-
+    >>> import tempfile
+    >>> with tempfile.TemporaryFile(mode='w+') as fp:
+    ...     json.dump({'type': 'gameStart'}, fp)
+    ...     _ = fp.seek(0)
+    ...     request_dice_roll(fp) # doctest: +ELLIPSIS
+    Content-Type: application/json
+    <BLANKLINE>
+    {"diceRoll": [..., ...]}
     """
-
-    form_data = FieldStorage()
-    json_data = form_data.getfirst("jsonrequest")
-    try:
-        client_request = json.loads(json_data)
-    except TypeError:
-        client_request = None
-    dice_result = roll_two_dice()
-    print((client_request, dice_result))
-
-    return client_request
+    request = json.load(source)
+    assert request == {'type': 'gameStart'}
+    print(generate_response())
 
 
-def generate_response(dice_roll):
+def generate_response():
     """Generate a JSON response to send to the client.
-
-    Arguments:
-        dice_roll: A sequence of two values – the dice roll the client got.
 
     Returns:
         The JSON response to send to the client, as a string.
 
-    >>> generate_response([4, 7])
-    '{"diceRoll": [4, 7]}'
+    >>> generate_response() # doctest: +ELLIPSIS
+    Content-Type: application/json
+    <BLANKLINE>
+    '{"diceRoll": [..., ...]}'
     """
-    return json.dumps({"diceRoll": dice_roll})
+    print('Content-Type: application/json')
+    print()
+    return json.dumps({"diceRoll": roll_two_dice()})
