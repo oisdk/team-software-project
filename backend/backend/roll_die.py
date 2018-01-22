@@ -1,5 +1,6 @@
 """ Roll die module """
 from random import randint
+import json
 
 
 def roll_dice():
@@ -19,3 +20,12 @@ def roll_two_dice():
     """
     dice_result = (roll_dice(), roll_dice())
     return dice_result
+
+
+def roll_two_dice_json():
+    """Rolls 2 dice, returns the result in JSON
+
+    >>> roll_two_dice_json() #doctest: +ELLIPSIS
+    '{"roll_result": [..., ...]}'
+    """
+    return json.dumps({'roll_result': roll_two_dice()})
