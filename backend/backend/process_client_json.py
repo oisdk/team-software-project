@@ -4,8 +4,8 @@
 """
 import json
 import sys
-from backend.roll_die import roll_two_dice
 import cgitb
+from backend.roll_die import roll_two_dice
 
 cgitb.enable()
 
@@ -24,14 +24,11 @@ def request_dice_roll(source=sys.stdin):
     """
     request = json.load(source)
     assert request == {'type': 'gameStart'}
-    print(generate_response())
+    generate_response()
 
 
 def generate_response():
     """Generate a JSON response to send to the client.
-
-    Returns:
-        The JSON response to send to the client, as a string.
 
     >>> generate_response() # doctest: +ELLIPSIS
     Content-Type: application/json
@@ -40,4 +37,4 @@ def generate_response():
     """
     print('Content-Type: application/json')
     print()
-    return json.dumps({"diceRoll": roll_two_dice()})
+    print(json.dumps({"diceRoll": roll_two_dice()}))

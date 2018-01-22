@@ -15,6 +15,7 @@ describe('Start request test suite', () => {
     const mockXHR = {
         open: jest.fn(),
         send: jest.fn(),
+        setRequestHeader: jest.fn(),
     };
 
     beforeEach(() => {
@@ -32,6 +33,7 @@ describe('Start request test suite', () => {
         expect(mockXHR.open).toHaveBeenCalledWith('POST', mockServerAddress, true);
         expect(mockXHR.onreadystatechange).toBe(callbackfn);
         expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({type: 'gameStart'}));
+        expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
         done();
     });
 });
