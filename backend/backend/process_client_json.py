@@ -10,31 +10,21 @@ from backend.roll_die import roll_two_dice
 cgitb.enable()
 
 
-def request_dice_roll(source=sys.stdin):
+def request_dice_roll(source=sys.stdin, output=sys.stdout):
     """Entry point for the service of requesting a dice roll
 
-    >>> import tempfile
-    >>> with tempfile.TemporaryFile(mode='w+') as fp:
-    ...     json.dump({'type': 'gameStart'}, fp)
-    ...     _ = fp.seek(0)
-    ...     request_dice_roll(fp) # doctest: +ELLIPSIS
+    >>> import io
+    >>> inp = io.StringIO(json.dumps({'type': 'gameStart'}))
+    >>> out = io.StringIO()
+    >>> request_dice_roll(inp,out)
+    >>> out.seek(0)
+    0
+    >>> print(out.read()) # doctest: +ELLIPSIS
     Content-Type: application/json
     <BLANKLINE>
     {"diceRoll": [..., ...]}
     """
     request = json.load(source)
     assert request == {'type': 'gameStart'}
-    generate_response()
-
-
-def generate_response():
-    """Generate a JSON response to send to the client.
-
-    >>> generate_response() # doctest: +ELLIPSIS
-    Content-Type: application/json
-    <BLANKLINE>
-    {"diceRoll": [..., ...]}
-    """
-    print('Content-Type: application/json')
-    print()
-    print(json.dumps({"diceRoll": roll_two_dice()}))
+    output.write('Content-Type: application/json\n\n')
+    json.dump({"diceRoll": roll_two_dice()}, output)
