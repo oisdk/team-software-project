@@ -13,3 +13,21 @@ window.onload = () => {
         });
     };
 };
+
+window.addEventListener('DOMContentLoaded', startCheckingForTurn, false);
+
+function startCheckingForTurn(event) {
+    window.setInterval(checkForTurn, 1000);
+}
+
+function checkForTurn() {
+    sendJSON.sendJSON({
+        jsonObject: {},
+        serverAddress: 'cgi-bin/get_update.py',
+        callback: (request) => {
+            if (request.readyState === 4 && request.status === 200) {
+                document.querySelector('.turnDisplay').innerHTML += request.responseText;
+            }
+        }
+    });
+}
