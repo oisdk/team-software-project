@@ -6,7 +6,7 @@ import cgitb
 
 cgitb.enable()
 
-def get_state_update(input=sys.stdin, output=sys.stdout):
-    """Respond to client requests with the current state."""
+def check_turn(input=sys.stdin, output=sys.stdout):
+    """Lets the client know whether it’s its turn or not."""
     output.write('Content-Type: application/json\n\n')
     json.dump({"your_turn": True}, output)

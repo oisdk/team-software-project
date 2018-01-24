@@ -23,7 +23,7 @@ function startCheckingForTurn(event) {
 function checkForTurn() {
     sendJSON.sendJSON({
         jsonObject: {},
-        serverAddress: 'cgi-bin/get_update.py',
+        serverAddress: 'cgi-bin/check_turn.py',
         callback: (request) => {
             if (request.readyState === 4 && request.status === 200) {
                 const jsonResponse = JSON.parse(request.responseText);
