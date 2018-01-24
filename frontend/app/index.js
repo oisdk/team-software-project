@@ -26,7 +26,12 @@ function checkForTurn() {
         serverAddress: 'cgi-bin/get_update.py',
         callback: (request) => {
             if (request.readyState === 4 && request.status === 200) {
-                document.querySelector('.turnDisplay').innerHTML += request.responseText;
+                const jsonResponse = JSON.parse(request.responseText);
+                if (jsonResponse.your_turn === true) {
+                document.querySelector('.turnDisplay').innerHTML = 'It’s your turn!';
+                } else {
+                    document.querySelector('.turnDisplay').innerHTML = 'It’s not your turn.';
+                }
             }
         }
     });
