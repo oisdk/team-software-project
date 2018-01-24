@@ -44,7 +44,10 @@ def receive_client_username():
     <BLANKLINE>
     {"your_username": "testuser"}
     """
+    # Get the JSON request from standard input (which is the client's request)
     request = json.load(sys.stdin)
+    # Get the client's username from the request JSON
     client_username = request["username"]
     output.write('Content-Type: application/json\n\n')
+    # Send the client's username back via standard out (which is the client)
     json.dump({"your_username": client_username}, sys.stdout)
