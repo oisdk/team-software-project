@@ -29,10 +29,20 @@ def request_dice_roll(source=sys.stdin, output=sys.stdout):
     output.write('Content-Type: application/json\n\n')
     json.dump({"diceRoll": roll_two_dice()}, output)
 
+
 def receive_client_username(source=sys.stdin, output=sys.stdout):
     """Entry point for the client sending username to server.
 
-    >>>
+    >>> import io
+    >>> inp = io.StringIO(json.dumps({'username': 'testuser'}))
+    >>> out = io.StringIO()
+    >>> receive_client_username(inp,out)
+    >>> out.seek(0)
+    0
+    >>> print(out.read()) # doctest: +ELLIPSIS
+    Content-Type: application/json
+    <BLANKLINE>
+    {"your_username": "testuser"}
     """
     request = json.load(source)
     client_username = request["username"]
