@@ -29,7 +29,7 @@ def request_dice_roll(source=sys.stdin, output=sys.stdout):
     output.write('Content-Type: application/json\n\n')
     json.dump({"diceRoll": roll_two_dice()}, output)
 
-def request_dice_roll(source=sys.stdin, output=sys.stdout):
+def retrieve_client_username(source=sys.stdin, output=sys.stdout):
     """Entry point for the client sending username to server.
 
     >>>
