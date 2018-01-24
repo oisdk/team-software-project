@@ -26,5 +26,7 @@ def request_dice_roll(source=sys.stdin, output=sys.stdout):
     """
     request = json.load(source)
     assert request == {'type': 'gameStart'}
+    client_username = request["username"]
     output.write('Content-Type: application/json\n\n')
-    json.dump({"diceRoll": roll_two_dice()}, output)
+    json.dump({"diceRoll": roll_two_dice(), "your_username": client_username},
+              output)
