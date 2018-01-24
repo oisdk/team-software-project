@@ -14,7 +14,7 @@ def request_dice_roll(source=sys.stdin, output=sys.stdout):
     """Entry point for the service of requesting a dice roll
 
     >>> import io
-    >>> inp = io.StringIO(json.dumps({'type': 'gameStart', 'username': 'abc'}))
+    >>> inp = io.StringIO(json.dumps({'type': 'gameStart'}))
     >>> out = io.StringIO()
     >>> request_dice_roll(inp,out)
     >>> out.seek(0)
@@ -22,11 +22,19 @@ def request_dice_roll(source=sys.stdin, output=sys.stdout):
     >>> print(out.read()) # doctest: +ELLIPSIS
     Content-Type: application/json
     <BLANKLINE>
-    {"diceRoll": [..., ...], "your_username": "abc"}
+    {"diceRoll": [..., ...]}
     """
     request = json.load(source)
-    assert request == {'type': 'gameStart', 'username': 'abc'}
+    assert request == {'type': 'gameStart'}
+    output.write('Content-Type: application/json\n\n')
+    json.dump({"diceRoll": roll_two_dice()}, output)
+
+def request_dice_roll(source=sys.stdin, output=sys.stdout):
+    """Entry point for the client sending username to server.
+
+    >>>
+    """
+    request = json.load(source)
     client_username = request["username"]
     output.write('Content-Type: application/json\n\n')
-    json.dump({"diceRoll": roll_two_dice(), "your_username": client_username},
-              output)
+    json.dump({"your_username": client_username}, output)
