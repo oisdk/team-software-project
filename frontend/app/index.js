@@ -28,9 +28,8 @@ function checkForTurn() {
             if (request.readyState === 4 && request.status === 200) {
                 const jsonResponse = JSON.parse(request.responseText);
                 if (jsonResponse.your_turn === true) {
-                document.querySelector('.turnDisplay').innerHTML = 'It’s your turn!';
-                } else {
-                    document.querySelector('.turnDisplay').innerHTML = 'It’s not your turn.';
+                    const turnStartEvent = new CustomEvent('turnStart');
+                    window.dispatchEvent(turnStartEvent);
                 }
             }
         }
