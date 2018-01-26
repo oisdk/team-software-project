@@ -39,8 +39,6 @@ export function checkUserDetails() {
         // Users exists and a player object has been created for them
         return true;
     }
-    if (browserCookies === '' || username === null || userid === null) {
-        // This user is visiting for the first time
-        return false;
-    }
+    // This user is visiting for the first time
+    return false;
 }
