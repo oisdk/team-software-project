@@ -27,7 +27,7 @@ export function checkUserDetails() {
         userid = getCookieValue(browserCookies, 'user_id');
     }
     // Check if the user_name and user_id cookies were successfully extracted
-    if (username !== undefined && userid !== undefined) {
+    if (username !== null || userid !== null) {
         // Create a JavaScript object to store the user's login details
         const userDetails = {user_name: username, user_id: userid};
         // Request the server to create an instance of a player class
