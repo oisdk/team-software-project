@@ -7,7 +7,7 @@ export function getCookieValue(browserCookies, cookieNameToFind) {
         const cookieNameIndex = cookie.indexOf(cookieNameToFind);
         if (cookieNameIndex !== -1) {
             // Return the value of the cookie
-            return cookie.substring(cookieNameToFind.length + 1);
+            return cookie.substring(cookieNameToFind.length - 1);
         }
     }
     return null;
