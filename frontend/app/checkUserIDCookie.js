@@ -13,7 +13,6 @@ export function checkUserCookie() {
 export function getCookieValue(browserCookies, cookieNameToFind) {
     for (i = 0; i < browserCookies.length; i++) {
         let cookie = browserCookies[i];
-        // console.log(cookie.indexOf("user_id") + " " + cookie);
         let cookieNameIndex = cookie.indexOf(cookieNameToFind);
         if (cookieNameIndex !== -1) {
             return cookie.substring(cookieNameToFind.length + 1);
