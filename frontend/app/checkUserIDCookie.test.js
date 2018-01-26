@@ -1,9 +1,23 @@
 import * as checkUserIDCookie from './checkUserIDCookie';
 // import * as random from './random';
 
-describe('getCookieValue', () => {
+const testCookieHeader = ['cookie1=testvalue', 'cookie2=othervalue'];
+
+describe('getCookieValue valid input test 1', () => {
     it('should be \'testvalue\'', () => {
-        expect(checkUserIDCookie.getCookieValue(['cookie1=testvalue', 'cookie2=othervalue'], 'testvalue')).toEqual('testvalue');
+        expect(checkUserIDCookie.getCookieValue(testCookieHeader, 'cookie1')).toEqual('testvalue');
+    });
+});
+
+describe('getCookieValue valid input test 2', () => {
+    it('should be \'othervalue\'', () => {
+        expect(checkUserIDCookie.getCookieValue(testCookieHeader, 'cookie2')).toEqual('othervalue');
+    });
+});
+
+describe('getCookieValue invalid input test', () => {
+    it('should be \'null\'', () => {
+        expect(checkUserIDCookie.getCookieValue(testCookieHeader, 'xyz')).toBeNull();
     });
 });
 
