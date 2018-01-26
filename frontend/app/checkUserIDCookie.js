@@ -1,8 +1,12 @@
 export function getCookieValue(browserCookies, cookieNameToFind) {
+    // Iterate over the array of browser cookies
     for (let i = 0; i < browserCookies.length; i + 1) {
+        // Extract a single cookie from the array of cookies
         const cookie = browserCookies[i];
+        // Check if the selected cookie is what we are looking for
         const cookieNameIndex = cookie.indexOf(cookieNameToFind);
         if (cookieNameIndex !== -1) {
+            // Return the value of the cookie
             return cookie.substring(cookieNameToFind.length + 1);
         }
     }
