@@ -2,38 +2,22 @@ export function checkUserCookie() {
     let browserCookies = document.cookie;
     if (browserCookies !== "") {
         browserCookies = browserCookies.split("; ");
-        let username = getUsername(browserCookies);
-        let user_id = getUserID(browserCookies);
-        if (username !== null && user_id !== null) {
+        let user_name = getCookieValue(browserCookies, "user_name");
+        let user_id = getCookieValue(browserCookies, "user_id");
+        if (user_name !== null && user_id !== null) {
             // Create ajax request for either create username / join-create game
         }
     }
 }
 
-export function getUsername(browserCookies) {
+export function getCookieValue(browserCookies, cookieNameToFind) {
     for (i = 0; i < browserCookies.length; i++) {
         let cookie = browserCookies[i];
-        let cookieName;
-        let j;
-        for (j = 0; cookie[j] !== "="; j++) {
-            cookieName += cookie[j];
-        }
-        if (cookieName === "user_name") {
-            return cookie.substring(j + 1);
+        // console.log(cookie.indexOf("user_id") + " " + cookie);
+        let cookieNameIndex = cookie.indexOf(cookieNameToFind);
+        if (cookieNameIndex !== -1) {
+            return cookie.substring(cookieNameToFind.length + 1);
         }
     }
-}
-
-export function getUserID(browserCookies) {
-    for (i = 0; i < browserCookies.length; i++) {
-        let cookie = browserCookies[i];
-        let cookieName;
-        let j;
-        for (j = 0; cookie[j] !== "="; j++) {
-            cookieName += cookie[j];
-        }
-        if (cookieName === "user_id") {
-            return cookie.substring(j + 1);
-        }
-    }
+    return null;
 }
