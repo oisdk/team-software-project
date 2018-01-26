@@ -1,22 +1,42 @@
-export function checkUserCookie() {
-    let browserCookies = document.cookie;
-    if (browserCookies !== "") {
-        browserCookies = browserCookies.split("; ");
-        let user_name = getCookieValue(browserCookies, "user_name");
-        let user_id = getCookieValue(browserCookies, "user_id");
-        if (user_name !== null && user_id !== null) {
-            // Create ajax request for either create username / join-create game
-        }
-    }
-}
-
 export function getCookieValue(browserCookies, cookieNameToFind) {
-    for (i = 0; i < browserCookies.length; i++) {
-        let cookie = browserCookies[i];
-        let cookieNameIndex = cookie.indexOf(cookieNameToFind);
+    for (let i = 0; i < browserCookies.length; i + 1) {
+        const cookie = browserCookies[i];
+        const cookieNameIndex = cookie.indexOf(cookieNameToFind);
         if (cookieNameIndex !== -1) {
             return cookie.substring(cookieNameToFind.length + 1);
         }
     }
     return null;
+}
+
+export function checkUserDetails() {
+    // Declare variables to hold corresponding cookie values
+    let username;
+    let userid;
+    // Get the browser's cookies for the current page
+    let browserCookies = document.cookie;
+    // Check if the browser has any cookies
+    if (browserCookies !== '') {
+        // Extract the user_name and user_id cookies
+        browserCookies = browserCookies.split('; ');
+        username = getCookieValue(browserCookies, 'user_name');
+        userid = getCookieValue(browserCookies, 'user_id');
+    }
+    // Check if the user_name and user_id cookies were successfully extracted
+    if (username !== null && userid !== null) {
+        // Create a JavaScript object to store the user's login details
+        const userDetails = {user_name: username, user_id: userid};
+        // Request the server to create an instance of a player class
+        const ajaxRequest = new XMLHttpRequest();
+        ajaxRequest.open('POST', 'cgi-bin/instantiate-player.py', true);
+        ajaxRequest.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
+        ajaxRequest.send(JSON.stringify(userDetails));
+
+        // Users exists and a player object has been created for them
+        return true;
+    }
+    if (browserCookies === '' || username === null || userid === null) {
+        // This user is visiting for the first time
+        return false;
+    }
 }
