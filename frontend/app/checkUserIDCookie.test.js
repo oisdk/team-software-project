@@ -1,5 +1,4 @@
 import * as checkUserIDCookie from './checkUserIDCookie';
-import * as mockCookie from '../node_modules/mock-cookie';
 
 const testCookieHeader = ['cookie1=testvalue', 'cookie2=othervalue'];
 
@@ -23,7 +22,7 @@ describe('getCookieValue invalid input test', () => {
 
 describe('checkUserDetails test suite', () => {
     const oldXMLHttpRequest = window.XMLHttpRequest;
-    // const browserCookies = document.cookie;
+    const browserCookies = document.cookie;
 
     const mockXHR = {
         open: jest.fn(),
@@ -31,27 +30,22 @@ describe('checkUserDetails test suite', () => {
         setRequestHeader: jest.fn(),
     };
 
-    // const mockCookie = 'user_name=testname';
-
     beforeEach(() => {
-        const MockCookie = mockCookie.Document;
-        const document = new MockCookie();
-        document.cookie = 'user_name=testname';
-        document.cookie = 'user_ide=testid';
         window.XMLHttpRequest = jest.fn(() => mockXHR);
-        // document.cookie = jest.fn(() => mockCookie);
+        document.cookie = 'user_name=testname';
+        document.cookie = 'user_id=testid';
     });
 
     afterEach(() => {
         window.XMLHttpRequest = oldXMLHttpRequest;
-        // document.cookie = browserCookies;
+        document.cookie = browserCookies;
     });
 
     test('should retrieve cookies and make ajax request', (done) => {
         expect(checkUserIDCookie.checkUserDetails()).toBe(true);
         expect(mockXHR.open).toHaveBeenCalledWith('POST', 'cgi-bin/instantiate-player.py', true);
         expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({user_name: 'testname', user_id: 'testid'}));
-        expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
+        expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-type', 'application/json; charset=UTF-8');
         done();
     });
 });
