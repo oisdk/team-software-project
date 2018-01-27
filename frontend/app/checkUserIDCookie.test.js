@@ -21,9 +21,6 @@ describe('getCookieValue invalid input test', () => {
 });
 
 describe('checkUserDetails with mocked cookies', () => {
-    const oldXMLHttpRequest = window.XMLHttpRequest;
-    const browserCookies = document.cookie;
-
     const mockXHR = {
         open: jest.fn(),
         send: jest.fn(),
@@ -36,11 +33,6 @@ describe('checkUserDetails with mocked cookies', () => {
         document.cookie = 'user_id=testid';
     });
 
-    afterAll(() => {
-        window.XMLHttpRequest = oldXMLHttpRequest;
-        document.cookie = browserCookies;
-    });
-
     test('should successfully retrieve cookies and make ajax request', (done) => {
         expect(checkUserIDCookie.checkUserDetails()).toBe(true);
         expect(mockXHR.open).toHaveBeenCalledWith('POST', 'cgi-bin/instantiate-player.py', true);
@@ -51,8 +43,6 @@ describe('checkUserDetails with mocked cookies', () => {
 });
 
 describe('checkUserDetails without cookies', () => {
-    const oldXMLHttpRequest = window.XMLHttpRequest;
-
     const mockXHR = {
         open: jest.fn(),
         send: jest.fn(),
@@ -63,10 +53,6 @@ describe('checkUserDetails without cookies', () => {
         document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
         document.cookie = 'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
         window.XMLHttpRequest = jest.fn(() => mockXHR);
-    });
-
-    afterAll(() => {
-        window.XMLHttpRequest = oldXMLHttpRequest;
     });
 
     test('should not retrieve cookies and return false', () => {
