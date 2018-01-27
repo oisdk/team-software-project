@@ -20,7 +20,7 @@ describe('getCookieValue invalid input test', () => {
     });
 });
 
-describe('checkUserDetails test suite', () => {
+describe('checkUserDetails with mocked cookies', () => {
     const oldXMLHttpRequest = window.XMLHttpRequest;
     const browserCookies = document.cookie;
 
@@ -41,11 +41,35 @@ describe('checkUserDetails test suite', () => {
         document.cookie = browserCookies;
     });
 
-    test('should retrieve cookies and make ajax request', (done) => {
+    test('should successfully retrieve cookies and make ajax request', (done) => {
         expect(checkUserIDCookie.checkUserDetails()).toBe(true);
         expect(mockXHR.open).toHaveBeenCalledWith('POST', 'cgi-bin/instantiate-player.py', true);
         expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({user_name: 'testname', user_id: 'testid'}));
         expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-type', 'application/json; charset=UTF-8');
         done();
+    });
+});
+
+describe('checkUserDetails without cookies', () => {
+    const oldXMLHttpRequest = window.XMLHttpRequest;
+
+    const mockXHR = {
+        open: jest.fn(),
+        send: jest.fn(),
+        setRequestHeader: jest.fn(),
+    };
+
+    beforeEach(() => {
+        document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
+        document.cookie = 'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
+        window.XMLHttpRequest = jest.fn(() => mockXHR);
+    });
+
+    afterEach(() => {
+        window.XMLHttpRequest = oldXMLHttpRequest;
+    });
+
+    test('should not retrieve cookies and return false', () => {
+        expect(checkUserIDCookie.checkUserDetails()).toBe(false);
     });
 });
