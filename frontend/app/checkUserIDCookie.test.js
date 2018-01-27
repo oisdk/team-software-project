@@ -21,18 +21,25 @@ describe('getCookieValue invalid input test', () => {
 });
 
 describe('checkUserDetails with mocked cookies', () => {
+    // Create a mock XMLHttpRequest
     const mockXHR = {
         open: jest.fn(),
         send: jest.fn(),
         setRequestHeader: jest.fn(),
     };
 
+    // Setup function to hijack XMLHttpRequest and insert mocks into cookies
     beforeAll(() => {
+        // Any request made to XMLHttpRequest are redirected to the mock object
+        // above
         window.XMLHttpRequest = jest.fn(() => mockXHR);
+
         document.cookie = 'user_name=testname';
         document.cookie = 'user_id=testid';
     });
 
+    // This test waits for all expect() functions to complete before exiting,
+    // hence it has done() at the end and takes a done parameter.
     test('should successfully retrieve cookies and make ajax request', (done) => {
         expect(checkUserIDCookie.checkUserDetails()).toBe(true);
         expect(mockXHR.open).toHaveBeenCalledWith('POST', 'cgi-bin/instantiate-player.py', true);
@@ -50,6 +57,7 @@ describe('checkUserDetails without cookies', () => {
     };
 
     beforeAll(() => {
+        // Force the cookies to be deleted by giving them an old expiry date
         document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
         document.cookie = 'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
         window.XMLHttpRequest = jest.fn(() => mockXHR);
