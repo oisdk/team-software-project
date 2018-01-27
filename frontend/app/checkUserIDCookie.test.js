@@ -50,17 +50,10 @@ describe('checkUserDetails with mocked cookies', () => {
 });
 
 describe('checkUserDetails without cookies', () => {
-    const mockXHR = {
-        open: jest.fn(),
-        send: jest.fn(),
-        setRequestHeader: jest.fn(),
-    };
-
     beforeAll(() => {
         // Force the cookies to be deleted by giving them an old expiry date
         document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
         document.cookie = 'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
-        window.XMLHttpRequest = jest.fn(() => mockXHR);
     });
 
     test('should not retrieve cookies and return false', () => {
