@@ -30,13 +30,13 @@ describe('checkUserDetails with mocked cookies', () => {
         setRequestHeader: jest.fn(),
     };
 
-    beforeEach(() => {
+    beforeAll(() => {
         window.XMLHttpRequest = jest.fn(() => mockXHR);
         document.cookie = 'user_name=testname';
         document.cookie = 'user_id=testid';
     });
 
-    afterEach(() => {
+    afterAll(() => {
         window.XMLHttpRequest = oldXMLHttpRequest;
         document.cookie = browserCookies;
     });
@@ -59,13 +59,13 @@ describe('checkUserDetails without cookies', () => {
         setRequestHeader: jest.fn(),
     };
 
-    beforeEach(() => {
+    beforeAll(() => {
         document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
         document.cookie = 'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
         window.XMLHttpRequest = jest.fn(() => mockXHR);
     });
 
-    afterEach(() => {
+    afterAll(() => {
         window.XMLHttpRequest = oldXMLHttpRequest;
     });
 
