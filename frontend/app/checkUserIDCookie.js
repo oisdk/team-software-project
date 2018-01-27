@@ -15,8 +15,8 @@ export function getCookieValue(browserCookies, cookieNameToFind) {
 
 export function checkUserDetails() {
     // Declare variables to hold corresponding cookie values
-    let username;
-    let userid;
+    let username = null;
+    let userid = null;
     // Get the browser's cookies for the current page
     let browserCookies = document.cookie;
     // Check if the browser has any cookies
