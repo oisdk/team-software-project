@@ -1,6 +1,6 @@
 // returns true if the username textbox contains no value, otherwise false
 export function checkTextField() {
-    const usernameValue = document.getElementByID('username').value;
+    const usernameValue = document.querySelector('#username').value;
     if (usernameValue !== null && usernameValue.trim() !== '') {
         return false;
     } else if (usernameValue === null || usernameValue.trim() === '') {
@@ -27,3 +27,4 @@ export function boxChecked() {
         }
     }
 }
+
