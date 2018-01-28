@@ -1,7 +1,7 @@
 // Variable to which a player object is conditionally assigned
 let playerObject = null;
 
-// Function to extract a specified cookie value
+// Function to extract a specified cookie value from a browser's cookie header
 export function getCookieValue(browserCookies, cookieNameToFind) {
     // Iterate over the array of browser cookies
     for (let i = 0; i < browserCookies.length; i += 1) {
