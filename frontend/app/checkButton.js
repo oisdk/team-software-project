@@ -1,4 +1,4 @@
-//returns true if the username textbox contains no value, otherwise false
+// returns true if the username textbox contains no value, otherwise false
 export function checkTextField(usernameValue) {
     if (usernameValue !== null && usernameValue.trim() !== '') {
         return false;
@@ -9,8 +9,8 @@ export function checkTextField(usernameValue) {
     return true;
 }
 
-//disables username textbox and enables roll_die button if username contains a value,
-//otherwise does the opposite
+// disables username textbox and enables roll_die button if username contains a value,
+// otherwise does the opposite
 export function boxChecked() {
     const username = document.querySelector('#username');
     const confirmUsername = document.querySelector('#confirm_username');
