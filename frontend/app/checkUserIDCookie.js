@@ -1,3 +1,7 @@
+// Variable to which a player object is conditionally assigned
+let playerObject = null;
+
+// Function to extract a specified cookie value
 export function getCookieValue(browserCookies, cookieNameToFind) {
     // Iterate over the array of browser cookies
     for (let i = 0; i < browserCookies.length; i += 1) {
@@ -13,6 +17,15 @@ export function getCookieValue(browserCookies, cookieNameToFind) {
     return null;
 }
 
+// Callback function for server responding with player object
+export function receivePlayerObject(ajaxRequest) {
+    if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+        playerObject = ajaxRequest.ResponseText;
+    }
+}
+
+// Function to check visitor's cookies for a username/userid and return a
+// player object if the visitor has been recorded before
 export function checkUserDetails() {
     // Declare variables to hold corresponding cookie values
     let username = null;
@@ -32,13 +45,10 @@ export function checkUserDetails() {
         const userDetails = {user_name: username, user_id: userid};
         // Request the server to create an instance of a player class
         const ajaxRequest = new XMLHttpRequest();
+        ajaxRequest.onreadystatechange = () => receivePlayerObject(ajaxRequest);
         ajaxRequest.open('POST', 'cgi-bin/instantiate-player.py', true);
         ajaxRequest.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
         ajaxRequest.send(JSON.stringify(userDetails));
-
-        // Users exists and a player object has been created for them
-        return true;
     }
-    // This user is visiting for the first time
-    return false;
+    return playerObject;
 }

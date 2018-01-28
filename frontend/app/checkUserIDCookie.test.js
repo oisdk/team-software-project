@@ -20,7 +20,7 @@ describe('getCookieValue invalid input test', () => {
     });
 });
 
-describe('checkUserDetails with mocked cookies', () => {
+describe('checkUserDetails with cookies', () => {
     // Create a mock XMLHttpRequest
     const mockXHR = {
         open: jest.fn(),
@@ -38,10 +38,8 @@ describe('checkUserDetails with mocked cookies', () => {
         document.cookie = 'user_id=testid';
     });
 
-    // This test waits for all expect() functions to complete before exiting,
-    // hence it has done() at the end and takes a done parameter.
-    test('should successfully retrieve cookies and make ajax request', (done) => {
-        expect(checkUserIDCookie.checkUserDetails()).toBe(true);
+    test('should make AJAX request since cookies present', (done) => {
+        checkUserIDCookie.checkUserDetails();
         expect(mockXHR.open).toHaveBeenCalledWith('POST', 'cgi-bin/instantiate-player.py', true);
         expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({user_name: 'testname', user_id: 'testid'}));
         expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-type', 'application/json; charset=UTF-8');
@@ -56,7 +54,35 @@ describe('checkUserDetails without cookies', () => {
         document.cookie = 'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
     });
 
-    test('should not retrieve cookies and return false', () => {
-        expect(checkUserIDCookie.checkUserDetails()).toBe(false);
+    test('should not retrieve cookies and return null', () => {
+        expect(checkUserIDCookie.checkUserDetails()).toBeNull();
+    });
+});
+
+
+describe('retrievePlayerObject with successful AJAX response', () => {
+    // Create a mock XMLHttpRequest
+    const mockXHR = {
+        readyState: 4,
+        status: 200,
+        ResponseText: 'mockObject',
+    };
+
+    test('should make ajax request since cookies present', (done) => {
+        checkUserIDCookie.receivePlayerObject(mockXHR);
+        done();
+    });
+});
+
+describe('retrievePlayerObject with unsuccessful AJAX response', () => {
+    // Create a mock XMLHttpRequest
+    const mockXHR = {
+        readyState: 4,
+        status: 404,
+    };
+
+    test('should make ajax request since cookies present', (done) => {
+        checkUserIDCookie.receivePlayerObject(mockXHR);
+        done();
     });
 });
