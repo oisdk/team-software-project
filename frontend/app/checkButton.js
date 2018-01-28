@@ -5,6 +5,7 @@ export function checkTextField() {
     } else if (usernameValue === null || usernameValue.trim() === '') {
         return true;
     }
+
     return true;
 }
 
