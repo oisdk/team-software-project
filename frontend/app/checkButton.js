@@ -1,5 +1,6 @@
 // returns true if the username textbox contains no value, otherwise false
-export function checkTextField(usernameValue) {
+export function checkTextField() {
+    const usernameValue = document.getElementByID('username').value;
     if (usernameValue !== null && usernameValue.trim() !== '') {
         return false;
     } else if (usernameValue === null || usernameValue.trim() === '') {
@@ -16,7 +17,7 @@ export function boxChecked() {
     const confirmUsername = document.querySelector('#confirm_username');
     const checker = document.querySelector('#checker');
     if (confirmUsername.checked) {
-        if (!checkTextField(username.value)) {
+        if (!checkTextField()) {
             username.disabled = true;
             confirmUsername.disabled = true;
             document.getElementById('roll_die').disabled = false;
