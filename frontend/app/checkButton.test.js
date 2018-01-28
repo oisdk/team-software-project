@@ -1,13 +1,20 @@
 import * as checkButton from './checkButton';
 
 describe('checkTextField should return false since username is populated', () => {
+    let oldBody;
     // Setup function create mock HTML page
     beforeAll(() => {
         // Create a mock HTML page body with the username field populated.
         // This "document" is like an invisible HTML page in node.js which can
         // be treated like a regular HTML page. The HTML form below is copied
         // directly from the live HTML.
+        oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20" value="testuser"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
+    });
+    
+    afterAll(() => {
+        // Restore HTML body to its state before the test
+        document.body.innerHTML = oldBody;
     });
 
     // This is the actual test which calls the JavaScript and compares the
@@ -18,10 +25,17 @@ describe('checkTextField should return false since username is populated', () =>
 });
 
 describe('checkTextField should return true since username is not populated', () => {
+    let oldBody;
     // Setup function create mock HTML page
     beforeAll(() => {
         // Create a mock HTML page body with the username field not populated.
+        oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
+    });
+    
+    afterAll(() => {
+        // Restore HTML body to its state before the test
+        document.body.innerHTML = oldBody;
     });
 
     test('should find blank username field and return true', () => {
@@ -30,11 +44,18 @@ describe('checkTextField should return true since username is not populated', ()
 });
 
 describe('boxChecked confirms checkUsername box is checked and username field is populated', () => {
+    let oldBody;
     // Setup function create mock HTML page
     beforeAll(() => {
         // Create a mock HTML page body with the username field populated and
         // confirm_username checkbox is checked.
+        oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20" value="testuser"><input type="checkbox" name="confirm_username" id="confirm_username" checked><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
+    });
+    
+    afterAll(() => {
+        // Restore HTML body to its state before the test
+        document.body.innerHTML = oldBody;
     });
 
     // This test waits for all expect() functions to complete before exiting,
@@ -50,11 +71,18 @@ describe('boxChecked confirms checkUsername box is checked and username field is
 });
 
 describe('boxChecked shows warning message due to unpopulated username field', () => {
+    let oldBody;
     // Setup function create mock HTML page
     beforeAll(() => {
         // Create a mock HTML page body with the username field unpopulated and
         // confirm_username checkbox is checked.
+        oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username" checked><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
+    });
+    
+    afterAll(() => {
+        // Restore HTML body to its state before the test
+        document.body.innerHTML = oldBody;
     });
 
     // This test waits for all expect() functions to complete before exiting,
@@ -67,10 +95,17 @@ describe('boxChecked shows warning message due to unpopulated username field', (
 });
 
 describe('boxChecked takes no action due to confirm_username box unchecked', () => {
+    let oldBody;
     // Setup function create mock HTML page
     beforeAll(() => {
         // Create a mock HTML page body with confirm_username checkbox left unchecked.
+        oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
+    });
+    
+    afterAll(() => {
+        // Restore HTML body to its state before the test
+        document.body.innerHTML = oldBody;
     });
 
     test('should return undefined', () => {
