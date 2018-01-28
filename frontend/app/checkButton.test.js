@@ -11,7 +11,7 @@ describe('checkTextField should return false since username is populated', () =>
         oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20" value="testuser"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
     });
-    
+
     afterAll(() => {
         // Restore HTML body to its state before the test
         document.body.innerHTML = oldBody;
@@ -32,7 +32,7 @@ describe('checkTextField should return true since username is not populated', ()
         oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
     });
-    
+
     afterAll(() => {
         // Restore HTML body to its state before the test
         document.body.innerHTML = oldBody;
@@ -52,7 +52,7 @@ describe('boxChecked confirms checkUsername box is checked and username field is
         oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20" value="testuser"><input type="checkbox" name="confirm_username" id="confirm_username" checked><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
     });
-    
+
     afterAll(() => {
         // Restore HTML body to its state before the test
         document.body.innerHTML = oldBody;
@@ -79,7 +79,7 @@ describe('boxChecked shows warning message due to unpopulated username field', (
         oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username" checked><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
     });
-    
+
     afterAll(() => {
         // Restore HTML body to its state before the test
         document.body.innerHTML = oldBody;
@@ -102,7 +102,7 @@ describe('boxChecked takes no action due to confirm_username box unchecked', () 
         oldBody = document.body.innerHTML;
         document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
     });
-    
+
     afterAll(() => {
         // Restore HTML body to its state before the test
         document.body.innerHTML = oldBody;
