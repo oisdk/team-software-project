@@ -21,6 +21,8 @@ describe('getCookieValue invalid input test', () => {
 });
 
 describe('checkUserDetails with cookies', () => {
+    const oldxhr = window.XMLHttpRequest;
+
     // Create a mock XMLHttpRequest
     const mockXHR = {
         open: jest.fn(),
@@ -38,6 +40,17 @@ describe('checkUserDetails with cookies', () => {
         document.cookie = 'user_id=testid';
     });
 
+    // Teardown function to restore window XMLHttpRequest and delete cookies
+    afterAll(() => {
+        // Any request made to XMLHttpRequest are redirected to the mock object
+        // above
+        window.XMLHttpRequest = oldxhr;
+
+        // Set an old expiry date on the cookies so they are deleted
+        document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
+        document.cookie = 'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
+    });
+
     test('should make AJAX request since cookies present', (done) => {
         checkUserIDCookie.checkUserDetails();
         expect(mockXHR.open).toHaveBeenCalledWith('POST', 'cgi-bin/instantiate-player.py', true);
@@ -48,12 +61,6 @@ describe('checkUserDetails with cookies', () => {
 });
 
 describe('checkUserDetails without cookies', () => {
-    beforeAll(() => {
-        // Force the cookies to be deleted by giving them an old expiry date
-        document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
-        document.cookie = 'user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC';
-    });
-
     test('should not retrieve cookies and return null', () => {
         expect(checkUserIDCookie.checkUserDetails()).toBeNull();
     });
