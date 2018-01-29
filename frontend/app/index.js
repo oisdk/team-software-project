@@ -15,6 +15,7 @@ window.onload = () => {
 
     let eventSource = new EventSource('cgi-bin/notify_turn.py');
     eventSource.onopen = () => {
+        console.log('opened!');
         eventSource.addEventListener('error', (error) => {
             console.log(`SSE error: ${error.type}`);
         });
