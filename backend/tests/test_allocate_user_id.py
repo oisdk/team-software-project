@@ -11,6 +11,7 @@ class TestRequestUserID(unittest.TestCase):
         encodeTest = Player("username")
         self.assertEqual(str(encodeTest.user_id),
                          json_encoder(encodeTest.user_id))
+        self.assertEqual(None, json_encoder("test"))
 
 
 def load_tests(loader, tests, ignore):
