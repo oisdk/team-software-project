@@ -9,7 +9,7 @@ cgitb.enable()
 
 
 def request_user_id(source=sys.stdin, output=sys.stdout):
-    """Entry point for the client sending username to server, server responds with clients id.
+    """Entry point for the client sending username to server, server responds with clients username & id.
 
     >>> import io
     >>> inp = io.StringIO(json.dumps({'username': 'testuser'}))
