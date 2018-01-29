@@ -1,6 +1,6 @@
 """Turn-related logic."""
-# import cgitb
-# cgitb.enable()
+import cgitb
+cgitb.enable()
 
 import time
 import sys
