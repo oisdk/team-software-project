@@ -1,14 +1,14 @@
 import * as sendJSON from './sendJSON';
-import * as checkUserIDCookie from './checkUserIDCookie';
-import * as generateUsernameForm from './generateUsernameForm';
+// import * as checkUserIDCookie from './checkUserIDCookie';
+// import * as generateUsernameForm from './generateUsernameForm';
 import * as generateCreateJoinGamePage from './generateCreateJoinGamePage';
 
 
 window.onload = () => {
-    const playerObject = checkUserIDCookie.checkUserDetails();
+    const playerObject = /* checkUserIDCookie.checkUserDetails(); */ null;
     if (playerObject !== null) {
         // Generate page for visitor to create new username
-        generateUsernameForm.generateUsernameForm();
+        // generateUsernameForm.generateUsernameForm();
     } else {
         // Generate page for visitor to create/join game
         generateCreateJoinGamePage.generateCreateJoinGamePage();
