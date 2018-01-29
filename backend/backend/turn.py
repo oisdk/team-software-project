@@ -11,7 +11,7 @@ def send_turn_notifications():
     print()
     while True:
         print('event: fuck')
-        print('data: It’s your turn!')
+        print('data: It is your turn!')
         print()
 
         sys.stdout.flush()
