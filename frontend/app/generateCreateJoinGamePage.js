@@ -1,0 +1,1 @@
+// Function to generate create game / join game page
