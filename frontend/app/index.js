@@ -1,5 +1,5 @@
 import * as sendJSON from './sendJSON';
-import * as checkUserIDCookie fromm './checkUserIDCookie';
+import * as checkUserIDCookie from './checkUserIDCookie';
 import * as generateUsernameForm from './generateUsernameForm';
 import * as generateCreateJoinGamePage from './generateCreateJoinGamePage';
 
