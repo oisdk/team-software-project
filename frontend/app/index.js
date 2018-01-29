@@ -31,7 +31,7 @@ window.onload = () => {
         click.preventDefault();
         sendJSON.sendJSON({
             jsonObject: {'username': document.querySelector('#username').value},
-            serverAddress: 'create_user_entry.py',
+            serverAddress: 'cgi-bin/create_user_entry.py',
             callback: () => {}
         });
     };
