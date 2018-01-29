@@ -26,4 +26,13 @@ window.onload = () => {
             console.log(`SSE event of type fuck: ${message.data}`);
         });
     };
+
+    document.querySelector('#usernameInput').onclick = (click) => {
+        click.preventDefault();
+        sendJSON.sendJSON({
+            jsonObject: {'username': document.querySelector('#username').value},
+            serverAddress: 'create_user_entry.py',
+            callback: () => {}
+        });
+    };
 };
