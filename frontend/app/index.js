@@ -12,4 +12,14 @@ window.onload = () => {
             }
         });
     };
+
+    let eventSource = new EventSource('cgi-bin/notify_turn.py');
+    eventSource.onopen = () => {
+        eventSource.addEventListener('error', () => {
+            console.log('SSE error.');
+        });
+        eventSource.addEventListener('message', (message) => {
+            console.log(`SSE message: ${message.data}`)
+        });
+    };
 };
