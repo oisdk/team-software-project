@@ -20,7 +20,7 @@ export function getCookieValue(browserCookies, cookieNameToFind) {
 // Callback function for server responding with player object
 export function receivePlayerObject(ajaxRequest) {
     if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
-        playerObject = JSON.parse(ajaxRequest.ResponseText);
+        playerObject = JSON.parse(ajaxRequest.responseText);
     }
 }
 
