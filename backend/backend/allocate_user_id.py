@@ -1,24 +1,26 @@
-"""Module providing functionality to create a player and send their ID back to the client"""
+"""Module providing functionality to create a player and send their ID back to
+    the client"""
 
-from backend.storage import Player
 import json
 import sys
 import cgitb
-from json import JSONEncoder
 from uuid import UUID
+from backend.storage import Player
 
 cgitb.enable()
 
-"""
-Deals with no UUID serialization support in json. Casts the UUID to String.
-"""
-def JSONEncoder(uuidObject):
-    if isinstance(uuidObject, UUID):
-        return str(uuidObject)
+
+def json_encoder(uuid_object):
+    """Deals with no UUID serialization support in json. Casts the UUID to String.
+    """
+    if isinstance(uuid_object, UUID):
+        return str(uuid_object)
+    return None
 
 
 def request_user_id(source=sys.stdin, output=sys.stdout):
-    """Entry point for the client sending username to server, server responds with clients username & id.
+    """Entry point for the client sending username to server, server responds
+    with clients username & id.
 
     >>> import io
     >>> inp = io.StringIO(json.dumps({'username': 'testuser'}))
@@ -35,4 +37,5 @@ def request_user_id(source=sys.stdin, output=sys.stdout):
     client_username = request["username"]
     player = Player(client_username)
     output.write('Content-Type: application/json\n\n')
-    json.dump({"your_username": client_username, "your_id": JSONEncoder(player.user_id)}, output)
+    json.dump({"your_username": client_username, "your_id":
+               json_encoder(player.user_id)}, output)
