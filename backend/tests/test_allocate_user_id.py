@@ -9,8 +9,8 @@ class TestRequestUserID(unittest.TestCase):
 
     def test_encoder(self):
         encodetest = Player("username")
-        self.assertEqual(str(encodeTest.user_id),
-                         json_encoder(encodeTest.user_id))
+        self.assertEqual(str(encodetest.user_id),
+                         json_encoder(encodetest.user_id))
         self.assertEqual(None, json_encoder("test"))
 
 
