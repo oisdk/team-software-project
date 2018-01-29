@@ -22,5 +22,8 @@ window.onload = () => {
         eventSource.addEventListener('message', (message) => {
             console.log(`SSE message: ${message.data}`)
         });
+        eventSource.addEventListener('fuck', (message) => {
+            console.log(`SSE event of type fuck: ${message.data}`);
+        });
     };
 };
