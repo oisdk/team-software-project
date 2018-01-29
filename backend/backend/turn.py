@@ -1,4 +1,6 @@
 """Turn-related logic."""
+import cgitb
+cgitb.enable()
 
 import time
 
