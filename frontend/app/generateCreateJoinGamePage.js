@@ -10,4 +10,5 @@ export function generateCreateJoinGamePage() {
     const fileReader = new XMLHttpRequest();
     fileReader.open('GET', 'create-join-game.html', true);
     fileReader.onreadystatechange = () => updatePage(fileReader);
+    fileReader.send();
 }
