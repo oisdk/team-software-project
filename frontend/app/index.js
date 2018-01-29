@@ -11,7 +11,7 @@ window.onload = () => {
         generateUsernameForm.generateUsernameForm();
     } else {
         // Generate page for visitor to create/join game
-        generateCreateJoinGamePage.generateCreateJoinGamePage(playerObject);
+        generateCreateJoinGamePage.generateCreateJoinGamePage();
     }
     document.getElementById('roll_die').onclick = () => {
         sendJSON.gameStartRequest('cgi-bin/request_dice_roll.py', (req) => {
