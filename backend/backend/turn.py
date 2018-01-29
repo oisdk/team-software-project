@@ -15,3 +15,4 @@ def send_turn_notifications():
         print()
 
         sys.stdout.flush()
+        time.sleep(1)
