@@ -1,7 +1,7 @@
 import * as checkButton from './checkButton';
 
 describe('checkTextField should return false since username is populated', () => {
-    const usernameTextField;
+    let usernameTextField;
     // Setup function create mock text field
     beforeAll(() => {
         // Create a mock populated text field to pass to checkTextField
@@ -19,7 +19,7 @@ describe('checkTextField should return false since username is populated', () =>
 });
 
 describe('checkTextField should return true since username is not populated', () => {
-    const usernameTextField;
+    let usernameTextField;
     // Setup function create mock text field
     beforeAll(() => {
         // Create a mock un-populated text field to pass to checkTextField
