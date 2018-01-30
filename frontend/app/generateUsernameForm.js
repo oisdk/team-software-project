@@ -1,5 +1,5 @@
 
-export function requestUserID(serverAddress, callback, username) {
+export function requestUserID(serverAddress, username, callback) {
     const name = JSON.stringfy({user: username});
     const xhttp = new XMLHttpRequest();
     xhttp.open('POST', serverAddress, true);
@@ -29,8 +29,16 @@ export function generateUsernameForm() {
     f.appendChild(p);
 
     document.body.appendChild(f);
-    document.getElementById('submit_username').addEventListener('click', (event) => { event.preventDefault(); });
-    document.getElementById('submit_username').onclick = requestUserID('', '', document.getElementById('username').value);
-    // document.getElementById('username').value;
+    s.id.addEventListener('click', (event) => { event.preventDefault(); });
+    s.id.onclick = requestUserID('', document.getElementById('username').value, (req) => {
+        if (req.readyState === 4 && req.status === 200) {
+            // do whats needed with the value returned
+
+            const pTag = document.createElement('p');
+            const t = document.createTextNode(req.responseText);
+            pTag.appendChild(t);
+            document.body.appendChild(t);
+        }
+    });
 }
 
