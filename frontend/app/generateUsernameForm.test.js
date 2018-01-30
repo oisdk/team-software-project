@@ -45,11 +45,11 @@ describe('Generate form ', () => {
     });
 
     test('if generated form is successful ', (done) => {
-        usernameForm.generateUsernameForm();
+        const callback = jest.fn();
+        usernameForm.generateUsernameForm(callback);
         expect(document.getElementById('submit_username').value).toEqual('Submit');
         expect(document.body.innerHTML).toEqual('<form>Enter Username<input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>');
 
         done();
     });
 });
-

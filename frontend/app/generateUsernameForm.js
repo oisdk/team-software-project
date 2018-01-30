@@ -8,12 +8,8 @@ export function requestUserID(serverAddress, username, callback) {
     xhttp.send(name);
 }
 
-export function generateUsernameForm() {
+export function generateUsernameForm(callback) {
     document.body.innerHTML = '<form>Enter Username<input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>';
     document.getElementById('submit_username').addEventListener('click', (event) => { event.preventDefault(); });
-    document.getElementById('submit_username').onclick = () => requestUserID('', document.getElementById('username').value, (req) => {
-        if (req.readyState === 4 && req.status === 200) {
-            // do whats needed with the value returned
-        }
-    });
+    document.getElementById('submit_username').onclick = () => requestUserID('', document.getElementById('username').value, callback);
 }
