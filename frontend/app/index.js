@@ -22,13 +22,14 @@ window.onload = () => {
         eventSource.addEventListener('message', (message) => {
             console.log(`SSE message: ${message.data}`)
         });
+        let turnCounter = 0;
         eventSource.addEventListener('fuck', (message) => {
             console.log(`SSE event of type fuck: ${message.data}`);
             const activeTurn = JSON.parse(message.data).activeTurn;
             const username = document.querySelector('#username').value;
-            console.log(`Comparing username (${username}) with active turn (${activeTurn})`)
-            if (activeTurn == document.querySelector('#username').value) {
+            if (activeTurn == document.querySelector('#username').value && ++turnCounter == 5) {
                 console.log('Ending turn');
+                turnCounter = 0;
                 sendJSON.sendJSON({
                     jsonObject: {},
                     serverAddress: 'cgi-bin/end_turn.py',
