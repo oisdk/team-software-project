@@ -16,7 +16,7 @@ describe('generateUsernameForm should generate username form', () => {
     test('should detect username form', (done) => {
         usernameForm.generateUsernameForm();
         expect(document.getELementById('username').value).toEqual('');
-        expect(document.getELementById('username').type).toEqual('text');
+        expect(document.getELementById('submit_username').type).toEqual('text');
         done();
     });
 });
@@ -39,6 +39,7 @@ describe('Request sent', () => {
     });
 
     test('should request userID', (done) => {
+        const username = JSON.stringify({user: ' '});
         const callbackfn = jest.fn();
         const mockServerAddress = random.string(5);
         usernameForm.requestUserID(mockServerAddress, '', callbackfn);
@@ -46,7 +47,7 @@ describe('Request sent', () => {
         expect(callbackfn).not.toHaveBeenCalled();
         mockXHR.onreadystatechange();
         expect(callbackfn).toHaveBeenCalledWith(mockXHR);
-        expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({user: ''}));
+        expect(mockXHR.send).toHaveBeenCalledWith(username);
         expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
         done();
     });
