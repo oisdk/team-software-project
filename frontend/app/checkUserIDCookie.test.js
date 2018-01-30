@@ -72,7 +72,7 @@ describe('retrievePlayerObject with successful AJAX response', () => {
     const mockXHR = {
         readyState: 4,
         status: 200,
-        ResponseText: '{"mockPlayerObject": "mockData"}',
+        responseText: '{"mockPlayerObject": "mockData"}',
     };
 
     test('should make ajax request since cookies present', (done) => {
