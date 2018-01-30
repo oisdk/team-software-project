@@ -31,11 +31,11 @@ def request_user_id(source=sys.stdin, output=sys.stdout):
     >>> print(out.read()) # doctest: +ELLIPSIS
     Content-Type: application/json
     <BLANKLINE>
-    {"your_username": "testuser", "your_id": ...}
+    {"your_id": ..., "your_username": "testuser"}
     """
     request = json.load(source)
     client_username = request["username"]
     player = Player(client_username)
     output.write('Content-Type: application/json\n\n')
     json.dump({"your_username": client_username, "your_id":
-               json_encoder(player.user_id)}, output)
+               json_encoder(player.user_id)}, output, sort_keys=True)
