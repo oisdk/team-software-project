@@ -4,16 +4,21 @@ describe('updatePage test', () => {
     const oldDocumentBody = document.body.innerHTML;
 
     const mockFileResponse = {
-        responseText: '<p>test html content</p>',
+        responseText: '<p>test html content<i id="username"></i></p>',
     };
+
+    beforeAll(() => {
+        document.cookie = 'user_name=testuser';
+    });
 
     afterAll(() => {
         document.body.innerHTML = oldDocumentBody;
+        document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     });
 
     test('should read mockFileResponse and update page with its contents', (done) => {
         generateCreateJoinGamePage.updatePage(mockFileResponse);
-        expect(document.body.innerHTML).toEqual('<p>test html content</p>');
+        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username">testuser</i></p>');
         done();
     });
 });
