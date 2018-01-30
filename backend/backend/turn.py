@@ -9,6 +9,7 @@ import cgitb
 cgitb.enable()
 
 def send_turn_notifications():
+    """Notify a client every second whose turn it is."""
     print('Content-Type: text/event-stream')
     print('Cache-Control: no cache')
     print()
@@ -21,6 +22,7 @@ def send_turn_notifications():
         time.sleep(1)
 
 def create_user_entry():
+    """Add a user to the turn order."""
     json_input = json.load(sys.stdin)
     username = json_input['username']
     with shelve.open('turn_data') as turn_data:
@@ -35,12 +37,14 @@ def create_user_entry():
     print('Username registered.')
 
 def get_user_turn():
+    """Get the username of the player whose turn it is."""
     with shelve.open('turn_data') as turn_data:
         if 'order' in turn_data:
             return turn_data['order'][0]
         return None
 
 def end_turn():
+    """End the current turn."""
     with shelve.open('turn_data') as turn_data:
         order = turn_data['order']
         order.rotate(1)
