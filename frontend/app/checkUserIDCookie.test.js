@@ -53,7 +53,7 @@ describe('checkUserDetails with cookies', () => {
 
     test('should make AJAX request since cookies present', (done) => {
         checkUserIDCookie.checkUserDetails();
-        expect(mockXHR.open).toHaveBeenCalledWith('POST', 'cgi-bin/instantiate-player.py', true);
+        expect(mockXHR.open).toHaveBeenCalledWith('POST', 'cgi-bin/get-player-object.py', true);
         expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({user_name: 'testname', user_id: 'testid'}));
         expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-type', 'application/json; charset=UTF-8');
         done();

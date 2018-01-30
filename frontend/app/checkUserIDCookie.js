@@ -46,7 +46,7 @@ export function checkUserDetails() {
         // Request the server to create an instance of a player class
         const ajaxRequest = new XMLHttpRequest();
         ajaxRequest.onreadystatechange = () => receivePlayerObject(ajaxRequest);
-        ajaxRequest.open('POST', 'cgi-bin/instantiate-player.py', true);
+        ajaxRequest.open('POST', 'cgi-bin/get-player-object.py', true);
         ajaxRequest.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
         ajaxRequest.send(JSON.stringify(userDetails));
     }
