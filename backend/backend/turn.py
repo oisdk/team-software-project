@@ -33,10 +33,7 @@ def create_user_entry():
     print('Username registered.')
 
 def get_user_turn():
-    try:
-        with shelve.open('turn_data') as turn_data:
-            if 'order' in turn_data:
-                return turn_data['order'][0]
-            return None
-    except:
+    with shelve.open('turn_data') as turn_data:
+        if 'order' in turn_data:
+            return turn_data['order'][0]
         return None
