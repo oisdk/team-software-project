@@ -3,6 +3,7 @@ import time
 import sys
 import json
 import shelve
+from collections import deque
 
 import cgitb
 cgitb.enable()
@@ -24,7 +25,8 @@ def create_user_entry():
     username = json_input['username']
     with shelve.open('turn_data') as turn_data:
         if turn_data == {}:
-            turn_data['order'] = []
+            # if there is no turn data yet, create a queue
+            turn_data['order'] = deque()
         order = turn_data['order']
         order.append(username)
         turn_data['order'] = order
