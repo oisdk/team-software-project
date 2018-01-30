@@ -1,45 +1,35 @@
 import * as checkButton from './checkButton';
 
 describe('checkTextField should return false since username is populated', () => {
-    let oldBody;
-    // Setup function create mock HTML page
+    const usernameTextField;
+    // Setup function create mock text field
     beforeAll(() => {
-        // Create a mock HTML page body with the username field populated.
-        // This "document" is like an invisible HTML page in node.js which can
-        // be treated like a regular HTML page. The HTML form below is copied
-        // directly from the live HTML.
-        oldBody = document.body.innerHTML;
-        document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20" value="testuser"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
-    });
-
-    afterAll(() => {
-        // Restore HTML body to its state before the test
-        document.body.innerHTML = oldBody;
+        // Create a mock populated text field to pass to checkTextField
+        usernameTextField = document.createElement('input');
+        usernameTextField.type = 'text';
+        usernameTextField.id = 'username';
+        usernameTextField.value = 'testuser';
     });
 
     // This is the actual test which calls the JavaScript and compares the
     // return value with 'false'.
     test('should successfully detect username text and return false', () => {
-        expect(checkButton.checkTextField()).toBe(false);
+        expect(checkButton.checkTextField(usernameTextField)).toBe(false);
     });
 });
 
 describe('checkTextField should return true since username is not populated', () => {
-    let oldBody;
-    // Setup function create mock HTML page
+    const usernameTextField;
+    // Setup function create mock text field
     beforeAll(() => {
-        // Create a mock HTML page body with the username field not populated.
-        oldBody = document.body.innerHTML;
-        document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
-    });
-
-    afterAll(() => {
-        // Restore HTML body to its state before the test
-        document.body.innerHTML = oldBody;
+        // Create a mock un-populated text field to pass to checkTextField
+        usernameTextField = document.createElement('input');
+        usernameTextField.type = 'text';
+        usernameTextField.id = 'username';
     });
 
     test('should find blank username field and return true', () => {
-        expect(checkButton.checkTextField()).toBe(true);
+        expect(checkButton.checkTextField(usernameTextField)).toBe(true);
     });
 });
 
