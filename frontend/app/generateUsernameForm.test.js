@@ -1,27 +1,7 @@
 import * as usernameForm from './generateUsernameForm';
 import * as random from './random';
 
-describe('generateUsernameForm should generate username form', () => {
-    let originalHtml;
-
-    beforeAll(() => {
-        originalHtml = document.body.innerHTML;
-        document.body.innerHTML = '<form>Enter Username <input type="text" id="username"><input type="submit" value="Submit" id="submit_suername"></form>';
-    });
-
-    afterAll(() => {
-        document.body.innerHTML = originalHtml;
-    });
-
-    test('should detect username form', (done) => {
-        usernameForm.generateUsernameForm();
-        expect(document.getELementById('username').value).toEqual('');
-        expect(document.getELementById('submit_username').type).toEqual('text');
-        done();
-    });
-});
-
-describe('Request sent', () => {
+describe('Request sent on function call', () => {
     const oldXMLHttpRequest = window.XMLHttpRequest;
 
     const mockXHR = {
@@ -39,7 +19,6 @@ describe('Request sent', () => {
     });
 
     test('should request userID', (done) => {
-        const username = JSON.stringify({user: ' '});
         const callbackfn = jest.fn();
         const mockServerAddress = random.string(5);
         usernameForm.requestUserID(mockServerAddress, '', callbackfn);
@@ -47,8 +26,30 @@ describe('Request sent', () => {
         expect(callbackfn).not.toHaveBeenCalled();
         mockXHR.onreadystatechange();
         expect(callbackfn).toHaveBeenCalledWith(mockXHR);
-        expect(mockXHR.send).toHaveBeenCalledWith(username);
+        expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({user: ''}));
         expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
         done();
     });
 });
+
+describe('Generate form ', () => {
+    let page;
+
+    beforeAll(() => {
+        page = document.body.innerHTML;
+        document.body.innerHTML = '<form>Enter Username<input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>';
+    });
+
+    afterAll(() => {
+        document.body.innerHTML = page;
+    });
+
+    test('if generated form is successful ', (done) => {
+        usernameForm.generateUsernameForm();
+        expect(document.getElementById('submit_username').value).toEqual('Submit');
+        expect(document.body.innerHTML).toEqual('<form>Enter Username<input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>');
+
+        done();
+    });
+});
+
