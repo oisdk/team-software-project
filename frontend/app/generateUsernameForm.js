@@ -30,7 +30,7 @@ export function generateUsernameForm() {
 
     document.body.appendChild(f);
     s.id.addEventListener('click', (event) => { event.preventDefault(); });
-    s.id.onclick = requestUserID('', document.getElementById('username').value, (req) => {
+    s.id.onclick = requestUserID('cgi-bin/allocate_user_id.py', document.getElementById('username').value, (req) => {
         if (req.readyState === 4 && req.status === 200) {
             // do whats needed with the value returned
 
