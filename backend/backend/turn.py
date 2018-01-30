@@ -39,3 +39,12 @@ def get_user_turn():
         if 'order' in turn_data:
             return turn_data['order'][0]
         return None
+
+def end_turn():
+    with shelve.open('turn_data') as turn_data:
+        order = turn_data['order']
+        order.rotate(1)
+        turn_data['order'] = order
+    print('Content-type: text/plain')
+    print()
+    print('Turn ended.')
