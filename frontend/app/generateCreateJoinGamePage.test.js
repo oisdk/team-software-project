@@ -24,7 +24,9 @@ describe('updatePage test', () => {
 
     test('should read mockFileResponse and update page with its contents', (done) => {
         generateCreateJoinGamePage.updatePage(mockFileResponse);
-        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username">testuser</i></p>');
+        // The <i> tag is to be filled with "testuser" once the commented code
+        // is uncommented in updatePage()
+        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username"></i></p>');
         done();
     });
 });
