@@ -1,6 +1,3 @@
-// Variable to which a player object is conditionally assigned
-let playerObjectRepresentation = null;
-
 // Function to extract a specified cookie value from a browser's cookie header
 export function getCookieValue(browserCookies, cookieNameToFind) {
     // Iterate over the array of browser cookies
@@ -15,13 +12,6 @@ export function getCookieValue(browserCookies, cookieNameToFind) {
         }
     }
     return null;
-}
-
-// Callback function for server responding with player object
-export function receivePlayerObject(ajaxRequest) {
-    if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
-        playerObjectRepresentation = JSON.parse(ajaxRequest.responseText);
-    }
 }
 
 // Function to check visitor's cookies for a username/userid and return a
@@ -40,15 +30,9 @@ export function checkUserDetails() {
         userid = getCookieValue(browserCookies, 'user_id');
     }
     // Check if the user_name and user_id cookies were successfully extracted
-    if (username !== null || userid !== null) {
-        // Create a JavaScript object to store the user's login details
-        const userDetails = {user_name: username, user_id: userid};
-        // Request the server to create an instance of a player class
-        const ajaxRequest = new XMLHttpRequest();
-        ajaxRequest.onreadystatechange = () => receivePlayerObject(ajaxRequest);
-        ajaxRequest.open('POST', 'cgi-bin/get-player-object.py', true);
-        ajaxRequest.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
-        ajaxRequest.send(JSON.stringify(userDetails));
+    let userDetails = {};
+    if (username !== null && userid !== null) {
+        userDetails = {user_name: username, user_id: userid};
     }
-    return playerObjectRepresentation;
+    return userDetails;
 }
