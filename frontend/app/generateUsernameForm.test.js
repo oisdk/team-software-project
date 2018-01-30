@@ -32,12 +32,12 @@ describe('Request sent on function call', () => {
     });
 });
 
-describe('Generate form ', () => {
+describe('Generate form to the body of ', () => {
     let page;
 
     beforeAll(() => {
         page = document.body.innerHTML;
-        document.body.innerHTML = '<form>Enter Username<input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>';
+        document.body.innerHTML = '<form><label>Enter Username</label><input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>';
     });
 
     afterAll(() => {
@@ -48,8 +48,8 @@ describe('Generate form ', () => {
         const callback = jest.fn();
         usernameForm.generateUsernameForm(callback);
         expect(document.getElementById('submit_username').value).toEqual('Submit');
-        expect(document.body.innerHTML).toEqual('<form>Enter Username<input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>');
-
+        expect(document.body.innerHTML).toEqual('<form><label>Enter Username</label><input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>');
+        expect(document.getElementById('username').type).toEqual('text');
         done();
     });
 });

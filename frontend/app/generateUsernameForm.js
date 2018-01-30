@@ -9,7 +9,7 @@ export function requestUserID(serverAddress, username, callback) {
 }
 
 export function generateUsernameForm(callback) {
-    document.body.innerHTML = '<form>Enter Username<input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>';
+    document.body.innerHTML = '<form><label>Enter Username</label><input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>';
     document.getElementById('submit_username').addEventListener('click', (event) => { event.preventDefault(); });
     document.getElementById('submit_username').onclick = () => requestUserID('', document.getElementById('username').value, callback);
 }
