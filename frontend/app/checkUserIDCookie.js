@@ -1,5 +1,5 @@
 // Variable to which a player object is conditionally assigned
-let playerObject = null;
+let playerObjectRepresentation = null;
 
 // Function to extract a specified cookie value from a browser's cookie header
 export function getCookieValue(browserCookies, cookieNameToFind) {
@@ -20,7 +20,7 @@ export function getCookieValue(browserCookies, cookieNameToFind) {
 // Callback function for server responding with player object
 export function receivePlayerObject(ajaxRequest) {
     if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
-        playerObject = JSON.parse(ajaxRequest.responseText);
+        playerObjectRepresentation = JSON.parse(ajaxRequest.responseText);
     }
 }
 
@@ -50,5 +50,5 @@ export function checkUserDetails() {
         ajaxRequest.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
         ajaxRequest.send(JSON.stringify(userDetails));
     }
-    return playerObject;
+    return playerObjectRepresentation;
 }
