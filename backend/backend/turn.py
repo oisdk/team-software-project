@@ -13,7 +13,7 @@ def send_turn_notifications():
     print('Cache-Control: no cache')
     print()
     while True:
-        print('event: fuck')
+        print('event: turn')
         print('data: {}'.format(json.dumps({'activeTurn': get_user_turn()})))
         print()
 

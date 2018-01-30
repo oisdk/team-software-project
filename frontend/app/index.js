@@ -23,8 +23,8 @@ window.onload = () => {
             console.log(`SSE message: ${message.data}`)
         });
         let turnCounter = 0;
-        eventSource.addEventListener('fuck', (message) => {
-            console.log(`SSE event of type fuck: ${message.data}`);
+        eventSource.addEventListener('turn', (message) => {
+            console.log(`SSE event of type turn: ${message.data}`);
             const activeTurn = JSON.parse(message.data).activeTurn;
             const username = document.querySelector('#username').value;
             if (activeTurn == document.querySelector('#username').value && ++turnCounter == 5) {
