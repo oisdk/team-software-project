@@ -28,6 +28,9 @@ def create_user_entry():
         order = turn_data['order']
         order.append(username)
         turn_data['order'] = order
+    print('Content-type: text/plain')
+    print()
+    print('Username registered.')
 
 def get_user_turn():
     try:
