@@ -31,6 +31,9 @@ RUN cd /frontend; npm install; npm start && cp -r dist/* /var/www/html
 RUN cd /var/www/html/cgi-bin; find . -type f -not -name "*.py" -exec mv {} {}.py ';'
 RUN chmod -R 755 /var/www/html
 
+RUN touch /var/www/html/cgi-bin/turn_data.db
+RUN chmod 777 /var/www/html/cgi-bin/turn_data.db
+
 EXPOSE 80
 
 ENTRYPOINT ["/usr/sbin/apache2"]
