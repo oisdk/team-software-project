@@ -6,7 +6,6 @@ import uuid
 class Monopoly:  # pylint: disable=too-few-public-methods
     """A class representing a game of
     monopoly.
-    
     >>> print(Monopoly(4)) # doctest: +ELLIPSIS
     Game id:...
     Lobby State:0/4
@@ -20,7 +19,6 @@ class Monopoly:  # pylint: disable=too-few-public-methods
         self._players = []
         self._player_counter = 0
         self._game_ready_state = False
-
 
     def __str__(self):
         return (('Game id:%s\nLobby State:%d/%d\nGame Ready:%s'
