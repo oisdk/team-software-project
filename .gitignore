@@ -172,5 +172,3 @@ typings/
 site_/
 dist/
 *.swp
-frontend/app/sendJSON.test.js
-frontend/app/sendJSON.js
