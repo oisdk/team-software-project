@@ -23,4 +23,20 @@ export function generateCreateJoinGamePage() {
     fileReader.open('GET', 'create-join-game.html', true);
     fileReader.onreadystatechange = () => updatePage(fileReader);
     fileReader.send();
+	document.getElementById('create-game').onclick = () => {
+		/*
+        sendJSON.sendJSON('cgi-bin/allocate_game_id.py', 
+			json.dumps({"game_size":4}),
+			(req) => {
+                response = json.load(req.responseText)
+				game_id = response['game_id']
+				sendJSON.sendJSON('cgi-bin/waiting_game.py', 
+					json.dumps({"game_id":game_id}),
+					???,
+					???)
+				},
+			(req) => {}
+        });
+    */
+	};
 }
