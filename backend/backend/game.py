@@ -6,14 +6,13 @@ import uuid
 class Monopoly:  # pylint: disable=too-few-public-methods
     """A class representing a game of
     monopoly.
-    
     """
     def __init__(self, gameSize):
         self._uuid = uuid.uuid1()
-        self._gameSize = gameSize
+        self._game_size = gameSize
         self._players = []
-        self._playerCounter = 0
-        self._gameReadyState = False;
+        self._player_counter = 0
+        self._game_ready_state = False
 
     @property
     def game_id(self):
@@ -21,7 +20,10 @@ class Monopoly:  # pylint: disable=too-few-public-methods
         return self._uuid
 
     def __str__(self):
-        return 'Game id:%s:\n Lobby State: %d/%d\nGame Ready:%s\n Players:%s\n' % (self._uuid, self._playerCounter, self._gameSize, self._gameReadyState, self._players)
+        return (('Game id:%s:\n Lobby State: %d/%d\nGame Ready:%s'
+                 '\n Players:%s\n')
+                % (self._uuid, self._player_counter,
+                   self._game_size, self._game_ready_state, self._players))
 
     def add_player(self, player):
         """Adds player to game.
@@ -30,12 +32,11 @@ class Monopoly:  # pylint: disable=too-few-public-methods
             Communicates ready state to client
         """
         self._players.append(player)
-        self._playerCounter+=1
-        if(self._playerCounter == self._gameSize):
-            self._gameReadyState = True;
-            #Communicate readiness to client
+        self._player_counter += 1
+        if self._player_counter == self._game_size:
+            self._game_ready_state = True
+            # Communicate readiness to client
 
     def get_game_id(self):
+        """Getter for game uuid"""
         return self._uuid
-        
-
