@@ -20,7 +20,7 @@ export function generateCreateJoinGamePage() {
     // Generate a HTML page with buttons to load the "create new game" page
     // or "join existing game" page
     const fileReader = new XMLHttpRequest();
-    fileReader.open('GET', 'create-join-game.html', true);
+    fileReader.open('GET', '../html/create-join-game.html', true);
     fileReader.onreadystatechange = () => updatePage(fileReader);
     fileReader.send();
 }
