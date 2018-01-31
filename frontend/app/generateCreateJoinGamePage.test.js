@@ -54,7 +54,7 @@ describe('generateCreateJoinGamePage test', () => {
 
     test('should call appropriate XMLHttpRequest functions', (done) => {
         generateCreateJoinGamePage.generateCreateJoinGamePage();
-        expect(mockXHR.open).toHaveBeenCalledWith('GET', 'create-join-game.html', true);
+        expect(mockXHR.open).toHaveBeenCalledWith('GET', '../html/create-join-game.html', true);
         done();
     });
 });
