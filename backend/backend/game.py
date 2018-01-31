@@ -13,9 +13,9 @@ class Monopoly:  # pylint: disable=too-few-public-methods
     Players:[]
     <BLANKLINE>
     """
-    def __init__(self, gameSize):
+    def __init__(self, game_size):
         self._uuid = uuid.uuid1()
-        self._game_size = gameSize
+        self._game_size = game_size
         self._players = []
         self._player_counter = 0
         self._game_ready_state = False
