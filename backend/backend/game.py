@@ -34,18 +34,8 @@ class Monopoly:  # pylint: disable=too-few-public-methods
         if(self._playerCounter == self._gameSize):
             self._gameReadyState = True;
             #Communicate readiness to client
+
+    def get_game_id(self):
+        return self._uuid
         
 
-def main():
-    test = Monopoly(4)
-    print(test)
-    test.add_player("Gary")
-    print(test)
-    test.add_player("Edward")
-    print(test)
-    test.add_player("John")
-    print(test)
-    test.add_player("Greer")
-    print(test)
-
-main()
