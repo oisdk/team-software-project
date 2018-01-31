@@ -110,6 +110,5 @@
     }
   },
   "dependencies": {
-    "mock-cookie": "0.3.2"
   }
 }
