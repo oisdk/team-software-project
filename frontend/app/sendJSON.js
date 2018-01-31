@@ -24,11 +24,11 @@ export function gameStartRequest(serverAddress, callback) {
  *        will be called with the request as its only parameter.
  */
 export function sendJSON({
-            serverAddress,
-            jsonObject = {},
-            successCallback = (request) => {},
-            failureCallback = (request) => {},
-        }) {
+    serverAddress,
+    jsonObject = {},
+    successCallback = (_) => {},
+    failureCallback = (_) => {},
+}) {
     const request = new XMLHttpRequest();
     request.open('POST', serverAddress);
     request.onreadystatechange = () => {
@@ -39,7 +39,7 @@ export function sendJSON({
                 failureCallback(request);
             }
         }
-    }
+    };
     request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     request.send(JSON.stringify(jsonObject));
 }
