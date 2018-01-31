@@ -4,8 +4,8 @@ import uuid
 
 
 class Monopoly:  # pylint: disable=too-few-public-methods
-    """A class representing a game of
-    monopoly.
+    """A class representing a game of monopoly.
+        TODO: Add game to storage.
     >>> print(Monopoly(4)) # doctest: +ELLIPSIS
     Game id:...
     Lobby State:0/4
