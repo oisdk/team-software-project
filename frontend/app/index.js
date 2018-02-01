@@ -1,13 +1,11 @@
 import * as sendJSON from './sendJSON';
-
 import * as checkButton from './checkButton';
-
 // import * as checkUserIDCookie from './checkUserIDCookie';
 // import * as generateUsernameForm from './generateUsernameForm';
 import * as generateCreateJoinGamePage from './generateCreateJoinGamePage';
 
 window.onload = () => {
-  
+
     const confirmUsername = document.querySelector('#confirmUsername');
     confirmUsername.addEventListener('click', checkButton.boxChecked, false);
   
