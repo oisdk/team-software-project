@@ -40,7 +40,7 @@ describe('boxChecked confirms checkUsername box is checked and username field is
         // Create a mock HTML page body with the username field populated and
         // confirm_username checkbox is checked.
         oldBody = document.body.innerHTML;
-        document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20" value="testuser"><input type="checkbox" name="confirm_username" id="confirm_username" checked><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
+        document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20" value="testuser"><input type="checkbox" name="confirm_username" id="confirm_username" checked><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="submit_username" disabled></form>';
     });
 
     afterAll(() => {
@@ -50,11 +50,11 @@ describe('boxChecked confirms checkUsername box is checked and username field is
 
     // This test waits for all expect() functions to complete before exiting,
     // hence it has done() at the end and takes a done parameter.
-    test('should disable the username text field, disable the confirm_username checkbox, enable the roll_die button, and place "Username is confirmed" into the checker span', (done) => {
+    test('should disable the username text field, disable the confirm_username checkbox, enable the submit button, and place "Username is confirmed" into the checker span', (done) => {
         checkButton.boxChecked();
         expect(document.getElementById('username').disabled).toBe(true);
         expect(document.getElementById('confirm_username').disabled).toBe(true);
-        expect(document.getElementById('roll_die').disabled).toBe(false);
+        expect(document.getElementById('submit_username').disabled).toBe(false);
         expect(document.getElementById('checker').innerHTML).toEqual('Username is confirmed');
         done();
     });
@@ -67,7 +67,7 @@ describe('boxChecked shows warning message due to unpopulated username field', (
         // Create a mock HTML page body with the username field unpopulated and
         // confirm_username checkbox is checked.
         oldBody = document.body.innerHTML;
-        document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username" checked><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
+        document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username" checked><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="submit_username" disabled></form>';
     });
 
     afterAll(() => {
@@ -90,7 +90,7 @@ describe('boxChecked takes no action due to confirm_username box unchecked', () 
     beforeAll(() => {
         // Create a mock HTML page body with confirm_username checkbox left unchecked.
         oldBody = document.body.innerHTML;
-        document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="usernameInput"></form><button type="button" id="roll_die" disabled>Roll die</button>';
+        document.body.innerHTML = '<form><label for="username">Username:</label><input type="text" id="username" maxlength="20"><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><input type="submit" value="Submit" id="submit_username" disabled></form>';
     });
 
     afterAll(() => {
