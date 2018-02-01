@@ -40,6 +40,12 @@ describe('Start request test suite', () => {
     });
 });
 
+describe('noOp function', () => {
+    it('should be callable and return undefined', () => {
+        expect(sendJSON.noOp()).toEqual(undefined);
+    });
+});
+
 describe('sendJSON test suite', () => {
     const oldXMLHttpRequest = window.XMLHttpRequest;
 

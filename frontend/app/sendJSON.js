@@ -12,6 +12,8 @@ export function gameStartRequest(serverAddress, callback) {
     ajaxRequest.send(generateGameStartJSON());
 }
 
+export const noOp = (_) => {};
+
 /**
  * Sends some json to a specific server address, and executes a success or
  * failure callback when a response is received.
@@ -26,8 +28,8 @@ export function gameStartRequest(serverAddress, callback) {
 export function sendJSON({
     serverAddress,
     jsonObject = {},
-    successCallback = (_) => {},
-    failureCallback = (_) => {},
+    successCallback = noOp,
+    failureCallback = noOp,
 }) {
     const request = new XMLHttpRequest();
     request.open('POST', serverAddress);
