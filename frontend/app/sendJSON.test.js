@@ -57,7 +57,7 @@ describe('sendJSON test suite', () => {
         window.XMLHttpRequest = oldXMLHttpRequest;
     });
 
-    test('should send JSON', done => {
+    test('should send JSON', (done) => {
         const mockJSON = {test: random.string(5)};
         sendJSON.sendJSON({
             jsonObject: mockJSON,
@@ -68,16 +68,16 @@ describe('sendJSON test suite', () => {
         done();
     });
 
-    test('should send server address', done => {
-            const mockServerAddress = random.string(5);
-            sendJSON.sendJSON({
-                serverAddress: mockServerAddress,
-            });
-            expect(mockXHR.open).toHaveBeenCalledWith('POST', mockServerAddress);
-            expect(mockXHR.send).toHaveBeenCalledWith('{}');
-            expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
-            done();
+    test('should send server address', (done) => {
+        const mockServerAddress = random.string(5);
+        sendJSON.sendJSON({
+            serverAddress: mockServerAddress,
         });
+        expect(mockXHR.open).toHaveBeenCalledWith('POST', mockServerAddress);
+        expect(mockXHR.send).toHaveBeenCalledWith('{}');
+        expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
+        done();
+    });
 
     test('should only call success callback on successful response', (done) => {
         const failCallback = jest.fn();
@@ -112,17 +112,17 @@ describe('sendJSON test suite', () => {
     });
 
     test('shouldn’t call callbacks on wrong ready state', (done) => {
-            const failCallback = jest.fn();
-            const succCallback = jest.fn();
-            sendJSON.sendJSON({
-                failureCallback: failCallback,
-                successCallback: succCallback,
-            });
-            mockXHR.readyState = 3;
-            mockXHR.state = 200;
-            mockXHR.onreadystatechange();
-            expect(failCallback).not.toHaveBeenCalled();
-            expect(succCallback).not.toHaveBeenCalled();
-            done();
+        const failCallback = jest.fn();
+        const succCallback = jest.fn();
+        sendJSON.sendJSON({
+            failureCallback: failCallback,
+            successCallback: succCallback,
         });
+        mockXHR.readyState = 3;
+        mockXHR.state = 200;
+        mockXHR.onreadystatechange();
+        expect(failCallback).not.toHaveBeenCalled();
+        expect(succCallback).not.toHaveBeenCalled();
+        done();
+    });
 });
