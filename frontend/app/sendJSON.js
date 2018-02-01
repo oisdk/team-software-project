@@ -26,8 +26,8 @@ export function gameStartRequest(serverAddress, callback) {
 export function sendJSON({
     serverAddress,
     jsonObject = {},
-    successCallback = /* istanbul ignore next */ (_) => {},
-    failureCallback = /* istanbul ignore next */ (_) => {},
+    successCallback = (_) => {},
+    failureCallback = (_) => {},
 }) {
     const request = new XMLHttpRequest();
     request.open('POST', serverAddress);
