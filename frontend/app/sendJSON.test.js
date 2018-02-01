@@ -57,20 +57,29 @@ describe('sendJSON test suite', () => {
         window.XMLHttpRequest = oldXMLHttpRequest;
     });
 
-    test('should send JSON and server address', done => {
-        const mockServerAddress = random.string(5);
+    test('should send JSON', done => {
         const mockJSON = {test: random.string(5)};
         sendJSON.sendJSON({
-            serverAddress: mockServerAddress,
             jsonObject: mockJSON,
         });
-        expect(mockXHR.open).toHaveBeenCalledWith('POST', mockServerAddress);
+        expect(mockXHR.open).toHaveBeenCalledWith('POST', undefined);
         expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify(mockJSON));
         expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
         done();
     });
 
-    test('should call success callback on successful response', (done) => {
+    test('should send server address', done => {
+            const mockServerAddress = random.string(5);
+            sendJSON.sendJSON({
+                serverAddress: mockServerAddress,
+            });
+            expect(mockXHR.open).toHaveBeenCalledWith('POST', mockServerAddress);
+            expect(mockXHR.send).toHaveBeenCalledWith('{}');
+            expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
+            done();
+        });
+
+    test('should only call success callback on successful response', (done) => {
         const failCallback = jest.fn();
         const succCallback = jest.fn();
         sendJSON.sendJSON({
@@ -86,7 +95,7 @@ describe('sendJSON test suite', () => {
         done();
     });
 
-    test('should call failure callback on failure response', (done) => {
+    test('should only call failure callback on failure response', (done) => {
         const failCallback = jest.fn();
         const succCallback = jest.fn();
         sendJSON.sendJSON({
@@ -98,7 +107,7 @@ describe('sendJSON test suite', () => {
         mockXHR.state = 404;
         mockXHR.onreadystatechange();
         expect(failCallback).toHaveBeenCalledWith(mockXHR);
-        expect(succCallback).not.toHaveBeenCalledWith(mockXHR);
+        expect(succCallback).not.toHaveBeenCalled();
         done();
     });
 
@@ -112,8 +121,8 @@ describe('sendJSON test suite', () => {
             mockXHR.readyState = 3;
             mockXHR.state = 200;
             mockXHR.onreadystatechange();
-            expect(failCallback).not.toHaveBeenCalledWith(mockXHR);
-            expect(succCallback).not.toHaveBeenCalledWith(mockXHR);
+            expect(failCallback).not.toHaveBeenCalled();
+            expect(succCallback).not.toHaveBeenCalled();
             done();
         });
 });
