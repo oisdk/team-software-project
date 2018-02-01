@@ -10,7 +10,7 @@ export function checkTextField(username) {
     return true;
 }
 
-// disables username textbox and enables roll_die button if username contains a value,
+// disables username textbox and enables submit button if username contains a value,
 // otherwise does the opposite
 export function boxChecked() {
     const username = document.querySelector('#username');
@@ -20,7 +20,7 @@ export function boxChecked() {
         if (!checkTextField(username)) {
             username.disabled = true;
             confirmUsername.disabled = true;
-            document.getElementById('roll_die').disabled = false;
+            document.getElementById('submit_username').disabled = false;
             checker.innerHTML = 'Username is confirmed';
         } else {
             checker.innerHTML = 'Username hasn\'t been entered';
