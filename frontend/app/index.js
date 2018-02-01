@@ -5,10 +5,9 @@ import * as checkButton from './checkButton';
 import * as generateCreateJoinGamePage from './generateCreateJoinGamePage';
 
 window.onload = () => {
-
     const confirmUsername = document.querySelector('#confirmUsername');
     confirmUsername.addEventListener('click', checkButton.boxChecked, false);
-  
+
     const playerObject = /* checkUserIDCookie.checkUserDetails(); */ null;
     if (playerObject !== null) {
         // Generate page for visitor to create new username
