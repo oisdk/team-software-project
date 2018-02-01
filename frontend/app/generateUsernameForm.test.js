@@ -37,7 +37,7 @@ describe('Generate form to the body of ', () => {
 
     beforeAll(() => {
         page = document.body.innerHTML;
-        document.body.innerHTML = '<form><label>Enter Username</label><input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>';
+        document.body.innerHTML = '<form><label for="username">Enter username:</label><input type="text" id="username"><br><input type="checkbox" name="confirm_username" id="confirm_username"><span id="checker">I have confirmed my username</span><br><input type="submit" value="Submit" id="submit_username" disabled></form>';
     });
 
     afterAll(() => {
