@@ -17,7 +17,7 @@ class Storage:
     """
     def __init__(self, number_of_games):
         self._games = []
-        for i in range(number_of_games):
+        for _ in range(number_of_games):
             self._games.append(Monopoly(4))
 
     def __str__(self):

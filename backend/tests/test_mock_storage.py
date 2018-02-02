@@ -12,11 +12,12 @@ class TestMockStorage(unittest.TestCase):
         self.assertEqual(test_game_storage, test_storage.get_games())
         for i in range(2):
             self.assertEqual(test_storage._games[i], test_game_storage[i])
-            self.assertEqual(test_storage._games[i], test_storage.get_game_by_id(test_storage._games[i].get_game_id()))
-        
-        
-        
-        
+            self.assertEqual(
+                test_storage._games[i],
+                test_storage.get_game_by_id
+                (test_storage._games[i].get_game_id()))
+
+
 def load_tests(loader, tests, ignore):
     tests.addTests(doctest.DocTestSuite(backend.mock_storage))
     return tests
