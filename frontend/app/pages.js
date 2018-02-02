@@ -7,9 +7,9 @@ import {sendJSON} from './sendJSON';
  * Displays the page for a game in a waiting state.
  *
  * @param gameID The ID of the game to display.
- * @param rootElement The DOM element the page will be displayed under.
  */
-export function waitingGame({gameID, rootElement}) {
+export function waitingGame(gameID) {
+    const rootElement = document.body;
     sendJSON({
         serverAddress: 'cgi-bin/get_game_details.py',
         jsonObject: {'gameID': gameID},
