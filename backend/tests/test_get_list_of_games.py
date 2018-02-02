@@ -1,6 +1,6 @@
 import unittest
 import doctest
-import get_list_of_games
+import backend.get_list_of_games
 
 
 class TestGetListOfGames(unittest.TestCase):
