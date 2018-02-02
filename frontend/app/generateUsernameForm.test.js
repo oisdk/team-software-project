@@ -21,12 +21,12 @@ describe('Request sent on function call', () => {
     test('should request userID', (done) => {
         const callbackfn = jest.fn();
         const mockServerAddress = random.string(5);
-        usernameForm.requestUserID(mockServerAddress, '', callbackfn);
+        usernameForm.requestUserID(mockServerAddress, 'name', callbackfn);
         expect(mockXHR.open).toHaveBeenCalledWith('POST', mockServerAddress, true);
         expect(callbackfn).not.toHaveBeenCalled();
         mockXHR.onreadystatechange();
         expect(callbackfn).toHaveBeenCalledWith(mockXHR);
-        expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({user: ''}));
+        expect(mockXHR.send).toHaveBeenCalledWith(JSON.stringify({username: 'name'}));
         expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
         done();
     });
