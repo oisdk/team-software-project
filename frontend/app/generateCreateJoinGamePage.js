@@ -4,9 +4,9 @@ import * as checkUserIDCookie from './checkUserIDCookie';
 // Callback function to update HTML body with file's contents
 export function updatePage(fileReader) {
     document.body.innerHTML = fileReader.responseText;
+    const username = checkUserIDCookie.getCookieValue(document.cookie.split('; '), 'user_name');
     // Get the username (displayed in italics) field in the page's heading
     const usernameField = document.querySelector('#username');
-    const username = checkUserIDCookie.getCookieValue(document.cookie.split('; '), 'user_name');
     // Update the username field to include the player's username
     usernameField.innerHTML = username;
 }
