@@ -7,7 +7,8 @@ class Game:
 	def __init__(self, game_id, game_name, time):
 		self._id = id
 		self._name = game_name
-		self._time = time #the time the game object was created
+		self._time = time # the time the game object was created
+		self._state = false # the game state isn't ready
 		self._players = []
 	
 	def getGameID(self):
@@ -30,6 +31,13 @@ class Game:
 
 	def setGameTime(self, time):
 		self._time = time
+	
+	def getGameState(self):
+		"""Return the game state of this game: ready=true ,not ready=false"""
+		return self._state
+	
+	def setGameState(self, state):
+		self._state = state
 
 	def getNumPlayers(self):
 		"""Return number of players joined this game"""
