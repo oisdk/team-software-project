@@ -33,16 +33,6 @@ describe('Request sent on function call', () => {
 });
 
 describe('Generate form to the body of ', () => {
-    // let page;
-
-    beforeAll(() => {
-        // page = document.body.innerHTML;
-    });
-
-    afterAll(() => {
-        // document.body.innerHTML = page;
-    });
-
     test('if generated form is successful ', (done) => {
         const callback = jest.fn();
         usernameForm.generateUsernameForm(callback);
