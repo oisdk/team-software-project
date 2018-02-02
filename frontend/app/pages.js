@@ -10,12 +10,11 @@ import {sendJSON} from './sendJSON';
  * @param rootElement The DOM element the page will be displayed under.
  */
 export function waitingGame({gameID, rootElement}) {
-    function displayPage(request) {
-        rootElement.innerHTML = request.responseText;
-    }
     sendJSON({
         serverAddress: 'cgi-bin/get_game_details.py',
         jsonObject: {'gameID': gameID},
-        successCallback: displayPage,
+        successCallback: function(request) {
+            rootElement.innerHTML = request.responseText;
+        }
     })
 }
