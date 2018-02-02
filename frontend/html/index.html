@@ -9,16 +9,19 @@
 	</head>
 
 	<body>
-		<!--Form for usename input-->
+		<!--Form for username input-->
 		<form>
-		  Username:<br>
-		  <input type="text" id="username">
+		  <label for="username">Username:</label>
+		  <input type="text" id="username" maxlength="20">
+		  <br>
+		  <input type="checkbox" name="confirm_username" id="confirm_username">
+		  <span id="checker">I have confirmed my username</span>
 		  <br>
 		  <input type="submit" value="Submit" id="usernameInput">
 		</form> 
 		<br>
 		<!--Change attributes according to function call -->
-		<button type="button" id="roll_die">Roll die</button>
+		<button type="button" id="roll_die" disabled>Roll die</button>
 	</body>
 
 </html>
