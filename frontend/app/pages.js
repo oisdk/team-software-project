@@ -16,5 +16,5 @@ export function waitingGame({gameID, rootElement}) {
         successCallback: function(request) {
             rootElement.innerHTML = request.responseText;
         }
-    })
+    });
 }
