@@ -1,55 +1,45 @@
-"""Module implementing game object for storage"""
+"""Module to create game objects"""
 
-class Game:
-	"""A class representing a game of 
-	monopoly.
-	"""
-	def __init__(self, game_id, game_name, time):
-		self._id = id
-		self._name = game_name
-		self._time = time # the time the game object was created
-		self._state = false # the game state isn't ready
-		self._players = []
-	
-	def getGameID(self):
-		"""Return the game's unique, read-only id"""
-		return self._id
+import uuid
 
-	def setGameID(self, ID):
-		self._id = ID
-	
-	def getGameName(self):
-		"""Return the game's name"""
-		return self._name
-    
-	def setGameName(self, name):
-		self._name = name
-	
-	def getGameTime(self):
-		"""Return time the game was created"""
-		return self._time
 
-	def setGameTime(self, time):
-		self._time = time
-	
-	def getGameState(self):
-		"""Return the game state of this game: ready=true ,not ready=false"""
-		return self._state
-	
-	def setGameState(self, state):
-		self._state = state
+class Monopoly:  # pylint: disable=too-few-public-methods
+    """A class representing a game of monopoly.
+        TODO: Add game to storage.
+    >>> print(Monopoly(4)) # doctest: +ELLIPSIS
+    Game id:...
+    Lobby State:0/4
+    Game Ready:False
+    Players:[]
+    <BLANKLINE>
+    """
+    def __init__(self, game_size):
+        self._uuid = uuid.uuid1()
+        self._game_size = game_size
+        self._players = []
+        self._player_counter = 0
+        self._game_ready_state = False
 
-	def getNumPlayers(self):
-		"""Return number of players joined this game"""
-		return len(self._players)
+    def __str__(self):
+        return (('Game id:%s\nLobby State:%d/%d\nGame Ready:%s'
+                 '\nPlayers:%s\n')
+                % (self._uuid, self._player_counter,
+                   self._game_size, self._game_ready_state, self._players))
 
-	def addPlayer(self, player):
-		"""Add a player to this game"""
-		self._player+=[player]
+    def add_player(self, player):
+        """Adds player to game.
+            Increments the number of players.
+            Checks if game is full and toggles ready state.
+            Communicates ready state to client
+        """
+        self._players.append(player)
+        self._player_counter += 1
+        if self._player_counter == self._game_size:
+            self._game_ready_state = True
+            # Communicate readiness to client
 
-	def removePlayer(self, playerID):
-		"""Remove a player from this game"""
-		for player in len(range(self._player)):
-			if self._player[player].getPlayerID() == playerID:
-				self._player.pop(player)
-	
+    def get_game_id(self):
+        """Getter for game uuid
+        """
+        return self._uuid
+
