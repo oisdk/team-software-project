@@ -1,6 +1,6 @@
 
-export function requestUserID(serverAddress, username, callback) {
-    const name = JSON.stringify({user: username});
+export function requestUserID(serverAddress, nameSubmitted, callback) {
+    const name = JSON.stringify({username: nameSubmitted});
     const xhttp = new XMLHttpRequest();
     xhttp.open('POST', serverAddress, true);
     xhttp.onreadystatechange = () => callback(xhttp);
