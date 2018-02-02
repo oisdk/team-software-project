@@ -1,28 +1,15 @@
-import pymysql as db
+"""Get list of existing games module"""
 
-def get_list_of_games():
-    """Function that returns a list of the games available
+def get_list_of_games(storage):
+    """Function that retrieves games from storage
 
-       for client to join
+    Returns:
+        A list of the game objects available for client to join
 
     """
-    
-    listOfGames=[]
 
-    try:
-        connection = db.connect('cs1dev.ucc.ie', 'gss1', 'voqueixe', '2019_gss1')
-        cursor = connection.cursor(db.cursors.DictCursor)
-        cursor.execute("""SELECT name
-                          FROM games
-                          ORDER BY name DESC""")
-        
-        for row in cursor.fetchall():
-            listOfGames += [row['name']]
+    listOfGames = []
 
-        cursor.close()
-        connection.close()
-        return listOfGames
-
-    except db.Error:
-        return('Unable to connect to the database.')
-
+    for games in storage:
+        listOfGames += [games]
+    return listOfGames
