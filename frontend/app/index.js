@@ -18,6 +18,7 @@ window.onload = () => {
         generateUsernameForm.generateUsernameForm((req) => {
             if (req.readyState === 4 && req.status === 200) {
                 createUserCookie.generateUserCookie(req.responseText);
+                generateCreateJoinGamePage.generateCreateJoinGamePage();
             }
         });
     }
