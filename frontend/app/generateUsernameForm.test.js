@@ -37,7 +37,7 @@ describe('Generate form to the body of ', () => {
         const callback = jest.fn();
         usernameForm.generateUsernameForm(callback);
         expect(document.getElementById('submit_username').value).toEqual('Submit');
-        expect(document.body.innerHTML).toEqual('<form><label for="username">Enter Username</label><input type="text" id="username"><input type="submit" value="Submit" id="submit_username" disabled=""></form>');
+        expect(document.body.innerHTML).toEqual('<form><label for="username">Enter Username</label><input type="text" id="username"><input type="submit" value="Submit" id="submit_username"></form>');
         expect(document.getElementById('username').type).toEqual('text');
         done();
     });
