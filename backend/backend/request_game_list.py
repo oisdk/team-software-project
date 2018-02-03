@@ -16,7 +16,7 @@ def request_game_list(output=sys.stdout):
     """Entry point for the service of requesting list of available games
 
     >>> import io
-    >>> inp = io.StringIO(json.dumps({'games': 'list of games'}))
+    >>> inp = io.StringIO(json.dumps({"game_id": "game_representation"}))
     >>> out = io.StringIO()
     >>> request_game_list(inp,out)
     >>> out.seek(0)
@@ -24,9 +24,11 @@ def request_game_list(output=sys.stdout):
     >>> print(out.read()) # doctest: +ELLIPSIS
     Content-Type: application/json
     <BLANKLINE>
-    {"games": game1, game2, game3,....}
+    {"game_id": "game_representation", "game_id": .....}
     """
 
-    # Asserting request to ensure the right program called this function
     output.write('Content-Type: application/json\n\n')
-    json.dump({'games': get_list_of_games()}, output)
+    # result holds game id as the key and the value as the
+    # game object representation
+    result = {game.get_game_id(): str(game) for game in get_list_of_games()}
+    json.dump(result, output)
