@@ -1,5 +1,7 @@
-// Import function which can read cookie values from browser cookie arrays
+// Import functionality which can read cookie values from browser cookie arrays
 import * as checkUserIDCookie from './checkUserIDCookie';
+// Import pickGame functionality
+import * as pickGame from './pickGame';
 
 // Callback function to update HTML body with file's contents
 export function updatePage(fileReader) {
@@ -11,7 +13,7 @@ export function updatePage(fileReader) {
         // Update the username field to include the player's username
         usernameField.innerHTML = username;
         const joinGameButton = document.getElementById('join-game');
-        joinGameButton.addEventListener('click', /* pickGame */ null, false);
+        joinGameButton.addEventListener('click', requestGameList, false);
     }
 }
 
