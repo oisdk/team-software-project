@@ -23,6 +23,10 @@ class Storage:
     def __str__(self):
         return str(self._games)
 
+    def add_game(self):
+        """Adds a game to the storage"""
+        self._games.append(Monopoly(4))
+
     def get_games(self):
         """Gets list of games form storage"""
         return self._games

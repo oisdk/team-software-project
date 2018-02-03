@@ -10,7 +10,8 @@ class TestMockStorage(unittest.TestCase):
         self.assertEqual(len(test_storage._games), 3)
         test_game_storage = test_storage.get_games()
         self.assertEqual(test_game_storage, test_storage.get_games())
-        for i in range(2):
+        test_storage.add_game()
+        for i in range(3):
             self.assertEqual(test_storage._games[i], test_game_storage[i])
             self.assertEqual(
                 test_storage._games[i],
