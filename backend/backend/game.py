@@ -26,6 +26,9 @@ class Monopoly:  # pylint: disable=too-few-public-methods
                 % (self._uuid, self._player_counter,
                    self._game_size, self._game_ready_state, self._players))
 
+    def __repr__(self):
+        return str(self)
+
     def add_player(self, player):
         """Adds player to game.
             Increments the number of players.
