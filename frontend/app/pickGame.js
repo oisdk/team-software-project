@@ -1,6 +1,4 @@
-// Mock function representing pickGame functionality
+// Mock functions representing pickGame functionality
 
 export function requestGameList() {}
-
-// Note: The underscore stops the test from complaining about unused variables
-export function pickGame(_list) {}
+export function pickGame() {}

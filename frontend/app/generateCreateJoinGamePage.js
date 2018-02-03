@@ -3,7 +3,10 @@ import * as checkUserIDCookie from './checkUserIDCookie';
 // Import pickGame functionality
 import * as pickGame from './pickGame';
 
-// Callback function to update HTML body with file's contents
+/**
+ * Callback function to update HTML body with file's contents.
+ * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
+ */
 export function updatePage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
         document.body.innerHTML = fileReader.responseText;
@@ -17,7 +20,10 @@ export function updatePage(fileReader) {
     }
 }
 
-// Function to generate create game / join game page
+/**
+ * Function to generate create game / join game page. Makes a request to local
+ * filesystem for a HTML file to display.
+ */
 export function generateCreateJoinGamePage() {
     // Generate a HTML page with buttons to load the "create new game" page
     // or "join existing game" page

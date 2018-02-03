@@ -1,4 +1,9 @@
-// Function to extract a specified cookie value from a browser's cookie header
+
+/**
+ * Function to extract a specified cookie value from a browser's cookie header.
+ * @param {array} browserCookies - The browser's cookies, one cookie per element.
+ * @param {string} cookieNameToFind - The cookie to search for in browserCookies.
+ */
 export function getCookieValue(browserCookies, cookieNameToFind) {
     // Iterate over the array of browser cookies
     for (let i = 0; i < browserCookies.length; i += 1) {
@@ -14,8 +19,11 @@ export function getCookieValue(browserCookies, cookieNameToFind) {
     return null;
 }
 
-// Function to check visitor's cookies for a username/userid and return a
-// player object if the visitor has been recorded before
+/**
+ * Function to check visitor's cookies for a username/userid.
+ * @return {object} A player object containing the visitor's username and id
+ * extracted from the cookie.
+ */
 export function checkUserDetails() {
     // Declare variables to hold corresponding cookie values
     let username = null;
