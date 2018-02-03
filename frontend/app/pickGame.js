@@ -1,2 +1,4 @@
-// Mock function representing pickGame
-export function pickGame() {}
+// Mock function representing pickGame functionality
+export function requestGameList() {}
+
+export function pickGame(list) {}
