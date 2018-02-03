@@ -7,6 +7,8 @@ describe('updatePage test', () => {
 
     // Create a mock XMLHttpRequest response which contains a HTML page
     const mockFileResponse = {
+        status: 200,
+        readyState: 4,
         responseText: '<p>test html content<i id="username"></i></p>',
     };
 
@@ -26,7 +28,7 @@ describe('updatePage test', () => {
         generateCreateJoinGamePage.updatePage(mockFileResponse);
         // The <i> tag is to be filled with "testuser" once the commented code
         // is uncommented in updatePage()
-        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username"></i></p>');
+        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username">testuser</i></p>');
         done();
     });
 });
