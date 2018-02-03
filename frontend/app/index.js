@@ -2,6 +2,7 @@ import * as checkUserIDCookie from './checkUserIDCookie';
 import * as generateUsernameForm from './generateUsernameForm';
 import * as generateCreateJoinGamePage from './generateCreateJoinGamePage';
 import * as createUserCookie from './createUserCookie';
+import * as checkButton from './checkButton';
 
 
 window.onload = () => {
@@ -20,5 +21,6 @@ window.onload = () => {
                 generateCreateJoinGamePage.generateCreateJoinGamePage();
             }
         });
+        checkButton.validateUsername();
     }
 };
