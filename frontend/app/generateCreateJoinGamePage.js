@@ -10,6 +10,8 @@ export function updatePage(fileReader) {
         const usernameField = document.querySelector('#username');
         // Update the username field to include the player's username
         usernameField.innerHTML = username;
+        const joinGameButton = document.getElementById('join-game');
+        joinGameButton.addEventListener('click', /* pickGame */ null, false);
     }
 }
 
