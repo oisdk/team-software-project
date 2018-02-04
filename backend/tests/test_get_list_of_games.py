@@ -12,7 +12,7 @@ class TestGetListOfGames(unittest.TestCase):
 
 
 def load_tests(loader, tests, ignore):
-    tests.addTests(doctest.DocTestSuite(get_list_of_games))
+    tests.addTests(doctest.DocTestSuite(backend.get_list_of_games))
     return tests
 
 
