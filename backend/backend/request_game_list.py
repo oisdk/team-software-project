@@ -29,5 +29,5 @@ def request_game_list(output=sys.stdout):
     output.write('Content-Type: application/json\n\n')
     # result holds game id as the key and the value as the
     # game object representation
-    result = {game.get_game_id(): str(game) for game in get_list_of_games()}
+    result = {str(game.get_game_id()): str(game) for game in get_list_of_games()}
     json.dump(result, output)
