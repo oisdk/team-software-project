@@ -1,5 +1,6 @@
 import unittest
 import doctest
+import backend.get_list_of_games
 from backend.get_list_of_games import get_list_of_games
 
 
