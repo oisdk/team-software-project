@@ -16,9 +16,8 @@ def request_game_list(output=sys.stdout):
     """Entry point for the service of requesting list of available games
 
     >>> import io
-    >>> inp = io.StringIO(json.dumps({"game_id": "game_representation"}))
     >>> out = io.StringIO()
-    >>> request_game_list(inp,out)
+    >>> request_game_list(out)
     >>> out.seek(0)
     0
     >>> print(out.read()) # doctest: +ELLIPSIS
