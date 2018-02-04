@@ -12,11 +12,8 @@ STORAGE = [GAME_ONE, GAME_TWO]
 
 def get_list_of_games():
 
-    """Function that retrieves games from storage
-
-    Returns:
-        A list of the game objects available for client to join
-
+    """Function that retrieves existing games from storage
+       Returns: A list of game objects available for client to join
     """
 
     list_of_games = []
