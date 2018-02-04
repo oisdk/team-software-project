@@ -11,7 +11,7 @@ export function requestGameList(){
     }
   };
   xhttp.open("POST", "get_games.py", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
   xhttp.send();
 }
 
