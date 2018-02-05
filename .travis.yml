@@ -27,7 +27,7 @@ matrix:
     - cd $TRAVIS_BUILD_DIR/frontend
     script:
     - npm test
-  script:
+  deploy:
   - eval $(aws ecr get-login --region eu-west-1)
   - docker build -t monopoly .
   - docker tag monopoly:latest 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
