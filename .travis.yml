@@ -22,7 +22,7 @@ matrix:
     before_deploy:
     - pip install awscli
     - export PATH=$PATH:$HOME/.local/bin
-    - chmod +x remote_deploy.sh
+    - chmod +x $TRAVIS_BUILD_DIR/remote_deploy.sh
     deploy:
       provider: script
       skip_cleanup: true
