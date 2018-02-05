@@ -25,11 +25,7 @@ matrix:
     deploy:
       provider: script
       skip_cleanup: true
-      script:
-      - eval $(aws ecr get-login --region eu-west-1)
-      - docker build -t monopoly .
-      - docker tag monopoly:latest 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
-      - docker push 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
+      script: remote_deploy.sh
       on:
         branch: master
   - language: node_js
