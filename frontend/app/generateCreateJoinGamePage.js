@@ -6,6 +6,7 @@ import * as pickGame from './pickGame';
 import sendJSON from './sendJSON';
 
 /**
+ * Callback function to update HTML body with file's contents.
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
  */
 export function updatePage(fileReader) {
