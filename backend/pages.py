@@ -6,4 +6,5 @@ pages = {
     'request_games_list': 'backend.request_game_list:request_game_list',
     'allocate_user_id': 'backend.allocate_user_id:request_user_id',
     'allocate_game_id': 'backend.allocate_game_id:request_game_id',
+    'get_game_details': 'backend.dummy_game_details:get_game_details',
 }
