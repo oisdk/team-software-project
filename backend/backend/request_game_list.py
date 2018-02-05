@@ -23,12 +23,7 @@ def request_game_list(output=sys.stdout):
     >>> print(out.read()) # doctest: +ELLIPSIS
     Content-Type: application/json
     <BLANKLINE>
-    {"01ce9788-09fe-11e8-aac9-0242ac110007": "Game id:
-    01ce9788-09fe-11e8-aac9-0242ac110007\nLobby State:0/1\n
-    Game Ready:False\nPlayers:[]\n",
-    "01ce9ab2-09fe-11e8-aac9-0242ac110007": "Game id:
-    01ce9ab2-09fe-11e8-aac9-0242ac110007\n
-    Lobby State:0/2\nGame Ready:False\nPlayers:[]\n"}
+    {'game_id': 'game_info', ...}
     """
 
     output.write('Content-Type: application/json\n\n')
