@@ -26,7 +26,7 @@ matrix:
     deploy:
       provider: script
       skip_cleanup: true
-      script: remote_deploy.sh
+      script: ./$TRAVIS_BUILD_DIR/remote_deploy.sh
       on:
         branch: master
   - language: node_js
