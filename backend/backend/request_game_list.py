@@ -23,7 +23,7 @@ def request_game_list(output=sys.stdout):
     >>> print(out.read()) # doctest: +ELLIPSIS
     Content-Type: application/json
     <BLANKLINE>
-    {'game_id': 'game_info', ...}
+    {...:...,...:...}
     """
 
     output.write('Content-Type: application/json\n\n')

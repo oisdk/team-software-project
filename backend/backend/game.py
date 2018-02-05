@@ -45,4 +45,3 @@ class Monopoly:  # pylint: disable=too-few-public-methods
         """Getter for game uuid
         """
         return self._uuid
-
