@@ -1,9 +1,7 @@
 sudo: required
 services:
-- docker
-before_install:
-- pip install --user awscli
-- export PATH=$PATH:$HOME/.local/bin
+  - docker
+
 matrix:
   include:
   - language: python
@@ -27,13 +25,20 @@ matrix:
     - cd $TRAVIS_BUILD_DIR/frontend
     script:
     - npm test
-  deploy:
-  - eval $(aws ecr get-login --region eu-west-1)
-  - docker build -t monopoly .
-  - docker tag monopoly:latest 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
-  - docker push 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
-notifications:
-  webhooks: https://discordapp.com/api/webhooks/408694674237292544/IWXgATFgdByYPzWtmM-YntRUMqRl7Gx2YbPe0GzuMbWtgaYyoJ49BeKoe6xAJjGIMjCC
+
+    before_deploy:
+      - pip install --user awscli
+      - export PATH=$PATH:$HOME/.local/bin
+    deploy:
+      provider: script
+      skip_cleanup: true
+      script:
+      - eval $(aws ecr get-login --region eu-west-1)
+      - docker build -t monopoly .
+      - docker tag monopoly:latest 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
+      - docker push 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
+      on:
+        branch: master
 env:
   global:
   - secure: iQ3YkzmfwzWltBN2Ou/xwsrfhP7yTIG82gBC0YbaY8i7Azp2bx/01jAvitWwPrPEfyoBBBZJpyFZwtaY/1l2FNmVDGIsE5INMOrjlz+sE+xIjD65VMHQH07bKS90EJE5Uhbcstd2JcUheW+tiU+sHfldmRYj8u/hjwpXxzwAKBJ19LNB0usEyZ3UWcU5AORus2q1yoUi5LywPSH21keduYfPN/PIGu5mie4dXDTSkVfbzHP+mFF09kYMkA3hgo6yds6O+79SR/AJG2i4+STmXVjrdA5pRNTGQnl7oPVa0UZWRGJb5afdTt/yBU/68MTdkRoQP1L1nLDd0BQyQhRX0MJlqYKMuQO4UvMsDHaxhvxmJpzHt+vL3j2SURb/LztMO2onaznKERhlSidTEWGqLfFN52vJTgfL63b5kEWeXoEmnv5nqYcHjhY1qO9OD+1h+0MwEiW/Rr7qyTi+prw3H1AOMHvUVHDOwWb/GThPtxtPQl0jMmCKQPH/GjHgE6aazm6v4XQaq3WRW/5z4dfhJb8CmmWdfJBAVN70v+EIzvJxsr/RWWDaYPuh3cGczikJL3pbVgL3Enjnd5XvN/Ak+ergUocQZHc2Xlgwa6TVzHhEQNhFhDL+NpMogypkPbAtQqRva5ObmvSACWHJ7DDNIbKjEUpzzPeR6iSvcQWeSCU=
