@@ -1,3 +1,9 @@
+sudo: required
+services:
+- docker
+before_install:
+- pip install --user awscli
+- export PATH=$PATH:$HOME/.local/bin
 matrix:
   include:
   - language: python
@@ -15,43 +21,20 @@ matrix:
     - pylint backend
     - coverage run --source backend -m unittest discover
     - coverage report
-    before_deploy:
-    - cd $TRAVIS_BUILD_DIR
-    - openssl aes-256-cbc -K $encrypted_0d7e077c7dd7_key -iv $encrypted_0d7e077c7dd7_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
-    - eval "$(ssh-agent -s)"
-    - chmod 600 /tmp/deploy_rsa
-    - ssh-add /tmp/deploy_rsa
-    deploy:
-      provider: script
-      skip_cleanup: true
-      script: rsync -r $TRAVIS_BUILD_DIR/backend dok4@csgate.ucc.ie:~/ && ssh dok4@csgate.ucc.ie './install_backend.sh'
-      on:
-        branch: master
   - language: node_js
     node_js: 7
-    install:
-    - cd $TRAVIS_BUILD_DIR/frontend
-    - npm install
-    - cd $TRAVIS_BUILD_DIR
     before_script:
     - cd $TRAVIS_BUILD_DIR/frontend
     script:
     - npm test
-    after_success:
-    - npm start
-    before_deploy:
-    - cd $TRAVIS_BUILD_DIR
-    - openssl aes-256-cbc -K $encrypted_0d7e077c7dd7_key -iv $encrypted_0d7e077c7dd7_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
-    - eval "$(ssh-agent -s)"
-    - chmod 600 /tmp/deploy_rsa
-    - ssh-add /tmp/deploy_rsa
-    deploy:
-      provider: script
-      skip_cleanup: true
-      script: rsync -r --exclude cgi-bin $TRAVIS_BUILD_DIR/frontend/dist/ dok4@csgate.ucc.ie:~/public_html && ssh dok4@csgate.ucc.ie 'chmod -R 755 ~/public_html'
-      on:
-        branch: master
-
-addons:
-  ssh_known_hosts: csgate.ucc.ie
-
+  script:
+  - eval $(aws ecr get-login --region eu-west-1)
+  - docker build -t monopoly .
+  - docker tag monopoly:latest 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
+  - docker push 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
+notifications:
+  webhooks: https://discordapp.com/api/webhooks/408694674237292544/IWXgATFgdByYPzWtmM-YntRUMqRl7Gx2YbPe0GzuMbWtgaYyoJ49BeKoe6xAJjGIMjCC
+env:
+  global:
+  - secure: iQ3YkzmfwzWltBN2Ou/xwsrfhP7yTIG82gBC0YbaY8i7Azp2bx/01jAvitWwPrPEfyoBBBZJpyFZwtaY/1l2FNmVDGIsE5INMOrjlz+sE+xIjD65VMHQH07bKS90EJE5Uhbcstd2JcUheW+tiU+sHfldmRYj8u/hjwpXxzwAKBJ19LNB0usEyZ3UWcU5AORus2q1yoUi5LywPSH21keduYfPN/PIGu5mie4dXDTSkVfbzHP+mFF09kYMkA3hgo6yds6O+79SR/AJG2i4+STmXVjrdA5pRNTGQnl7oPVa0UZWRGJb5afdTt/yBU/68MTdkRoQP1L1nLDd0BQyQhRX0MJlqYKMuQO4UvMsDHaxhvxmJpzHt+vL3j2SURb/LztMO2onaznKERhlSidTEWGqLfFN52vJTgfL63b5kEWeXoEmnv5nqYcHjhY1qO9OD+1h+0MwEiW/Rr7qyTi+prw3H1AOMHvUVHDOwWb/GThPtxtPQl0jMmCKQPH/GjHgE6aazm6v4XQaq3WRW/5z4dfhJb8CmmWdfJBAVN70v+EIzvJxsr/RWWDaYPuh3cGczikJL3pbVgL3Enjnd5XvN/Ak+ergUocQZHc2Xlgwa6TVzHhEQNhFhDL+NpMogypkPbAtQqRva5ObmvSACWHJ7DDNIbKjEUpzzPeR6iSvcQWeSCU=
+  - secure: U3ih19se/H/+znEjH6/r/IUcY3RIuB/AF1kLV6iGr4Xkzg1wiYWaN2Lls8T2ZUsibcE4e3heBNOjeL2slbHYuzJVjbIOf4MsQBF35iOGtSD5rJfFa15UrDW8Eg1O8lBlNHrW6lj4UHIjOSQVgE3jA17KGEl0BDNl2yZ0c/QzKh+vxN2dgUc0qxi07CwnRAjnuB+VYwJ75q4dMju8/bbZBUauM1XqQ4sXto+J2UTFIEzRH/vwr45VwCU2aeqQKs1LYgHCuwlTPH5G+90pr4yzrPFu1QPE7WvQARILDzOPTrSIOXwhOFO60/yPDfnTFKFrc7/xu6Zvlp3aIQjBQfQwl4QOfiC7IJPInYA4MQlZFxsjbtPYwqqQLWxG9EXYN8WDm7dm7M5aMxMVj5ChdBwU6SO4YbImokQyypZ77SDzz3SKzmmzn17zVzQt04YUv65cL12niTrruumXVfeyfDWOB8sYWF4qihjx8sgotMRAEBmAZAYCIKKXJptSmwIJtRS2De9c9la1AqB5RNKAt7xohyku1VmYou2qz3WF14DTu4fZctFsVWukvx19OIllw4xAqmxfMD0bZmIUDrwHNNveW0epdKz7MGz5qu75vBX6zpPWoqwLFTrFinm85yJPwId3ztVEjN7Nmv62MpcMAryOls8eKupsxL2mAtUJ9iWw8Wo=
