@@ -14,7 +14,9 @@ export default function waitingGame(gameID) {
         serverAddress: 'cgi-bin/get_game_details.py',
         jsonObject: {gameID},
         successCallback(request) {
-            rootElement.innerHTML = request.responseText;
+            rootElement.innerHTML = `You are in the waiting game ${gameID}.
+            Here are the details:
+            ${request.responseText}`;
         },
     });
 }

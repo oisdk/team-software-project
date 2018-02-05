@@ -10,11 +10,14 @@ describe('waitingGame', () => {
     });
 
     it('should call sendJSON', () => {
-        waitingGame();
+        const mockGameId = random.int(0, 1000);
+        waitingGame(mockGameId);
         expect(sJ.sendJSON).toHaveBeenCalled();
         const mockRequest = {responseText: String(random.int(0, 1000))};
         sJ.sendJSON.mock.calls[0][0].successCallback(mockRequest);
-        expect(document.body.innerHTML).toEqual(mockRequest.responseText);
+        expect(document.body.innerHTML).toEqual(`You are in the waiting game ${mockGameId}.
+            Here are the details:
+            ${mockRequest.responseText}`);
     });
 
     afterEach(() => {
