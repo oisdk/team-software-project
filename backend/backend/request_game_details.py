@@ -19,7 +19,7 @@ STORAGE = [GAME_ONE, GAME_TWO]
 
 
 def request_game_details(source=sys.stdin, output=sys.stdout):
-    """Entry point for the service of requesting information of 
+    """Entry point for the service of requesting information of
     an available game
     >>> import io
     >>> inp = io.StringIO(json.dumps({'game_id': 123}))
