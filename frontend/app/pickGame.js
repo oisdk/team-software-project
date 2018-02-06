@@ -46,7 +46,7 @@ export function pickGame(xhttp) {
 export function requestGameList() {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => pickGame(xhttp);
-    xhttp.open('POST', 'get_games.py', true);
+    xhttp.open('POST', 'cgi-bin/request_games_list.py', true);
     xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     xhttp.send();
 }
