@@ -27,6 +27,12 @@ export function pickGame(xhttp) {
             document.getElementById('table').appendChild(row);
         }
         document.getElementById('table').innerHTML += '<tr><td><input type="submit" value="Join game" id="joinSelectedGame"> </td></tr>';
+        document.getElementById('joinSelectedGame').addEventListener('click', () => {
+            if (document.querySelector('input[name="gameID"]:checked') != null) {
+                const gameID = document.querySelector('input[name="gameID"]:checked').value;
+                // call waiting game function with item gameID as parameter.
+            }
+        });
     }
 }
 
