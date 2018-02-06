@@ -7,7 +7,9 @@ describe('updatePage test', () => {
 
     // Create a mock XMLHttpRequest response which contains a HTML page
     const mockFileResponse = {
-        responseText: '<p>test html content<i id="username"></i></p>',
+        status: 200,
+        readyState: 4,
+        responseText: '<p>test html content<i id="username"></i></p><button id="join-game" name="join-game">Join Existing Game</button>',
     };
 
     // Create a user_name cookie which will be read by updatePage to customise
@@ -24,9 +26,7 @@ describe('updatePage test', () => {
 
     test('should read mockFileResponse and update page with its contents', (done) => {
         generateCreateJoinGamePage.updatePage(mockFileResponse);
-        // The <i> tag is to be filled with "testuser" once the commented code
-        // is uncommented in updatePage()
-        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username"></i></p>');
+        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username">testuser</i></p><button id="join-game" name="join-game">Join Existing Game</button>');
         done();
     });
 });
