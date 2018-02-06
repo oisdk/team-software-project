@@ -10,8 +10,8 @@ docker tag monopoly:latest 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly
 docker push 490164210756.dkr.ecr.us-west-2.amazonaws.com/monopoly:latest
 
 # Get the old task and stop it
-task_arn=$(aws ecs list-tasks --cluster monopoly --output text)
+task_arn=$(aws ecs list-tasks --cluster monopoly --output text --region us-west-2)
 task_arn=${task_arn#"TASKARNS"}
-aws ecs stop-task --task $task_arn --cluster monopoly
+aws ecs stop-task --task $task_arn --cluster monopoly --region us-west-2
 # Run new task
-aws ecs run-task --task-definition Monopoly --cluster monopoly
+aws ecs run-task --task-definition Monopoly --cluster monopoly --region us-west-2
