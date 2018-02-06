@@ -11,7 +11,7 @@ import {sendJSON} from './sendJSON';
 export default function waitingGame(gameID) {
     const rootElement = document.querySelector('#content');
     sendJSON({
-        serverAddress: 'cgi-bin/request_game_details.py',
+        serverAddress: 'cgi-bin/get_game_details.py',
         jsonObject: {'game_id': gameID},
         successCallback(request) {
             rootElement.innerHTML = `You are in the waiting game ${gameID}.
