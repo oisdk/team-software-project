@@ -1,20 +1,32 @@
-export function pickGame(req) {
-    // change call back name when task 2.1 is done.
-    // for now an example of what can be expected through this.response ...etc
-    let list = JSON.stringify(['game1', 'game2', 'game3', 'game4']);
+export function pickGame(xhttp) {
+    if (xhttp.readyState === 4 && xhttp.status === 200) {
+        document.body.innerHTML = '<table id="table"><tr id="row1"></tr></table>';
+        document.getElementById('row1').innerHTML = '<th>Select</th><th>List of games</th>';
 
-    if (req.readyState === 4 && req.status === 200) {
-        // generate the nodes vs changing innerHTML of an empty div ?
-        const ul = document.createElement('ul');
-        list = JSON.parse(list);
-        var i;
+        const list = JSON.parse(xhttp.responseText);
+        let i;
         for (i in list) {
-            const li = document.createElement('li');
-            const item = document.createTextNode(list[i]);
-            li.appendChild(item);
-            ul.appendChild(li);
-            document.body.appendChild(ul);
+            const row = document.createElement('TR');
+            const data1 = document.createElement('TD');
+            const data2 = document.createElement('TD');
+            const x = document.createElement('INPUT');
+            const t = document.createTextNode(i);
+
+            // set values for radio buttons
+            x.setAttribute('type', 'radio');
+            x.setAttribute('name', 'gameID');
+            x.setAttribute('value', i);
+
+            // add radio button to the row 1st column.
+            data1.appendChild(x);
+            row.appendChild(data1);
+
+            // add game id to the row 2nd column
+            data2.appendChild(t);
+            row.appendChild(data2);
+            document.getElementById('table').appendChild(row);
         }
+        document.getElementById('table').innerHTML += '<tr><td><input type="submit" value="Join game" id="joinSelectedGame"> </td></tr>';
     }
 }
 
