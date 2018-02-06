@@ -24,7 +24,7 @@ def request_game_details(source=sys.stdin, output=sys.stdout):
     >>> import io
     >>> inp = io.StringIO(json.dumps({'game_id': 123}))
     >>> out = io.StringIO()
-    >>> request_game_details(out)
+    >>> request_game_details(inp,out)
     >>> out.seek(0)
     0
     >>> print(out.read()) # doctest: +ELLIPSIS
@@ -34,8 +34,9 @@ def request_game_details(source=sys.stdin, output=sys.stdout):
     """
     request = json.load(source)
     game_id = request["game_id"]
+    game_info = ""
     for game in STORAGE:
         if game.get_game_id() == game_id:
-            output.write('Content-Type: application/json\n\n')
-            json.dump({game_id: str(game)}, output)
-            return
+            game_info = str(game)
+    output.write('Content-Type: application/json\n\n')
+    json.dump({game_id: game_info}, output)
