@@ -11,7 +11,6 @@ RUN apt-get -y install nodejs
 
 ENV DEBIAN_FRONTEND "noninteractive"
 RUN apt-get -y install mysql-server
-RUN service mysql start
 
 RUN ln -s /usr/bin/python3 /usr/local/bin/python3
 
