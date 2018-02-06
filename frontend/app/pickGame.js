@@ -1,21 +1,23 @@
+import * as waitingGame from './pages';
+
 export function pickGame(xhttp) {
     if (xhttp.readyState === 4 && xhttp.status === 200) {
         document.body.innerHTML = '<table id="table"><tr id="row1"></tr></table>';
+        // just testing/ learning. Could put all on one line
         document.getElementById('row1').innerHTML = '<th>Select</th><th>List of games</th>';
 
         const list = JSON.parse(xhttp.responseText);
-        let i;
-        for (i in list) {
+        for (let i = 0; i < Object.keys(list).length; i += 1) {
             const row = document.createElement('TR');
             const data1 = document.createElement('TD');
             const data2 = document.createElement('TD');
             const x = document.createElement('INPUT');
-            const t = document.createTextNode(i);
+            const t = document.createTextNode(Object.keys(list)[i]);
 
             // set values for radio buttons
             x.setAttribute('type', 'radio');
             x.setAttribute('name', 'gameID');
-            x.setAttribute('value', i);
+            x.setAttribute('value', Object.keys(list)[i]);
 
             // add radio button to the row 1st column.
             data1.appendChild(x);
@@ -26,11 +28,16 @@ export function pickGame(xhttp) {
             row.appendChild(data2);
             document.getElementById('table').appendChild(row);
         }
-        document.getElementById('table').innerHTML += '<tr><td><input type="submit" value="Join game" id="joinSelectedGame"> </td></tr>';
+        const test = document.createElement('TR');
+        test.setAttribute('id', 'tableI');
+
+        document.getElementById('table').appendChild(test);
+
+        document.getElementById('tableI').innerHTML = '<td><input type="submit" value="Join game" id="joinSelectedGame"> </td><td></td>';
         document.getElementById('joinSelectedGame').addEventListener('click', () => {
             if (document.querySelector('input[name="gameID"]:checked') != null) {
-                const gameID = document.querySelector('input[name="gameID"]:checked').value;
-                // call waiting game function with item gameID as parameter.
+                const item = document.querySelector('input[name="gameID"]:checked').value;
+                window.alert(`submitted${item}`);
             }
         });
     }
