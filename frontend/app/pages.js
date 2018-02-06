@@ -9,7 +9,7 @@ import {sendJSON} from './sendJSON';
  * @param gameID The ID of the game to display.
  */
 export default function waitingGame(gameID) {
-    const rootElement = document.querySelector('#content');
+    const rootElement = document.body;
     sendJSON({
         serverAddress: 'cgi-bin/get_game_details.py',
         jsonObject: {game_id: gameID},
