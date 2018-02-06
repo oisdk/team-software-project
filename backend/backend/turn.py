@@ -4,6 +4,7 @@ import sys
 import json
 import shelve
 from collections import deque
+import cgi
 
 import cgitb
 cgitb.enable()
@@ -12,6 +13,9 @@ def send_turn_notifications():
     """Notify a client every second whose turn it is."""
     print('Content-Type: text/event-stream')
     print('Cache-Control: no cache')
+    print()
+    data = cgi.FieldStorage()
+    print('data: {}'.format(data.getfirst('fuck')))
     print()
     while True:
         print('event: turn')
