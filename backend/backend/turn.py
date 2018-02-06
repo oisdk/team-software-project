@@ -10,16 +10,21 @@ import cgitb
 cgitb.enable()
 
 def send_turn_notifications():
-    """Notify a client every second whose turn it is."""
+    """Get the user’s id and send them notifications."""
     print('Content-Type: text/event-stream')
     print('Cache-Control: no cache')
     print()
     data = cgi.FieldStorage()
-    print('data: {}'.format(data.getfirst('fuck')))
+    user_id = data.getfirst('id')
+    print('data: username: {}'.format(user_id))
     print()
+    notification_loop(user_id)
+
+def notification_loop(user_id):
+    """Notify a client every second whose turn it is."""
     while True:
         print('event: turn')
-        print('data: {}'.format(json.dumps({'activeTurn': get_user_turn()})))
+        print('data: {}'.format(json.dumps({'activeTurn': get_user_turn(), 'username': user_id})))
         print()
 
         sys.stdout.flush()

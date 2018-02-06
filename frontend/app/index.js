@@ -28,7 +28,7 @@ window.onload = () => {
         });
 
         // The event source receives notifications from the server
-        let eventSource = new EventSource(`cgi-bin/notify_turn.py?fuck=${username}`);
+        let eventSource = new EventSource(`cgi-bin/notify_turn.py?id=${username}`);
 
         // Once the event source has opened successfully:
         eventSource.onopen = () => {
