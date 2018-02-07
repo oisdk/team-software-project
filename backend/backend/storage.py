@@ -55,3 +55,16 @@ def retrieve_player(user_id):
 Could not find entry for user_id key 123
     """
     raise DatabaseLookupError("user_id", user_id)
+
+def retrieve_game(game_id):
+    """Retrieves a game from the database.
+
+    Raises a DatabaseLookupError if the game isn’t found.
+
+    >>> retrieve_game(5)
+    Traceback (most recent call last):
+        ...
+    backend.storage.DatabaseLookupError: \
+Could not find entry for game_id key 5
+    """
+    raise DatabaseLookupError('game_id', game_id)
