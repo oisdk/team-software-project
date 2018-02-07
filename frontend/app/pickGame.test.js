@@ -25,6 +25,7 @@ describe('Request sent to get list', () => {
         expect(mockXHR.send).toHaveBeenCalledWith();
         functionCall.requestGameList();
         mockXHR.onreadystatechange();
+        expect(pickGame).not.toHaveBeenCalledWith(mockXHR);
         done();
     });
 });
