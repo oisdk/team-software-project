@@ -2,8 +2,9 @@
 import * as checkUserIDCookie from './checkUserIDCookie';
 // Import pickGame functionality
 import * as pickGame from './pickGame';
-// Import sendJSON functionality
-import sendJSON from './sendJSON';
+// Import createGame functionality
+import * as createGame from './createGame';
+
 
 /**
  * Callback function to update HTML body with file's contents.
@@ -19,6 +20,8 @@ export function updatePage(fileReader) {
         usernameField.innerHTML = username;
         const joinGameButton = document.getElementById('join-game');
         joinGameButton.addEventListener('click', pickGame.requestGameList, false);
+        const createGameButton = document.getElementById('create-game');
+        createGameButton.addEventListener('click', createGame.getGameID, false);
     }
 }
 
@@ -33,24 +36,4 @@ export function generateCreateJoinGamePage() {
     fileReader.open('GET', 'create-join-game.html', true);
     fileReader.onreadystatechange = () => updatePage(fileReader);
     fileReader.send();
-    document.getElementById('create-game').onclick = () => {
-        sendJSON({
-            serverAddress: 'cgi-bin/allocate_game_id.py',
-            jsonObject: JSON.dumps({game_size: 4}),
-            successCallback: (req) => {
-                const response = JSON.load(req.responseText);
-                const gameID = response.game_id;
-                sendJSON({
-                    serverAddress: 'cgi-bin/waiting_game.py', jsonObject: JSON.dumps({gameID}),
-                    /*
-                    successCallback: (req) => {
-                        const response_success = JSON.load(req.responseText)
-                        sendJSON({'cgi-bin/waiting_game.py',
-                        JSON.dumps({})
-                        })
-                    }
-                    */});
-            },
-        });
-    };
 }
