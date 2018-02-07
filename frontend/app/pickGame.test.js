@@ -1,5 +1,4 @@
 import * as functionCall from './pickGame';
-// import * as waiting from './pages';
 
 describe('Request sent to get list', () => {
     const oldXMLHttpRequest = window.XMLHttpRequest;
@@ -26,7 +25,6 @@ describe('Request sent to get list', () => {
         expect(mockXHR.send).toHaveBeenCalledWith();
         functionCall.requestGameList();
         mockXHR.onreadystatechange();
-        expect(pickGame).not.toHaveBeenCalledWith(mockXHR);
         done();
     });
 });
