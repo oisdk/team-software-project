@@ -30,3 +30,20 @@ def game_state(game_id):
 def game_state_changes(old_state, new_state):
     """Determine what’s changed between the old state and the new state."""
     return old_state.update(new_state)
+
+def output_events(data, output_stream):
+    """Output events for the given data.
+
+    >>> import io
+    >>> out_stream = io.StringIO()
+    >>> data = {'players': ['a', 'b', 'c', 'd']}
+    >>> output_events(data=data, output_stream=out_stream)
+    >>> out_stream.seek(0)
+    0
+    >>> print(out_stream.read())
+    event: gameUpdate
+    data: {"players": ["a", "b", "c", "d"]}
+    <BLANKLINE>
+    """
+    print('event: gameUpdate', file=output_stream)
+    json.dump(data, output_stream)
