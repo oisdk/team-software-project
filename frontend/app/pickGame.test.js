@@ -33,7 +33,7 @@ describe('Request sent to get list', () => {
 describe('Generate list of games ', () => {
     const oldDocumentBody = document.body.innerHTML;
     const sendGameId = jest.fn();
-    
+
     // simulate response
     const mockFileResponse = {
         status: 200,
