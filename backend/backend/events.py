@@ -13,11 +13,18 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
 
     while True:
         new_game_state = game_state(game_id)
-        state_changes = game_state_changes(game_state, new_game_state)
-        if state_changes:
-            output_events(data=state_changes, output_stream=output_stream)
-            output_stream.flush()
-            game_state = new_game_state
+        try:
+            state_changes = game_state_changes(game_state, new_game_state)
+        except DatabaseLookupError:
+            output_stream.write('Content-type: text/plain\n')
+            output_stream.write('\n')
+            output_stream.write('The game could not be found.\n')
+            break
+        else:
+            if state_changes:
+                output_events(data=state_changes, output_stream=output_stream)
+                output_stream.flush()
+                game_state = new_game_state
 
 def read_game_id(input_stream):
     """Read a game id from the input stream and return it.
@@ -31,8 +38,14 @@ def read_game_id(input_stream):
     return request['game_id']
 
 def game_state(game_id):
-    """Get the state for a particular game."""
-    return {}
+    """Get the state for a particular game.
+
+    Returns an instance of the Monopoly class corresponding to the given game
+    id, if it is found.
+
+    Raises DatabaseLookupError if the game can’t be found.
+    """
+    return storage.retrieve_game(game_id)
 
 def game_state_changes(old_state, new_state):
     """Determine what’s changed between the old state and the new state.
