@@ -18,6 +18,10 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
             output_stream.flush()
             game_state = new_game_state
 
+def read_game_id(input_stream):
+    """Read a game id from the input stream and return it."""
+    request = json.load(input_stream)
+    return request['game_id']
 
 def game_state(game_id):
     """Get the state for a particular game."""
