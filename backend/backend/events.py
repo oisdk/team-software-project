@@ -10,6 +10,9 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
     """Generate a stream of server-sent events according to state changes."""
     game_id = read_game_id(input_stream)
     game_state = None
+    output_stream.write('Content-Type: text/event-stream\n')
+    output_stream.write('Cache-Control: no-cache\n')
+    output_stream.write('\n')
 
     while True:
         new_game_state = game_state(game_id)
