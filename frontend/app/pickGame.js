@@ -1,8 +1,8 @@
 import waitingGame from './pages';
 
-export function sendGameId(gameID) {
+export function sendGameId(gameID, waitFunction) {
     if (gameID !== null) {
-        waitingGame(gameID.value);
+        waitFunction(gameID.value);
     }
 }
 
@@ -40,9 +40,7 @@ export function pickGame(xhttp) {
         document.getElementById('table').appendChild(test);
 
         document.getElementById('tableI').innerHTML = '<td><input type="submit" value="Join game" id="joinSelectedGame"></td><td></td>';
-        document.getElementById('joinSelectedGame').addEventListener('click', () => {
-            sendGameId(document.querySelector('input[name="gameID"]:checked'));
-        });
+        document.getElementById('joinSelectedGame').onclick = () => { sendGameId(document.querySelector('input[name="gameID"]:checked'), waitingGame); };
     }
 }
 
