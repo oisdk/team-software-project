@@ -64,6 +64,7 @@ describe('send game id to waitingGame function ', () => {
     const mockWait = jest.fn();
     test(' generated games ', (done) => {
         functionCall.sendGameId(game, mockWait);
+        expect(game).not.toBeNull();
         expect(mockWait).toHaveBeenCalled();
         done();
     });

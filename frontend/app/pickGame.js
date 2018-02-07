@@ -25,19 +25,19 @@ export function pickGame(xhttp) {
             x.setAttribute('name', 'gameID');
             x.setAttribute('value', Object.keys(list)[i]);
 
-            // add radio button to the row 1st column.
+            // add radio button to the row, 1st column.
             data1.appendChild(x);
             row.appendChild(data1);
 
-            // add game id to the row 2nd column
+            // add game id to the row, 2nd column
             data2.appendChild(t);
             row.appendChild(data2);
             document.getElementById('table').appendChild(row);
         }
-        const test = document.createElement('TR');
-        test.setAttribute('id', 'tableI');
+        const newRow = document.createElement('TR');
+        newRow.setAttribute('id', 'tableI');
 
-        document.getElementById('table').appendChild(test);
+        document.getElementById('table').appendChild(newRow);
 
         document.getElementById('tableI').innerHTML = '<td><input type="submit" value="Join game" id="joinSelectedGame"></td><td></td>';
         document.getElementById('joinSelectedGame').onclick = () => { sendGameId(document.querySelector('input[name="gameID"]:checked'), waitingGame); };
