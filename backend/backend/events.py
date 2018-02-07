@@ -29,7 +29,4 @@ def game_state(game_id):
 
 def game_state_changes(old_state, new_state):
     """Determine what’s changed between the old state and the new state."""
-    return {key: new_state[key]
-        for key in old_state
-        if key not in old_state
-        or new_state[key] != old_state[key]}
+    return old_state.update(new_state)
