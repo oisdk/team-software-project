@@ -1,8 +1,7 @@
-import * as waitingGame from './pages';
+import * as waiting from './pages';
 
 export function pickGame(xhttp) {
     if (xhttp.readyState === 4 && xhttp.status === 200) {
-        // change this to id 'content' . innerHTML                                              
         document.body.innerHTML = '<table id="table"><tr id="row1"></tr></table>';
         // just testing/ learning. Could put all on one line
         document.getElementById('row1').innerHTML = '<th>Select</th><th>List of games</th>';
@@ -34,11 +33,11 @@ export function pickGame(xhttp) {
 
         document.getElementById('table').appendChild(test);
 
-        document.getElementById('tableI').innerHTML = '<td><input type="submit" value="Join game" id="joinSelectedGame"> </td><td></td>';
+        document.getElementById('tableI').innerHTML = '<td><input type="submit" value="Join game" id="joinSelectedGame"></td><td></td>';
         document.getElementById('joinSelectedGame').addEventListener('click', () => {
-            if (document.querySelector('input[name="gameID"]:checked') != null) {
+            if (document.querySelector('input[name="gameID"]:checked') !== null) {
                 const item = document.querySelector('input[name="gameID"]:checked').value;
-                window.alert(`submitted${item}`);
+                waiting.waitingGame(item);
             }
         });
     }
