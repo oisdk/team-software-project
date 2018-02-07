@@ -4,6 +4,6 @@
 
 Team 2
 
-Available [here](https://cs1.ucc.ie/~dok4/).
+Available [here](http://54.186.226.199).
 
 For instructions on how to add your code etc., see CONTRIBUTING.md
