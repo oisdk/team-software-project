@@ -1,4 +1,10 @@
-import * as waiting from './pages';
+import waitingGame from './pages';
+
+export function sendGameId(gameID) {
+    if (gameID !== null) {
+        waitingGame(gameID.value);
+    }
+}
 
 export function pickGame(xhttp) {
     if (xhttp.readyState === 4 && xhttp.status === 200) {
@@ -35,10 +41,7 @@ export function pickGame(xhttp) {
 
         document.getElementById('tableI').innerHTML = '<td><input type="submit" value="Join game" id="joinSelectedGame"></td><td></td>';
         document.getElementById('joinSelectedGame').addEventListener('click', () => {
-            if (document.querySelector('input[name="gameID"]:checked') !== null) {
-                const item = document.querySelector('input[name="gameID"]:checked').value;
-                waiting.waitingGame(item);
-            }
+            sendGameId(document.querySelector('input[name="gameID"]:checked'));
         });
     }
 }

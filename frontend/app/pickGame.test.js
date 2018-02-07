@@ -33,7 +33,7 @@ describe('Request sent to get list', () => {
 
 describe('Generate list of games ', () => {
     const oldDocumentBody = document.body.innerHTML;
-    const waitingGame = jest.fn();
+    const sendGameId = jest.fn();
     const mockFileResponse = {
         status: 200,
         readyState: 4,
@@ -51,10 +51,18 @@ describe('Generate list of games ', () => {
         const radio = document.querySelector('input[name="gameID"]');
         radio.checked = true;
         expect(document.querySelector('input[name="gameID"]:checked')).not.toBeNull();
-        expect(document.querySelector('input[name="gameID"]:checked')).not.toBe(true);
+        expect(document.querySelector('input[name="gameID"]:checked')).not.toBe(false);
         expect(document.querySelector('input[name="gameID"]:checked')).toBeTruthy();
         expect(document.querySelector('input[name="gameID"]:checked').value).toEqual('game1');
-        expect(waitingGame).not.toHaveBeenCalledWith('game1');
+        expect(sendGameId).not.toHaveBeenCalledWith('game1');
+        done();
+    });
+});
+
+describe('send game id to waitingGame function ', () => {
+    const game = '<input type="radio" name="gameID" value="game1">';
+    test(' generated games ', (done) => {
+        functionCall.sendGameId(game);
         done();
     });
 });
