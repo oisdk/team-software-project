@@ -56,6 +56,7 @@ Could not find entry for user_id key 123
     """
     raise DatabaseLookupError("user_id", user_id)
 
+
 def retrieve_game(game_id):
     """Retrieves a game from the database.
 

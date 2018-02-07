@@ -4,12 +4,13 @@ changes.
 """
 import sys
 import json
+import backend.storage as storage
 
 
 def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
     """Generate a stream of server-sent events according to state changes."""
     game_id = read_game_id(input_stream)
-    game_state = None
+    current_game_state = None
     output_stream.write('Content-Type: text/event-stream\n')
     output_stream.write('Cache-Control: no-cache\n')
     output_stream.write('\n')
@@ -17,8 +18,10 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
     while True:
         new_game_state = game_state(game_id)
         try:
-            state_changes = game_state_changes(game_state, new_game_state)
-        except DatabaseLookupError:
+            state_changes = game_state_changes(
+                current_game_state,
+                new_game_state)
+        except storage.DatabaseLookupError:
             output_stream.write('Content-type: text/plain\n')
             output_stream.write('\n')
             output_stream.write('The game could not be found.\n')
@@ -27,7 +30,8 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
             if state_changes:
                 output_events(data=state_changes, output_stream=output_stream)
                 output_stream.flush()
-                game_state = new_game_state
+                current_game_state = new_game_state
+
 
 def read_game_id(input_stream):
     """Read a game id from the input stream and return it.
@@ -40,6 +44,7 @@ def read_game_id(input_stream):
     request = json.load(input_stream)
     return request['game_id']
 
+
 def game_state(game_id):
     """Get the state for a particular game.
 
@@ -49,6 +54,7 @@ def game_state(game_id):
     Raises DatabaseLookupError if the game can’t be found.
     """
     return storage.retrieve_game(game_id)
+
 
 def game_state_changes(old_state, new_state):
     """Determine what’s changed between the old state and the new state.
@@ -67,6 +73,7 @@ def game_state_changes(old_state, new_state):
     changes.update(old_state)
     changes.update(new_state)
     return changes
+
 
 def output_events(data, output_stream):
     """Output events for the given data.
