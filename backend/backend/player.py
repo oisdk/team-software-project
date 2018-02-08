@@ -3,9 +3,6 @@ players of Monopoly"""
 
 import backend.storage
 
-# uid
-# list of rolls
-
 # List of players
 # Current turn
 # Game state: WAITING|PLAYING
@@ -20,33 +17,33 @@ class Player:
         self._in_context = True
         self._conn = backend.storage.make_connection()
         self._conn.begin()
-        if self._new:
-            with self._conn.cursor() as cursor:
-                cursor.execute('INSERT INTO `players` (`username`) VALUES (%s);',
-                               (self.username,))
-                cursor.execute('SELECT LAST_INSERT_ID();')
-                self._uid = cursor.fetchone()
-            self.rolls = []
-        else:
-            with self._conn.cursor() as cursor:
-                cursor.execute('SELECT (`username`) FROM `players`'
-                               'WHERE `id` = %s;',
-                               (self.uid,))
-                self.username = cursor.fetchone()['username']
-            with self._conn.cursor() as cursor:
-                cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls`'
-                               'WHERE `id` = %s ORDER BY `number`;',
-                               (self.id,))
-                self.rolls = [(result['roll1'], result['roll2'])
-                              for result in cursor.fetchall()]
+        with self._conn.cursor() as cursor:
+            cursor.execute('SELECT * FROM `players` WHERE `id` = %s;',
+                           (self.uid,))
+            result = cursor.fetchone()
+            self._username = result['username']
+            self._balance = result['balance']
+            self._turn_position = result['turn_position']
+            self._board_position = result['board_position']
+            cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls` '
+                           'WHERE `id` = %s ORDER BY `number`;',
+                           (self.uid,))
+            self._rolls = [(result['roll1'], result['roll2'])
+                          for result in cursor.fetchall()]
         return self
 
     def __exit__(self, a, b, c):
         with self._conn.cursor() as cursor:
-            cursor.execute('UPDATE `players` SET `username` = %s '
-                           'WHERE `id` = %s',
-                           (self.username, self.uid))
-            cursor.execute('REPLACE INTO `rolls` VALUES (%s, %s, %s, %s)',
+            cursor.execute('UPDATE `players` '
+                           'SET `username` = %s, '
+                           '`balance` = %s, '
+                           '`turn_position` = %s, '
+                           '`board_position` = %s, '
+                           'WHERE `id` = %s;',
+                           (self.username, self.balance,
+                            self.turn_position, self.board_position,
+                            self.uid))
+            cursor.execute('REPLACE INTO `rolls` VALUES (%s, %s, %s, %s);',
                            ((self.uid, roll1, roll2, i)
                             for i, (roll1, roll2) in enumerate(self.rolls)))
         self._conn.commit()
@@ -125,7 +122,7 @@ class Player:
             conn = backend.storage.make_connection()
             try:
                 with conn.cursor() as cursor:
-                cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls`'
+                cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls` '
                                'WHERE `id` = %s ORDER BY `number`;',
                                (self.uid,))
                 return [(result['roll1'], result['roll2'])
@@ -133,4 +130,42 @@ class Player:
             finally:
                 conn.close()
 
+    @username.setter
+    def username(self, username):
+        if self._in_context:
+            self._username = username
+        else:
+            raise TypeError('Must be within with statement to mutate the '
+                            'Player class')
 
+
+    @balance.setter
+    def balance(self, balance):
+        if self._in_context:
+            self._balance = balance
+        else:
+            raise TypeError('Must be within with statement to mutate the '
+                            'Player class')
+
+    @turn_position.setter
+    def turn_position(self, trun_position):
+        if self._in_context:
+            self._turn_position = turn_position
+        else:
+            raise TypeError('Must be within with statement to mutate the '
+                            'Player class')
+
+    @board_position.setter
+    def board_position(self, board_position):
+        if self._in_context:
+            self._board_position = board_position
+        else:
+            raise TypeError('Must be within with statement to mutate the '
+                            'Player class')
+    @rolls.setter
+    def rolls(self, rolls):
+        if self._in_context:
+            self._rolls = rolls
+        else:
+            raise TypeError('Must be within with statement to mutate the '
+                            'Player class')
