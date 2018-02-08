@@ -4,11 +4,7 @@ players of Monopoly"""
 import backend.storage
 
 # uid
-# username
-# balance
-# position (single int)
 # list of rolls
-# turn position
 
 # List of players
 # Current turn
@@ -16,46 +12,12 @@ import backend.storage
 
 
 class Player:
-    """A player of the monopoly game.
-
-    To create an instance of this class, initialise it with either a username or
-    a unique id (but not both). Any manipulation or *use* of the instance, however,
-    should be done within a with statement. For instance, to change a player's
-    username, do the following::
-
-        with Player(uid=123) as player:
-            player.username = "dave"
-
-    That will properly hande transactions etc.
-
-    Args:
-        username (str): If initialised with a username, a new player will be
-            created in persistent storage. If a username is provided, a
-            unique id must not be provided.
-        uid (int): If initialised with a unique id (uid), the existing
-            player will be retrieved from storage. If a unique id is
-            provided, a username must not be provided.
-
-    Attributes:
-        rolls ([(int,int)]): A list of the rolls the player has received, in 
-            order.
-        username (str): The players (possible non-unique) username.
-    """
-    def __init__(self, username=None, uid=None):
-        if username is None and uid is None:
-            raise TypeError('Player() expects one argument of either username'
-                            'or uid, none given')
-        elif username is not None and uid is not None:
-            raise TypeError('Player() expects one argument of either username'
-                            'or uid, two given')
-        elif username is not None:
-            self.username = username
-            self._new = True
-        else:
-            self._uid = uid
-            self._new = False
+    def __init__(self, uid):
+        self._uid = uid
+        self._in_context = False
 
     def __enter__(self):
+        self._in_context = True
         self._conn = backend.storage.make_connection()
         self._conn.begin()
         if self._new:
@@ -89,7 +51,86 @@ class Player:
                             for i, (roll1, roll2) in enumerate(self.rolls)))
         self._conn.commit()
         self._conn.close()
+        self._in_context = False
 
     @property
     def uid(self):
         return self._uid
+
+    @property
+    def username(self):
+        if self._in_context:
+            return self._username
+        else:
+            conn = backend.storage.make_connection()
+            try:
+                with conn.cursor() as cursor:
+                    cursor.execute('SELECT (`username`) FROM `players` '
+                                   'WHERE `id` = %s;',
+                                   (self.uid,))
+                    return cursor.fetchone()['username']
+            finally:
+                conn.close()
+
+    @property
+    def balance(self):
+        if self._in_context:
+            return self._balance
+        else:
+            conn = backend.storage.make_connection()
+            try:
+                with conn.cursor() as cursor:
+                    cursor.execute('SELECT (`balance`) FROM `players` '
+                                   'WHERE `id` = %s;',
+                                   (self.uid,))
+                    return cursor.fetchone()['balance']
+            finally:
+                conn.close()
+
+    @property
+    def turn_position(self):
+        if self._in_context:
+            return self._turn_position
+        else:
+            conn = backend.storage.make_connection()
+            try:
+                with conn.cursor() as cursor:
+                    cursor.execute('SELECT (`turn_position`) FROM `players` '
+                                   'WHERE `id` = %s;',
+                                   (self.uid,))
+                    return cursor.fetchone()['turn_position']
+            finally:
+                conn.close()
+
+    @property
+    def board_position(self):
+        if self._in_context:
+            return self._board_position
+        else:
+            conn = backend.storage.make_connection()
+            try:
+                with conn.cursor() as cursor:
+                    cursor.execute('SELECT (`board_position`) FROM `players` '
+                                   'WHERE `id` = %s;',
+                                   (self.uid,))
+                    return cursor.fetchone()['board_position']
+            finally:
+                conn.close()
+
+    @property
+    def rolls(self):
+        if self._in_context:
+            return self._rolls
+        else:
+            conn = backend.storage.make_connection()
+            try:
+                with conn.cursor() as cursor:
+                cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls`'
+                               'WHERE `id` = %s ORDER BY `number`;',
+                               (self.uid,))
+                return [(result['roll1'], result['roll2'])
+                        for result in cursor.fetchall()]
+            finally:
+                conn.close()
+
+
