@@ -4,19 +4,9 @@
 import json
 import sys
 import cgitb
-from uuid import UUID
-from backend.player import Player
+import backend.player
 
 cgitb.enable()
-
-
-def json_encoder(uuid_object):
-    """Deals with no UUID serialization support in json. Casts the UUID to String.
-    """
-    if isinstance(uuid_object, UUID):
-        return str(uuid_object)
-    return None
-
 
 def request_user_id(source=sys.stdin, output=sys.stdout):
     """Entry point for the client sending username to server, server responds
@@ -36,6 +26,5 @@ def request_user_id(source=sys.stdin, output=sys.stdout):
     request = json.load(source)
     client_username = request["username"]
     output.write('Content-Type: application/json\n\n')
-    with Player(username=client_username) as player:
-        json.dump({"your_username": client_username, "your_id":
-                   json_encoder(player.user_id)}, output, sort_keys=True)
+    uid = backend.player.create_player(client_username)
+    json.dump({"your_username": client_username, "your_id": uid}, output, sort_keys=True)

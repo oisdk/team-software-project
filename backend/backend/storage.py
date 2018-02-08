@@ -4,6 +4,7 @@ import pymysql.cursors
 
 
 def make_connection():
+    """Create a connection object to the monopoly database."""
     return pymysql.connect(host='localhost',
                            user='root',
                            password='',
