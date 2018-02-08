@@ -1,7 +1,13 @@
+"""This module provides the Game class"""
+
+from operator import itemgetter
+from itertools import groupby
+
 import backend.storage
 
-
 class Game(object):
+    """A single game of monopoly. Refer to the Player class for how to
+    access and mutate members."""
     def __init__(self, uid):
         self._uid = uid
         self._in_context = False
@@ -48,18 +54,43 @@ class Game(object):
 
     @property
     def uid(self):
+        """
+        Returns:
+            int: the (immutable) unique id of this game.
+        """
         return self._uid
 
     @property
     def current_turn(self):
+        """
+        Returns:
+            int: the current position in the playing queue.
+
+        Raises:
+            TypeError: if mutated outside of a with statement.
+        """
         return backend.storage.request_property(self, self._in_context, 'games', 'current_turn')
 
     @property
     def state(self):
+        """
+        Returns:
+            str: the state of the game.
+
+        Raises:
+            TypeError: if mutated outside of a with statement.
+        """
         return backend.storage.request_property(self, self._in_context, 'games', 'state')
 
     @property
     def players(self):
+        """
+        Returns:
+            [int]: a list of the ids of the players in this game.
+
+        Raises:
+            TypeError: if mutated outside of a with statement.
+        """
         if self._in_context:
             return self._players
         else:
@@ -92,3 +123,45 @@ class Game(object):
     @players.setter
     def players(self, players):
         self._set_property('players', players)
+
+def create_game(host):
+    """Create a new game on the server
+
+    Args:
+        host(id): the id of the player who clicked "create game".
+
+    Returns:
+        int: the game's unique id.
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('INSERT INTO `games` () VALUES ();', ())
+            cursor.execute('SELECT LAST_INSERT_ID();')
+            result = cursor.fetchone()['LAST_INSERT_ID()']
+            cursor.execute('INSERT INTO `playing_in` VALUES (%s, %s)',
+                           (host, result))
+        conn.commit()
+        return result
+    finally:
+        conn.close()
+
+def get_games():
+    """Returns a dictionary where the keys are the game ids, in the waiting
+    room and the values is a list of participating players."""
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT (`playing_in.game_id`, `players.username`) '
+                           'FROM `playing_in` '
+                           'INNER JOIN `players` ON `playing_in.player_id` = `players.id` '
+                           'ORDER BY playing_in.game_id')
+            result = {game_id: list(row['username'])
+                      for game_id, row
+                      in groupby(cursor.fetchall(), itemgetter('game_id'))}
+        conn.commit()
+        return result
+    finally:
+        conn.close()

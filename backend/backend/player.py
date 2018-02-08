@@ -92,10 +92,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
     def uid(self):
         """
         Returns:
-            int: the unique user id for this player.
-
-        Raises:
-            TypeError: if called outside of a with statement.
+            int: the (immutable) unique user id for this player.
         """
 
         return self._uid
@@ -107,7 +104,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
             str: the (possibly not unique) username for this player.
 
         Raises:
-            TypeError: if called outside of a with statement.
+            TypeError: if mutated outside of a with statement.
         """
         return backend.storage.request_property(self, self._in_context, 'players', 'username')
 
@@ -118,7 +115,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
             int: the current balance for this player.
 
         Raises:
-            TypeError: if called outside of a with statement.
+            TypeError: if mutated outside of a with statement.
         """
         return backend.storage.request_property(self, self._in_context, 'players', 'balance')
 
@@ -129,7 +126,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
             int: the place in the "turn queue" the player is.
 
         Raises:
-            TypeError: if called outside of a with statement.
+            TypeError: if mutated outside of a with statement.
         """
         return backend.storage.request_property(self, self._in_context, 'players', 'turn_position')
 
@@ -140,7 +137,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
             int: the current position of the player on the board.
 
         Raises:
-            TypeError: if called outside of a with statement.
+            TypeError: if mutated outside of a with statement.
         """
         return backend.storage.request_property(self, self._in_context, 'players', 'board_position')
 
@@ -151,7 +148,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
             [(int,int)]: the in-order list of rolls the player has received.
 
         Raises:
-            TypeError: if called outside of a with statement.
+            TypeError: if mutated outside of a with statement.
         """
         if self._in_context:
             return self._rolls

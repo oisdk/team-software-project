@@ -4,7 +4,7 @@
 import json
 import sys
 import cgitb
-from backend.game import Monopoly
+import backend.game
 
 cgitb.enable()
 
@@ -26,7 +26,7 @@ def request_game_id(source=sys.stdin, output=sys.stdout):
     """
 
     request = json.load(source)
-    game_size = request["game_size"]
-    game = Monopoly(game_size)
+    host_id = request["host_id"]
+    game_id = backend.game.create_game(host_id)
     output.write('Content-Type: application/json\n\n')
-    json.dump({"game_id": str(game.get_game_id())}, output)
+    json.dump({"game_id": game_id}, output)
