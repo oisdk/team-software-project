@@ -49,9 +49,9 @@ class Player:
         self._conn.begin()
         if self._new:
             with self._conn.cursor() as cursor:
-                cursor.execute('INSERT INTO `players` (`username`) VALUES (%s);'
-                               'SELECT LAST_INSERT_ID();',
+                cursor.execute('INSERT INTO `players` (`username`) VALUES (%s);)'
                                (self.username,))
+                cursor.execute('SELECT LAST_INSERT_ID();')
                 self._uid = cursor.fetchone()
             self.rolls = []
         else:
