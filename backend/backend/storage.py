@@ -8,5 +8,5 @@ def make_connection():
                            user='root',
                            password='',
                            db='db',
-                           charset='utf8imb4',
+                           charset='utf8mb4',
                            cursorclass=pymysql.cursors.DictCursor)
