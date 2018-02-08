@@ -66,8 +66,9 @@ class Player:
                                (self.id,))
                 self.rolls = [(result['roll1'], result['roll2'])
                               for result in cursor.fetchall()]
+        return self
 
-    def __exit__(self):
+    def __exit__(self, a, b, c):
         with self._conn.cursor() as cursor:
             cursor.execute('UPDATE `players` SET `username` = %s '
                            'WHERE `id` = %s',
