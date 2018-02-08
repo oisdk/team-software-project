@@ -4,16 +4,19 @@ import * as random from './random';
 describe('Request sent on function call', () => {
     const oldXMLHttpRequest = window.XMLHttpRequest;
 
+    // Create a mock XMLHttpRequest object
     const mockXHR = {
         open: jest.fn(),
         send: jest.fn(),
         setRequestHeader: jest.fn(),
     };
 
+    // Assign the global window XMLHttpRequest to point to the mockXHR object
     beforeEach(() => {
         window.XMLHttpRequest = jest.fn(() => mockXHR);
     });
 
+    // Restore the global XMLHttpRequest to the state it was before the tests
     afterEach(() => {
         window.XMLHttpRequest = oldXMLHttpRequest;
     });
