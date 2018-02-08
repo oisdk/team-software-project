@@ -170,3 +170,17 @@ class Player:
         else:
             raise TypeError('Must be within with statement to mutate the '
                             'Player class')
+
+def create_player(username):
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('INSERT INTO `players` (`username`) VALUES (%s);', (username,))
+            cursor.execute('SELECT LAST_INSERT_ID();')
+            result = cursor.fetchone()['LAST_INSERT_ID()']
+        conn.commit()
+        return result
+    finally:
+        conn.close()
+    
