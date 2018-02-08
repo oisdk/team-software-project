@@ -45,7 +45,7 @@ class Player:
             self._new = False
 
     def __enter__(self):
-        self._conn = storage.make_connection()
+        self._conn = backend.storage.make_connection()
         self._conn.begin()
         if self._new:
             with self._conn.cursor() as cursor:
