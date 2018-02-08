@@ -14,16 +14,6 @@ cgitb.enable()
 
 def request_game_list(output=sys.stdout):
     """Entry point for the service of requesting list of available games
-
-    >>> import io
-    >>> out = io.StringIO()
-    >>> request_game_list(out)
-    >>> out.seek(0)
-    0
-    >>> print(out.read()) # doctest: +ELLIPSIS
-    Content-Type: application/json
-    <BLANKLINE>
-    {...:...,...:...}
     """
 
     output.write('Content-Type: application/json\n\n')
