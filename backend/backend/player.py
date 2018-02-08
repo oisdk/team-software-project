@@ -1,7 +1,35 @@
+"""This module implements the Player class, used to represent individual
+players of Monopoly"""
+
 import backend.storage
 
 
 class Player:
+    """A player of the monopoly game.
+
+    To create an instance of this class, initialise it with either a username or
+    a unique id (but not both). Any manipulation or *use* of the instance, however,
+    should be done within a with statement. For instance, to change a player's
+    username, do the following::
+
+        with Player(uid=123) as player:
+            player.username = "dave"
+
+    That will properly hande transactions etc.
+
+    Args:
+        username (str): If initialised with a username, a new player will be
+            created in persistent storage. If a username is provided, a
+            unique id must not be provided.
+        uid (int): If initialised with a unique id (uid), the existing
+            player will be retrieved from storage. If a unique id is
+            provided, a username must not be provided.
+
+    Attributes:
+        rolls ([(int,int)]): A list of the rolls the player has received, in 
+            order.
+        username (str): The players (possible non-unique) username.
+    """
     def __init__(self, username=None, uid=None):
         if username is None and uid is None:
             raise TypeError("Player() expects one argument of either username or uid, none given")
