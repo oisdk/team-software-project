@@ -22,7 +22,7 @@ def request_user_id(source=sys.stdin, output=sys.stdout):
     >>> print(out.read()) # doctest: +ELLIPSIS
     Content-Type: application/json
     <BLANKLINE>
-    {"your_id": ..., "your_username": "testuser"}
+    <BLANKLINE>
     """
     request = json.load(source)
     client_username = request["username"]
