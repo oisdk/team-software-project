@@ -3,6 +3,17 @@ players of Monopoly"""
 
 import backend.storage
 
+# uid
+# username
+# balance
+# position (single int)
+# list of rolls
+# turn position
+
+# List of players
+# Current turn
+# Game state: WAITING|PLAYING
+
 
 class Player:
     """A player of the monopoly game.
