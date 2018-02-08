@@ -12,7 +12,7 @@ export default function waitingGame(gameID) {
     const rootElement = document.body;
     sendJSON({
         serverAddress: 'cgi-bin/get_game_details.py',
-        jsonObject: {gameID},
+        jsonObject: {game_id: gameID},
         successCallback(request) {
             rootElement.innerHTML = `You are in the waiting game ${gameID}.
             Here are the details:
