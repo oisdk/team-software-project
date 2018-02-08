@@ -5,6 +5,7 @@ from itertools import groupby
 
 import backend.storage
 
+
 class Game(object):
     """A single game of monopoly. Refer to the Player class for how to
     access and mutate members."""
@@ -69,7 +70,8 @@ class Game(object):
         Raises:
             TypeError: if mutated outside of a with statement.
         """
-        return backend.storage.request_property(self, self._in_context, 'games', 'current_turn')
+        return backend.storage.request_property(self, self._in_context,
+                                                'games', 'current_turn')
 
     @property
     def state(self):
@@ -80,7 +82,8 @@ class Game(object):
         Raises:
             TypeError: if mutated outside of a with statement.
         """
-        return backend.storage.request_property(self, self._in_context, 'games', 'state')
+        return backend.storage.request_property(self, self._in_context,
+                                                'games', 'state')
 
     @property
     def players(self):
@@ -124,6 +127,7 @@ class Game(object):
     def players(self, players):
         self._set_property('players', players)
 
+
 def create_game(host):
     """Create a new game on the server
 
@@ -147,6 +151,7 @@ def create_game(host):
     finally:
         conn.close()
 
+
 def get_games():
     """Returns a dictionary where the keys are the game ids, in the waiting
     room and the values is a list of participating players."""
@@ -156,8 +161,9 @@ def get_games():
         with conn.cursor() as cursor:
             cursor.execute('SELECT (`playing_in.game_id`, `players.username`) '
                            'FROM `playing_in` '
-                           'INNER JOIN `players` ON `playing_in.player_id` = `players.id` '
-                           'ORDER BY playing_in.game_id')
+                           'INNER JOIN `players` ON '
+                           '`playing_in.player_id` = `players.id` '
+                           'ORDER BY playing_in.game_id;')
             result = {game_id: list(row['username'])
                       for game_id, row
                       in groupby(cursor.fetchall(), itemgetter('game_id'))}

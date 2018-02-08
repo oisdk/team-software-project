@@ -6,8 +6,8 @@
 import sys
 import json
 import cgitb
-from backend.get_list_of_games import get_list_of_games
 
+import backend.game
 
 cgitb.enable()
 
@@ -27,9 +27,4 @@ def request_game_list(output=sys.stdout):
     """
 
     output.write('Content-Type: application/json\n\n')
-    # result holds game id as the key and the value as the
-    # game object representation
-    result = {}
-    for game in get_list_of_games():
-        result[str(game.get_game_id())] = str(game)
-    json.dump(result, output)
+    json.dump(backend.game.get_games(), output)

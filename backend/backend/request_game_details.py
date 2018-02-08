@@ -5,17 +5,10 @@
 import sys
 import json
 import cgitb
-from backend.game import Monopoly
 
+import backend.game
 
 cgitb.enable()
-
-
-# No persistance storage so making mock existing games and storing
-# in a list as a mock storage"""
-GAME_ONE = Monopoly(1)
-GAME_TWO = Monopoly(2)
-STORAGE = [GAME_ONE, GAME_TWO]
 
 
 def request_game_details(source=sys.stdin, output=sys.stdout):
@@ -34,9 +27,6 @@ def request_game_details(source=sys.stdin, output=sys.stdout):
     """
     request = json.load(source)
     game_id = request["game_id"]
-    game_info = ""
-    for game in STORAGE:
-        if game.get_game_id() == game_id:
-            game_info = str(game)
+    game_info = backend.game.Game(game_id).state
     output.write('Content-Type: application/json\n\n')
     json.dump({game_id: game_info}, output)

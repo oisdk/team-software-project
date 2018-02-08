@@ -3,7 +3,8 @@ players of Monopoly"""
 
 import backend.storage
 
-class Player(object): # pylint: disable=too-many-instance-attributes
+
+class Player(object):  # pylint: disable=too-many-instance-attributes
     """The Player class.
 
     Acces (and mutation) to the properties of this class can be done either
@@ -80,9 +81,11 @@ class Player(object): # pylint: disable=too-many-instance-attributes
                                (self.username, self.balance,
                                 self.turn_position, self.board_position,
                                 self.uid))
-                cursor.executemany('REPLACE INTO `rolls` VALUES (%s, %s, %s, %s);',
+                cursor.executemany('REPLACE INTO `rolls` '
+                                   'VALUES (%s, %s, %s, %s);',
                                    ((self.uid, roll1, roll2, i)
-                                    for i, (roll1, roll2) in enumerate(self.rolls)))
+                                    for i, (roll1, roll2)
+                                    in enumerate(self.rolls)))
             self._conn.commit()
         finally:
             self._in_context = False
@@ -106,7 +109,8 @@ class Player(object): # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if mutated outside of a with statement.
         """
-        return backend.storage.request_property(self, self._in_context, 'players', 'username')
+        return backend.storage.request_property(self, self._in_context,
+                                                'players', 'username')
 
     @property
     def balance(self):
@@ -117,7 +121,8 @@ class Player(object): # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if mutated outside of a with statement.
         """
-        return backend.storage.request_property(self, self._in_context, 'players', 'balance')
+        return backend.storage.request_property(self, self._in_context,
+                                                'players', 'balance')
 
     @property
     def turn_position(self):
@@ -128,7 +133,8 @@ class Player(object): # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if mutated outside of a with statement.
         """
-        return backend.storage.request_property(self, self._in_context, 'players', 'turn_position')
+        return backend.storage.request_property(self, self._in_context,
+                                                'players', 'turn_position')
 
     @property
     def board_position(self):
@@ -139,7 +145,8 @@ class Player(object): # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if mutated outside of a with statement.
         """
-        return backend.storage.request_property(self, self._in_context, 'players', 'board_position')
+        return backend.storage.request_property(self, self._in_context,
+                                                'players', 'board_position')
 
     @property
     def rolls(self):
@@ -191,6 +198,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
     def rolls(self, rolls):
         self._set_property('rolls', rolls)
 
+
 def create_player(username):
     """Create a new player on the server
 
@@ -204,7 +212,8 @@ def create_player(username):
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('INSERT INTO `players` (`username`) VALUES (%s);', (username,))
+            cursor.execute('INSERT INTO `players` (`username`) '
+                           'VALUES (%s);', (username,))
             cursor.execute('SELECT LAST_INSERT_ID();')
             result = cursor.fetchone()['LAST_INSERT_ID()']
         conn.commit()

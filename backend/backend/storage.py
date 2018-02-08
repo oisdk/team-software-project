@@ -12,7 +12,10 @@ def make_connection():
                            charset='utf8mb4',
                            cursorclass=pymysql.cursors.DictCursor)
 
+
 def request_property(cls, in_context, table, name):
+    """Helper function to implement requesting a property from
+    the database."""
     if in_context:
         return getattr(cls, '_' + name)
     else:
