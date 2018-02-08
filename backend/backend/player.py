@@ -25,11 +25,12 @@ class Player:
             self._balance = result['balance']
             self._turn_position = result['turn_position']
             self._board_position = result['board_position']
+            del result
             cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls` '
                            'WHERE `id` = %s ORDER BY `number`;',
                            (self.uid,))
             self._rolls = [(result['roll1'], result['roll2'])
-                          for result in cursor.fetchall()]
+                           for result in cursor.fetchall()]
         return self
 
     def __exit__(self, a, b, c):
@@ -122,9 +123,9 @@ class Player:
             conn = backend.storage.make_connection()
             try:
                 with conn.cursor() as cursor:
-                cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls` '
-                               'WHERE `id` = %s ORDER BY `number`;',
-                               (self.uid,))
+                    cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls` '
+                                   'WHERE `id` = %s ORDER BY `number`;',
+                                   (self.uid,))
                 return [(result['roll1'], result['roll2'])
                         for result in cursor.fetchall()]
             finally:
@@ -138,7 +139,6 @@ class Player:
             raise TypeError('Must be within with statement to mutate the '
                             'Player class')
 
-
     @balance.setter
     def balance(self, balance):
         if self._in_context:
@@ -148,7 +148,7 @@ class Player:
                             'Player class')
 
     @turn_position.setter
-    def turn_position(self, trun_position):
+    def turn_position(self, turn_position):
         if self._in_context:
             self._turn_position = turn_position
         else:
@@ -162,6 +162,7 @@ class Player:
         else:
             raise TypeError('Must be within with statement to mutate the '
                             'Player class')
+
     @rolls.setter
     def rolls(self, rolls):
         if self._in_context:
