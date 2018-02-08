@@ -49,7 +49,7 @@ class Player:
         self._conn.begin()
         if self._new:
             with self._conn.cursor() as cursor:
-                cursor.execute('INSERT INTO `players` (`username`) (%s);'
+                cursor.execute('INSERT INTO `players` (`username`) VALUES (%s);'
                                'SELECT LAST_INSERT_ID();',
                                (self.username,))
                 self._uid = cursor.fetchone()
