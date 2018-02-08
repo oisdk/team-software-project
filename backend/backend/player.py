@@ -7,7 +7,7 @@ import backend.storage
 class Player(object):  # pylint: disable=too-many-instance-attributes
     """The Player class.
 
-    Acces (and mutation) to the properties of this class can be done either
+    Access (and mutation) to the properties of this class can be done either
     atomically or non-atomically. To *read* a property, normal property
     syntax can be used::
 
