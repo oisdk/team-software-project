@@ -5,7 +5,7 @@ import json
 import sys
 import cgitb
 from uuid import UUID
-from backend.storage import Player
+from backend.player import Player
 
 cgitb.enable()
 
@@ -35,7 +35,7 @@ def request_user_id(source=sys.stdin, output=sys.stdout):
     """
     request = json.load(source)
     client_username = request["username"]
-    player = Player(client_username)
     output.write('Content-Type: application/json\n\n')
-    json.dump({"your_username": client_username, "your_id":
-               json_encoder(player.user_id)}, output, sort_keys=True)
+    with Player(username=client_username) as player:
+        json.dump({"your_username": client_username, "your_id":
+                   json_encoder(player.user_id)}, output, sort_keys=True)

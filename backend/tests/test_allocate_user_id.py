@@ -2,7 +2,7 @@ import unittest
 import doctest
 import backend.allocate_user_id
 from backend.allocate_user_id import json_encoder
-from backend.storage import Player
+from backend.player import Player
 
 
 class TestRequestUserID(unittest.TestCase):

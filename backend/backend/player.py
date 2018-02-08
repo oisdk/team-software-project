@@ -1,4 +1,5 @@
-import storage
+import backend.storage
+
 
 class Player:
     def __init__(self, username=None, uid=None):
@@ -19,7 +20,7 @@ class Player:
         if self._new:
             with self._conn.cursor() as cursor:
                 cursor.execute('INSERT INTO `players` (`username`) (%s); SELECT LAST_INSERT_ID();',
-                        (self.username,))
+                               (self.username,))
                 self._uid = cursor.fetchone()
             self.rolls = []
         else:
@@ -27,8 +28,8 @@ class Player:
                 cursor.execute('SELECT (`username`) FROM `players` WHERE `id` = %s;', (self.uid,))
                 self.username = cursor.fetchone()['username']
             with self._conn.cursor() as cursor:
-                cursor.execute('SELECT (`roll1`, `roll2`) FROM  `rolls` WHERE `id` = %s ORDER BY `number`;'), (self.id,))
-                self.rolls = [ (result['roll1'], result['roll2']) for result in cursor.fetchall()]
+                cursor.execute('SELECT (`roll1`, `roll2`) FROM  `rolls` WHERE `id` = %s ORDER BY `number`;', (self.id,))
+                self.rolls = [(result['roll1'], result['roll2']) for result in cursor.fetchall()]
 
     def __exit__(self):
         with self._conn.cursor() as cursor:
