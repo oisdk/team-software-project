@@ -124,7 +124,7 @@ class Player:
             try:
                 with conn.cursor() as cursor:
                     cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls` '
-                                   'WHERE `id` = %s ORDER BY `number`;',
+                                   'WHERE `id` = %s ORDER BY `num`;',
                                    (self.uid,))
                 return [(result['roll1'], result['roll2'])
                         for result in cursor.fetchall()]
