@@ -88,20 +88,6 @@ class Player(object): # pylint: disable=too-many-instance-attributes
             self._in_context = False
             self._conn.close()
 
-    def _get_property(self, name):
-        if self._in_context:
-            return getattr(self, '_' + name)
-        else:
-            conn = backend.storage.make_connection()
-            try:
-                with conn.cursor() as cursor:
-                    cursor.execute('SELECT (%s) FROM `players` '
-                                   'WHERE `id` = %s;',
-                                   (name, self.uid))
-                    return cursor.fetchone()[name]
-            finally:
-                conn.close()
-
     @property
     def uid(self):
         """
@@ -123,7 +109,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if called outside of a with statement.
         """
-        return self._get_property('username')
+        return backend.storage.request_property(self, self._in_context, 'players', 'username')
 
     @property
     def balance(self):
@@ -134,7 +120,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if called outside of a with statement.
         """
-        return self._get_property('balance')
+        return backend.storage.request_property(self, self._in_context, 'players', 'balance')
 
     @property
     def turn_position(self):
@@ -145,7 +131,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if called outside of a with statement.
         """
-        return self._get_property('turn_position')
+        return backend.storage.request_property(self, self._in_context, 'players', 'turn_position')
 
     @property
     def board_position(self):
@@ -156,7 +142,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if called outside of a with statement.
         """
-        return self._get_property('board_position')
+        return backend.storage.request_property(self, self._in_context, 'players', 'board_position')
 
     @property
     def rolls(self):

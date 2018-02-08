@@ -7,7 +7,8 @@ class Game(object):
         self._in_context = False
         self._players = None
         self._current_turn = None
-        self._state =  None
+        self._state = None
+        self._conn = None
 
     def __enter__(self):
         self._in_context = True
@@ -45,31 +46,17 @@ class Game(object):
             self._in_context = False
             self._conn.close()
 
-    def _get_property(self, name):
-        if self._in_context:
-            return getattr(self, '_' + name)
-        else:
-            conn = backend.storage.make_connection()
-            try:
-                with conn.cursor() as cursor:
-                    cursor.execute('SELECT (%s) FROM `games` '
-                                   'WHERE `id` = %s;',
-                                   (name, self.uid))
-                    return cursor.fetchone()[name]
-            finally:
-                conn.close()
-
     @property
     def uid(self):
         return self._uid
 
     @property
     def current_turn(self):
-        return self._get_property('current_turn')
+        return backend.storage.request_property(self, self._in_context, 'games', 'current_turn')
 
     @property
     def state(self):
-        return self._get_property('state')
+        return backend.storage.request_property(self, self._in_context, 'games', 'state')
 
     @property
     def players(self):
@@ -81,13 +68,13 @@ class Game(object):
                 with conn.cursor() as cursor:
                     cursor.execute('SELECT (`player_id`) FROM `playing_in` '
                                    'WHERE `game_id` = %s;',
-                                   (self,uid,))
+                                   (self.uid,))
                     return [result['player_id']
                             for result in cursor.fetchall()]
             finally:
                 conn.close()
 
-    def _set_property(sefl, name, new_value):
+    def _set_property(self, name, new_value):
         if self._in_context:
             setattr(self, '_' + name, new_value)
         else:
