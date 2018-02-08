@@ -3,10 +3,6 @@ players of Monopoly"""
 
 import backend.storage
 
-# List of players
-# Current turn
-# Game state: WAITING|PLAYING
-
 class Player(object): # pylint: disable=too-many-instance-attributes
     """The Player class.
 
@@ -84,9 +80,9 @@ class Player(object): # pylint: disable=too-many-instance-attributes
                                (self.username, self.balance,
                                 self.turn_position, self.board_position,
                                 self.uid))
-                cursor.execute('REPLACE INTO `rolls` VALUES (%s, %s, %s, %s);',
-                               ((self.uid, roll1, roll2, i)
-                                for i, (roll1, roll2) in enumerate(self.rolls)))
+                cursor.executemany('REPLACE INTO `rolls` VALUES (%s, %s, %s, %s);',
+                                   ((self.uid, roll1, roll2, i)
+                                    for i, (roll1, roll2) in enumerate(self.rolls)))
             self._conn.commit()
         finally:
             self._in_context = False
@@ -187,7 +183,7 @@ class Player(object): # pylint: disable=too-many-instance-attributes
 
     def _set_property(self, name, new_value):
         if self._in_context:
-            setattr(self, name, new_value)
+            setattr(self, '_' + name, new_value)
         else:
             raise TypeError('Must be within "with" statement to mutate the '
                             'Player class')
