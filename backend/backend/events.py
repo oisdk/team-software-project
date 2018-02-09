@@ -93,15 +93,26 @@ def output_events(data, output_stream):
     output_stream.write('data: {}'.format(json.dumps(data)))
     output_stream.write('\n')
 
-class PropertySnapshot(object):
-    """A static copy of an object’s properties."""
-    def __init__(self, original):
-        """Creates the snapshot by copying the property values of an object.
+def copy_properties(original, copy):
+    """Copies the property values of one object to another.
 
-        Arguments:
-            original: The object from which property values will be read.
-        """
-        for name in dir(original):
-            value = getattr(original, name)
-            if isinstance(value, property):
-                setattr(self, name, value)
+    Arguments:
+        original: The object from which property values will be read.
+        copy: The object to which the property values will be written.
+    """
+    for name in dir(original):
+        value = getattr(original, name)
+        if isinstance(value, property):
+            setattr(copy, name, value)
+
+class GameSnapshot(object):
+    """A snapshot of the state of a game."""
+    def __init__(self, game):
+        copy_properties(original=game, copy=self)
+        self.player_ids = self.players
+        self.players = [PlayerSnapshot(pid) for pid in self.player_ids]
+
+class PlayerSnapshot(object):
+    """A snapshot of the state of a player."""
+    def __init__(self, player):
+        copy_properties(original=player, copy=self)
