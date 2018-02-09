@@ -4,6 +4,8 @@ describe('createGame tests', () => {
     // Create a mock for the actual sendJSON function
     const mockSendJSON = jest.fn();
 
+    const mockWaitingGame = jest.fn();
+
     // Backup the BOM XMLHttpRequest object to a variable since it will be
     // over-written soon
     const oldXHR = window.XMLHttpRequest;
@@ -38,9 +40,17 @@ describe('createGame tests', () => {
         done();
     });
 
+    test('getGameID with default sendJSON', () => {
+        getGameID.getGameID(4);
+    });
+
     test('successCallback', (done) => {
-        getGameID.successCallback(mockResponse);
-        expect(mockSendJSON).toHaveBeenCalled();
+        getGameID.successCallback(mockResponse, mockWaitingGame);
+        expect(mockWaitingGame).toHaveBeenCalledWith(JSON.parse(mockResponse.responseText).game_id);
         done();
+    });
+
+    test('successCallback with default waitingGame', () => {
+        getGameID.successCallback(mockResponse);
     });
 });
