@@ -92,3 +92,16 @@ def output_events(data, output_stream):
     print('event: gameUpdate', file=output_stream)
     output_stream.write('data: {}'.format(json.dumps(data)))
     output_stream.write('\n')
+
+class Snapshot(object):
+    """A static copy of an object’s properties."""
+    def __init__(self, original):
+        """Creates the snapshot by copying the property values of an object.
+
+        Arguments:
+            original: The object from which property values will be read.
+        """
+        for name in dir(original):
+            value = getattr(original, name)
+            if isinstance(value, property):
+                setattr(self, name, value)
