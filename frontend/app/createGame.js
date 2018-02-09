@@ -1,6 +1,6 @@
 // Import sendJSON functionality
 import * as sendJSON from './sendJSON';
-import * as waitingG from  './pages';
+import waitingGame from './pages';
 
 // A global variable to store the function which makes the request to the server
 let JSONSender = sendJSON.sendJSON;
@@ -13,7 +13,7 @@ let JSONSender = sendJSON.sendJSON;
 export function successCallback(req1) {
     const response = JSON.parse(req1.responseText);
     const gameID = response.game_id;
-	waitingG.waitingGame(gameID);
+    waitingGame(gameID);
 }
 
 /**
