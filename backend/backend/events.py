@@ -93,7 +93,7 @@ def output_events(data, output_stream):
     output_stream.write('data: {}'.format(json.dumps(data)))
     output_stream.write('\n')
 
-class Snapshot(object):
+class PropertySnapshot(object):
     """A static copy of an object’s properties."""
     def __init__(self, original):
         """Creates the snapshot by copying the property values of an object.
