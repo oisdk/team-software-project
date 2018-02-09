@@ -44,7 +44,7 @@ class Game(object):
                                'WHERE `id` = %s;',
                                (self.current_turn, self.state,
                                 self.uid))
-                cursor.execute('DELETE FROM `playing_in` WHERE `id = %s;',
+                cursor.execute('DELETE FROM `playing_in` WHERE `id` = %s;',
                                (self.uid,))
                 cursor.executemany('INSERT INTO `playing_in` VALUES (%s, %s);',
                                    ((pid, self.uid) for pid in self.players))
