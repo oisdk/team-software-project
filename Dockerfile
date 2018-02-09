@@ -36,6 +36,8 @@ RUN chmod -R 755 /var/www/html
 
 EXPOSE 80
 
-RUN echo "#!/bin/bash\nservice mysql start\n/usr/sbin/apache2 -D FOREGROUND" >> /startup.sh && chmod +x /startup.sh
+COPY initialise_server.sql /
+
+RUN echo "#!/bin/bash\nservice mysql start && mysql -e 'CREATE DATABASE db;' && mysql db < initialise_server.sql\n/usr/sbin/apache2 -D FOREGROUND" >> /startup.sh && chmod +x /startup.sh
 
 ENTRYPOINT ["/startup.sh"]
