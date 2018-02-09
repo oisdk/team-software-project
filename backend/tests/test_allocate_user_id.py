@@ -1,17 +1,7 @@
 import unittest
 import doctest
+
 import backend.allocate_user_id
-from backend.allocate_user_id import json_encoder
-from backend.storage import Player
-
-
-class TestRequestUserID(unittest.TestCase):
-
-    def test_encoder(self):
-        encodetest = Player("username")
-        self.assertEqual(str(encodetest.user_id),
-                         json_encoder(encodetest.user_id))
-        self.assertEqual(None, json_encoder("test"))
 
 
 def load_tests(loader, tests, ignore):
