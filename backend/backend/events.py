@@ -20,12 +20,16 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
     while True:
         game = Game(game_id)
         new_game_state = game.state
-        new_players = game.players
+        new_players = {player.uid: player.username
+            for player in map(Player, game.players)}
 
         if new_players != players:
             output_stream.write('event: playerJoin\n')
             output_stream.write('data: ')
-            output_stream.write(json.dumps({'playerIds': new_players}))
+            output_stream.write(json.dumps(
+                {uid: uname
+                    for uid, uname in new_players.items()
+                    if uid not in players}))
             output_stream.write('\n\n')
             players = new_players
 
