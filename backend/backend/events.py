@@ -21,6 +21,7 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
         game = Game(game_id)
         new_game_state = game.state
         new_players = game.players
+
         if new_players != players:
             output_stream.write('event: playerJoin\n')
             output_stream.write('data: ')
