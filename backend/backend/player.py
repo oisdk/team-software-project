@@ -62,9 +62,9 @@ class Player(object):  # pylint: disable=too-many-instance-attributes
             self._turn_position = result['turn_position']
             self._board_position = result['board_position']
             del result
-            cursor.execute('SELECT (`roll1`, `roll2`) FROM `rolls` '
-                           'WHERE `id` = %s ORDER BY `number`;',
-                           (self.uid,))
+            cursor.execute('SELECT `roll1`, `roll2` FROM `rolls` '
+                           'WHERE `id` = %s ORDER BY `num`;',
+                           (self.uid))
             self._rolls = [(result['roll1'], result['roll2'])
                            for result in cursor.fetchall()]
         return self
@@ -76,16 +76,17 @@ class Player(object):  # pylint: disable=too-many-instance-attributes
                                'SET `username` = %s, '
                                '`balance` = %s, '
                                '`turn_position` = %s, '
-                               '`board_position` = %s, '
+                               '`board_position` = %s '
                                'WHERE `id` = %s;',
                                (self.username, self.balance,
                                 self.turn_position, self.board_position,
                                 self.uid))
-                cursor.executemany('REPLACE INTO `rolls` '
-                                   'VALUES (%s, %s, %s, %s);',
-                                   ((self.uid, roll1, roll2, i)
-                                    for i, (roll1, roll2)
-                                    in enumerate(self.rolls)))
+                if self.rolls != []:
+                    cursor.executemany('REPLACE INTO `rolls` '
+                                       'VALUES (%s, %s, %s, %s);',
+                                       ((self.uid, roll1, roll2, i)
+                                        for i, (roll1, roll2)
+                                        in enumerate(self.rolls)))
             self._conn.commit()
         finally:
             self._in_context = False
