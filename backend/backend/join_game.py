@@ -4,9 +4,10 @@ from backend.player import Player
 
 def join_game(game_id, player_id):
     with Player(player_id) as player:
-        game = Game(game_id)
-        if game.state == "waiting":
-            player.turn_position = len(game.players) + 1
-        else:
-            pass
-            #Possibly something if the game has started
+        with Game(game_id) as game:
+            state = str(game.state)
+            if str(game.state) == 'waiting':
+                player.turn_position = len(game.players)
+            else:
+                pass
+                #Possibly something if the game has started
