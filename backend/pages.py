@@ -7,4 +7,5 @@ pages = {
     'allocate_user_id': 'backend.allocate_user_id:request_user_id',
     'allocate_game_id': 'backend.allocate_game_id:request_game_id',
     'get_game_details': 'backend.request_game_details:request_game_details',
+    'game_event_source': 'backend.events.start_sse_stream',
 }
