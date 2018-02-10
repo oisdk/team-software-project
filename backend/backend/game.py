@@ -159,12 +159,12 @@ def get_games():
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('SELECT (`playing_in.game_id`, `players.username`) '
-                           'FROM `playing_in` '
-                           'INNER JOIN `players` ON '
-                           '`playing_in.player_id` = `players.id` '
+            cursor.execute('SELECT playing_in.game_id, players.username '
+                           'FROM playing_in '
+                           'INNER JOIN players ON '
+                           'playing_in.player_id = players.id '
                            'ORDER BY playing_in.game_id;')
-            result = {game_id: list(row['username'])
+            result = {game_id: [user['username'] for user in row]
                       for game_id, row
                       in groupby(cursor.fetchall(), itemgetter('game_id'))}
         conn.commit()
