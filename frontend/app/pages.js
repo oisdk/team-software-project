@@ -9,14 +9,34 @@ import {sendJSON} from './sendJSON';
  * @param gameID The ID of the game to display.
  */
 export default function waitingGame(gameID) {
-    const rootElement = document.body;
-    sendJSON({
-        serverAddress: 'cgi-bin/get_game_details.py',
-        jsonObject: {game_id: gameID},
-        successCallback(request) {
-            rootElement.innerHTML = `You are in the waiting game ${gameID}.
-            Here are the details:
-            ${request.responseText}`;
-        },
-    });
+    createHTML({gameID, rootElement: document.body});
+    sseEventSource = new EventSource(`cgi-bin/game_event_source.py?game=${gameID}`);
+}
+
+/**
+ * Creates the html for the waiting game.
+ *
+ * @param gameID The id of the game.
+ * @param {HTMLElement} rootElement The element to which the html is added.
+ * @param {String} playerListID The id the player list element should have.
+ * @param {String} startButtonID The id the start game button should have.
+ */
+function createHTML({gameID, rootElement, playerListID, startButtonID}) {
+    while (rootElement.firstChild) {
+        rootElement.firstChild.remove();
+    }
+
+    const heading = document.createElement('h1');
+    heading.innerHTML = `You are in game ${gameID}`;
+    const playerList = document.createElement('section');
+    playerList.id = playerListId;
+    const startButton = document.createElement('button');
+    startButton.style.type = 'button';
+    startButton.innerHTML = 'Start Game';
+    startButton.id = startButtonID;
+    startButton.disabled = true;
+
+    rootElement.appendChild(heading);
+    rootElement.appendChild(playerList);
+    rootElement.appendChild(startButton);
 }
