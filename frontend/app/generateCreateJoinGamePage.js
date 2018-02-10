@@ -2,6 +2,9 @@
 import * as checkUserIDCookie from './checkUserIDCookie';
 // Import pickGame functionality
 import * as pickGame from './pickGame';
+// Import createGame functionality
+import * as createGame from './createGame';
+
 
 /**
  * Callback function to update HTML body with file's contents.
@@ -17,6 +20,8 @@ export function updatePage(fileReader) {
         usernameField.innerHTML = username;
         const joinGameButton = document.getElementById('join-game');
         joinGameButton.addEventListener('click', pickGame.requestGameList, false);
+        const createGameButton = document.getElementById('create-game');
+        createGameButton.addEventListener('click', createGame.getGameID, false);
     }
 }
 

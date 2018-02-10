@@ -94,7 +94,7 @@ describe('sendJSON test suite', () => {
         });
         expect(succCallback).not.toHaveBeenCalled();
         mockXHR.readyState = 4;
-        mockXHR.state = 200;
+        mockXHR.status = 200;
         mockXHR.onreadystatechange();
         expect(succCallback).toHaveBeenCalledWith(mockXHR);
         expect(failCallback).not.toHaveBeenCalled();
@@ -110,7 +110,7 @@ describe('sendJSON test suite', () => {
         });
         expect(failCallback).not.toHaveBeenCalled();
         mockXHR.readyState = 4;
-        mockXHR.state = 404;
+        mockXHR.status = 404;
         mockXHR.onreadystatechange();
         expect(failCallback).toHaveBeenCalledWith(mockXHR);
         expect(succCallback).not.toHaveBeenCalled();
@@ -125,7 +125,7 @@ describe('sendJSON test suite', () => {
             successCallback: succCallback,
         });
         mockXHR.readyState = 3;
-        mockXHR.state = 200;
+        mockXHR.status = 200;
         mockXHR.onreadystatechange();
         expect(failCallback).not.toHaveBeenCalled();
         expect(succCallback).not.toHaveBeenCalled();

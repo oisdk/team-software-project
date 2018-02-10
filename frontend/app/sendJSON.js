@@ -35,7 +35,7 @@ export function sendJSON({
     request.open('POST', serverAddress);
     request.onreadystatechange = () => {
         if (request.readyState === 4) {
-            if (request.state === 200) {
+            if (request.status === 200) {
                 successCallback(request);
             } else {
                 failureCallback(request);
