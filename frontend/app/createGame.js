@@ -27,7 +27,7 @@ export function getGameID(player_count = 4, JSONSend = sendJSON.sendJSON) {
     const id = details.user_id;
     JSONSend({
         serverAddress: 'cgi-bin/allocate_game_id.py',
-        jsonObject: JSON.stringify({host_id: id, game_size: player_count}),
+        jsonObject: {host_id: id, game_size: player_count},
         // The below line is shorthand because the object field name and the
         // actual function have the same name
         successCallback,
