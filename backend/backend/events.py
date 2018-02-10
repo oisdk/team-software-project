@@ -24,7 +24,7 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
             for player in map(Player, game.players)}
 
         if new_players != players:
-            generate_player_join_events(output_stream, players, new_players)
+            generate_player_join_event(output_stream, players, new_players)
             players = new_players
 
         if (game_state == None
@@ -38,12 +38,12 @@ def generate_player_join_event(output_stream, old_players, new_players):
     """Generates an event for a change in the group of players in the game.
 
     >>> import sys
-    >>> generate_player_join_events(
+    >>> generate_player_join_event(
     ...     sys.stdout,
-    ...     {5: first_user, 6: 'user_2'},
-    ...     {5: first_user, 6: 'user_2', 8: 'third'})
-    'event: playerJoin'
-    'data: {8: "third"}'
+    ...     {5: 'first_user', 6: 'user_2'},
+    ...     {5: 'first_user', 6: 'user_2', 8: 'third'})
+    event: playerJoin
+    data: {"8": "third"}
     <BLANKLINE>
     """
     output_stream.write('event: playerJoin\n')
@@ -51,5 +51,5 @@ def generate_player_join_event(output_stream, old_players, new_players):
     output_stream.write(json.dumps(
         {uid: uname
             for uid, uname in new_players.items()
-            if uid not in players}))
+            if uid not in old_players}))
     output_stream.write('\n\n')
