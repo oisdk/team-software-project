@@ -9,7 +9,7 @@ describe('updatePage test', () => {
     const mockFileResponse = {
         status: 200,
         readyState: 4,
-        responseText: '<p>test html content<i id="username"></i></p><button id="join-game" name="join-game">Join Existing Game</button>',
+        responseText: '<p>test html content<i id="username"></i></p><button id="join-game" name="join-game">Join Existing Game</button><br><button id="create-game" name="create-game">Create a New Game</button>',
     };
 
     // Create a user_name cookie which will be read by updatePage to customise
@@ -26,7 +26,7 @@ describe('updatePage test', () => {
 
     test('should read mockFileResponse and update page with its contents', (done) => {
         generateCreateJoinGamePage.updatePage(mockFileResponse);
-        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username">testuser</i></p><button id="join-game" name="join-game">Join Existing Game</button>');
+        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username">testuser</i></p><button id="join-game" name="join-game">Join Existing Game</button><br><button id="create-game" name="create-game">Create a New Game</button>');
         done();
     });
 });

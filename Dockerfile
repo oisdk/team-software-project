@@ -9,6 +9,9 @@ RUN apt-get -y install curl
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get -y install nodejs
 
+ENV DEBIAN_FRONTEND "noninteractive"
+RUN apt-get -y install mysql-server
+
 RUN ln -s /usr/bin/python3 /usr/local/bin/python3
 
 ENV APACHE_RUN_USER www-data
@@ -33,5 +36,8 @@ RUN chmod -R 755 /var/www/html
 
 EXPOSE 80
 
-ENTRYPOINT ["/usr/sbin/apache2"]
-CMD ["-D", "FOREGROUND"]
+COPY initialise_server.sql /
+
+RUN echo "#!/bin/bash\nservice mysql start && mysql -e 'CREATE DATABASE db;' && mysql db < initialise_server.sql\n/usr/sbin/apache2 -D FOREGROUND" >> /startup.sh && chmod +x /startup.sh
+
+ENTRYPOINT ["/startup.sh"]
