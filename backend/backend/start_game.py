@@ -21,10 +21,10 @@ def start_game(source=sys.stdin):
     try:
         conn = backend.storage.make_connection()
         conn.begin()
-        with self._conn.cursor() as cursor:
+        with conn.cursor() as cursor:
             cursor.execute('UPDATE `games` '
-                               'SET `state` = %s'
-                               'WHERE `id` = %s;',
-                               ('playing', game_id))
+                           'SET `state` = %s'
+                           'WHERE `id` = %s;',
+                           ('playing', game_id))
     finally:
         conn.close()
