@@ -32,11 +32,6 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
             generate_player_join_event(output_stream, players, new_players)
             players = new_players
 
-        if (game_state == None
-            or new_game_state == 'playing' and game_state == 'waiting'):
-            output_stream.write('event: gameStart\n\n')
-            game_state = new_game_state
-
         output_stream.flush()
 
 def generate_player_join_event(output_stream, old_players, new_players):
