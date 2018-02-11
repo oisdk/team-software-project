@@ -18,13 +18,4 @@ def start_game(source=sys.stdin):
     """
     request = json.load(source)
     game_id = request["game_id"]
-    try:
-        conn = backend.storage.make_connection()
-        conn.begin()
-        with conn.cursor() as cursor:
-            cursor.execute('UPDATE `games` '
-                           'SET `state` = %s'
-                           'WHERE `id` = %s;',
-                           ('playing', game_id))
-    finally:
-        conn.close()
+    backend.game.Game(game_id).state = 'playing'
