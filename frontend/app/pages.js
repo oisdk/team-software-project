@@ -19,6 +19,8 @@ export default function waitingGame(gameID) {
     });
     sseEventSource = new EventSource(`cgi-bin/game_event_source.py?game=${gameID}`);
 
+    let numberOfPlayers = 0;
+
     sseEventSource.addEventListener('playerJoin', (joinEvent) => {
         const playerList = JSON.parse(joinEvent.data);
         const playerListElement = document.getElementById(playerListID);
@@ -26,6 +28,11 @@ export default function waitingGame(gameID) {
             const playerElement = document.createElement('div');
             playerElement.innerHTML = player.username;
             playerListElement.appendChild(playerElement);
+
+            numberOfPlayers++;
+            if (numberOfPlayers === 4) {
+                document.getElementById(startButtonID).disabled = false;
+            }
         }
     });
 }
