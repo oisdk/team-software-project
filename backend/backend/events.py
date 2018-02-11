@@ -28,7 +28,7 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
             players = new_players
 
         if (game_state == None
-            or new_game_state == 'active' and game_state == 'waiting'):
+            or new_game_state == 'playing' and game_state == 'waiting'):
             output_stream.write('event: gameStart\n\n')
             game_state = new_game_state
 
