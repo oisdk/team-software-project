@@ -5,6 +5,10 @@ changes.
 import sys
 import json
 import backend.storage as storage
+from cgi import FieldStorage
+
+import cgitb
+cgitb.enable()
 
 
 def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
@@ -13,7 +17,8 @@ def start_sse_stream(input_stream=sys.stdin, output_stream=sys.stdout):
     output_stream.write('Cache-Control: no-cache\n')
     output_stream.write('\n')
 
-    game_id = json.load(input_stream)['game_id']
+    input_data = FieldStorage()
+    game_id = input_data.getfirst('game')
     game_state = None
     players = None
 
