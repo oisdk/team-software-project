@@ -23,10 +23,14 @@ def roll_two_dice():
     return dice_result
 
 
-def player_roll_dice(game_id, player_id):
+def player_roll_dice(source=sys.stdin):
     """Rolls two dice for a player, appends there rolls to the database,
        updates their position and the current game turn.
     """
+
+    request = json.load(source)
+    player_id = request["user_id"]
+    game_id = request["game_id"]
 
     number_of_squares = 40
     pass_go_amount = 200
