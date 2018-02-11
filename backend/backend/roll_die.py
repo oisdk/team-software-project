@@ -1,9 +1,9 @@
 """ Roll die module """
 from random import randint
-from backend.player import Player
-from backend.game import Game
 import json
 import sys
+from backend.player import Player
+from backend.game import Game
 
 
 def roll_dice():
