@@ -10,7 +10,7 @@
  * @param {String} playerListID The id the player list element should have.
  * @param {String} startButtonID The id the start game button should have.
  */
-function createHTML({
+function createWaitingGameHTML({
     gameID,
     rootElement,
     playerListID,
@@ -43,7 +43,7 @@ function createHTML({
 export default function waitingGame(gameID) {
     const startButtonID = 'startButton';
     const playerListID = 'playerList';
-    createHTML({
+    createWaitingGameHTML({
         gameID,
         rootElement: document.body,
         playerListID,
