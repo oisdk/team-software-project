@@ -1,5 +1,7 @@
 """ Roll die module """
 from random import randint
+from backend.player import Player
+from backend.game import Game
 
 
 def roll_dice():
@@ -19,3 +21,21 @@ def roll_two_dice():
     """
     dice_result = (roll_dice(), roll_dice())
     return dice_result
+
+
+def player_roll_dice(game_id, player_id):
+    """Rolls two dice for a player, appends there rolls to the database,
+       updates their position and the current game turn.
+    """
+    with Game(game_id) as game:
+        with Player(player_id) as player:
+            if game.current_turn == player.turn_position:
+                rolls = roll_two_dice()
+                player.rolls.append(rolls)
+                player.board_position += sum(rolls)
+
+                if rolls[0] != rolls[1]:
+                    if game.current_turn == len(game.players)-1:
+                        game.current_turn = 0
+                    else:
+                        game.current_turn += 1
