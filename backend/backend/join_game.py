@@ -1,8 +1,5 @@
 """Module enables players to join a chosen game and adds the player to the turn order"""
 
-from backend.game import Game
-from backend.player import Player
-
 def join_game(game_id, player_id):
     with Player(player_id) as player:
         game = Game(game_id)
