@@ -7,6 +7,11 @@ describe('waitingGame', () => {
 
     beforeEach(() => {
         sJ.sendJSON = jest.fn();
+        window.EventSource = jest.fn();
+        const mockEventSource = {
+            addEventListener: jest.fn(),
+        };
+        window.EventSource.mockReturnValue(mockEventSource);
     });
 
     it('should call sendJSON', () => {
