@@ -9,11 +9,13 @@ import {sendJSON} from './sendJSON';
  * @param gameID The ID of the game to display.
  */
 export default function waitingGame(gameID) {
+    const startButtonID = 'startButton';
+    const playerListID = 'playerList';
     createHTML({
         gameID,
         rootElement: document.body,
-        playerListID: 'playerList',
-        startButtonID: 'startButton',
+        playerListID,
+        startButtonID,
     });
     sseEventSource = new EventSource(`cgi-bin/game_event_source.py?game=${gameID}`);
 
