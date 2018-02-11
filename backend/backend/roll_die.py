@@ -28,8 +28,8 @@ def player_roll_dice(game_id, player_id):
        updates their position and the current game turn.
     """
 
-    NUM_SQUARES = 40
-    PASS_GO_AMAOUNT = 200
+    number_of_squares = 40
+    pass_go_amount = 200
 
     with Game(game_id) as game:
         with Player(player_id) as player:
@@ -38,9 +38,9 @@ def player_roll_dice(game_id, player_id):
                 player.rolls.append(rolls)
                 player.board_position += sum(rolls)
 
-                if board_position >= NUM_SQUARES:
-                    player.balance += PASS_GO_AMAOUNT
-                    player.board_position -= NUM_SQUARES
+                if player.board_position >= number_of_squares:
+                    player.balance += pass_go_amount
+                    player.board_position -= number_of_squares
 
                 if rolls[0] != rolls[1]:
                     if game.current_turn == len(game.players)-1:
