@@ -1,3 +1,5 @@
+import {initialiseEventSource} from './sse';
+
 /**
  * This module provides functions which display a certain page to the user.
  */
@@ -49,9 +51,9 @@ export default function waitingGame(gameID) {
         playerListID,
         startButtonID,
     });
-    sseEventSource = new EventSource(`cgi-bin/game_event_source.py?game=${gameID}`);
 
     let numberOfPlayers = 0;
+    const sseEventSource = initialiseEventSource(gameID);
 
     sseEventSource.addEventListener('playerJoin', (joinEvent) => {
         const playerList = JSON.parse(joinEvent.data);

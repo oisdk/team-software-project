@@ -6,7 +6,6 @@ import * as checkButton from './checkButton';
 
 
 window.onload = () => {
-    let sseEventSource;
     const playerObject = checkUserIDCookie.checkUserDetails();
     // Check if playerObject is not empty.
     // The following expression checks how many fields are in an object,
