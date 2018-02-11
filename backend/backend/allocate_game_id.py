@@ -14,8 +14,8 @@ def request_game_id(source=sys.stdin, output=sys.stdout):
     with games id.
     """
 
+    output.write('Content-Type: application/json\n\n')
     request = json.load(source)
     host_id = request["host_id"]
     game_id = backend.game.create_game(host_id)
-    output.write('Content-Type: application/json\n\n')
     json.dump({"game_id": game_id}, output)
