@@ -71,3 +71,7 @@ export default function waitingGame(gameID) {
         }
     });
 }
+
+export const privateFunctions = {
+    createWaitingGameHTML,
+};
