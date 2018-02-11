@@ -2,6 +2,8 @@
 from random import randint
 from backend.player import Player
 from backend.game import Game
+import json
+import sys
 
 
 def roll_dice():
