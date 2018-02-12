@@ -25,6 +25,10 @@ def start_sse_stream(output_stream=sys.stdout):
     turn = None
     balances = None
 
+    new_players = {}
+    new_positions = {}
+    new_balances = {}
+
     while True:
         game = Game(game_id)
 
