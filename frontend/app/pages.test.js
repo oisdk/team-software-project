@@ -4,9 +4,18 @@ import * as random from './random';
 
 describe('waitingGame', () => {
     const oldSJ = sJ.sendJSON;
+    const oldDocumentBody = document.body;
+
+    beforeAll(() => {
+        document.body.innerHTML = '<div id="content"></div>';
+    });
 
     beforeEach(() => {
         sJ.sendJSON = jest.fn();
+    });
+
+    afterAll(() => {
+        document.body = oldDocumentBody;
     });
 
     it('should call sendJSON', () => {
@@ -15,7 +24,7 @@ describe('waitingGame', () => {
         expect(sJ.sendJSON).toHaveBeenCalled();
         const mockRequest = {responseText: String(random.int(0, 1000))};
         sJ.sendJSON.mock.calls[0][0].successCallback(mockRequest);
-        expect(document.body.innerHTML).toEqual(`You are in the waiting game ${mockGameId}.
+        expect(document.getElementById('content').innerHTML).toEqual(`You are in the waiting game ${mockGameId}.
             Here are the details:
             ${mockRequest.responseText}`);
     });
