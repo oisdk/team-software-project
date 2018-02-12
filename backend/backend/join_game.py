@@ -1,11 +1,13 @@
-"""Module enables players to join a chosen game and adds the player to the turn order"""
-from backend.game import Game
-from backend.player import Player
+"""Module enables players to join a chosen game and
+adds the player to the turn order"""
 import json
 import sys
 import cgitb
+from backend.game import Game
+from backend.player import Player
 
 cgitb.enable()
+
 
 def join_game(source=sys.stdin):
     """Entry point for the client joining game on server
@@ -19,9 +21,8 @@ def join_game(source=sys.stdin):
             players = game.players
             players.append(player_id)
             game.players = players
-            state = str(game.state)
             if str(game.state) == 'waiting':
                 player.turn_position = len(game.players)
             else:
                 pass
-                #Possibly something if the game has started
+                # Possibly something if the game has started

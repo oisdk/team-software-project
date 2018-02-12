@@ -3,8 +3,6 @@ import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
 
 export function sendGameId(gameID, waitFunction) {
-    console.log("GameID:");
-    console.log(gameID);
     if (gameID !== null) {
         const details = getCookie.checkUserDetails();
         const id = details.user_id;
