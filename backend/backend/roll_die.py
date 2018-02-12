@@ -41,6 +41,7 @@ def player_roll_dice(source=sys.stdin):
         for game in games:
             if player.username in games[game]:
                 game_id = game
+                break
 
         with Game(game_id) as game:
             if game.current_turn == player.turn_position:
