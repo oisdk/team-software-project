@@ -6,7 +6,7 @@
 import json
 import sys
 import cgitb
-import backend.storage
+import backend.game
 
 
 cgitb.enable()
@@ -18,4 +18,5 @@ def start_game(source=sys.stdin):
     """
     request = json.load(source)
     game_id = request["game_id"]
-    backend.game.Game(game_id).state = 'playing'
+    with backend.game.Game(game_id) as game:
+        game.state = 'playing'
