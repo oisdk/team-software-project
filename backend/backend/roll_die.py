@@ -3,7 +3,7 @@ from random import randint
 import json
 import sys
 from backend.player import Player
-from backend.game import Game
+from backend.game import Game, get_games
 
 
 def roll_dice():
@@ -32,13 +32,17 @@ def player_roll_dice(source=sys.stdin):
 
     request = json.load(source)
     player_id = request["user_id"]
-    game_id = request["game_id"]
 
     number_of_squares = 40
     pass_go_amount = 200
+    games = get_games()
 
-    with Game(game_id) as game:
-        with Player(player_id) as player:
+    with Player(player_id) as player:
+        for game in games:
+            if player.username in games[game]:
+                game_id = game
+
+        with Game(game_id) as game:
             if game.current_turn == player.turn_position:
                 rolls = roll_two_dice()
                 player.rolls.append(rolls)
