@@ -1,5 +1,6 @@
 // Import sendJSON functionality
 import * as sendJSON from './sendJSON';
+import * as getCookie from './checkUserIDCookie';
 
 /**
  * Callback function to update HTML body with file's contents.
@@ -7,13 +8,9 @@ import * as sendJSON from './sendJSON';
  */
 export function updatePage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
-        document.getElementByID('roll-dice').innerHTML = fileReader.responseText;
+        document.body.innerHTML = fileReader.responseText;
         const rollDiceButton = document.getElementById('roll-dice');
-        joinGameButton.addEventListener('click', sendJSON.sendJSON({
-        serverAddress: 'cgi-bin/roll_dice.py',
-        jsonObject: {host_id: id, game_size: player_count},
-        //Call To Update Board,
-    });, false);
+        rollDiceButton.addEventListener('click', rollDice, false);
         //const endTurnButton = document.getElementById('end-turn');
         //createGameButton.addEventListener('click', createGame.getGameID, false);
     }
@@ -29,4 +26,27 @@ export function generateGameInterface() {
     fileReader.open('GET', 'game-interface.html', true);
     fileReader.onreadystatechange = () => updatePage(fileReader);
     fileReader.send();
+}
+
+/**
+ * Function to call the roll_dice on the server side.
+ */
+export function rollDice(){
+    const details = getCookie.checkUserDetails();
+    const id = details.user_id;
+    sendJSON.sendJSON({
+        serverAddress: 'cgi-bin/roll_dice.py',
+        jsonObject: {user_id: id},
+        successCallback,
+    });
+}
+
+/**
+ * Callback for when game_id successfully received.
+ *
+ * @param {XMLHttpRequest} req1 Contains the response with the game_id.
+ */
+export function successCallback(req1) {
+    const response = JSON.parse(req1.responseText);
+    console.log(response);
 }
