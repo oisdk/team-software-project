@@ -22,6 +22,7 @@ def start_sse_stream(output_stream=sys.stdout):
     game_id = input_data.getfirst('game')
     players = None
     positions = None
+    turn = None
 
     while True:
         game = Game(game_id)
@@ -34,6 +35,12 @@ def start_sse_stream(output_stream=sys.stdout):
             player.uid: player.board_position
             for player in map(Player, game.players)
         }
+
+        new_turn = game.current_turn
+
+        if new_turn != turn:
+            generate_player_turn_event(output_stream, turn, new_turn)
+            turn = new_turn
 
         if new_players != players:
             generate_player_join_event(output_stream, players, new_players)
@@ -85,4 +92,18 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
         [uid, board_position]
         for uid, board_position in new_positions.items()
         if board_position != old_positions[uid]]))
+    output_stream.write('\n\n')
+
+
+def generate_player_turn_event(output_stream, old_turn, new_turn):
+    """Generates an event for a change in the position of players in the game.
+
+    >>> import sys
+    >>> generate_player_turn_event(sys.stdout, 1, 2)
+    event: playerTurn
+    data: 2
+    <BLANKLINE>
+    """
+    output_stream.write('event: playerTurn\n')
+    output_stream.write('data: ' + str(new_turn))
     output_stream.write('\n\n')
