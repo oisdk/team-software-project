@@ -1,6 +1,7 @@
 // Import sendJSON functionality
 import * as sendJSON from './sendJSON';
 import waitingGame from './pages';
+import * as getCookie from './checkUserIDCookie';
 
 /**
  * Callback for when game_id successfully received.
@@ -22,9 +23,11 @@ export function successCallback(req1, lobbyFunction = waitingGame) {
 export function getGameID(player_count = 4, JSONSend = sendJSON.sendJSON) {
     // Immediately assign JSONSend parameter to global JSONSender,
     // this is really just to make testing easier
+    const details = getCookie.checkUserDetails();
+    const id = details.user_id;
     JSONSend({
         serverAddress: 'cgi-bin/allocate_game_id.py',
-        jsonObject: JSON.stringify({game_size: player_count}),
+        jsonObject: {host_id: id, game_size: player_count},
         // The below line is shorthand because the object field name and the
         // actual function have the same name
         successCallback,

@@ -7,4 +7,5 @@ pages = {
     'allocate_user_id': 'backend.allocate_user_id:request_user_id',
     'allocate_game_id': 'backend.allocate_game_id:request_game_id',
     'get_game_details': 'backend.request_game_details:request_game_details',
+    'join_game': 'backend.join_game:join_game',
 }

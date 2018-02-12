@@ -22,9 +22,8 @@ def request_property(cls, in_context, table, name):
         conn = make_connection()
         try:
             with conn.cursor() as cursor:
-                cursor.execute('SELECT (%s) FROM %s '
-                               'WHERE `id` = %s;',
-                               (name, table, cls.uid))
+                query = 'SELECT ({}) FROM {} '.format(name, table)
+                cursor.execute(query + 'WHERE `id` = %s;', (cls.uid))
                 return cursor.fetchone()[name]
         finally:
             conn.close()
