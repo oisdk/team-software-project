@@ -27,20 +27,11 @@ def start_sse_stream(output_stream=sys.stdout):
 
     while True:
         game = Game(game_id)
-        new_players = {
-            player.uid: player.username
-            for player in map(Player, game.players)
-        }
 
-        new_positions = {
-            player.uid: player.board_position
-            for player in map(Player, game.players)
-        }
-
-        new_balances = {
-            player.uid: player.balance
-            for player in map(Player, game.players)
-        }
+        for player in map(Player, game.players):
+            new_players[player.uid] = player.username
+            new_positions[player.uid] = player.board_position
+            new_balances[player.uid] = player.balance
 
         new_turn = game.current_turn
 
