@@ -23,6 +23,7 @@ def start_sse_stream(output_stream=sys.stdout):
     players = None
     positions = None
     turn = None
+    balances = None
 
     while True:
         game = Game(game_id)
@@ -33,6 +34,11 @@ def start_sse_stream(output_stream=sys.stdout):
 
         new_positions = {
             player.uid: player.board_position
+            for player in map(Player, game.players)
+        }
+
+        new_balances = {
+            player.uid: player.balance
             for player in map(Player, game.players)
         }
 
@@ -49,6 +55,11 @@ def start_sse_stream(output_stream=sys.stdout):
         if new_positions != positions:
             generate_player_move_event(output_stream, positions, new_positions)
             positions = new_positions
+
+        if new_balances != balances:
+            generate_player_balance_event(output_stream, balances,
+                                          new_balances)
+            balances = new_balances
 
         output_stream.flush()
 
@@ -106,4 +117,25 @@ def generate_player_turn_event(output_stream, old_turn, new_turn):
     """
     output_stream.write('event: playerTurn\n')
     output_stream.write('data: ' + str(new_turn))
+    output_stream.write('\n\n')
+
+
+def generate_player_balance_event(output_stream, old_balances, new_balances):
+    """Generates an event for a change in the position of players in the game.
+
+    >>> import sys
+    >>> generate_player_balance_event(
+    ...     sys.stdout,
+    ...     {5: 200, 6: 200, 7: 200, 8: 200},
+    ...     {5: 200, 6: 200, 7: 200, 8: 400})
+    event: playerBalance
+    data: [[8, 400]]
+    <BLANKLINE>
+    """
+    output_stream.write('event: playerBalance\n')
+    output_stream.write('data: ')
+    output_stream.write(json.dumps([
+        [uid, balance]
+        for uid, balance in new_balances.items()
+        if balance != old_balances[uid]]))
     output_stream.write('\n\n')
