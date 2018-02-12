@@ -45,7 +45,7 @@ def start_sse_stream(output_stream=sys.stdout):
         new_turn = game.current_turn
 
         if new_turn != turn:
-            generate_player_turn_event(output_stream, turn, new_turn)
+            generate_player_turn_event(output_stream, new_turn)
             turn = new_turn
 
         if new_players != players:
@@ -106,11 +106,11 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     output_stream.write('\n\n')
 
 
-def generate_player_turn_event(output_stream, old_turn, new_turn):
+def generate_player_turn_event(output_stream, new_turn):
     """Generates an event for a change in the position of players in the game.
 
     >>> import sys
-    >>> generate_player_turn_event(sys.stdout, 1, 2)
+    >>> generate_player_turn_event(sys.stdout, 2)
     event: playerTurn
     data: 2
     <BLANKLINE>
