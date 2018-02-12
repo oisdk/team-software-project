@@ -31,7 +31,7 @@ describe('Request sent to get list', () => {
 });
 
 describe('Generate list of games ', () => {
-    const oldDocumentBody = document.body.innerHTML;
+    const oldDocumentBody = document.body;
     const sendGameId = jest.fn();
 
     // simulate response
@@ -41,14 +41,18 @@ describe('Generate list of games ', () => {
         responseText: '{"game1":2}',
     };
 
+    beforeAll(() => {
+        document.body.innerHTML = '<div id="content"></div>';
+    });
+
     afterAll(() => {
-        document.body.innerHTML = oldDocumentBody;
+        document.body = oldDocumentBody;
     });
 
     test(' generated games ', (done) => {
-        expect(document.body.innerHTML).toEqual('');
+        expect(document.body.innerHTML).toEqual('<div id="content"></div>');
         functionCall.pickGame(mockFileResponse);
-        expect(document.body.innerHTML).toEqual('<table id="table"><tbody><tr id="row1"><th>Select</th><th>List of games</th></tr></tbody><tr><td><input type="radio" name="gameID" value="game1"></td><td>game1</td></tr><tr id="tableI"><td><input type="submit" value="Join game" id="joinSelectedGame"></td><td></td></tr></table>');
+        expect(document.getElementById('content').innerHTML).toEqual('<table id="table"><tbody><tr id="row1"><th>Select</th><th>List of games</th></tr></tbody><tr><td><input type="radio" name="gameID" value="game1"></td><td>game1</td></tr><tr id="tableI"><td><input type="submit" value="Join game" id="joinSelectedGame"></td><td></td></tr></table>');
         const radio = document.querySelector('input[name="gameID"]');
         radio.checked = true;
         expect(document.querySelector('input[name="gameID"]:checked')).not.toBeNull();
