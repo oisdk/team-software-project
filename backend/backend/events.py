@@ -98,7 +98,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
 
 
 def generate_player_turn_event(output_stream, new_turn):
-    """Generates an event for a change in the position of players in the game.
+    """Generates an event for a change of turn in the game.
 
     >>> import sys
     >>> generate_player_turn_event(sys.stdout, 2)
@@ -112,7 +112,7 @@ def generate_player_turn_event(output_stream, new_turn):
 
 
 def generate_player_balance_event(output_stream, old_balances, new_balances):
-    """Generates an event for a change in the position of players in the game.
+    """Generates an event for a change in the balance of players in the game.
 
     >>> import sys
     >>> generate_player_balance_event(
