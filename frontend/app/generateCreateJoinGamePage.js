@@ -4,6 +4,7 @@ import * as checkUserIDCookie from './checkUserIDCookie';
 import * as pickGame from './pickGame';
 // Import createGame functionality
 import * as createGame from './createGame';
+import * as game from './generateGameInterface';
 
 
 /**
@@ -22,6 +23,8 @@ export function updatePage(fileReader) {
         joinGameButton.addEventListener('click', pickGame.requestGameList, false);
         const createGameButton = document.getElementById('create-game');
         createGameButton.addEventListener('click', createGame.getGameID, false);
+		const testButton = document.getElementById('test');
+        createGameButton.addEventListener('click', game.generateGameInterface, false);
     }
 }
 
