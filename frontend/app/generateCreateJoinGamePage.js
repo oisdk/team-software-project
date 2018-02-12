@@ -12,7 +12,7 @@ import * as createGame from './createGame';
  */
 export function updatePage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
-        document.body.innerHTML = fileReader.responseText;
+        document.getElementById('content').innerHTML = fileReader.responseText;
         const username = checkUserIDCookie.getCookieValue(document.cookie.split('; '), 'user_name');
         // Get the username (displayed in italics) field in the page's heading
         const usernameField = document.querySelector('#username');
