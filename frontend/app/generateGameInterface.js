@@ -8,7 +8,7 @@ import * as getCookie from './checkUserIDCookie';
  */
 export function updatePage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
-        document.body.innerHTML = fileReader.responseText;
+        document.getElementById('content-right').innerHTML = fileReader.responseText;
         const rollDiceButton = document.getElementById('roll-dice');
         rollDiceButton.addEventListener('click', rollDice, false);
         //const endTurnButton = document.getElementById('end-turn');
@@ -39,6 +39,7 @@ export function rollDice(){
         jsonObject: {user_id: id},
         successCallback,
     });
+    
 }
 
 /**
@@ -50,3 +51,11 @@ export function successCallback(req1) {
     const response = JSON.parse(req1.responseText);
     console.log(response);
 }
+
+/**
+ * Function to call to end a players turn.
+ */
+export function endTurn(){
+    
+}
+
