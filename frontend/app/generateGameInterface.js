@@ -2,6 +2,9 @@
 import * as sendJSON from './sendJSON';
 import * as getCookie from './checkUserIDCookie';
 
+const details = getCookie.checkUserDetails();
+const id = details.user_id;
+
 /**
  * Callback function to update HTML body with file's contents.
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
@@ -11,8 +14,8 @@ export function updatePage(fileReader) {
         document.getElementById('content-right').innerHTML = fileReader.responseText;
         const rollDiceButton = document.getElementById('roll-dice');
         rollDiceButton.addEventListener('click', rollDice, false);
-        //const endTurnButton = document.getElementById('end-turn');
-        //createGameButton.addEventListener('click', createGame.getGameID, false);
+        const endTurnButton = document.getElementById('end-turn');
+        endTurnButton.addEventListener('click', endTurn, false);
     }
 }
 
@@ -32,8 +35,6 @@ export function generateGameInterface() {
  * Function to call the roll_dice on the server side.
  */
 export function rollDice(){
-    const details = getCookie.checkUserDetails();
-    const id = details.user_id;
     sendJSON.sendJSON({
         serverAddress: 'cgi-bin/roll_dice.py',
         jsonObject: {user_id: id},
@@ -56,6 +57,10 @@ export function successCallback(req1) {
  * Function to call to end a players turn.
  */
 export function endTurn(){
-    
+    sendJSON.sendJSON({
+        serverAddress: 'cgi-bin/increment_turn.py',
+        jsonObject: {player_id: id},
+        successCallback,
+    });
 }
 
