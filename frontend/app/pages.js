@@ -31,6 +31,12 @@ function createWaitingGameHTML({
     startButton.innerHTML = 'Start Game';
     startButton.id = startButtonID;
     startButton.disabled = true;
+    startButton.onclick = () => {
+        const startGameSignal = new XMLHttpRequest();
+        startGameSignal.open('POST', 'cgi-bin/start-game.py', false);
+        startGameSignal.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        startGameSignal.send(JSON.stringify({game_id: gameID}));
+    }
 
     rootElement.appendChild(heading);
     rootElement.appendChild(playerList);
