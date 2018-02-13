@@ -20,7 +20,7 @@ def start_sse_stream(output_stream=sys.stdout):
 
     input_data = FieldStorage()
     game_id = input_data.getfirst('game')
-    players = None
+    players = {}
 
     while True:
         game = Game(game_id)
