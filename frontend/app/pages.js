@@ -69,6 +69,15 @@ export default function waitingGame(gameID) {
                 document.getElementById(startButtonID).disabled = false;
             }
         }
+    // const rootElement = document.getElementById('content');
+    // sendJSON({
+    //     serverAddress: 'cgi-bin/get_game_details.py',
+    //     jsonObject: {game_id: gameID},
+    //     successCallback(request) {
+    //         rootElement.innerHTML = `You are in the waiting game ${gameID}.
+    //         Here are the details:
+    //         ${request.responseText}`;
+    //     },
     });
 }
 
