@@ -1,6 +1,6 @@
 import * as generateGameInterface from './generateGameInterface';
 
-describe('updatePage test', () => {
+describe('updateGamePage test', () => {
     // Store the current state of the HTML body so it can be restored after the
     // test
     const oldDocumentBody = document.body;
@@ -15,7 +15,7 @@ describe('updatePage test', () => {
 
     // Create a user_name cookie
     beforeAll(() => {
-        document.body.innerHTML = '<div id="content"></div>';
+        document.body.innerHTML = '<div id="content-right"></div>';
         document.cookie = 'user_name=testuser';
     });
 
@@ -26,8 +26,8 @@ describe('updatePage test', () => {
     });
 
     test('should read mockFileResponse and update page with its contents', (done) => {
-        generateGameInterface.updatePage(mockFileResponse);
-        expect(document.getElementById('content').innerHTML).toEqual('<button id="roll-dice" name="roll-dice">Roll Dice</button><br><button id="end-turn" name="end-turn">End Turn</button>');
+        generateGameInterface.updateGamePage(mockFileResponse);
+        expect(document.getElementById('content-right').innerHTML).toEqual('<button id="roll-dice" name="roll-dice">Roll Dice</button><br><button id="end-turn" name="end-turn">End Turn</button>');
         done();
     });
 });
@@ -56,6 +56,31 @@ describe('generateGameInterface test', () => {
     test('should call appropriate XMLHttpRequest functions', (done) => {
         generateGameInterface.generateGameInterface();
         expect(mockXHR.open).toHaveBeenCalledWith('GET', 'game-interface.html', true);
+        done();
+    });
+});
+
+
+describe('rollDice endTurn successCallback tests', () => {
+    // Create a mock for the actual sendJSON function
+    const mockSendJSON = jest.fn();
+    const mockResponse = {responseText: '{"game_id": 1}'};
+
+
+    test('rollDice', (done) => {
+        generateGameInterface.rollDice();
+        expect(mockSendJSON).toHaveBeenCalled();
+        done();
+    });
+
+    test('endTurn', (done) => {
+        generateGameInterface.endTurn();
+        expect(mockSendJSON).toHaveBeenCalled();
+        done();
+    });
+
+    test('successCallback', (done) => {
+        generateGameInterface.successCallback(mockResponse);
         done();
     });
 });

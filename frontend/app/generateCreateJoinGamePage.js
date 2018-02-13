@@ -23,7 +23,7 @@ export function updatePage(fileReader) {
         joinGameButton.addEventListener('click', pickGame.requestGameList, false);
         const createGameButton = document.getElementById('create-game');
         createGameButton.addEventListener('click', createGame.getGameID, false);
-		const testButton = document.getElementById('test');
+        const testButton = document.getElementById('test');
         testButton.addEventListener('click', game.generateGameInterface, false);
     }
 }
