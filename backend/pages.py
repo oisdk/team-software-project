@@ -11,4 +11,5 @@ pages = {
     'roll_dice': 'backend.roll_die:player_roll_dice',
     'start-game': 'backend.start_game:start_game',
     'game_event_source': 'backend.events:start_sse_stream',
+    'join_game': 'backend.join_game:join_game',
 }
