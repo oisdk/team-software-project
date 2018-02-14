@@ -25,11 +25,11 @@ def roll_two_dice():
     return dice_result
 
 
-def player_roll_dice(source=sys.stdin):
+def player_roll_dice(source=sys.stdin, output=sys.stdout):
     """Rolls two dice for a player, appends there rolls to the database,
        updates their position and the current game turn.
     """
-
+    output.write('Content-Type: application/json\n\n')
     request = json.load(source)
     player_id = request["user_id"]
 
@@ -58,3 +58,4 @@ def player_roll_dice(source=sys.stdin):
                         game.current_turn = 0
                     else:
                         game.current_turn += 1
+                json.dump({"your_rolls": str(rolls)}, output)
