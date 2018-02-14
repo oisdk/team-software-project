@@ -7,6 +7,7 @@ import json
 from cgi import FieldStorage
 import cgitb
 from backend.game import Game
+from backend.game import get_games
 from backend.player import Player
 
 cgitb.enable()
@@ -33,6 +34,8 @@ def start_sse_stream(output_stream=sys.stdout):
             generate_player_join_event(output_stream, players, new_players)
             players = new_players
 
+        check_for_playing_games(output_stream);
+
         output_stream.flush()
 
 
@@ -54,4 +57,28 @@ def generate_player_join_event(output_stream, old_players, new_players):
         uname
         for uid, uname in new_players.items()
         if uid not in old_players]))
+    output_stream.write('\n\n')
+
+
+def check_for_playing_games(output_stream):
+    """ Check for games whose status is 'playing'. """
+    list_of_games_in_db = list(get_games().keys());
+    for game_id in list_of_games_in_db:
+        game_reference = Game(game_id)
+        if game_reference.state == "playing":
+            generate_game_start_event(game_id, output_stream)
+
+def generate_game_start_event(game_id, output_stream):
+    """Generate a gameStart event for the appropriate game.
+
+    >>> import sys
+    >>> generate_game_start_event(5, sys.stdout)
+    event: gameStart
+    data: 5
+    <BLANKLINE>
+    <BLANKLINE>
+
+    """
+    output_stream.write('event: gameStart\n')
+    output_stream.write('data: %i\n' % (game_id))
     output_stream.write('\n\n')
