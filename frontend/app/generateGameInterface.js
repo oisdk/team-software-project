@@ -4,8 +4,6 @@ import * as getCookie from './checkUserIDCookie';
 
 const details = getCookie.checkUserDetails();
 const id = details.user_id;
-let rollDiceButton = "";
-let endTurnButton = "";
 
 /**
  * Callback for when game_id successfully received.
@@ -20,20 +18,18 @@ export function successCallback(req1) {
 /**
  * Function to call the roll_dice on the server side.
  */
-export function rollDice(JSONSend = sendJSON.sendJSON) {
+export function rollDice(JSONSend) {
     JSONSend({
         serverAddress: 'cgi-bin/roll_dice.py',
         jsonObject: {user_id: id},
         successCallback,
     });
-    rollDiceButton.disabled = true;
-    endTurnButton.disabled = false;
 }
 
 /**
  * Function to call to end a players turn.
  */
-export function endTurn(JSONSend = sendJSON.sendJSON) {
+export function endTurn(JSONSend) {
     JSONSend({
         serverAddress: 'cgi-bin/increment_turn.py',
         jsonObject: {player_id: id},
@@ -49,11 +45,10 @@ export function endTurn(JSONSend = sendJSON.sendJSON) {
 export function updateGamePage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
         document.getElementById('content-right').innerHTML = fileReader.responseText;
-        rollDiceButton = document.getElementById('roll-dice');
-        rollDiceButton.addEventListener('click', rollDice, false);
-        endTurnButton = document.getElementById('end-turn');
-        endTurnButton.addEventListener('click', endTurn, false);
-        endTurnButton.disabled = true;
+        const rollDiceButton = document.getElementById('roll-dice');
+        rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
+        const endTurnButton = document.getElementById('end-turn');
+        endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
     }
 }
 

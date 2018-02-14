@@ -22,7 +22,7 @@ def join_game(source=sys.stdin):
             players.append(player_id)
             game.players = players
             if str(game.state) == 'waiting':
-                player.turn_position = len(game.players)
+                player.turn_position = len(game.players)-1
             else:
                 pass
                 # Possibly something if the game has started
