@@ -24,6 +24,8 @@ export function rollDice(JSONSend) {
         jsonObject: {user_id: id},
         successCallback,
     });
+    document.getElementById('end-turn').disabled = false;
+    document.getElementById('roll-dice').disabled = true;
 }
 
 /**
@@ -35,6 +37,7 @@ export function endTurn(JSONSend) {
         jsonObject: {player_id: id},
         successCallback,
     });
+    document.getElementById('end-turn').disabled = true;
 }
 
 
@@ -49,6 +52,7 @@ export function updateGamePage(fileReader) {
         rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
         const endTurnButton = document.getElementById('end-turn');
         endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
+        endTurnButton.disabled = true;
     }
 }
 
