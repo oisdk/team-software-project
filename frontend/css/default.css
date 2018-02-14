@@ -10,3 +10,6 @@ html,body{
   background-color: rgb(31, 31, 31);
   color: rgb(242, 190, 5);
 }
+.background{
+  z-index: -1;
+}
