@@ -1,7 +1,15 @@
 import waitingGame from './pages';
+import * as getCookie from './checkUserIDCookie';
+import * as sendJSON from './sendJSON';
 
-export function sendGameId(gameID, waitFunction) {
+export function sendGameId(gameID, waitFunction, sendfunction) {
     if (gameID !== null) {
+        const details = getCookie.checkUserDetails();
+        const id = details.user_id;
+        sendfunction({
+            serverAddress: 'cgi-bin/join_game.py',
+            jsonObject: {user_id: id, game_id: gameID.value},
+        });
         waitFunction(gameID.value);
     }
 }
@@ -40,7 +48,7 @@ export function pickGame(xhttp) {
         document.getElementById('table').appendChild(newRow);
 
         document.getElementById('tableI').innerHTML = '<td><input type="submit" value="Join game" id="joinSelectedGame"></td><td></td>';
-        document.getElementById('joinSelectedGame').onclick = () => { sendGameId(document.querySelector('input[name="gameID"]:checked'), waitingGame); };
+        document.getElementById('joinSelectedGame').onclick = () => { sendGameId(document.querySelector('input[name="gameID"]:checked'), waitingGame, sendJSON.sendJSON); };
     }
 }
 

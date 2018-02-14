@@ -8,5 +8,6 @@ pages = {
     'allocate_game_id': 'backend.allocate_game_id:request_game_id',
     'get_game_details': 'backend.request_game_details:request_game_details',
     'roll_dice': 'backend.roll_die:player_roll_dice',
+    'join_game': 'backend.join_game:join_game',
     'increment_turn': 'backend.increment_turn:increment_turn',
 }
