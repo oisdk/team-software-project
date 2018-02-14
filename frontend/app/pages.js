@@ -61,7 +61,7 @@ export default function waitingGame(gameID) {
         for (let i = 0; i < playerList.length; i += 1) {
             const player = playerList[i];
             const playerElement = document.createElement('div');
-            playerElement.innerHTML = player.username;
+            playerElement.innerHTML = player;
             playerListElement.appendChild(playerElement);
 
             numberOfPlayers += 1;
