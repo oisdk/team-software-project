@@ -552,9 +552,9 @@ import * as library_name from "../node_modules/library_name";
 Bootstrap divides page into divs with unique ids. Example: content-left. Place html file that will be used into team-software-project/frontend/html. When adding html to screen use:
 
 ```javascript
-document.getElementById(_id-for-div-of-interest_).innerHTML = generated-html;
+document.getElementById(div-id).innerHTML = generated-html;
 ```
-where generated-html is the html file.
+where _div-id_ is the id of the div element to add content to (e.g. 'content', 'content-left') and _generated-html_ is the html file.
 
 Detailed example modified from generateCreateJoinPage.js:
 
