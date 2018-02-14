@@ -27,6 +27,6 @@ def increment_turn(source=sys.stdin, output=sys.stdout):
             if turn == len(game.players)-1:
                 turn = 0
             else:
-                turn+=1
+                turn += 1
             game.current_turn = turn
     json.dump({"turn": "turn_over"}, output)
