@@ -19,8 +19,8 @@ export function successCallback(req1) {
 /**
  * Function to call the roll_dice on the server side.
  */
-export function rollDice() {
-    sendJSON.sendJSON({
+export function rollDice(JSONSend = sendJSON.sendJSON) {
+    JSONSend({
         serverAddress: 'cgi-bin/roll_dice.py',
         jsonObject: {user_id: id},
         successCallback,
@@ -30,8 +30,8 @@ export function rollDice() {
 /**
  * Function to call to end a players turn.
  */
-export function endTurn() {
-    sendJSON.sendJSON({
+export function endTurn(JSONSend = sendJSON.sendJSON) {
+    JSONSend({
         serverAddress: 'cgi-bin/increment_turn.py',
         jsonObject: {player_id: id},
         successCallback,

@@ -68,13 +68,13 @@ describe('rollDice endTurn successCallback tests', () => {
 
 
     test('rollDice', (done) => {
-        generateGameInterface.rollDice();
+        generateGameInterface.rollDice(mockSendJSON);
         expect(mockSendJSON).toHaveBeenCalled();
         done();
     });
 
     test('endTurn', (done) => {
-        generateGameInterface.endTurn();
+        generateGameInterface.endTurn(mockSendJSON);
         expect(mockSendJSON).toHaveBeenCalled();
         done();
     });
