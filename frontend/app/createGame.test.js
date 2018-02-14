@@ -49,8 +49,4 @@ describe('createGame tests', () => {
         expect(mockWaitingGame).toHaveBeenCalledWith(JSON.parse(mockResponse.responseText).game_id);
         done();
     });
-
-    test('successCallback with default waitingGame', () => {
-        getGameID.successCallback(mockResponse);
-    });
 });
