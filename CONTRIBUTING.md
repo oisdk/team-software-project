@@ -547,12 +547,12 @@ Then, to import it from a file, you'll need to import from the `node_modules` fo
 import * as library_name from "../node_modules/library_name";
 ```
 
-#HTML
+# HTML
 
 Bootstrap divides page into divs with unique ids. Example: content-left. Place html file that will be used into team-software-project/frontend/html. When adding html to screen use:
 
 ```javascript
-document.getElementById('div-name').innerHTML = generated-html;
+document.getElementById(_id-for-div-of-interest_).innerHTML = generated-html;
 ```
 where generated-html is the html file.
 
