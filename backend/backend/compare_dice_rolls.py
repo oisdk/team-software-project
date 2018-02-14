@@ -19,4 +19,4 @@ def compare_dice_rolls(source=sys.stdin, output=sys.stdout):
     player_id = request["player_id"]
     output.write('Content-Type: application/json\n\n')
     roll = backend.player.Player(player_id).rolls
-    json.dump(roll[0]==roll[1], output)
+    json.dump(roll[0] == roll[1], output)
