@@ -546,3 +546,34 @@ Then, to import it from a file, you'll need to import from the `node_modules` fo
 ```bash
 import * as library_name from "../node_modules/library_name";
 ```
+
+#HTML
+
+Bootstrap divides page into divs with unique ids. Example: content-left. Place html file that will be used into team-software-project/frontend/html. When adding html to screen use:
+
+```javascript
+document.getElementById('div-name').innerHTML = generated-html;
+```
+where generated-html is the html file.
+
+Detailed example modified from generateCreateJoinPage.js:
+
+Function to update page.
+```javascript
+export function updatePage(fileReader) {
+    if (fileReader.status === 200 && fileReader.readyState === 4) {
+        document.getElementById('content').innerHTML = fileReader.responseText;
+    }
+}
+```
+
+Function to read html file.
+```javascript
+export function generateHTML() {
+    const fileReader = new XMLHttpRequest();
+    fileReader.open('GET', 'example.html', true);
+    fileReader.onreadystatechange = () => updatePage(fileReader);
+    fileReader.send();
+}
+```
+
