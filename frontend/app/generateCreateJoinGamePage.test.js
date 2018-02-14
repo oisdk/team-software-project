@@ -3,7 +3,8 @@ import * as generateCreateJoinGamePage from './generateCreateJoinGamePage';
 describe('updatePage test', () => {
     // Store the current state of the HTML body so it can be restored after the
     // test
-    const oldDocumentBody = document.body.innerHTML;
+    const oldDocumentBody = document.body;
+
 
     // Create a mock XMLHttpRequest response which contains a HTML page
     const mockFileResponse = {
@@ -15,6 +16,7 @@ describe('updatePage test', () => {
     // Create a user_name cookie which will be read by updatePage to customise
     // the create/join page
     beforeAll(() => {
+        document.body.innerHTML = '<div id="content"></div>';
         document.cookie = 'user_name=testuser';
     });
 
@@ -26,7 +28,7 @@ describe('updatePage test', () => {
 
     test('should read mockFileResponse and update page with its contents', (done) => {
         generateCreateJoinGamePage.updatePage(mockFileResponse);
-        expect(document.body.innerHTML).toEqual('<p>test html content<i id="username">testuser</i></p><button id="join-game" name="join-game">Join Existing Game</button><br><button id="create-game" name="create-game">Create a New Game</button>');
+        expect(document.getElementById('content').innerHTML).toEqual('<p>test html content<i id="username">testuser</i></p><button id="join-game" name="join-game">Join Existing Game</button><br><button id="create-game" name="create-game">Create a New Game</button>');
         done();
     });
 });

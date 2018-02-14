@@ -47,6 +47,7 @@ class Game(object):
                 cursor.execute('DELETE FROM `playing_in` '
                                'WHERE `game_id` = %s;',
                                (self.uid))
+
                 cursor.executemany('INSERT INTO `playing_in` VALUES (%s, %s);',
                                    ((pid, self.uid) for pid in self.players))
             self._conn.commit()
