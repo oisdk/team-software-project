@@ -4,7 +4,8 @@ import * as getCookie from './checkUserIDCookie';
 
 const details = getCookie.checkUserDetails();
 const id = details.user_id;
-
+let rollDiceButton = "";
+let endTurnButton = "";
 
 /**
  * Callback for when game_id successfully received.
@@ -25,6 +26,8 @@ export function rollDice(JSONSend = sendJSON.sendJSON) {
         jsonObject: {user_id: id},
         successCallback,
     });
+    rollDiceButton.disabled = true;
+    endTurnButton.disabled = false;
 }
 
 /**
@@ -46,10 +49,11 @@ export function endTurn(JSONSend = sendJSON.sendJSON) {
 export function updateGamePage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
         document.getElementById('content-right').innerHTML = fileReader.responseText;
-        const rollDiceButton = document.getElementById('roll-dice');
+        rollDiceButton = document.getElementById('roll-dice');
         rollDiceButton.addEventListener('click', rollDice, false);
-        const endTurnButton = document.getElementById('end-turn');
+        endTurnButton = document.getElementById('end-turn');
         endTurnButton.addEventListener('click', endTurn, false);
+        endTurnButton.disabled = true;
     }
 }
 

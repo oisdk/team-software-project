@@ -81,6 +81,7 @@ describe('rollDice endTurn successCallback tests', () => {
 
     test('successCallback', (done) => {
         generateGameInterface.successCallback(mockResponse);
+        jest.spyOn(global.console, 'log');
         done();
     });
 });
