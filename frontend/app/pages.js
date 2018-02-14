@@ -47,7 +47,7 @@ export default function waitingGame(gameID) {
     const playerListID = 'playerList';
     createWaitingGameHTML({
         gameID,
-        rootElement: document.body,
+        rootElement: document.getElementById('content'),
         playerListID,
         startButtonID,
     });
