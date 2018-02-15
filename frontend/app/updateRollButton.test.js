@@ -10,7 +10,7 @@ describe('Request sent to get bool comparision result of roll dice values', () =
     };
     // Create a mock for the actual sendJSON function
     const mockSendJSON = jest.fn();
-    
+
     beforeEach(() => {
         window.XMLHttpRequest = jest.fn(() => mockXHR);
     });
