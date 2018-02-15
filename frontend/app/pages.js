@@ -54,9 +54,16 @@ export default function waitingGame(gameID) {
     });
 
     let numberOfPlayers = 0;
+
+    // Initialise an event source from where server-sent events will come.
+    // See the sse.js file for more details.
     const sseEventSource = initialiseEventSource(gameID);
 
+    // Listen for a playerJoin event coming from the server
     sseEventSource.addEventListener('playerJoin', (joinEvent) => {
+        // Parse the "data" portion of the server-sent event from the server
+        // which should contain the list of new users who have joined the
+        // waiting game lobby.
         const playerList = JSON.parse(joinEvent.data);
         const playerListElement = document.getElementById(playerListID);
         for (let i = 0; i < playerList.length; i += 1) {
@@ -66,8 +73,12 @@ export default function waitingGame(gameID) {
             playerListElement.appendChild(playerElement);
 
             numberOfPlayers += 1;
+            // Only enable the "start game" button when 4 players have joined
             if (numberOfPlayers === 4) {
                 document.getElementById(startButtonID).disabled = false;
+                // Add an event listener to the "start game" button which makes
+                // a request to start-game.py to update the status of this game
+                // to "playing".
                 document.getElementById(startButtonID).addEventListener('click', () => {sendJSON.sendJSON({
                     serverAddress: 'cgi-bin/start-game.py',
                     jsonObject: {game_id: gameID},
@@ -77,6 +88,7 @@ export default function waitingGame(gameID) {
     });
 }
 
+// Flag createWaitingGameHTML to be a private function
 export const privateFunctions = {
     createWaitingGameHTML,
 };
