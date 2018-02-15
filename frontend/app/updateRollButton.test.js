@@ -8,7 +8,9 @@ describe('Request sent to get bool comparision result of roll dice values', () =
         send: jest.fn(),
         setRequestHeader: jest.fn(),
     };
-
+    // Create a mock for the actual sendJSON function
+    const mockSendJSON = jest.fn();
+    
     beforeEach(() => {
         window.XMLHttpRequest = jest.fn(() => mockXHR);
     });
@@ -17,15 +19,9 @@ describe('Request sent to get bool comparision result of roll dice values', () =
         window.XMLHttpRequest = oldXMLHttpRequest;
     });
 
-    test('Should request the playerID', (done) => {
-        const checkRollValuesEqual = jest.fn();
-        functionCall.requestCompareRolls();
-        expect(mockXHR.open).toHaveBeenCalledWith('POST', 'cgi-bin/compare_dice_rolls.py', true);
-        expect(mockXHR.setRequestHeader).toHaveBeenCalledWith('Content-Type', 'application/json; charset=UTF-8');
-        expect(mockXHR.send).toHaveBeenCalledWith();
-        functionCall.requestCompareRolls();
-        mockXHR.onreadystatechange();
-        expect(checkRollValuesEqual).not.toHaveBeenCalledWith(mockXHR);
+    test('getGameID', (done) => {
+        functionCall.requestCompareRolls(mockSendJSON);
+        expect(mockSendJSON).toHaveBeenCalled();
         done();
     });
 });
