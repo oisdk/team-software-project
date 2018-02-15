@@ -42,12 +42,12 @@ function createWaitingGameHTML({
  *
  * @param gameID The ID of the game to display.
  */
-export default function waitingGame(gameID) {
+export function waitingGame(gameID) {
     const startButtonID = 'startButton';
     const playerListID = 'playerList';
     createWaitingGameHTML({
         gameID,
-        rootElement: document.body,
+        rootElement: document.getElementById('content'),
         playerListID,
         startButtonID,
     });
@@ -61,7 +61,7 @@ export default function waitingGame(gameID) {
         for (let i = 0; i < playerList.length; i += 1) {
             const player = playerList[i];
             const playerElement = document.createElement('div');
-            playerElement.innerHTML = player.username;
+            playerElement.innerHTML = player;
             playerListElement.appendChild(playerElement);
 
             numberOfPlayers += 1;
