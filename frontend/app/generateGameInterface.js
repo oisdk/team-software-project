@@ -7,6 +7,31 @@ const id = details.user_id;
 
 
 /**
+ * Function to disable game interface.
+ */
+export function disableGameInterface() {
+    document.getElementById('roll-dice').disabled = true;
+    document.getElementById('end-turn').disabled = true;
+}
+
+/**
+ * Function to enable game interface.
+ */
+export function enableGameInterface() {
+    document.getElementById('roll-dice').disabled = false;
+    document.getElementById('end-turn').disabled = true;
+}
+
+/**
+ * Function to enable end-turn functionality.
+ */
+export function enableEndTurn() {
+    document.getElementById('roll-dice').disabled = true;
+    document.getElementById('end-turn').disabled = false;
+}
+
+
+/**
  * Callback to check user rolls and enable end turn.
  *
  * @param {XMLHttpRequest} req1 response.
@@ -14,7 +39,7 @@ const id = details.user_id;
 export function successCallback(req1) {
     const response = JSON.parse(req1.responseText);
     console.log(response);
-    if(response.your_rolls[0] !== response.your_rolls[1]){
+    if (response.your_rolls[0] !== response.your_rolls[1]) {
         enableEndTurn();
     }
 }
@@ -40,7 +65,7 @@ export function endTurn(JSONSend) {
         serverAddress: 'cgi-bin/increment_turn.py',
         jsonObject: {player_id: id},
     });
-    disableGameInterface()
+    disableGameInterface();
 }
 
 
@@ -69,30 +94,4 @@ export function generateGameInterface() {
     fileReader.onreadystatechange = () => updateGamePage(fileReader);
     fileReader.send();
 }
-
-/**
- * Function to disable game interface.
- */
-export function disableGameInterface() {
-    document.getElementById('roll-dice').disabled = true;
-    document.getElementById('end-turn').disabled = true;
-}
-
-/**
- * Function to enable game interface.
- */
-export function enableGameInterface() {
-    document.getElementById('roll-dice').disabled = false;
-    document.getElementById('end-turn').disabled = true;    
-}
-
-/**
- * Function to enable end-turn functionality.
- */
-export function enableEndTurn() {
-    document.getElementById('roll-dice').disabled = true;
-    document.getElementById('end-turn').disabled = false;
-}
-
-
 
