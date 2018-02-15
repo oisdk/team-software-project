@@ -64,7 +64,19 @@ describe('generateGameInterface test', () => {
 describe('rollDice endTurn successCallback tests', () => {
     // Create a mock for the actual sendJSON function
     const mockSendJSON = jest.fn();
-    const mockResponse = {responseText: '{"game_id": 1}'};
+    const mockResponse = {responseText: '{"your_rolls": "(1,2)"}'};
+    const oldDocumentBody = document.body;
+
+
+    // Create buttons to test
+    beforeAll(() => {
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
+    });
+
+    // Restore the HTML body
+    afterAll(() => {
+        document.body.innerHTML = oldDocumentBody;
+    });
 
 
     test('rollDice', (done) => {
@@ -76,12 +88,54 @@ describe('rollDice endTurn successCallback tests', () => {
     test('endTurn', (done) => {
         generateGameInterface.endTurn(mockSendJSON);
         expect(mockSendJSON).toHaveBeenCalled();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
         done();
     });
 
     test('successCallback', (done) => {
         generateGameInterface.successCallback(mockResponse);
         jest.spyOn(global.console, 'log');
+        expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+});
+
+describe('disable button tests', () => {
+    // Create a mock for the actual sendJSON function
+    const oldDocumentBody = document.body;
+
+
+    // Create buttons to test
+    beforeAll(() => {
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
+    });
+
+    // Restore the HTML body
+    afterAll(() => {
+        document.body.innerHTML = oldDocumentBody;
+    });
+
+
+    test('disableGameInterface', (done) => {
+        generateGameInterface.disableGameInterface();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+
+    test('enableGameInterface', (done) => {
+        generateGameInterface.enableGameInterface();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+
+    test('enableEndTurn', (done) => {
+        generateGameInterface.enableEndTurn();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled=""'));
         done();
     });
 });
