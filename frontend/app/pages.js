@@ -32,10 +32,6 @@ function createWaitingGameHTML({
     startButton.innerHTML = 'Start Game';
     startButton.id = startButtonID;
     startButton.disabled = true;
-    startButton.onclick = sendJSON.sendJSON({
-        'cgi-bin/start-game.js',
-        {game_id: gameID},
-    })
 
     rootElement.appendChild(heading);
     rootElement.appendChild(playerList);
@@ -72,6 +68,10 @@ export default function waitingGame(gameID) {
             numberOfPlayers += 1;
             if (numberOfPlayers === 4) {
                 document.getElementById(startButtonID).disabled = false;
+                document.getElementById(startButtonID).addEventListener('click', () => {sendJSON.sendJSON({
+                    serverAddress: 'cgi-bin/start-game.py',
+                    jsonObject: {game_id: gameID},
+                })}, false)
             }
         }
     });
