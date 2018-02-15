@@ -23,12 +23,11 @@ def start_sse_stream(output_stream=sys.stdout):
     game_id = input_data.getfirst('game')
     players = {}
     positions = {}
-    turn = None
     balances = {}
-
     new_players = {}
     new_positions = {}
     new_balances = {}
+    turn = None
 
     while True:
         game = Game(game_id)
@@ -38,27 +37,46 @@ def start_sse_stream(output_stream=sys.stdout):
             new_positions[player.uid] = player.board_position
             new_balances[player.uid] = player.balance
 
-        new_turn = game.current_turn
-
-        if new_turn != turn:
-            generate_player_turn_event(output_stream, new_turn)
-            turn = new_turn
-
-        if new_players != players:
-            generate_player_join_event(output_stream, players, new_players)
-            players = new_players
-
-        if new_positions != positions:
-            generate_player_move_event(output_stream, positions, new_positions)
-            positions = new_positions
-
-        if new_balances != balances:
-            generate_player_balance_event(output_stream, balances,
-                                          new_balances)
-            balances = new_balances
+        turn = check_new_turn(output_stream, turn, game.current_turn)
+        players = check_new_players(output_stream, players, new_players)
+        balances = check_new_balances(output_stream, balances, new_balances)
+        positions = check_new_positions(output_stream, positions,
+                                        new_positions)
 
         time.sleep(3)
         output_stream.flush()
+
+
+def check_new_turn(output_stream, old_turn, new_turn):
+    """Checks if the turn has changed to a different player and sends an SSE
+    event if it has.
+    """
+    if new_turn != old_turn:
+        generate_player_turn_event(output_stream, new_turn)
+    return new_turn
+
+
+def check_new_players(output_stream, old_players, new_players):
+    """Checks if a new player joined the game and sends an SSE event if it has.
+    """
+    if new_players != old_players:
+        generate_player_join_event(output_stream, old_players, new_players)
+    return new_players
+
+
+def check_new_balances(output_stream, old_balances, new_balances):
+    """Checks if a players balance changed and sends an SSE event if it has."""
+    if new_balances != old_balances:
+        generate_player_balance_event(output_stream, old_balances,
+                                      new_balances)
+    return new_balances
+
+
+def check_new_positions(output_stream, old_positions, new_positions):
+    """Checks if a player has moved and sends an SSE event if it has."""
+    if new_positions != old_positions:
+        generate_player_move_event(output_stream, old_positions, new_positions)
+    return new_positions
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
