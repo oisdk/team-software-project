@@ -23,7 +23,7 @@ export function requestUserID(serverAddress, nameSubmitted, callback) {
  * @param callback - success or failure callback if a response is received.
  */
 export function generateUsernameForm(callback) {
-    document.body.innerHTML = '<form><label for="username">Enter Username</label><input type="text" id="username"><input type="submit" value="Submit" id="submit_username" disabled><span id="checker"></span></form>';
+    document.getElementById('content').innerHTML = '<form><label for="username">Enter Username</label><input type="text" id="username"><input type="submit" value="Submit" id="submit_username" disabled><span id="checker"></span></form>';
     document.getElementById('submit_username').addEventListener('click', (event) => { event.preventDefault(); });
     document.getElementById('submit_username').onclick = () => requestUserID('cgi-bin/allocate_user_id.py', document.getElementById('username').value, callback);
 }
