@@ -79,10 +79,12 @@ export function waitingGame(gameID) {
                 // Add an event listener to the "start game" button which makes
                 // a request to start-game.py to update the status of this game
                 // to "playing".
-                document.getElementById(startButtonID).addEventListener('click', () => {sendJSON.sendJSON({
-                    serverAddress: 'cgi-bin/start-game.py',
-                    jsonObject: {game_id: gameID},
-                })}, false)
+                document.getElementById(startButtonID).addEventListener('click', () => {
+                    sendJSON.sendJSON({
+                        serverAddress: 'cgi-bin/start-game.py',
+                        jsonObject: {game_id: gameID},
+                    });
+                }, false);
             }
         }
     });
