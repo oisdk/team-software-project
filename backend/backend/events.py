@@ -3,6 +3,7 @@ Handles the generation of Server-Sent Events which notify clients of state
 changes.
 """
 import sys
+import time
 import json
 from cgi import FieldStorage
 import cgitb
@@ -20,10 +21,10 @@ def start_sse_stream(output_stream=sys.stdout):
 
     input_data = FieldStorage()
     game_id = input_data.getfirst('game')
-    players = None
-    positions = None
+    players = {}
+    positions = {}
     turn = None
-    balances = None
+    balances = {}
 
     new_players = {}
     new_positions = {}
@@ -56,6 +57,7 @@ def start_sse_stream(output_stream=sys.stdout):
                                           new_balances)
             balances = new_balances
 
+        time.sleep(3)
         output_stream.flush()
 
 
