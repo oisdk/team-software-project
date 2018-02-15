@@ -27,8 +27,8 @@ def start_sse_stream(output_stream=sys.stdout):
     output_stream.write('Cache-Control: no-cache\n')
     output_stream.write('\n')
 
-    # Read in the game id from standard input (aka. FieldStorage) and create an
-    # empty dictionary of current players.
+    # Read in the game id from standard input (aka. FieldStorage) and create
+    # an empty dictionary of current players.
     input_data = FieldStorage()
     game_id = input_data.getfirst('game')
     players = {}
@@ -41,25 +41,25 @@ def start_sse_stream(output_stream=sys.stdout):
         # database.
         game = Game(game_id)
 
-        # Create a dictionary mapping all the game's players' user ids to their
-        # usernames. The reason the dictionary is called new_players is because
-        # whatever is in the database will of course be the most recent line-up
-        # of players.
+        # Create a dictionary mapping all the game's players' user ids to
+        # their usernames. The reason the dictionary is called new_players is
+        # because whatever is in the database will of course be the most
+        # recent line-up of players.
         new_players = {
             player.uid: player.username
             for player in map(Player, game.players)
         }
 
-        # Check if the current players dictionary (which was created outside this
-        # while-loop) is different to the new_players dictionary (containing the
-        # most recent lot of players retrieved from the database). If the two
-        # dicts are different, then a new player must have joined since we last
-        # polled the database.
+        # Check if the current players dictionary (which was created outside
+        # this while-loop) is different to the new_players dictionary
+        # (containing the most recent lot of players retrieved from the
+        # database). If the two dicts are different, then a new player must
+        # have joined since we last polled the database.
         if new_players != players:
             # Call function to generate server-sent event
             generate_player_join_event(output_stream, players, new_players)
-            # Assign the most up to date dictionary of players retrieved from the
-            # database to the dictionary of "current" players
+            # Assign the most up to date dictionary of players retrieved from
+            # the database to the dictionary of "current" players
             players = new_players
 
         # Call function to check if any games in the database have a "playing"
@@ -78,12 +78,12 @@ def generate_player_join_event(output_stream, old_players, new_players):
     """Generates an event for a change in the group of players in the game.
 
     Compares two dictionaries and outputs a playerJoin server-sent event if
-    the two dicts differ. Along with the event is JSON containing the difference
-    between the two dicts.
+    the two dicts differ. Along with the event is JSON containing the
+    difference between the two dicts.
 
     Arguments:
         old_players: A dictionary representing the current list of players.
-        new_players: A dictionary representing the latest list of players in DB.
+        new_players: A dictionary representing the latest list of players.
 
     >>> import sys
     >>> generate_player_join_event(
