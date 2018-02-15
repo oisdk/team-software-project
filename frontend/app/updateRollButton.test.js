@@ -19,7 +19,7 @@ describe('Request sent to get bool comparision result of roll dice values', () =
         window.XMLHttpRequest = oldXMLHttpRequest;
     });
 
-    test('getGameID', (done) => {
+    test('getBoolean', (done) => {
         functionCall.requestCompareRolls(mockSendJSON);
         expect(mockSendJSON).toHaveBeenCalled();
         done();
