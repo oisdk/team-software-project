@@ -3,6 +3,7 @@ Handles the generation of Server-Sent Events which notify clients of state
 changes.
 """
 import sys
+import time
 import json
 from cgi import FieldStorage
 import cgitb
@@ -64,6 +65,8 @@ def start_sse_stream(output_stream=sys.stdout):
         # Call function to check if any games in the database have a "playing"
         # status.
         check_for_playing_games(output_stream)
+
+        time.sleep(3)
 
         # Flush standard out which forcefully sends everything that might be
         # buffered in standard out to the client. No need to worry about tech

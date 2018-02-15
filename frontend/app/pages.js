@@ -43,7 +43,7 @@ function createWaitingGameHTML({
  *
  * @param gameID The ID of the game to display.
  */
-export default function waitingGame(gameID) {
+export function waitingGame(gameID) {
     const startButtonID = 'startButton';
     const playerListID = 'playerList';
     createWaitingGameHTML({
