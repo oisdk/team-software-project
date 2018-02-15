@@ -5,18 +5,23 @@ import * as getCookie from './checkUserIDCookie';
 const details = getCookie.checkUserDetails();
 const id = details.user_id;
 
+
 /**
- * Callback for when game_id successfully received.
+ * Callback to check user rolls and enable end turn.
  *
  * @param {XMLHttpRequest} req1 response.
  */
 export function successCallback(req1) {
     const response = JSON.parse(req1.responseText);
     console.log(response);
+    if(response.your_rolls[0] !== response.your_rolls[1]){
+        enableEndTurn();
+    }
 }
 
 /**
  * Function to call the roll_dice on the server side.
+ * @param {Function} JSONSend - JSON function makes testing easier.
  */
 export function rollDice(JSONSend) {
     JSONSend({
@@ -27,14 +32,15 @@ export function rollDice(JSONSend) {
 }
 
 /**
- * Function to call to end a players turn.
+ * Function to end a players turn.
+ * @param {Function} JSONSend - JSON function makes testing easier.
  */
 export function endTurn(JSONSend) {
     JSONSend({
         serverAddress: 'cgi-bin/increment_turn.py',
         jsonObject: {player_id: id},
-        successCallback,
     });
+    disableGameInterface()
 }
 
 
@@ -63,4 +69,30 @@ export function generateGameInterface() {
     fileReader.onreadystatechange = () => updateGamePage(fileReader);
     fileReader.send();
 }
+
+/**
+ * Function to disable game interface.
+ */
+export function disableGameInterface() {
+    document.getElementById('roll-dice').disabled = true;
+    document.getElementById('end-turn').disabled = true;
+}
+
+/**
+ * Function to enable game interface.
+ */
+export function enableGameInterface() {
+    document.getElementById('roll-dice').disabled = false;
+    document.getElementById('end-turn').disabled = true;    
+}
+
+/**
+ * Function to enable end-turn functionality.
+ */
+export function enableEndTurn() {
+    document.getElementById('roll-dice').disabled = true;
+    document.getElementById('end-turn').disabled = false;
+}
+
+
 
