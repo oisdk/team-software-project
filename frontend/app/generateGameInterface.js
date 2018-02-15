@@ -37,8 +37,8 @@ export function enableEndTurn() {
  * @param {XMLHttpRequest} req1 response.
  */
 export function successCallback(req1) {
+    console.log(req1);
     const response = JSON.parse(req1.responseText);
-    console.log(response);
     if (response.your_rolls[0] !== response.your_rolls[1]) {
         enableEndTurn();
     }
