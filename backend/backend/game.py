@@ -6,7 +6,7 @@ from itertools import groupby
 import backend.storage
 
 
-class Game(object): # pylint: disable=too-many-instance-attributes
+class Game(object):  # pylint: disable=too-many-instance-attributes
     """A single game of monopoly. Refer to the Player class for how to
     access and mutate members."""
     def __init__(self, uid):
