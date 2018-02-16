@@ -6,7 +6,6 @@ import * as getCookie from './checkUserIDCookie';
  *
  * @param {XMLHttpRequest} req Contains the response with the roll dice values.
  */
-
 export function checkRollValuesEqual(req) {
     const response = JSON.parse(req.responseText);
     const roll = response.player_id;
