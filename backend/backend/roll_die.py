@@ -52,10 +52,5 @@ def player_roll_dice(source=sys.stdin, output=sys.stdout):
                 if player.board_position >= number_of_squares:
                     player.balance += pass_go_amount
                     player.board_position -= number_of_squares
-
-                if rolls[0] != rolls[1]:
-                    if game.current_turn == len(game.players)-1:
-                        game.current_turn = 0
-                    else:
-                        game.current_turn += 1
+                    
                 json.dump({"your_rolls": str(rolls)}, output)
