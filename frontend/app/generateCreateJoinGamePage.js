@@ -4,7 +4,6 @@ import * as checkUserIDCookie from './checkUserIDCookie';
 import * as pickGame from './pickGame';
 // Import createGame functionality
 import * as createGame from './createGame';
-import * as game from './generateGameInterface';
 
 
 /**
