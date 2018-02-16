@@ -11,7 +11,7 @@ describe('updateGamePage test', () => {
     const mockFileResponse = {
         status: 200,
         readyState: 4,
-        responseText: '<button id="roll-dice" name="roll-dice">Roll Dice</button><br><button id="end-turn" name="end-turn">End Turn</button>',
+        responseText: '<button id="roll-dice" name="roll-dice" disabled="">Roll Dice</button><br><button id="end-turn" name="end-turn" disabled="">End Turn</button>',
     };
 
     // Create a user_name cookie
@@ -28,7 +28,7 @@ describe('updateGamePage test', () => {
 
     test('should read mockFileResponse and update page with its contents', (done) => {
         generateGameInterface.updateGamePage(mockFileResponse);
-        expect(document.getElementById('content-right').innerHTML).toEqual('<button id="roll-dice" name="roll-dice">Roll Dice</button><br><button id="end-turn" name="end-turn">End Turn</button>');
+        expect(document.getElementById('content-right').innerHTML).toEqual('<button id="roll-dice" name="roll-dice" disabled="">Roll Dice</button><br><button id="end-turn" name="end-turn" disabled="">End Turn</button>');
         done();
     });
 });
