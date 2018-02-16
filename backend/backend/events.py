@@ -28,6 +28,7 @@ def start_sse_stream(output_stream=sys.stdout):
     new_positions = {}
     new_balances = {}
     turn = None
+    turn_order = {}
 
     while True:
         game = Game(game_id)
@@ -36,8 +37,9 @@ def start_sse_stream(output_stream=sys.stdout):
             new_players[player.uid] = player.username
             new_positions[player.uid] = player.board_position
             new_balances[player.uid] = player.balance
+            turn_order[player.uid] = player.turn_position
 
-        turn = check_new_turn(output_stream, turn, game.current_turn)
+        turn = check_new_turn(output_stream, turn, game.current_turn, turn_order)
         players = check_new_players(output_stream, players, new_players)
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
@@ -47,12 +49,14 @@ def start_sse_stream(output_stream=sys.stdout):
         output_stream.flush()
 
 
-def check_new_turn(output_stream, old_turn, new_turn):
+def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     """Checks if the turn has changed to a different player and sends an SSE
     event if it has.
     """
     if new_turn != old_turn:
-        generate_player_turn_event(output_stream, new_turn)
+        for uid, turn_pos in turn_order.items():
+            if turn_pos == new_turn:
+                generate_player_turn_event(output_stream, new_turn, uid)
     return new_turn
 
 
@@ -121,7 +125,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     output_stream.write('\n\n')
 
 
-def generate_player_turn_event(output_stream, new_turn):
+def generate_player_turn_event(output_stream, new_turn, player_id):
     """Generates an event for a change of turn in the game.
 
     >>> import sys
@@ -130,7 +134,7 @@ def generate_player_turn_event(output_stream, new_turn):
     data: 2
     <BLANKLINE>
     """
-    output_stream.write('event: playerTurn\n')
+    output_stream.write('event: playerTurn%s\n' % player_id)
     output_stream.write('data: ' + str(new_turn))
     output_stream.write('\n\n')
 
