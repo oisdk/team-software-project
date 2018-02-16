@@ -65,7 +65,8 @@ def start_sse_stream(output_stream=sys.stdout):
         # "new" (aka. "latest") dictionaries after calling the appropriate
         # comparison function to determine whether an event should be
         # generated.
-        turn = check_new_turn(output_stream, turn, game.current_turn, turn_order)
+        turn = check_new_turn(output_stream, turn, game.current_turn,
+                              turn_order)
         players = check_new_players(output_stream, players, new_players)
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,

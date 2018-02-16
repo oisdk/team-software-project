@@ -98,7 +98,7 @@ export function generateGameInterface(gameID) {
         const turn = JSON.parse(turnEvent.data);
         console.log('Turn:');
         console.log(turn);
-        if(turn === id){
+        if (turn === id) {
             enableGameInterface();
         }
     });
