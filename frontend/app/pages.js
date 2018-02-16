@@ -1,7 +1,8 @@
 import {initialiseEventSource} from './sse';
 
 /**
- * This module provides functions which display a certain page to the user.
+ * Provides functions which display a certain page to the user.
+ * @module
  */
 
 /**
@@ -11,6 +12,7 @@ import {initialiseEventSource} from './sse';
  * @param {HTMLElement} rootElement The element to which the html is added.
  * @param {String} playerListID The id the player list element should have.
  * @param {String} startButtonID The id the start game button should have.
+ * @private
  */
 function createWaitingGameHTML({
     gameID,
@@ -72,6 +74,11 @@ export function waitingGame(gameID) {
     });
 }
 
+/**
+ * These are private functions exported for testing purposes.
+ *
+ * @private
+ */
 export const privateFunctions = {
     createWaitingGameHTML,
 };
