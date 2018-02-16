@@ -2,6 +2,13 @@ import {waitingGame} from './pages';
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
 
+/**
+ * Function to let a user join a selected game and be placed in a waiting game lobby.
+ *
+ * @param gameID - The ID of the game selected to join.
+ * @param {string} waitFunction - Takes in a function name to call.
+ * @param {string} sendFunction - Takes in a function name to call.
+ */
 export function sendGameId(gameID, waitFunction, sendfunction) {
     if (gameID !== null) {
         const details = getCookie.checkUserDetails();
@@ -14,6 +21,12 @@ export function sendGameId(gameID, waitFunction, sendfunction) {
     }
 }
 
+/**
+ * Callback function which dynamically generates a HTML table containing the list of games.
+ * A radio button is located alongside each game for selection.
+ *
+ * @param {XMLHttpRequest} xhttp - Contains list of games to display.
+ */
 export function pickGame(xhttp) {
     if (xhttp.readyState === 4 && xhttp.status === 200) {
         document.getElementById('content').innerHTML = '<table id="table"><tr id="row1"></tr></table>';
@@ -52,6 +65,9 @@ export function pickGame(xhttp) {
     }
 }
 
+/**
+ * Function to request and receive a list of games currently active.
+ */
 export function requestGameList() {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => pickGame(xhttp);
