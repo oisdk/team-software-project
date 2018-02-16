@@ -14,7 +14,7 @@ def request_dice_roll(source=sys.stdin, output=sys.stdout):
     """Entry point for the service of requesting a dice roll
 
     >>> import io
-    >>> inp = io.StringIO(json.dumps({'player_id': 'id'}))
+    >>> inp = io.StringIO(json.dumps({'player_id': 'player_id'}))
     >>> out = io.StringIO()
     >>> request_dice_roll(inp,out)
     >>> out.seek(0)
