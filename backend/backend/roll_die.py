@@ -21,7 +21,7 @@ def roll_two_dice():
         An int tuple representing the result of the two dice rolls.
 
     """
-    dice_result = (roll_dice(), roll_dice())
+    dice_result = [roll_dice(), roll_dice()]
     return dice_result
 
 
