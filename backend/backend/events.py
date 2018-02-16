@@ -60,11 +60,12 @@ def start_sse_stream(output_stream=sys.stdout):
             new_positions[player.uid] = player.board_position
             new_balances[player.uid] = player.balance
             turn_order[player.uid] = player.turn_position
+
         # Assign the current (aka. non-new) dictionaries to the value of the
         # "new" (aka. "latest") dictionaries after calling the appropriate
         # comparison function to determine whether an event should be
         # generated.
-        turn = check_new_turn(output_stream, turn, game.current_turn)
+        turn = check_new_turn(output_stream, turn, game.current_turn, turn_order)
         players = check_new_players(output_stream, players, new_players)
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
@@ -99,7 +100,7 @@ def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     if new_turn != old_turn:
         for uid, turn_pos in turn_order.items():
             if turn_pos == new_turn:
-                generate_player_turn_event(output_stream, new_turn, uid)
+                generate_player_turn_event(output_stream, uid)
     return new_turn
 
 
@@ -281,16 +282,17 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     output_stream.write('\n\n')
 
 
-def generate_player_turn_event(output_stream, new_turn, player_id):
+def generate_player_turn_event(output_stream, player_id):
     """Generates an event for a change of turn in the game.
 
     Arguments:
         new_turn: An int representing the latest position in the playing
             queue.
+        player_id: An int representing the player whose turn it is.
 
     >>> import sys
-    >>> generate_player_turn_event(sys.stdout, 2, 1)
-    event: playerTurn1
+    >>> generate_player_turn_event(sys.stdout, 2)
+    event: playerTurn
     data: 2
     <BLANKLINE>
 
@@ -300,7 +302,7 @@ def generate_player_turn_event(output_stream, new_turn, player_id):
 
     # Send the integer representing the latest position in the playing queue
     # to the client in the SSE data chunk.
-    output_stream.write('data: ' + str(new_turn))
+    output_stream.write('data: ' + str(player_id))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
