@@ -9,9 +9,13 @@ from backend.player import Player
 cgitb.enable()
 
 
-def join_game(source=sys.stdin):
+def join_game(source=sys.stdin, output=sys.stdout):
     """Entry point for the client joining game on server
     """
+
+    output.write("Content-Type: text/plain\n")
+    output.write("\n")
+
     request = json.load(source)
     player_id = request["user_id"]
     game_id = request["game_id"]
