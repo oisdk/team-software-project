@@ -92,18 +92,15 @@ export function updateGamePage(fileReader) {
  * @param {int} gameID - id used to create eventSource.
  */
 export function generateGameInterface(gameID) {
-    // console.log("GameId:");
-    // console.log(gameID);
-    // console.log('PlayerId:');
-    // console.log(id);
-    // console.log(`playerTurn${id}`);
     // SSE Events
     const sseEventSource = initialiseEventSource(gameID);
-    sseEventSource.addEventListener(`playerTurn${id}`, (turnEvent) => {
+    sseEventSource.addEventListener('playerTurn', (turnEvent) => {
         const turn = JSON.parse(turnEvent.data);
         console.log('Turn:');
         console.log(turn);
-        enableGameInterface();
+        if(turn === id){
+            enableGameInterface();
+        }
     });
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
