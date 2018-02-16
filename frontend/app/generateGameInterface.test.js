@@ -1,4 +1,5 @@
 import * as generateGameInterface from './generateGameInterface';
+import {initialiseEventSource} from './sse';
 
 describe('updateGamePage test', () => {
     // Store the current state of the HTML body so it can be restored after the
@@ -35,6 +36,8 @@ describe('updateGamePage test', () => {
 
 describe('generateGameInterface test', () => {
     const oldXMLHttpRequest = window.XMLHttpRequest;
+    const mockGameId = 1;
+    let mockEventSource;
 
     // Create a mock XMLHttpRequest object
     const mockXHR = {
@@ -46,16 +49,23 @@ describe('generateGameInterface test', () => {
     // Assign the global window XMLHttpRequest to point to the mockXHR object
     beforeEach(() => {
         window.XMLHttpRequest = jest.fn(() => mockXHR);
+        mockEventSource = {
+            addEventListener: jest.fn(),
+        };
+        window.EventSource = jest.fn(() => mockEventSource);
     });
 
     // Restore the global XMLHttpRequest to the state it was before the tests
     afterEach(() => {
         window.XMLHttpRequest = oldXMLHttpRequest;
+        window.EventSource = undefined;
     });
 
-    test('should call appropriate XMLHttpRequest functions', (done) => {
+    test('should call appropriate XMLHttpRequest/eventSource functions', (done) => {
         generateGameInterface.generateGameInterface();
         expect(mockXHR.open).toHaveBeenCalledWith('GET', 'game-interface.html', true);
+        const result = initialiseEventSource(mockGameId);
+        expect(result).toBe(mockEventSource);
         done();
     });
 });
