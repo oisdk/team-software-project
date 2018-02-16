@@ -19,11 +19,11 @@ export function updateUserDetails(fileReader) {
  * filesystem for a HTML file to display.
  * @param {int} gameID - id used to create eventSource.
  */
-export function generateGameInterface(gameID) {
+export function generateUserDetails(gameID) {
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
     fileReader.open('GET', 'user-info.html', true);
-    fileReader.onreadystatechange = () => updateGamePage(fileReader);
+    fileReader.onreadystatechange = () => updateUserDetails(fileReader);
     fileReader.send();
 
     document.getElementById('username').innerHTML = details.user_name;
@@ -34,10 +34,10 @@ export function generateGameInterface(gameID) {
         const turn = JSON.parse(turnEvent.data);
         document.getElementById('current-turn').innerHTML = `Player ${turn}`;
     });
-    sseEventSource.addEventListener('playerBalance', (turnEvent) => {
+    sseEventSource.addEventListener('playerBalance', (balanceEvent) => {
         const balance = JSON.parse(balanceEvent.data);
         document.getElementById('current-turn').innerHTML = balance[id];
     });
 
-    //TODO Properties!
+    // TODO Properties!
 }
