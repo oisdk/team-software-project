@@ -197,6 +197,15 @@ def generate_player_join_event(output_stream, old_players, new_players):
     data: ["third"]
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_player_join_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {5: 'first_user'})
+    event: playerJoin
+    data: ["first_user"]
+    <BLANKLINE>
+
     """
     # Send the event name to the client.
     output_stream.write('event: playerJoin\n')
@@ -204,10 +213,15 @@ def generate_player_join_event(output_stream, old_players, new_players):
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
     output_stream.write('data: ')
-    output_stream.write(json.dumps([
-        uname
-        for uid, uname in new_players.items()
-        if uid not in old_players]))
+    if not old_players:
+        output_stream.write(json.dumps([
+            uname
+            for uid, uname in new_players.items()]))
+    else:
+        output_stream.write(json.dumps([
+            uname
+            for uid, uname in new_players.items()
+            if uid not in old_players]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
@@ -262,6 +276,15 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     data: [[8, 4]]
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_player_move_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {5: 4})
+    event: playerMove
+    data: [[5, 4]]
+    <BLANKLINE>
+
     """
     # Send the event name to the client.
     output_stream.write('event: playerMove\n')
@@ -269,10 +292,15 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
     output_stream.write('data: ')
-    output_stream.write(json.dumps([
-        [uid, board_position]
-        for uid, board_position in new_positions.items()
-        if board_position != old_positions[uid]]))
+    if not old_positions:
+        output_stream.write(json.dumps([
+            [uid, board_position]
+            for uid, board_position in new_positions.items()]))
+    else:
+        output_stream.write(json.dumps([
+            [uid, board_position]
+            for uid, board_position in new_positions.items()
+            if board_position != old_positions[uid]]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
@@ -325,6 +353,15 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     data: [[8, 400]]
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_player_balance_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {5: 200})
+    event: playerBalance
+    data: [[5, 200]]
+    <BLANKLINE>
+
     """
     # Send the event name to the client.
     output_stream.write('event: playerBalance\n')
@@ -332,10 +369,16 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
     output_stream.write('data: ')
-    output_stream.write(json.dumps([
-        [uid, balance]
-        for uid, balance in new_balances.items()
-        if balance != old_balances[uid]]))
+
+    if not old_balances:
+        output_stream.write(json.dumps([
+            [uid, balance]
+            for uid, balance in new_balances.items()]))
+    else:
+        output_stream.write(json.dumps([
+            [uid, balance]
+            for uid, balance in new_balances.items()
+            if balance != old_balances[uid]]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
