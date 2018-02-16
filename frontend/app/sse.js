@@ -1,5 +1,6 @@
 /**
- * This module provides access to the SSE event source.
+ * Provides access to the SSE event source.
+ * @module
  */
 
 let eventSource;
