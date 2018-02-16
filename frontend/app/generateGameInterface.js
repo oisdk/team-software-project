@@ -89,6 +89,7 @@ export function updateGamePage(fileReader) {
 /**
  * Function to generate game interface. Makes a request to local
  * filesystem for a HTML file to display.
+ * @param {int} gameID - id used to create eventSource.
  */
 export function generateGameInterface(gameID) {
     // console.log("GameId:");
