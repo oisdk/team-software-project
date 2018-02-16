@@ -39,7 +39,8 @@ def start_sse_stream(output_stream=sys.stdout):
             new_balances[player.uid] = player.balance
             turn_order[player.uid] = player.turn_position
 
-        turn = check_new_turn(output_stream, turn, game.current_turn, turn_order)
+        turn = check_new_turn(output_stream, turn, game.current_turn,
+                              turn_order)
         players = check_new_players(output_stream, players, new_players)
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
@@ -129,8 +130,8 @@ def generate_player_turn_event(output_stream, new_turn, player_id):
     """Generates an event for a change of turn in the game.
 
     >>> import sys
-    >>> generate_player_turn_event(sys.stdout, 2)
-    event: playerTurn
+    >>> generate_player_turn_event(sys.stdout, 2, 1)
+    event: playerTurn1
     data: 2
     <BLANKLINE>
     """
