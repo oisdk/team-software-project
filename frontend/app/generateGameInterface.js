@@ -42,6 +42,8 @@ export function successCallback(req1) {
     const response = JSON.parse(req1.responseText);
     if (response.your_rolls[0] !== response.your_rolls[1]) {
         enableEndTurn();
+    } else {
+        enableGameInterface();
     }
 }
 
