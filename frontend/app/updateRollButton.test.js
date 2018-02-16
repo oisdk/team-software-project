@@ -30,7 +30,7 @@ describe('Disable roll button ', () => {
     const oldDocumentBody = document.body.innerHTML;
 
     // simulate response
-    const mockFileResponse = '{"player_id": [2,1]}';
+    const mockFileResponse = JSON.stringify({"player_id": [2,1]});
 
     beforeAll(() => {
         document.body.innerHTML = '<button type="button" id="roll">Roll die</button>';
