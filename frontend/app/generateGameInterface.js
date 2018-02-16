@@ -88,18 +88,19 @@ export function updateGamePage(fileReader) {
  * Function to generate game interface. Makes a request to local
  * filesystem for a HTML file to display.
  */
-export function generateGameInterface() {
-    //console.log("GameId:");
-    //console.log(gameID);
-    console.log("PlayerId:");
-    console.log(id);
-    console.log(`playerTurn${id}`);
-    //SSE Events
-    const sseEventSource = initialiseEventSource(1);
+export function generateGameInterface(gameID) {
+    // console.log("GameId:");
+    // console.log(gameID);
+    // console.log('PlayerId:');
+    // console.log(id);
+    // console.log(`playerTurn${id}`);
+    // SSE Events
+    const sseEventSource = initialiseEventSource(gameID);
     sseEventSource.addEventListener(`playerTurn${id}`, (turnEvent) => {
         const turn = JSON.parse(turnEvent.data);
-        console.log("Turn:");
+        console.log('Turn:');
         console.log(turn);
+        enableGameInterface();
     });
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
