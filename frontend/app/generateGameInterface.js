@@ -1,6 +1,7 @@
-// Import sendJSON functionality
+// Imports
 import * as sendJSON from './sendJSON';
 import * as getCookie from './checkUserIDCookie';
+import {initialiseEventSource} from './sse';
 
 const details = getCookie.checkUserDetails();
 const id = details.user_id;
@@ -87,7 +88,7 @@ export function updateGamePage(fileReader) {
  * Function to generate game interface. Makes a request to local
  * filesystem for a HTML file to display.
  */
-export function generateGameInterface() {
+export function generateGameInterface(game_id) {
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
     fileReader.open('GET', 'game-interface.html', true);
