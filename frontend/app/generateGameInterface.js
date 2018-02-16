@@ -4,7 +4,8 @@ import * as getCookie from './checkUserIDCookie';
 import {initialiseEventSource} from './sse';
 
 const details = getCookie.checkUserDetails();
-const id = details.user_id;
+const id = String(details.user_id);
+let turnBoolean = true;
 
 
 /**
@@ -57,6 +58,7 @@ export function rollDice(JSONSend) {
         jsonObject: {user_id: id},
         successCallback,
     });
+    turnBoolean = false;
 }
 
 /**
@@ -69,6 +71,7 @@ export function endTurn(JSONSend) {
         jsonObject: {player_id: id},
     });
     disableGameInterface();
+    turnBoolean = true;
 }
 
 
@@ -81,8 +84,10 @@ export function updateGamePage(fileReader) {
         document.getElementById('content-right').innerHTML = fileReader.responseText;
         const rollDiceButton = document.getElementById('roll-dice');
         rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
+        rollDiceButton.disabled = true;
         const endTurnButton = document.getElementById('end-turn');
         endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
+        endTurnButton.disabled = true;
     }
 }
 
@@ -95,10 +100,10 @@ export function generateGameInterface(gameID) {
     // SSE Events
     const sseEventSource = initialiseEventSource(gameID);
     sseEventSource.addEventListener('playerTurn', (turnEvent) => {
-        const turn = JSON.parse(turnEvent.data);
+        const turn = String(JSON.parse(turnEvent.data));
         console.log('Turn:');
         console.log(turn);
-        if (turn === id) {
+        if (turn === String(id) && turnBoolean) {
             enableGameInterface();
         }
     });
