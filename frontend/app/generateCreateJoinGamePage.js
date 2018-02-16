@@ -24,7 +24,7 @@ export function updatePage(fileReader) {
         const createGameButton = document.getElementById('create-game');
         createGameButton.addEventListener('click', createGame.getGameID, false);
         const testButton = document.getElementById('test');
-        testButton.addEventListener('click', game.generateGameInterface, false);
+        testButton.addEventListener('click', game.generateGameInterface(1), false);
     }
 }
 
