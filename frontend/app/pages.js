@@ -1,6 +1,8 @@
 import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
-import {activeGame} from './activeGame';
+
+// change according to activeGame as currently used with default function
+import activeGame from './activeGame';
 
 /**
  * Provides functions which display a certain page to the user.
@@ -94,7 +96,7 @@ export function waitingGame(gameID) {
 
     sseEventSource.addEventListener('gameStart', (startEvent) => {
         const startedGameId = JSON.parse(startEvent.data);
-        if (gameID === startedGameId) {
+        if (parseInt(gameID, 10) === startedGameId) {
             activeGame(gameID);
         }
     });
