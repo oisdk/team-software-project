@@ -126,7 +126,7 @@ def start_sse_stream(output_stream=sys.stdout):
 
         # Call function to check if any games in the database have a "playing"
         # status.
-        check_for_playing_games(output_stream)
+        check_game_playing_status(output_stream)
 
         time.sleep(3)
 
@@ -210,7 +210,7 @@ def check_new_positions(output_stream, old_positions, new_positions):
     return new_positions
 
 
-def check_for_playing_games(output_stream):
+def check_game_playing_status(output_stream):
     """Check for games whose status is 'playing'.
 
     Iterate over each game in the database and check to see if their status
