@@ -214,7 +214,7 @@ def check_game_playing_status(output_stream, game):
     """Check if the specified game's status is 'playing'.
 
     Arguments:
-        game_id: The id of the game whose status is being checked.
+        game: The game whose status is being checked.
 
     """
     if game.state == "playing":
@@ -294,7 +294,7 @@ def generate_game_start_event(game_id, output_stream):
     output_stream.write('event: gameStart\n')
 
     # Send the game_id to the client in the SSE data chunk.
-    output_stream.write('data: %i\n' % (game_id))
+    output_stream.write('data: %s\n' % (game_id))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
