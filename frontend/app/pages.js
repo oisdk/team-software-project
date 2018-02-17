@@ -94,6 +94,7 @@ export function waitingGame(gameID) {
         }
     });
 
+    // need to cast string to int for comparison.
     sseEventSource.addEventListener('gameStart', (startEvent) => {
         const startedGameId = JSON.parse(startEvent.data);
         if (parseInt(gameID, 10) === startedGameId) {
