@@ -11,7 +11,7 @@ describe('updateUserDetails test', () => {
     const mockFileResponse = {
         status: 200,
         readyState: 4,
-        responseText: '<table><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="username"></td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></table>',
+        responseText: '<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>',
     };
 
     // Create a user_name cookie
@@ -28,16 +28,21 @@ describe('updateUserDetails test', () => {
 
     test('should read mockFileResponse and update page with its contents', (done) => {
         generateUserDetails.updateUserDetails(mockFileResponse);
-        expect(document.getElementById('content-left').innerHTML).toEqual('<table><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="username"></td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></table>');
+        expect(document.getElementById('content-left').innerHTML).toEqual('<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>');
+        expect(document.getElementById('details_username').innerHTML).toEqual('undefined');
         done();
     });
 });
 
 
 describe('generateUserDetails test', () => {
+    // Store the current state of the HTML body so it can be restored after the
+    // test
+    const oldDocumentBody = document.body;
     const oldXMLHttpRequest = window.XMLHttpRequest;
     const mockGameId = 1;
     let mockEventSource;
+
 
     // Create a mock XMLHttpRequest object
     const mockXHR = {
@@ -53,12 +58,14 @@ describe('generateUserDetails test', () => {
             addEventListener: jest.fn(),
         };
         window.EventSource = jest.fn(() => mockEventSource);
+        document.body.innerHTML = '<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>';
     });
 
     // Restore the global XMLHttpRequest to the state it was before the tests
     afterEach(() => {
         window.XMLHttpRequest = oldXMLHttpRequest;
         window.EventSource = undefined;
+        document.body.innerHTML = oldDocumentBody;
     });
 
     test('should call appropriate XMLHttpRequest/eventSource functions', (done) => {
@@ -66,6 +73,9 @@ describe('generateUserDetails test', () => {
         expect(mockXHR.open).toHaveBeenCalledWith('GET', 'user-info.html', true);
         const result = initialiseEventSource(mockGameId);
         expect(result).toBe(mockEventSource);
+        expect(document.getElementById('current-turn').innerHTML).toEqual('');
+        expect(document.getElementById('balance').innerHTML).toEqual('');
+        expect(document.getElementById('properties').innerHTML).toEqual('');
         done();
     });
 });
