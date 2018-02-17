@@ -4,8 +4,8 @@ changes.
 
 Steps for adding more SSE on the SERVER SIDE:
     1) Write a new function that takes a meaningful argument (e.g. game) and
-        performs some check in the database, see check_game_playing_status() for a
-        straightforward example.
+        performs some check in the database, see check_game_playing_status()
+        for a straightforward example.
     2) If the 'check' within the function you have written above passes, it
         should calls another function which you will write which will generate
         an event for the client (have a look at generate_game_start_event()).
