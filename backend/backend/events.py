@@ -126,7 +126,7 @@ def start_sse_stream(output_stream=sys.stdout):
 
         # Call function to check if any games in the database have a "playing"
         # status.
-        check_game_playing_status(output_stream)
+        check_game_playing_status(output_stream, game)
 
         time.sleep(3)
 
@@ -210,26 +210,17 @@ def check_new_positions(output_stream, old_positions, new_positions):
     return new_positions
 
 
-def check_game_playing_status(output_stream):
+def check_game_playing_status(output_stream, game):
     """Check if the specified game's status is 'playing'.
 
     Arguments:
         game_id: The id of the game whose status is being checked.
 
     """
-    # Get a list of game ids from the database.
-    list_of_games_in_db = list(get_games().keys())
-
-    # Iterate over each game_id in the list of games and check which one has a
-    # status of "playing"
-    for game_id in list_of_games_in_db:
-        # Create a syntactic sugar Game instance to access the database.
-        game_reference = Game(game_id)
-
-        if game_reference.state == "playing":
-            # Call function to generate appropriate event if game's status is
-            # "playing".
-            generate_game_start_event(game_id, output_stream)
+    if game.state == "playing":
+        # Call function to generate appropriate event if game's status is
+        # "playing".
+        generate_game_start_event(game.uid, output_stream)
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
