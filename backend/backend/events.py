@@ -211,10 +211,10 @@ def check_new_positions(output_stream, old_positions, new_positions):
 
 
 def check_game_playing_status(output_stream):
-    """Check for games whose status is 'playing'.
+    """Check if the specified game's status is 'playing'.
 
-    Iterate over each game in the database and check to see if their status
-    is equal to "playing".
+    Arguments:
+        game_id: The id of the game whose status is being checked.
 
     """
     # Get a list of game ids from the database.
