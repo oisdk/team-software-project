@@ -60,7 +60,6 @@ import json
 from cgi import FieldStorage
 import cgitb
 from backend.game import Game
-from backend.game import get_games
 from backend.player import Player
 
 cgitb.enable()
