@@ -33,24 +33,3 @@ describe('waitingGame', () => {
     });
 });
 
-describe('Test of start game event', () => {
-    const mockGameId = 1;
-    let mockEventSource;
-
-    beforeEach(() => {
-        mockEventSource = {
-            addEventListener: jest.fn(),
-        };
-        window.EventSource = jest.fn(() => mockEventSource);
-    });
-
-    afterEach(() => {
-        window.EventSource = undefined;
-    });
-
-    test('should call eventSource', (done) => {
-        const result = sse.initialiseEventSource(mockGameId);
-        expect(result).toBe(mockEventSource);
-        done();
-    });
-});
