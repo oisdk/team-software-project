@@ -21,7 +21,7 @@ export function updateUserDetails(fileReader) {
  * filesystem for a HTML file to display.
  * @param {int} gameID - id used to create eventSource.
  */
-export function generateUserDetails() {
+export function generateUserDetails(gameID) {
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
     fileReader.open('GET', 'user-info.html', true);
@@ -29,7 +29,7 @@ export function generateUserDetails() {
     fileReader.send();
 
     // SSE Events
-    const sseEventSource = initialiseEventSource(1);
+    const sseEventSource = initialiseEventSource(gameID);
     sseEventSource.addEventListener('playerTurn', (turnEvent) => {
         const turn = JSON.parse(turnEvent.data);
         document.getElementById('current-turn').innerHTML = `Player ${turn + 1}`;
