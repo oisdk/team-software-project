@@ -83,10 +83,10 @@ def start_sse_stream(output_stream=sys.stdout):
 
     # Read in the game id from standard input (aka. FieldStorage) and create
     # an empty dictionary of current players, positions, balances, new
-    # players, new positions, and new balances. All the "new" dicts
-    # will be populated with the most up to date data from the **database**,
-    # while non-"new" dicts will be populated only after a comparison between
-    # it and the corresponding "new" dict has been made.
+    # players, new positions, new balances and turn orders. All the "new"
+    # dicts will be populated with the most up to date data from the
+    # **database**, while non-"new" dicts will be populated only after a
+    # comparison between it and the corresponding "new" dict has been made.
     input_data = FieldStorage()
     game_id = input_data.getfirst('game')
     players = {}
@@ -108,7 +108,7 @@ def start_sse_stream(output_stream=sys.stdout):
 
         # Go through each player in the game (via the database) and populate
         # the "new" dictionaries with user_id (aka. player_id) as the key, and
-        # username/position/balance as the value.
+        # username/position/balance/turn-order as the value.
         for player in map(Player, game.players):
             new_players[player.uid] = player.username
             new_positions[player.uid] = player.board_position
@@ -147,9 +147,11 @@ def check_new_turn(output_stream, old_turn, new_turn, turn_order):
             queue.
         new_turn: An int representing the latest (aka. "new") position in the
             playing queue.
+        turn_order: A dictionary representing mapping player ids to the
+            player's position in the playing queue.
 
     Returns:
-        A dictionary with the latest position in the playing queue.
+        An int representing the current position of the playing queue.
 
     """
     if new_turn != old_turn:
