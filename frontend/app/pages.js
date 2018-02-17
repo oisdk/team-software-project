@@ -90,6 +90,13 @@ export function waitingGame(gameID) {
             }
         }
     });
+    
+    sseEventSource.addEventListener('gameStart', (startEvent) => {
+        const startedGameId = JSON.parse(startEvent.data);
+        if (gameID === startedGameId) {
+            activeGame(gameID);
+        }
+    });
 }
 
 /**
