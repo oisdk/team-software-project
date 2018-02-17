@@ -42,6 +42,7 @@ def start_sse_stream(output_stream=sys.stdout):
     new_positions = {}
     new_balances = {}
     turn = None
+    turn_order = {}
 
     # These statements are executed constantly once the first request to this
     # file is made.
@@ -58,12 +59,14 @@ def start_sse_stream(output_stream=sys.stdout):
             new_players[player.uid] = player.username
             new_positions[player.uid] = player.board_position
             new_balances[player.uid] = player.balance
+            turn_order[player.uid] = player.turn_position
 
         # Assign the current (aka. non-new) dictionaries to the value of the
         # "new" (aka. "latest") dictionaries after calling the appropriate
         # comparison function to determine whether an event should be
         # generated.
-        turn = check_new_turn(output_stream, turn, game.current_turn)
+        turn = check_new_turn(output_stream, turn, game.current_turn,
+                              turn_order)
         players = check_new_players(output_stream, players, new_players)
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
@@ -81,7 +84,7 @@ def start_sse_stream(output_stream=sys.stdout):
         output_stream.flush()
 
 
-def check_new_turn(output_stream, old_turn, new_turn):
+def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     """Checks if the turn has changed to a different player and sends an SSE
     event if it has.
 
@@ -96,7 +99,9 @@ def check_new_turn(output_stream, old_turn, new_turn):
 
     """
     if new_turn != old_turn:
-        generate_player_turn_event(output_stream, new_turn)
+        for uid, turn_pos in turn_order.items():
+            if turn_pos == new_turn:
+                generate_player_turn_event(output_stream, uid)
     return new_turn
 
 
@@ -197,6 +202,15 @@ def generate_player_join_event(output_stream, old_players, new_players):
     data: ["third"]
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_player_join_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {5: 'first_user'})
+    event: playerJoin
+    data: ["first_user"]
+    <BLANKLINE>
+
     """
     # Send the event name to the client.
     output_stream.write('event: playerJoin\n')
@@ -204,10 +218,15 @@ def generate_player_join_event(output_stream, old_players, new_players):
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
     output_stream.write('data: ')
-    output_stream.write(json.dumps([
-        uname
-        for uid, uname in new_players.items()
-        if uid not in old_players]))
+    if not old_players:
+        output_stream.write(json.dumps([
+            uname
+            for uid, uname in new_players.items()]))
+    else:
+        output_stream.write(json.dumps([
+            uname
+            for uid, uname in new_players.items()
+            if uid not in old_players]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
@@ -262,6 +281,15 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     data: [[8, 4]]
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_player_move_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {5: 4})
+    event: playerMove
+    data: [[5, 4]]
+    <BLANKLINE>
+
     """
     # Send the event name to the client.
     output_stream.write('event: playerMove\n')
@@ -269,21 +297,27 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
     output_stream.write('data: ')
-    output_stream.write(json.dumps([
-        [uid, board_position]
-        for uid, board_position in new_positions.items()
-        if board_position != old_positions[uid]]))
+    if not old_positions:
+        output_stream.write(json.dumps([
+            [uid, board_position]
+            for uid, board_position in new_positions.items()]))
+    else:
+        output_stream.write(json.dumps([
+            [uid, board_position]
+            for uid, board_position in new_positions.items()
+            if board_position != old_positions[uid]]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
 
 
-def generate_player_turn_event(output_stream, new_turn):
+def generate_player_turn_event(output_stream, player_id):
     """Generates an event for a change of turn in the game.
 
     Arguments:
         new_turn: An int representing the latest position in the playing
             queue.
+        player_id: An int representing the player whose turn it is.
 
     >>> import sys
     >>> generate_player_turn_event(sys.stdout, 2)
@@ -297,7 +331,7 @@ def generate_player_turn_event(output_stream, new_turn):
 
     # Send the integer representing the latest position in the playing queue
     # to the client in the SSE data chunk.
-    output_stream.write('data: ' + str(new_turn))
+    output_stream.write('data: ' + str(player_id))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
@@ -325,6 +359,15 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     data: [[8, 400]]
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_player_balance_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {5: 200})
+    event: playerBalance
+    data: [[5, 200]]
+    <BLANKLINE>
+
     """
     # Send the event name to the client.
     output_stream.write('event: playerBalance\n')
@@ -332,10 +375,16 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
     output_stream.write('data: ')
-    output_stream.write(json.dumps([
-        [uid, balance]
-        for uid, balance in new_balances.items()
-        if balance != old_balances[uid]]))
+
+    if not old_balances:
+        output_stream.write(json.dumps([
+            [uid, balance]
+            for uid, balance in new_balances.items()]))
+    else:
+        output_stream.write(json.dumps([
+            [uid, balance]
+            for uid, balance in new_balances.items()
+            if balance != old_balances[uid]]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')

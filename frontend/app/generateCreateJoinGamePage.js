@@ -9,6 +9,7 @@ import * as createGame from './createGame';
 /**
  * Callback function to update HTML body with file's contents.
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
+ * @private
  */
 export function updatePage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
