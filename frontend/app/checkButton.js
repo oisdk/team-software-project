@@ -1,5 +1,9 @@
-// Display an error message if username is invalid or empty, otherwise show
-// a confirmation message and enable the submit button
+/**
+ * Displays an error message if username is invalid or empty, otherwise shows
+ * a confirmation message and enables the submit button.
+ *
+ * @private
+ */
 export function checkTextField() {
     const username = document.querySelector('#username');
     const usernameValue = username.value;
@@ -15,8 +19,12 @@ export function checkTextField() {
     }
 }
 
-// Adds an event listener to the username text field in the new user html page
-// which is called when the user clicks outside the text field
+/**
+ * Adds an event listener to the username text field in the new user html page
+ * which is called when the user clicks outside the text field
+ *
+ * @param {function} callback The callback to use for username validation.
+ */
 export function validateUsername(callback = checkTextField) {
     const username = document.querySelector('#username');
     username.addEventListener('change', callback, false);

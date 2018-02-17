@@ -5,6 +5,7 @@
  * @param {string} serverAddress - Address of program to request id.
  * @param {string} nameSubmitted - username entered by user.
  * @param callback - success or failure callback if a response is received.
+ * @private
  */
 
 export function requestUserID(serverAddress, nameSubmitted, callback) {

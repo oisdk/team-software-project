@@ -26,6 +26,7 @@ export function sendGameId(gameID, waitFunction, sendfunction) {
  * A radio button is located alongside each game for selection.
  *
  * @param {XMLHttpRequest} xhttp - Contains list of games to display.
+ * @private
  */
 export function pickGame(xhttp) {
     if (xhttp.readyState === 4 && xhttp.status === 200) {
