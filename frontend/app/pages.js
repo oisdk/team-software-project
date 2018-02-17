@@ -94,9 +94,10 @@ export function waitingGame(gameID) {
         }
     });
 
-    // need to cast string to int for comparison.
+    // Listen for a gameStart event coming from the server.
     sseEventSource.addEventListener('gameStart', (startEvent) => {
         const startedGameId = JSON.parse(startEvent.data);
+        // need to cast string to int for comparison.
         if (parseInt(gameID, 10) === startedGameId) {
             activeGame(gameID);
         }
