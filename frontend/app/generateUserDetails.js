@@ -4,7 +4,7 @@ import {initialiseEventSource} from './sse';
 
 const details = getCookie.checkUserDetails();
 const id = details.user_id;
-const user_name = details.user_name;
+const userName = details.user_name;
 /**
  * Callback function to update HTML body with file's contents.
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
@@ -12,7 +12,7 @@ const user_name = details.user_name;
 export function updateUserDetails(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
         document.getElementById('content-left').innerHTML = fileReader.responseText;
-        document.getElementById('details_username').innerHTML = user_name;
+        document.getElementById('details_username').innerHTML = userName;
     }
 }
 
@@ -32,17 +32,17 @@ export function generateUserDetails() {
     const sseEventSource = initialiseEventSource(1);
     sseEventSource.addEventListener('playerTurn', (turnEvent) => {
         const turn = JSON.parse(turnEvent.data);
-        document.getElementById('current-turn').innerHTML = `Player ${turn+1}`;
+        document.getElementById('current-turn').innerHTML = `Player ${turn + 1}`;
         console.log(`Turn:${turn}`);
     });
     sseEventSource.addEventListener('playerBalance', (balanceEvent) => {
         const data = JSON.parse(balanceEvent.data);
-        let balance = "";
+        let balance = '';
         console.log(`Balances:${data}`);
-        data.forEach(function(item){
+        data.forEach((item) => {
             console.log(item);
-            if (String(item[0]) === String(id)){
-                balance = item[1];
+            if (String(item[0]) === String(id)) {
+                ({1: balance} = item);
             }
         });
 
