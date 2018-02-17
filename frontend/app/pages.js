@@ -1,5 +1,6 @@
 import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
+import {activeGame} from './activeGame';
 
 /**
  * Provides functions which display a certain page to the user.
