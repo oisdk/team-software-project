@@ -18,7 +18,7 @@ Steps for adding more SSE on the SERVER SIDE:
 Steps for adding more SSE listeners on the CLIENT SIDE:
     1) In your JavaScript code, add the following import statement:
         `
-        import {initialiseEventSource} from './sse';
+        import {getEventSource} from './sse';
         `
     2) In your JavaScript code, get a reference to the event source:
         `
@@ -416,7 +416,7 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
 
     Example event:
     event: playerBalance
-    data: [[<userId1>, <balance1>], [<userId2>, <balance2>], …] 
+    data: [[<userId1>, <balance1>], [<userId2>, <balance2>], …]
 
     Arguments:
         old_balances: A dictionary representing the current balance for each
