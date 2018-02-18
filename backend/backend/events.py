@@ -20,10 +20,13 @@ Steps for adding more SSE listeners on the CLIENT SIDE:
         `
         import {initialiseEventSource} from './sse';
         `
-    2) In your JavaScript code, create an event source:
+    2) In your JavaScript code, get a reference to the event source:
         `
-        const mySseEventSource = initialiseEventSource(gameID);
+        const sseEventSourceReference = getEventSource();
         `
+        Note: The event source is initialised by waitingGame(), and
+        doesn't need to be re-initialised after that, this is why you
+        only need to "get" the event source.
     3) Now attach an event listener to the event source you just made:
         e.g.
         `
@@ -296,10 +299,17 @@ def generate_game_start_event(game_id, output_stream):
     <BLANKLINE>
 
     """
-    # Send the event name to the client.
+    # Send the gameStart event to the client. The client will listen for this
+    # event. i.e sseEventSource.addEventListener('gameStart', callback)
     output_stream.write('event: gameStart\n')
 
     # Send the game_id to the client in the SSE data chunk.
+    # For the client to read this data in the "gameStart" event listener, they
+    # would do something like the following:
+    # sseEventSource.addEventListener('gameStart', (gameStartEvent) => {
+    #     const theData = gameStartEvent.data;
+    #     // Do something with 'theData'
+    # })
     output_stream.write('data: %s\n' % (game_id))
 
     # Standard SSE procedure to have two blank lines after data.
