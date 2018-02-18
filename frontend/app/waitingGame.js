@@ -2,11 +2,6 @@ import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
 
 /**
- * Provides functions which display a certain page to the user.
- * @module
- */
-
-/**
  * Creates the html for the waiting game.
  *
  * @param gameID The id of the game.
