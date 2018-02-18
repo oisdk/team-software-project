@@ -97,13 +97,11 @@ export function waitingGame(gameID) {
     // Listen for a gameStart event coming from the server.
     sseEventSource.addEventListener('gameStart', (startEvent) => {
         const startedGameId = startEvent.data;
-        // needs casting to strings as the gameID is a number
-        // if the game is created and is a string if a player
-        // joins from a list of games.
-        if (gameID.toString() === startedGameId.toString()) {
+        // needs casting to string as the gameID is a number
+        // and needs to be compared to the gameID received from the gameStart event.
+        if (gameID.toString() === startedGameId) {
             // calls activeGame with a number for consistency
-            // and to stop the need for any further casting.
-            activeGame(parseInt(gameID, 10));
+            activeGame(gameID);
         }
     });
 }
