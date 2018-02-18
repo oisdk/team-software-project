@@ -1,5 +1,4 @@
-Monopoly Backend
-================
+# Monopoly Backend
 
 This is the backend for the monopoly app.
 
