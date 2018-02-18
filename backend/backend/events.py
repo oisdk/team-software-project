@@ -1,6 +1,61 @@
 """
 Handles the generation of Server-Sent Events which notify clients of state
 changes.
+
+Steps for adding more SSE on the SERVER SIDE:
+    1) Write a new function that takes a meaningful argument (e.g. game) and
+        performs some check in the database, see check_game_playing_status()
+        for a straightforward example.
+    2) If the 'check' within the function you have written above passes, it
+        should calls another function which you will write which will generate
+        an event for the client (have a look at generate_game_start_event()).
+        Read the comments in generate_game_start_event below for some guidance
+        regarding the sending of event types and the data payload.
+    3) Finally, add the call to the function you wrote in 1) to
+        start_sse_stream(). Make sure it's above the call to sleep(). Notice
+        the call to check_game_playing_status() in start_sse_stream below.
+
+Steps for adding more SSE listeners on the CLIENT SIDE:
+    1) In your JavaScript code, add the following import statement:
+        `
+        import {initialiseEventSource} from './sse';
+        `
+    2) In your JavaScript code, get a reference to the event source:
+        `
+        const sseEventSourceReference = getEventSource();
+        `
+        Note: The event source is initialised by waitingGame(), and
+        doesn't need to be re-initialised after that, this is why you
+        only need to "get" the event source.
+    3) Now attach an event listener to the event source you just made:
+        e.g.
+        `
+        mySseEventSource.addEventListener("gameStart", myCallback)
+        `
+        Note: The event "gameStart" depends on the name of the event that the
+        server is sending to the client (i.e. For the other functions below,
+        notice they're sending events like "playerMove" or "playerJoin").
+
+    4) In your callback function, do whatever you want with the data that was
+        send by the server.
+        e.g.
+        `
+        mySseEventSource.addEventListener('...', (myEventData) => {
+            const theData = myEventData.data;
+            // Do something with 'theData'
+        })
+        `
+        Notice that in some cases the server will send "data" in JSON
+        (i.e. generate_player_join_event), therefore, you'll need to parse
+        the "data" in the client code.
+        e.g.
+        `
+        mySseEventSource.addEventListener('...', (myEventData) => {
+            const theData = JSON.parse(myEventData.data);
+            // Do something with 'theData'
+        })
+        `
+
 """
 import sys
 import time
@@ -8,7 +63,6 @@ import json
 from cgi import FieldStorage
 import cgitb
 from backend.game import Game
-from backend.game import get_games
 from backend.player import Player
 
 cgitb.enable()
@@ -17,9 +71,12 @@ cgitb.enable()
 def start_sse_stream(output_stream=sys.stdout):
     """Generate a stream of server-sent events according to state changes.
 
-    Reads in the game id, and does both of the following:
-    1) Check if any new players have joined the waiting game lobby
-    2) Check if any waiting games have been started
+    Reads in the game id, and repeatedly does each of the following:
+        1) Check what player's turn it is
+        2) Check if any new players have joined the waiting game lobby.
+        3) Check if any of the players' balances have changed in a game.
+        4) Check if any of the players' positions have changed in a game.
+        5) Check if any waiting games have been started.
 
     """
     # The following headers are compulsory for SSE.
@@ -29,10 +86,10 @@ def start_sse_stream(output_stream=sys.stdout):
 
     # Read in the game id from standard input (aka. FieldStorage) and create
     # an empty dictionary of current players, positions, balances, new
-    # players, new positions, and new balances. All the "new" dicts
-    # will be populated with the most up to date data from the **database**,
-    # while non-"new" dicts will be populated only after a comparison between
-    # it and the corresponding "new" dict has been made.
+    # players, new positions, new balances and turn orders. All the "new"
+    # dicts will be populated with the most up to date data from the
+    # **database**, while non-"new" dicts will be populated only after a
+    # comparison between it and the corresponding "new" dict has been made.
     input_data = FieldStorage()
     game_id = input_data.getfirst('game')
     players = {}
@@ -54,7 +111,7 @@ def start_sse_stream(output_stream=sys.stdout):
 
         # Go through each player in the game (via the database) and populate
         # the "new" dictionaries with user_id (aka. player_id) as the key, and
-        # username/position/balance as the value.
+        # username/position/balance/turn-order as the value.
         for player in map(Player, game.players):
             new_players[player.uid] = player.username
             new_positions[player.uid] = player.board_position
@@ -74,7 +131,7 @@ def start_sse_stream(output_stream=sys.stdout):
 
         # Call function to check if any games in the database have a "playing"
         # status.
-        check_for_playing_games(output_stream)
+        check_game_playing_status(output_stream, game)
 
         time.sleep(3)
 
@@ -93,9 +150,11 @@ def check_new_turn(output_stream, old_turn, new_turn, turn_order):
             queue.
         new_turn: An int representing the latest (aka. "new") position in the
             playing queue.
+        turn_order: A dictionary representing mapping player ids to the
+            player's position in the playing queue.
 
     Returns:
-        A dictionary with the latest position in the playing queue.
+        An int representing the current position of the playing queue.
 
     """
     if new_turn != old_turn:
@@ -160,26 +219,17 @@ def check_new_positions(output_stream, old_positions, new_positions):
     return new_positions
 
 
-def check_for_playing_games(output_stream):
-    """Check for games whose status is 'playing'.
+def check_game_playing_status(output_stream, game):
+    """Check if the specified game's status is 'playing'.
 
-    Iterate over each game in the database and check to see if their status
-    is equal to "playing".
+    Arguments:
+        game: The game whose status is being checked.
 
     """
-    # Get a list of game ids from the database.
-    list_of_games_in_db = list(get_games().keys())
-
-    # Iterate over each game_id in the list of games and check which one has a
-    # status of "playing"
-    for game_id in list_of_games_in_db:
-        # Create a syntactic sugar Game instance to access the database.
-        game_reference = Game(game_id)
-
-        if game_reference.state == "playing":
-            # Call function to generate appropriate event if game's status is
-            # "playing".
-            generate_game_start_event(game_id, output_stream)
+    if game.state == "playing":
+        # Call function to generate appropriate event if game's status is
+        # "playing".
+        generate_game_start_event(game.uid, output_stream)
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
@@ -249,11 +299,18 @@ def generate_game_start_event(game_id, output_stream):
     <BLANKLINE>
 
     """
-    # Send the event name to the client.
+    # Send the gameStart event to the client. The client will listen for this
+    # event. i.e sseEventSource.addEventListener('gameStart', callback)
     output_stream.write('event: gameStart\n')
 
     # Send the game_id to the client in the SSE data chunk.
-    output_stream.write('data: %i\n' % (game_id))
+    # For the client to read this data in the "gameStart" event listener, they
+    # would do something like the following:
+    # sseEventSource.addEventListener('gameStart', (gameStartEvent) => {
+    #     const theData = gameStartEvent.data;
+    #     // Do something with 'theData'
+    # })
+    output_stream.write('data: %s\n' % (game_id))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
