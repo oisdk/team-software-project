@@ -1,6 +1,6 @@
 // Import sendJSON functionality
 import * as sendJSON from './sendJSON';
-import {waitingGame} from './pages';
+import {waitingGame} from './waitingGame';
 import * as getCookie from './checkUserIDCookie';
 
 /**

@@ -5,11 +5,6 @@ import * as sendJSON from './sendJSON';
 import activeGame from './activeGame';
 
 /**
- * Provides functions which display a certain page to the user.
- * @module
- */
-
-/**
  * Creates the html for the waiting game.
  *
  * @param gameID The id of the game.

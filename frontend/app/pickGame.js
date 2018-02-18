@@ -1,4 +1,4 @@
-import {waitingGame} from './pages';
+import {waitingGame} from './waitingGame';
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
 
