@@ -27,8 +27,8 @@ describe('Request sent to get bool comparision result of roll dice values', () =
         window.XMLHttpRequest = oldXMLHttpRequest;
     });
 
-    test('getRolls', (done) => {
-        functionCall.processRollButton(mockSendJSON);
+    test('getBoolean', (done) => {
+        functionCall.requestCompareRolls(mockSendJSON);
         expect(mockSendJSON).toHaveBeenCalled();
         done();
     });
@@ -45,7 +45,13 @@ describe('Disable roll button ', () => {
 
     // simulate response
     const mockFileResponse = {
+<<<<<<< HEAD
         responseText: '{player_id: [2, 1]}',
+=======
+        status: 200,
+        readyState: 4,
+        responseText: 'true',
+>>>>>>> parent of 051f02a... Update function call and mockFileResponse
     };
 
     beforeAll(() => {
