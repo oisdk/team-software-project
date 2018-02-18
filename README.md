@@ -9,9 +9,9 @@ Available [here](http://54.186.226.199).
 For instructions on how to add your code etc., see CONTRIBUTING.md
 
 # Table of Contents:
-1. [Access Database from Docker](#How-To: Accessing Database from Docker)
-2. [Current Tables in Database](#Current Tables in the Database)
-3. [Table Structures](#Table Structures)
+1. [Access Database from Docker](#How-To:-Accessing-Database-from-Docker)
+2. [Current Tables in Database](#Current-Tables-in-the-Database)
+3. [Table Structures](#Table-Structures)
 
 # Database Organisation:
 
