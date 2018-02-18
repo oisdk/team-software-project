@@ -1,5 +1,6 @@
 import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
+import {generateGameInterface} from './generateGameInterface';
 
 /**
  * Provides functions which display a certain page to the user.
@@ -90,6 +91,15 @@ export function waitingGame(gameID) {
             }
         }
     });
+}
+
+/**
+ * Displays the page for an active game.
+ *
+ * @param gameID The ID for the game that will be displayed.
+ */
+export function activeGame(gameID) {
+    generateGameInterface();
 }
 
 /**
