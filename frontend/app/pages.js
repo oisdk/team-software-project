@@ -97,7 +97,7 @@ export function waitingGame(gameID) {
     // Listen for a gameStart event coming from the server.
     sseEventSource.addEventListener('gameStart', (startEvent) => {
         const startedGameId = startEvent.data;
-        // need to cast string to int for comparison.
+        // compares two strings.
         if (gameID === startedGameId) {
             activeGame(gameID);
         }
