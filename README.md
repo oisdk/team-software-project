@@ -8,12 +8,15 @@ Available [here](http://54.186.226.199).
 
 For instructions on how to add your code etc., see CONTRIBUTING.md
 
+
 # Table of Contents
+
 ## Database:
 * [Access Database from Docker](#how-to-accessing-database-from-docker)
 * [Current Tables in Database](#current-tables-in-the-database)
 * [Table Structures](#table-structures)
 * [Glossary](#glossary)
+
 
 # Database Organisation
 
