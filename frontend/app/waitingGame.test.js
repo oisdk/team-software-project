@@ -1,4 +1,4 @@
-import * as pages from './pages';
+import * as pages from './waitingGame';
 import * as sse from './sse';
 import * as random from './random';
 
