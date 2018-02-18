@@ -11,4 +11,10 @@ export function activeGame(gameID) {
     generateGameInterface();
     generateUserDetails();
     generateGameLog();
+    displayBoard();
 }
+
+/**
+ * Mock function for displaying the monopoly board onscreen.
+ */
+function displayBoard() {}
