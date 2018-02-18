@@ -32,3 +32,4 @@ describe('waitingGame', () => {
         sse.initialiseEventSource = oldInitialiseEventSource;
     });
 });
+

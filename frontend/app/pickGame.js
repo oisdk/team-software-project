@@ -10,14 +10,16 @@ import * as sendJSON from './sendJSON';
  * @param {string} sendFunction - Takes in a function name to call.
  */
 export function sendGameId(gameID, waitFunction, sendfunction) {
+    // cast to number for consistency with create game.
+    const gameIdValue = parseInt(gameID.value, 10);
     if (gameID !== null) {
         const details = getCookie.checkUserDetails();
         const id = details.user_id;
         sendfunction({
             serverAddress: 'cgi-bin/join_game.py',
-            jsonObject: {user_id: id, game_id: gameID.value},
+            jsonObject: {user_id: id, game_id: gameIdValue},
         });
-        waitFunction(gameID.value);
+        waitFunction(gameIdValue);
     }
 }
 

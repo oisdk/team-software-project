@@ -1,6 +1,9 @@
 import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
 
+// change according to activeGame as currently used with default function
+import activeGame from './activeGame';
+
 /**
  * Creates the html for the waiting game.
  *
@@ -83,6 +86,17 @@ export function waitingGame(gameID) {
                     });
                 }, false);
             }
+        }
+    });
+
+    // Listen for a gameStart event coming from the server.
+    sseEventSource.addEventListener('gameStart', (startEvent) => {
+        const startedGameId = startEvent.data;
+        // needs casting to string as the gameID is a number
+        // and needs to be compared to the gameID received from the gameStart event.
+        if (gameID.toString() === startedGameId) {
+            // calls activeGame with a number for consistency
+            activeGame(gameID);
         }
     });
 }
