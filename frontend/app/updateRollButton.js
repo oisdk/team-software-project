@@ -1,36 +1,31 @@
+// Import sendJSON functionality
 import * as sendJSON from './sendJSON';
+// Import getCookie functionality
 import * as getCookie from './checkUserIDCookie';
 
+<<<<<<< HEAD
 /**
  * Callback for when player's roll dice values successfully received.
  *
  * @param {XMLHttpRequest} req Contains the response with the roll dice values.
  */
+=======
+// Enables the roll button for the player if the previous
+// roll values are equal
+>>>>>>> parent of b351906... Added JSdoc and now calling request_dice_roll
 export function checkRollValuesEqual(req) {
-    const response = JSON.parse(req.responseText);
-    const roll = response.player_id;
-    // Enables the roll button for the player if the
-    // roll values are equal otherwise disables button
+    const state = JSON.parse(req.responseText);
     const rollDie = document.querySelector('#roll');
-    if (roll[0] === roll[1]) {
-        rollDie.disabled = false;
-    } else {
-        rollDie.disabled = true;
-    }
+    rollDie.disabled = !state;
 }
 
-/**
- * Make a request for roll dice.
- *
- * @param {Function} JSONSend The function to make the request to the server.
- */
-export function processRollButton(JSONSend = sendJSON.sendJSON) {
-    // This function adds event listener to the roll button for the
-    // player to enable/disable the button
+// Adds event listener to the roll button for the player to
+// enable/disable the button
+export function requestCompareRolls(JSONSend = sendJSON.sendJSON) {
     const details = getCookie.checkUserDetails();
     const id = details.user_id;
     JSONSend({
-        serverAddress: 'cgi-bin/request_dice_roll.py',
+        serverAddress: 'cgi-bin/compare_dice_rolls.py',
         jsonObject: {player_id: id},
         checkRollValuesEqual,
     });
