@@ -57,7 +57,7 @@ For instructions on how to add your code etc., see CONTRIBUTING.md
 | roll2 | tinyint(3) unsigned | NO   |     | NULL    |       |
 | num   | int(10) unsigned    | NO   |     | NULL    |       |
 
-### Glossary:
+## Glossary:
 | Term | Meaning                                                                  | Link to relevant MySQL Docs                               |
 |-----|---------------------------------------------------------------------------|-----------------------------------------------------------|
 | PRI | Primary key: Uniquely identifies each record in the table. Cannot be NULL | https://dev.mysql.com/doc/refman/5.7/en/glossary.html     |
