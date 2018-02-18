@@ -16,7 +16,7 @@ For instructions on how to add your code etc., see CONTRIBUTING.md
 3. Start the MySQL interpreter: `mysql db`
 4. Type: `show tables;` to get a list of all tables in the database.
 5. Type: `describe X;` where "X" is the table you want to the fields in.
-6. To see what's actually stored in the database, do the usual SQL stuff like: `select * from games;` etc.
+6. To see what's actually stored in the database, do the usual SQL stuff e.g. `select * from games;` etc.
 
 ## Current Tables in the Database:
 | Tables       |
