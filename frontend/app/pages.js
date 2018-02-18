@@ -1,6 +1,8 @@
 import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
 import {generateGameInterface} from './generateGameInterface';
+import {generateUserDetails} from './generateUserDetails';
+import {generateGameLog} from './generateGameLog';
 
 /**
  * Provides functions which display a certain page to the user.
@@ -100,6 +102,8 @@ export function waitingGame(gameID) {
  */
 export function activeGame(gameID) {
     generateGameInterface();
+    generateUserDetails();
+    generateGameLog();
 }
 
 /**
