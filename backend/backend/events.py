@@ -18,7 +18,7 @@ Steps for adding more SSE on the SERVER SIDE:
 Steps for adding more SSE listeners on the CLIENT SIDE:
     1) In your JavaScript code, add the following import statement:
         `
-        import {initialiseEventSource} from './sse';
+        import {getEventSource} from './sse';
         `
     2) In your JavaScript code, get a reference to the event source:
         `
