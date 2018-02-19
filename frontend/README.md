@@ -40,9 +40,14 @@ like a bit of JSON).
 
    `mySseEventSource.addEventListener("gameStart", myCallback)`
 
-   Note: The event type will vary depending on the event type that will be
+   **Note**: The event type will vary depending on the event type that will be
    sent by the server. In this example, the event type is "gameStart".
    Other types used in this project include "playerMove" and "playerJoin".
+   
+   If you created a server-side event generator in events.py, then you know
+   what the event type is. If you're receiving events from someone else's
+   server-side event generator, then find out what event type their code
+   generates by looking up events.py (or just ask them in person :smiley:).
 
 4. In your callback function, do whatever you want with the data that was
    send by the server.
