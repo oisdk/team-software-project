@@ -92,6 +92,7 @@ def start_sse_stream(output_stream=sys.stdout):
     # comparison between it and the corresponding "new" dict has been made.
     input_data = FieldStorage()
     game_id = input_data.getfirst('game')
+    current_game_state = None
     players = {}
     positions = {}
     balances = {}
@@ -131,7 +132,8 @@ def start_sse_stream(output_stream=sys.stdout):
 
         # Call function to check if any games in the database have a "playing"
         # status.
-        check_game_playing_status(output_stream, game)
+        current_game_state = check_game_playing_status(output_stream, game,
+                                                       current_game_state)
 
         time.sleep(3)
 
@@ -219,17 +221,19 @@ def check_new_positions(output_stream, old_positions, new_positions):
     return new_positions
 
 
-def check_game_playing_status(output_stream, game):
+def check_game_playing_status(output_stream, game, current_game_state):
     """Check if the specified game's status is 'playing'.
 
     Arguments:
         game: The game whose status is being checked.
 
     """
-    if game.state == "playing":
+    if game.state != current_game_state and game.state == "playing":
         # Call function to generate appropriate event if game's status is
         # "playing".
         generate_game_start_event(game.uid, output_stream)
+
+    return game.state
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
