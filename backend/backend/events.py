@@ -132,8 +132,8 @@ def start_sse_stream(output_stream=sys.stdout):
 
         # Call function to check the current state of this game.
         # A game state may be "waiting" or "playing".
-        current_game_state = check_game_playing_status(output_stream, game,
-                                                       current_game_state)
+        last_game_state = check_game_playing_status(output_stream, game,
+                                                       last_game_state)
 
         time.sleep(3)
 
@@ -221,7 +221,7 @@ def check_new_positions(output_stream, old_positions, new_positions):
     return new_positions
 
 
-def check_game_playing_status(output_stream, game, current_game_state):
+def check_game_playing_status(output_stream, game, last_game_state):
     """Check if the specified game's status is 'playing'.
 
     Arguments:
