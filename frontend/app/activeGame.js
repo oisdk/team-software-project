@@ -1,3 +1,4 @@
+import {getEventSource} from './sse';
 import {generateGameInterface} from './generateGameInterface';
 import {generateUserDetails} from './generateUserDetails';
 import {generateGameLog} from './generateGameLog';
@@ -12,7 +13,45 @@ export function activeGame(gameID) {
     generateUserDetails();
     generateGameLog();
     displayBoard();
+
+    enableActiveGameListeners();
 }
+
+function enableActiveGameListeners() {
+    const eventSource = getEventSource();
+    eventSource.addEventListener('playerMove', onPlayerMove);
+    eventSource.addEventListener('playerTurn', onPlayerTurn);
+    eventSource.addEventListener('playerBalance', onPlayerBalance);
+    eventSource.addEventListener('gameEnd', disableActiveGameListeners);
+}
+
+function disableActiveGameListeners(gameEndEvent) {
+    const eventSource = getEventSource();
+    eventSource.removeEventListener('playerMove', onPlayerMove);
+    eventSource.removeEventListener('playerTurn', onPlayerTurn);
+    eventSource.removeEventListener('playerBalance', onPlayerBalance);
+}
+
+/**
+ * Called when a playerMove event happens.
+ *
+ * Dummy implementation for the moment.
+ */
+function onPlayerMove(playerMoveEvent) {}
+
+/**
+ * Called when a playerTurn event happens.
+ *
+ * Dummy implementation for the moment.
+ */
+function onPlayerTurn(playerTurnEvent) {}
+
+/**
+ * Called when a playerBalance event happens.
+ *
+ * Dummy implementation for the moment.
+ */
+function onPlayerBalance(playerBalanceEvent) {}
 
 /**
  * Mock function for displaying the monopoly board onscreen.
