@@ -4,26 +4,26 @@ import backend.storage
 
 
 class Property(object):  # pylint: disable=too-many-instance-attributes
-    """A single property in a game of monopoly. Refer to the Player class for how to
+    """A single property in monopoly. Refer to the Player class for how to
     access and mutate members."""
     def __init__(self, position, gid):
         self._gid = gid
-		self._positon = position
+        self._position = position
         self._in_context = False
-		self._property_state = None
-		self._houses = 0
-		self._hotels = 0
-		self._owner = None
-		self._price = 0
-		self._property_type = None
-		self._base = 0
-		self._monopoly = 0
-		self._house_price = 0
-		self._one = 0
-		self._two = 0
-		self._three = 0
-		self._four = 0
-		self._hotel = 0
+        self._property_state = None
+        self._houses = 0
+        self._hotels = 0
+        self._owner = None
+        self._price = 0
+        self._property_type = None
+        self._base = 0
+        self._monopoly = 0
+        self._house_price = 0
+        self._one = 0
+        self._two = 0
+        self._three = 0
+        self._four = 0
+        self._hotel = 0
         self._conn = None
 
     def __enter__(self):
@@ -32,44 +32,44 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         self._conn.begin()
         with self._conn.cursor() as cursor:
             cursor.execute('SELECT * FROM `properties` WHERE `game_id` = %s '
-			               'AND `property_position` = %s; ',
-                           (self._gid,self._position))
+                           'AND `property_position` = %s; ',
+                           (self._gid, self._position))
             result = cursor.fetchone()
             self._property_state = result['state']
-			self._houses = result['house_count']
-			self._hotels = result['hotel_count']
-			self._owner = result['player_id']
+            self._houses = result['house_count']
+            self._hotels = result['hotel_count']
+            self._owner = result['player_id']
             del result
             cursor.execute('SELECT * FROM `property_values` '
                            'WHERE `property_position` = %s;',
                            (self._position))
-			result = cursor.fetchone()
+            result = cursor.fetchone()
             self._price = result['purchase_price']
-			self._property_type = result['purchase_price']
-			self._base = result['purchase_price']
-			self._monopoly = result['purchase_price']
-			self._house_price = result['purchase_price']
-			self._one = result['purchase_price']
-			self._two = result['purchase_price']
-			self._three = result['purchase_price']
-			self._four = result['purchase_price']
-			self._hotel = result['purchase_price']
-			del result
+            self._property_type = result['purchase_price']
+            self._base = result['purchase_price']
+            self._monopoly = result['purchase_price']
+            self._house_price = result['purchase_price']
+            self._one = result['purchase_price']
+            self._two = result['purchase_price']
+            self._three = result['purchase_price']
+            self._four = result['purchase_price']
+            self._hotel = result['purchase_price']
+            del result
         return self
 
-		
     def __exit__(self, *exc):
         try:
             with self._conn.cursor() as cursor:
                 cursor.execute('UPDATE `properties` '
                                'SET `player_id` = %s, '
                                '`state` = %s, '
-							   '`house_count` = %s, '
-							   '`hotel_count` = %s'
+                               '`house_count` = %s, '
+                               '`hotel_count` = %s'
                                'WHERE `game_id` = %s '
-							   'AND `property_position` = %s',
-                               (self._owner, self._property_state, self._houses, 
-							    self._hotels, self._gid, self._position))
+                               'AND `property_position` = %s',
+                               (self._owner, self._property_state,
+                                self._houses, self._hotels, self._gid,
+                                self._position))
             self._conn.commit()
         finally:
             self._in_context = False
@@ -104,8 +104,8 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             TypeError: if mutated outside of a with statement.
         """
         return self._hotels
-		
-	@property
+
+    @property
     def owner(self):
         """
         Returns:
@@ -115,16 +115,16 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             TypeError: if mutated outside of a with statement.
         """
         return self._owner
-		
-	@property
+
+    @property
     def price(self):
         """
         Returns:
             int: the cost to purchase the property
         """
         return self._price
-		
-	@property
+
+    @property
     def type(self):
         """
         Returns:
@@ -132,29 +132,28 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         """
         return self._property_type
 
-	@property
+    @property
     def rent(self):
         """
         Returns:
             int: the rent for landing on the property
         """
-		if houses == 0 && hotels == 0:
-			#if there is a monopoly
-			#    return self._monopoly
-			#else:
-			return self._base
-		elif houses == 1:
-		    return self._one
-		elif houses == 2:
-		    return self._two
-		elif houses == 3:
-		    return self._three
-		elif houses == 4:
-		    return self._four
-		else:
-		    return self._hotel
-		
-	@property
+        if (self._houses == 0) and (self._hotels == 0):
+            # if there is a monopoly
+            #    return self._monopoly
+            return self._base
+        elif self._houses == 1:
+            return self._one
+        elif self._houses == 2:
+            return self._two
+        elif self._houses == 3:
+            return self._three
+        elif self._houses == 4:
+            return self._four
+        elif self._hotels == 1:
+            return self._hotel
+
+    @property
     def house_price(self):
         """
         Returns:
@@ -180,4 +179,3 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
     @owner.setter
     def owner(self, owner):
         self._set_property('owner', owner)
-
