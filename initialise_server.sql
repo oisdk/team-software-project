@@ -39,3 +39,17 @@ CREATE TABLE IF NOT EXISTS properties (
 	FOREIGN KEY (player_id) REFERENCES players(id),
     FOREIGN KEY (game_id) REFERENCES games(id)
 );
+
+CREATE TABLE IF NOT EXISTS property_values (
+    property_position tinyint UNSIGNED NOT NULL,
+	purchase_price smallint UNSIGNED NOT NULL,
+	state ENUM('property','railroad','utility') NOT NULL DEFAULT 'property',
+	base_rent smallint UNSIGNED NOT NULL,
+	monopoly_rent smallint UNSIGNED NOT NULL DEFAULT 0,
+	house_price tinyint UNSIGNED NOT NULL DEFAULT 0,
+	one_rent smallint UNSIGNED NOT NULL DEFAULT 0,
+	two_rent smallint UNSIGNED NOT NULL DEFAULT 0,
+	three_rent smallint UNSIGNED NOT NULL DEFAULT 0,
+	four_rent smallint UNSIGNED NOT NULL DEFAULT 0,
+	hotel_rent smallint UNSIGNED NOT NULL DEFAULT 0,
+);
