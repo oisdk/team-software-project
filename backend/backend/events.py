@@ -133,7 +133,7 @@ def start_sse_stream(output_stream=sys.stdout):
         # Call function to check the current state of this game.
         # A game state may be "waiting" or "playing".
         last_game_state = check_game_playing_status(output_stream, game,
-                                                       last_game_state)
+                                                    last_game_state)
 
         time.sleep(3)
 
