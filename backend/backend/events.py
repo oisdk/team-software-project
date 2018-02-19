@@ -92,7 +92,7 @@ def start_sse_stream(output_stream=sys.stdout):
     # comparison between it and the corresponding "new" dict has been made.
     input_data = FieldStorage()
     game_id = input_data.getfirst('game')
-    last_game_state = None
+    last_game_state = "waiting"
     players = {}
     positions = {}
     balances = {}
@@ -228,7 +228,7 @@ def check_game_playing_status(output_stream, game, current_game_state):
         game: The game whose status is being checked.
 
     """
-    if game.state != last_game_state and game.state == "playing":
+    if last_game_state == "waiting" and game.state == "playing":
         # Call function to generate appropriate event if game's status is
         # "playing".
         generate_game_start_event(game.uid, output_stream)
