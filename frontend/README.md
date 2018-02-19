@@ -29,9 +29,10 @@ like a bit of JSON).
    **Note**: The event source is like a _path_ from the server to the
    client through which events will travel.
 
-   **Also note**: The event source is initialised by waitingGame() already,
-   therefore, there's no need to re-initialise it again, all you have to do is
-   "get" the event source, as per this step.
+   **Also note**: The event source (which is a class, by the way) is
+   initialised by waitingGame() already, therefore, there's no need to
+   re-initialise it again, all you have to do is "get" the event source, as
+   per the step above.
 
 3. Now attach an event listener to the event source you just made:
 
