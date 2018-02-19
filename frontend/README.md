@@ -34,7 +34,7 @@ like a bit of JSON).
    re-initialise it again, all you have to do is "get" the event source, as
    per the step above.
 
-3. Now attach an event listener to the event source you just made:
+3. Now attach an event listener to the event source:
 
    e.g.
 
