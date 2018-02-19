@@ -28,6 +28,7 @@ game id.
 
 Writing Server-sent Event Generators (refers to events.py)
 ##########################################################
+
 1. Write a new function that takes a meaningful argument (e.g. game) and
    performs some "check" in the database (e.g. Check if some value in the
    database changed), see check_game_playing_status() in
