@@ -24,8 +24,8 @@ def charge_rent(source=sys.stdin, output=sys.stdout):
         # get the property's position
         # get who owns that property
         # if the current player this turn doesn't own it
-            # get the property's rent
-            # current player's balance reduces by rent amount
-            # property owner's balance increases by rent amount
+        # get the property's rent
+        # current player's balance reduces by rent amount
+        # property owner's balance increases by rent amount
 
     json.dump({"player_id": player_position}, output)
