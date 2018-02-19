@@ -3,17 +3,7 @@ Handles the generation of Server-Sent Events which notify clients of state
 changes.
 
 Steps for adding more SSE on the SERVER SIDE:
-    1) Write a new function that takes a meaningful argument (e.g. game) and
-        performs some check in the database, see check_game_playing_status()
-        for a straightforward example.
-    2) If the 'check' within the function you have written above passes, it
-        should calls another function which you will write which will generate
-        an event for the client (have a look at generate_game_start_event()).
-        Read the comments in generate_game_start_event below for some guidance
-        regarding the sending of event types and the data payload.
-    3) Finally, add the call to the function you wrote in 1) to
-        start_sse_stream(). Make sure it's above the call to sleep(). Notice
-        the call to check_game_playing_status() in start_sse_stream below.
+    See README.rst in team-software-project/backend.
 
 Steps for adding more SSE listeners on the CLIENT SIDE:
     1) In your JavaScript code, add the following import statement:
