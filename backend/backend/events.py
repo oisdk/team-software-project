@@ -239,10 +239,6 @@ def generate_player_join_event(output_stream, old_players, new_players):
     the two dicts differ. Along with the event is JSON containing the
     difference between the two dicts.
 
-    Example event:
-    event: playerJoin
-    data: [<username1>, <username2>, …]
-
     Arguments:
         old_players: A dictionary representing the current list of players.
         new_players: A dictionary representing the latest list of players.
@@ -289,9 +285,8 @@ def generate_player_join_event(output_stream, old_players, new_players):
 def generate_game_start_event(game_id, output_stream):
     """Generate a gameStart event for the appropriate game.
 
-    Example event:
-    event: gameStart
-    data: <gameID>
+    Sends a gameStart server-sent event, along with data representing the
+    game_id.
 
     Arguments:
         game_id: An int representing the started game's id.
@@ -327,10 +322,6 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     Compares two dictionaries and outputs a playerMove server-sent event if
     the two dicts differ. Along with the event is JSON containing the
     difference between the two dicts.
-
-    Example event:
-    event: playerMove
-    data: [[<uid1>, <pos1>], [<uid2>, <pos2>]]
 
     Arguments:
         old_positions: A dictionary representing the current position for each
@@ -380,10 +371,6 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
 def generate_player_turn_event(output_stream, player_id):
     """Generates an event for a change of turn in the game.
 
-    Example event:
-    event: playerTurn
-    data: <userID>
-
     Arguments:
         new_turn: An int representing the latest position in the playing
             queue.
@@ -413,10 +400,6 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     Compares two dictionaries and outputs a playerBalance server-sent event if
     the two dicts differ. Along with the event is JSON containing the
     difference between the two dicts.
-
-    Example event:
-    event: playerBalance
-    data: [[<userId1>, <balance1>], [<userId2>, <balance2>], …]
 
     Arguments:
         old_balances: A dictionary representing the current balance for each
