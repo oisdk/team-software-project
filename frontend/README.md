@@ -5,13 +5,13 @@
 | [Server-Sent Events](#server-sent-events) |
 
 
-## Server-Sent Events:
+## Server-Sent Events
 
-### What They are:
+### What They are
 They're essentially a means for a server to send data to a client **without**
 the client having to make any requests.
 
-#### From a Brief Implementation Perspective:
+#### How it Works (from a brief implementation perspective)
 1. The client makes an **event listener**, just like any ol' event listener
 (click, mouseover, keypress, etc.).
 2. The server sends the event (which has the **same name** as what the client
@@ -19,7 +19,7 @@ is listening for) to standard output along with data (which can be something
 like a bit of JSON).
 3. The client will receive this event and trigger the event callback.
 
-### How to Write a Client-Side SSE Listener:
+### How to Write a Client-Side SSE Listener
 1. In your JavaScript code, add the following import statement:
 
    `import {getEventSource} from './sse';`
