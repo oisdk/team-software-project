@@ -14,7 +14,7 @@
 
 # Intro
 
-This is Team 2’s project as part of the CS3305 module in 2018. You can access a live version of this application [here](http://54.186.226.199).
+This is Team 2’s project as part of the CS3305 module in 2018, which is an online version of Monopoly. You can access a live version of this application [here](http://54.186.226.199).
 
 ## Audience and Document Scope
 
