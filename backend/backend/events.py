@@ -3,58 +3,10 @@ Handles the generation of Server-Sent Events which notify clients of state
 changes.
 
 Steps for adding more SSE on the SERVER SIDE:
-    1) Write a new function that takes a meaningful argument (e.g. game) and
-        performs some check in the database, see check_game_playing_status()
-        for a straightforward example.
-    2) If the 'check' within the function you have written above passes, it
-        should calls another function which you will write which will generate
-        an event for the client (have a look at generate_game_start_event()).
-        Read the comments in generate_game_start_event below for some guidance
-        regarding the sending of event types and the data payload.
-    3) Finally, add the call to the function you wrote in 1) to
-        start_sse_stream(). Make sure it's above the call to sleep(). Notice
-        the call to check_game_playing_status() in start_sse_stream below.
+    See README.rst in "team-software-project/backend"
 
 Steps for adding more SSE listeners on the CLIENT SIDE:
-    1) In your JavaScript code, add the following import statement:
-        `
-        import {getEventSource} from './sse';
-        `
-    2) In your JavaScript code, get a reference to the event source:
-        `
-        const sseEventSourceReference = getEventSource();
-        `
-        Note: The event source is initialised by waitingGame(), and
-        doesn't need to be re-initialised after that, this is why you
-        only need to "get" the event source.
-    3) Now attach an event listener to the event source you just made:
-        e.g.
-        `
-        mySseEventSource.addEventListener("gameStart", myCallback)
-        `
-        Note: The event "gameStart" depends on the name of the event that the
-        server is sending to the client (i.e. For the other functions below,
-        notice they're sending events like "playerMove" or "playerJoin").
-
-    4) In your callback function, do whatever you want with the data that was
-        send by the server.
-        e.g.
-        `
-        mySseEventSource.addEventListener('...', (myEventData) => {
-            const theData = myEventData.data;
-            // Do something with 'theData'
-        })
-        `
-        Notice that in some cases the server will send "data" in JSON
-        (i.e. generate_player_join_event), therefore, you'll need to parse
-        the "data" in the client code.
-        e.g.
-        `
-        mySseEventSource.addEventListener('...', (myEventData) => {
-            const theData = JSON.parse(myEventData.data);
-            // Do something with 'theData'
-        })
-        `
+    See README.md in "team-software-project/frontend"
 
 """
 import sys
