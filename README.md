@@ -1,13 +1,16 @@
 [![Build Status](https://travis-ci.org/oisdk/team-software-project.svg?branch=master)](https://travis-ci.org/oisdk/team-software-project)
 
-# UCC Team Software Project 2018
+# Intro
 
-Team 2
+This is Team 2’s project as part of the CS3305 module in 2018. You can access a live version of this application [here](http://54.186.226.199).
 
-Available [here](http://54.186.226.199).
+## Audience and Document Scope
 
-For instructions on how to add your code etc., see CONTRIBUTING.md
+This document is part of the larger documentation associated with this project. It is intended to give a high-level overview of the project, targeted at developers new to the project, and at developers currently involved.
 
+For a guide on how to use the application, targeted at end-users, see [the usage document](USAGE.md).
+
+For a more detailed guide on how to get involved and contribute to the project, see [the contributing document](CONTRIBUTING.md).
 
 # Table of Contents
 
