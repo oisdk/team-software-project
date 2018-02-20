@@ -4,7 +4,7 @@ export function loadCanvas(gameID){
   //checks if a game id has been provided and then creats the canvas
   if(gameID !== null){
     const id = gameID;
-    document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="600" width = "600"></canvas>';
+    document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="600" width = "602"></canvas>';
     loadBoard();
   }
   else{
@@ -14,11 +14,11 @@ export function loadCanvas(gameID){
 
 function loadBoard(){
   var canvas = document.getElementById('gameBoard')
-  canvas = canvas.getContext('2d')
+  ctx = canvas.getContext('2d')
   var img = new Image();
   img.onload = function(){
-    canvas.drawimage(img , 0 , 0);
+    ctx.drawImage(img , 0 , 0);
   }
-  img.src = '/images/gameBoard.jpg';
+  img.src = 'http://weclipart.com/gimg/E934D7AB9F40FD25/monopoly-board-game-template-wallpaper-game-gallery-clipart.jpeg';
 
 }
