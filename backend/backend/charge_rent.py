@@ -6,7 +6,8 @@ import json
 import sys
 import cgitb
 from backend.player import Player
-from backend.game import Game, get_games
+from backend.game import get_games
+from backend.properties import Property
 
 cgitb.enable()
 
