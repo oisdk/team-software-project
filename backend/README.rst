@@ -70,7 +70,7 @@ Writing Server-sent Event Generators (refers to events.py)
    See the comments in generate_game_start_event() for some
    guidance on the sending of event types and the data payload.
    
-3. Finally, add the call to the function you wrote in 1) to
+3. Finally, add the call to the function you wrote in 1. above, to
    start_sse_stream().
    i.e.
    ::
