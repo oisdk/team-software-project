@@ -106,11 +106,6 @@
         {
           "argsIgnorePattern": "^_"
         }
-      ],
-      "import/prefer-default-export": "off",
-      "no-use-before-define": [
-        "error",
-        {"functions": false}
       ]
     }
   },
