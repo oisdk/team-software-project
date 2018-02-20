@@ -80,3 +80,11 @@ For instructions on how to add your code etc., see CONTRIBUTING.md
 This diagram shows a component & connector view of the system:
 
 ![Component & Connector View](readme-images/component-connector-view.svg)
+
+Clients send requests to apache, which runs the corresponding CGI scripts. These scripts interact with a database and send back a response.
+
+Clients also initialise a Server-sent Events event stream. This starts a script running on the server which polls the database for changes – it sends events back to the client for any changes it finds.
+
+Since the SSE script[^thread-note] is constantly polling, most CGI scripts don’t require a response, and so mostly write to the database, rather than reading from it.
+
+[^thread-note]: This is slightly misleading, as it suggests that there is only one SSE program running. Actually, each client gets its own thread, but they are all running the same program. The client can pass data (e.g. an id) to the SSE script through the query string so that it can act differently for each client.
