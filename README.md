@@ -85,6 +85,6 @@ Clients send requests to apache, which runs the corresponding CGI scripts. These
 
 Clients also initialise a Server-sent Events event stream. This starts a script running on the server which polls the database for changes – it sends events back to the client for any changes it finds.
 
-Since the SSE script<sup id="thread-note-source">[note](#thread-note)</sup> is constantly polling, most CGI scripts don’t require a response, and so mostly write to the database, rather than reading from it.
+Since the SSE script[1] is constantly polling, most CGI scripts don’t require a response, and so mostly write to the database, rather than reading from it.
 
-<a id="thread-note">Note</a>: This is slightly misleading, as it suggests that there is only one SSE program running. Actually, each client gets its own thread, but they are all running the same program. The client can pass data (e.g. an id) to the SSE script through the query string so that it can act differently for each client. [↩](#thread-note-source)
+[1]: This is slightly misleading, as it suggests that there is only one SSE program running. Actually, each client gets its own thread, but they are all running the same program. The client can pass data (e.g. an id) to the SSE script through the query string so that it can act differently for each client.
