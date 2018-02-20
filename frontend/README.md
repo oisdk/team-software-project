@@ -19,6 +19,9 @@ is listening for) to standard output along with data (which can be something
 like a bit of JSON).
 3. The client will receive this event and trigger the event callback.
 
+#### Diagram
+![SSE Diagram](../documentation-images/sse_implementation.png)
+
 ### How to Write a Client-Side SSE Listener
 1. In your JavaScript code, add the following import statement:
 
@@ -45,7 +48,7 @@ like a bit of JSON).
    **Note**: The event type will vary depending on the event type that will be
    sent by the server. In this example, the event type is "gameStart".
    Other types used in this project include "playerMove" and "playerJoin".
-   
+
    If you created a server-side event generator in events.py, then you know
    what the event type is. If you're receiving events from someone else's
    server-side event generator, then find out what event type their code
