@@ -1,5 +1,17 @@
 [![Build Status](https://travis-ci.org/oisdk/team-software-project.svg?branch=master)](https://travis-ci.org/oisdk/team-software-project)
 
+# Table of Contents
+
+* [Intro](#intro)
+    * [Audience and Document Scope](#audience-and-document-scope)
+* [Database Organisation](#database-organisation)
+    * [Access Database from Docker](#how-to-accessing-database-from-docker)
+    * [Current Tables in Database](#current-tables-in-the-database)
+    * [Table Structures](#table-structures)
+    * [Glossary](#glossary)
+* [Communication Structure](#communication-structure)
+    * [Component & Connector View](#component-connector-view)
+
 # Intro
 
 This is Team 2’s project as part of the CS3305 module in 2018. You can access a live version of this application [here](http://54.186.226.199).
@@ -11,14 +23,6 @@ This document is part of the larger documentation associated with this project. 
 For a guide on how to use the application, targeted at end-users, see [the usage document](USAGE.md).
 
 For a more detailed guide on how to get involved and contribute to the project, see [the contributing document](CONTRIBUTING.md).
-
-# Table of Contents
-
-## Database TOC
-* [Access Database from Docker](#how-to-accessing-database-from-docker)
-* [Current Tables in Database](#current-tables-in-the-database)
-* [Table Structures](#table-structures)
-* [Glossary](#glossary)
 
 
 # Database Organisation
