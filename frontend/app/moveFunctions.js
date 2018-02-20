@@ -47,4 +47,19 @@ export function getCoord(position) {
     }
     return listOfCoordinates[position];
 }
+
+// In the future, can specify image token. 
+//canvasID aka playerID
+function movePlayer(canvasID, position) {
+    let coordinate = getCoord(position);
+    var c = document.getElementById(canvasID);
+    const ctx = c.getContext('2d');
+    var img = new Image();
+    img.onload = function() {
+        ctx.clearRect(0,0,800,800);
+        ctx.beginPath();
+        ctx.drawImage(img,coordinate[0], coordinate[1]);
+        ctx.closePath();
+    }
+    imgg.src="p.png";
 }
