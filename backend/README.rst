@@ -6,14 +6,12 @@ This is the backend for the monopoly app.
 It is currently a skeleton, based on https://github.com/pypa/sampleproject.
 
 
-+---------------------+
-|  Table of Contents  |
-+=====================+
-| Server-Sent-Events_ |
-+---------------------+
++ --------------------- +
+| Table of Contents     |
++ ===================== +
+| `Server-Sent Events`_ |
++ --------------------- +
 
-
-.. _Server-Sent-Events:
 
 Server-Sent Events
 ------------------
@@ -30,8 +28,14 @@ How it Works (from a brief implementation perspective)
    (click, mouseover, keypress, etc.).
 2. The server sends the event (which has the same name as what the
    client is listening for) to standard output along with data (which
-   can be something like a bit of JSON). The client will receive this
+   can be something like a bit of JSON).
+3. The client will receive this
    event and trigger the event callback.
+
+Diagram
+~~~~~~~
+
+.. image:: ../documentation-images/sse_implementation.png
 
 Events being Generated Server-side
 ##################################
@@ -64,9 +68,9 @@ Writing Server-sent Event Generators (refers to events.py)
        def check_game_playing_status(output_stream, game):
            if game.state == "playing":
                generate_game_start_event(game.uid, output_stream)
-               
+
    See events.py for more examples, all of which are commented.
-        
+
 2. If the 'check' within the function you have written above
    passes, it should call another function (which you will write)
    to generate an event.
@@ -76,10 +80,10 @@ Writing Server-sent Event Generators (refers to events.py)
            output_stream.write('event: gameStart\n')
            output_stream.write('data: %s\n' % (game_id))
            output_stream.write('\n\n')
-   
+
    See the comments in generate_game_start_event() for some
    guidance on the sending of event types and the data payload.
-   
+
 3. Finally, add the call to the function you wrote in 1. above, to
    start_sse_stream().
    i.e.
