@@ -4,12 +4,12 @@ export function loadCanvas(gameID){
   //checks if a game id has been provided and then creats the canvas
   if(gameID !== null){
     const id = gameID;
-    document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="z-index : 0"></canvas>';
-    document.getElementByID('content').append('<canvas id="player1" height="800" width = "800" style="z-index :1"></canvas>');
-    document.getElementByID('content').append('<canvas id="player2" height="800" width = "800" style="z-index :2"></canvas>');
-    document.getElementByID('content').append('<canvas id="player3" height="800" width = "800" style="z-index :3"></canvas>');
-    document.getElementByID('content').append('<canvas id="player4" height="800" width = "800" style="z-index :4"></canvas>');
-    document.getElementByID('content').append('<canvas id="game-info" height="800" width = "800" style="z-index :5"></canvas>');
+    document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
+    document.getElementByID('content').append('<canvas id="player1" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :1";></canvas>');
+    document.getElementByID('content').append('<canvas id="player2" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :2";></canvas>');
+    document.getElementByID('content').append('<canvas id="player3" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :3";></canvas>');
+    document.getElementByID('content').append('<canvas id="player4" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :4";></canvas>');
+    document.getElementByID('content').append('<canvas id="game-info" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :5;"></canvas>');
     loadBoard();
   }
 
