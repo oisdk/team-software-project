@@ -1,6 +1,6 @@
 //Takes in game ID and displays the game board
 
-export function activeGame(gameID){
+export function loadCanvas(gameID){
   //checks if a game id has been provided and then creats the canvas
   if(gameID !== null){
     const id = gameID;
