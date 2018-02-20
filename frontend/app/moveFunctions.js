@@ -63,3 +63,9 @@ function movePlayer(canvasID, position) {
     }
     imgg.src="p.png";
 }
+
+function clear(canvasID){
+    var c = document.getElementById(canvasID);
+    const ctx = c.getContext('2d');
+    ctx.clearRect(0, 0, c.width, c.height);
+}
