@@ -53,14 +53,16 @@ export function waitingGame(gameID) {
         startButtonID,
     });
 
-    let numberOfPlayers = 0;
-
     // Initialise an event source from where server-sent events will come.
     // See the sse.js file for more details.
     const sseEventSource = initialiseEventSource(gameID);
-
     // Listen for a playerJoin event coming from the server
-    sseEventSource.addEventListener('playerJoin', (joinEvent) => {
+    sseEventSource.addEventListener('playerJoin', onPlayerJoin);
+    // Listen for a gameStart event coming from the server.
+    sseEventSource.addEventListener('gameStart', onGameStart);
+
+    let numberOfPlayers = 0;
+    function onPlayerJoin(joinEvent) {
         // Parse the "data" portion of the server-sent event from the server
         // which should contain the list of new users who have joined the
         // waiting game lobby.
@@ -87,18 +89,19 @@ export function waitingGame(gameID) {
                 }, false);
             }
         }
-    });
+    }
 
-    // Listen for a gameStart event coming from the server.
-    sseEventSource.addEventListener('gameStart', (startEvent) => {
+    function onGameStart(startEvent) {
         const startedGameId = startEvent.data;
         // needs casting to string as the gameID is a number
         // and needs to be compared to the gameID received from the gameStart event.
         if (gameID.toString() === startedGameId) {
+            sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
+            sseEventSource.removeEventListener('gameStart', onGameStart);
             // calls activeGame with a number for consistency
             activeGame(gameID);
         }
-    });
+    }
 }
 
 /**
