@@ -1,7 +1,9 @@
 # Monopoly Frontend
 
-## Table of Contents:
-[Server-Sent Events](#server-sent-events)
+|             Table of Contents             |
+| ----------------------------------------- |
+| [Server-Sent Events](#server-sent-events) |
+
 
 ## Server-Sent Events:
 
