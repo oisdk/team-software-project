@@ -72,3 +72,11 @@ For instructions on how to add your code etc., see CONTRIBUTING.md
 |-----|---------------------------------------------------------------------------|-----------------------------------------------------------|
 | PRI | Primary key: Uniquely identifies each record in the table. Cannot be NULL | https://dev.mysql.com/doc/refman/5.7/en/glossary.html     |
 | MUL | A bit like the opposite of PRI, allows multiple occurrences of same value | https://dev.mysql.com/doc/refman/5.7/en/show-columns.html |
+
+# Communication Structure
+
+## Component & Connector View
+
+This diagram shows a component & connector view of the system:
+
+![Component & Connector View](readme-images/component-connector-view.svg)
