@@ -22,7 +22,7 @@ cgitb.enable()
 
 def start_sse_stream(output_stream=sys.stdout):
     """Generate a stream of server-sent events according to state changes.
-    
+
     This function is activated by making a request to the JavaScript
     function "initialiseEventSource()" which is located in "sse.js".
     This operation is performed by the JavaScript waitingGame function,
