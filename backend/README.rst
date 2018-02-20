@@ -6,13 +6,13 @@ This is the backend for the monopoly app.
 It is currently a skeleton, based on https://github.com/pypa/sampleproject.
 
 
-+ --------------------- +
-| Table of Contents     |
-+ ===================== +
-| `Server-Sent Events`_ |
-+ --------------------- +
++---------------------+
+|  Table of Contents  |
++=====================+
+| Server-Sent-Events_ |
++---------------------+
 
-
+.. _Server-Sent-Events:
 Server-Sent Events
 ------------------
 
