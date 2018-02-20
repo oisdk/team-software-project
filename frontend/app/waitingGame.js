@@ -86,7 +86,7 @@ export function waitingGame(gameID) {
                         serverAddress: 'cgi-bin/start-game.py',
                         jsonObject: {game_id: gameID},
                     });
-                }, false);
+                });
             }
         }
     }
