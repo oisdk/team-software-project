@@ -1,11 +1,35 @@
-import waitingGame from './pages';
+import {waitingGame} from './waitingGame';
+import * as getCookie from './checkUserIDCookie';
+import * as sendJSON from './sendJSON';
 
-export function sendGameId(gameID, waitFunction) {
+/**
+ * Function to let a user join a selected game and be placed in a waiting game lobby.
+ *
+ * @param gameID - The ID of the game selected to join.
+ * @param {string} waitFunction - Takes in a function name to call.
+ * @param {string} sendFunction - Takes in a function name to call.
+ */
+export function sendGameId(gameID, waitFunction, sendfunction) {
+    // cast to number for consistency with create game.
+    const gameIdValue = parseInt(gameID.value, 10);
     if (gameID !== null) {
-        waitFunction(gameID.value);
+        const details = getCookie.checkUserDetails();
+        const id = details.user_id;
+        sendfunction({
+            serverAddress: 'cgi-bin/join_game.py',
+            jsonObject: {user_id: id, game_id: gameIdValue},
+        });
+        waitFunction(gameIdValue);
     }
 }
 
+/**
+ * Callback function which dynamically generates a HTML table containing the list of games.
+ * A radio button is located alongside each game for selection.
+ *
+ * @param {XMLHttpRequest} xhttp - Contains list of games to display.
+ * @private
+ */
 export function pickGame(xhttp) {
     if (xhttp.readyState === 4 && xhttp.status === 200) {
         document.getElementById('content').innerHTML = '<table id="table"><tr id="row1"></tr></table>';
@@ -40,10 +64,13 @@ export function pickGame(xhttp) {
         document.getElementById('table').appendChild(newRow);
 
         document.getElementById('tableI').innerHTML = '<td><input type="submit" value="Join game" id="joinSelectedGame"></td><td></td>';
-        document.getElementById('joinSelectedGame').onclick = () => { sendGameId(document.querySelector('input[name="gameID"]:checked'), waitingGame); };
+        document.getElementById('joinSelectedGame').onclick = () => { sendGameId(document.querySelector('input[name="gameID"]:checked'), waitingGame, sendJSON.sendJSON); };
     }
 }
 
+/**
+ * Function to request and receive a list of games currently active.
+ */
 export function requestGameList() {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => pickGame(xhttp);

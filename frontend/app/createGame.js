@@ -1,12 +1,13 @@
 // Import sendJSON functionality
 import * as sendJSON from './sendJSON';
-import waitingGame from './pages';
+import {waitingGame} from './waitingGame';
 import * as getCookie from './checkUserIDCookie';
 
 /**
  * Callback for when game_id successfully received.
  *
  * @param {XMLHttpRequest} req1 Contains the response with the game_id.
+ * @private
  */
 export function successCallback(req1, lobbyFunction = waitingGame) {
     const response = JSON.parse(req1.responseText);

@@ -67,8 +67,9 @@ describe('Generate list of games ', () => {
 describe('send game id to waitingGame function ', () => {
     const game = '<input type="radio" name="gameID" value="game1" checked>';
     const mockWait = jest.fn();
+    const sendJ = jest.fn();
     test(' generated games ', (done) => {
-        functionCall.sendGameId(game, mockWait);
+        functionCall.sendGameId(game, mockWait, sendJ);
         expect(game).not.toBeNull();
         expect(mockWait).toHaveBeenCalled();
         done();

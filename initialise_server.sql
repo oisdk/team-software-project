@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS players (
     id int UNSIGNED NOT NULL AUTO_INCREMENT,
     username varchar(255) CHARACTER SET utf8mb4 NOT NULL,
     balance int NOT NULL DEFAULT 200,
-    turn_position tinyint,
+    turn_position tinyint DEFAULT 0,
     board_position tinyint UNSIGNED NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );

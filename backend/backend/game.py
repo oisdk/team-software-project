@@ -6,7 +6,7 @@ from itertools import groupby
 import backend.storage
 
 
-class Game(object):
+class Game(object):  # pylint: disable=too-many-instance-attributes
     """A single game of monopoly. Refer to the Player class for how to
     access and mutate members."""
     def __init__(self, uid):
@@ -46,7 +46,8 @@ class Game(object):
                                 self.uid))
                 cursor.execute('DELETE FROM `playing_in` '
                                'WHERE `game_id` = %s;',
-                               (self.uid,))
+                               (self.uid))
+
                 cursor.executemany('INSERT INTO `playing_in` VALUES (%s, %s);',
                                    ((pid, self.uid) for pid in self.players))
             self._conn.commit()
