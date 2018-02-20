@@ -80,3 +80,4 @@ For instructions on how to add your code etc., see CONTRIBUTING.md
 This diagram shows a component & connector view of the system:
 
 ![Component & Connector View](readme-images/component-connector-view.svg)
+![Component & Connector View](readme-images/component-connector-view-no-shadow.svg)
