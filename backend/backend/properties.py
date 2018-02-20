@@ -138,20 +138,23 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         Returns:
             int: the rent for landing on the property
         """
+        rent = 0
         if (self._houses == 0) and (self._hotels == 0):
-            # if there is a monopoly
-            #    return self._monopoly
-            return self._base
+            if self._is_in_monopoly:
+                rent = self._monopoly
+            else:
+                rent = self._base
         elif self._houses == 1:
-            return self._one
+            rent = self._one
         elif self._houses == 2:
-            return self._two
+            rent = self._two
         elif self._houses == 3:
-            return self._three
+            rent = self._three
         elif self._houses == 4:
-            return self._four
+            rent = self._four
         elif self._hotels == 1:
-            return self._hotel
+            rent = self._hotel
+        return rent
 
     @property
     def house_price(self):
@@ -179,3 +182,77 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
     @owner.setter
     def owner(self, owner):
         self._set_property('owner', owner)
+
+    def _is_in_monopoly(self):
+        """
+        Returns:
+            boolean: Whether the property is part of an owned monopoly
+        """
+        is_monopoly = False
+        if self._position in [1, 3]:
+            with self._conn.cursor() as cursor:
+                cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                               'WHERE `game_id` = %s ',
+                               'AND `property_position` IN (`1`, `3`) ',
+                               'GROUP BY player_id; ',
+                               (self._gid))
+                result = cursor.fetchone()
+        elif self._position in [6, 8, 9]:
+            with self._conn.cursor() as cursor:
+                cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                               'WHERE `game_id` = %s ',
+                               'AND `property_position` IN (`6`, `8`, `9`) ',
+                               'GROUP BY player_id; ',
+                               (self._gid))
+                result = cursor.fetchone()
+        elif self._position in [11, 13, 14]:
+            with self._conn.cursor() as cursor:
+                cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                               'WHERE `game_id` = %s ',
+                               'AND `property_position` IN (`11`, `13`, `14`)',
+                               ' GROUP BY player_id; ',
+                               (self._gid))
+                result = cursor.fetchone()
+        elif self._position in [16, 18, 19]:
+            with self._conn.cursor() as cursor:
+                cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                               'WHERE `game_id` = %s ',
+                               'AND `property_position` IN (`16`, `18`, `19`)',
+                               ' GROUP BY player_id; ',
+                               (self._gid))
+                result = cursor.fetchone()
+        elif self._position in [21, 23, 24]:
+            with self._conn.cursor() as cursor:
+                cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                               'WHERE `game_id` = %s ',
+                               'AND `property_position` IN (`21`, `23`, `24`)',
+                               ' GROUP BY player_id; ',
+                               (self._gid))
+                result = cursor.fetchone()
+        elif self._position in [26, 27, 29]:
+            with self._conn.cursor() as cursor:
+                cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                               'WHERE `game_id` = %s ',
+                               'AND `property_position` IN (`26`, `27`, `29`)',
+                               ' GROUP BY player_id; ',
+                               (self._gid))
+                result = cursor.fetchone()
+        elif self._position in [31, 32, 34]:
+            with self._conn.cursor() as cursor:
+                cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                               'WHERE `game_id` = %s ',
+                               'AND `property_position` IN (`31`, `33`, `34`)',
+                               ' GROUP BY player_id; ',
+                               (self._gid))
+                result = cursor.fetchone()
+        elif self._position in [37, 39]:
+            with self._conn.cursor() as cursor:
+                cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                               'WHERE `game_id` = %s ',
+                               'AND `property_position` IN (`37`, `39`)',
+                               ' GROUP BY player_id; ',
+                               (self._gid))
+                result = cursor.fetchone()
+        if result[0] == 1:
+            is_monopoly = True
+        return is_monopoly
