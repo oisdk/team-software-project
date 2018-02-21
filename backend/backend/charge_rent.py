@@ -38,7 +38,7 @@ def charge_rent(source=sys.stdin, output=sys.stdout):
             owner = propertie.owner
             rent = propertie.rent
             if owner.uid != player_id:
-                player.balance -= -(rent)
+                player.balance -= rent
                 owner.balance += rent
 
     json.dump({"player_id": "rent"}, output)
