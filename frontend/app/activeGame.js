@@ -1,4 +1,4 @@
-export function activeGame(gameID) {
+export default function activeGame(gameID) {
     // my dummy active game to display board.
     /* eslint no-console: ["error", { allow: ["log"] }] */
     console.log(`Active game called with ${gameID}`);
