@@ -21,7 +21,7 @@ export function checkRollValuesEqual(req) {
  *
  * @param {Function} JSONSend The function to make the request to the server.
  */
-export function requestCompareRolls(JSONSend = sendJSON.sendJSON) {
+export function processRollButton(JSONSend = sendJSON.sendJSON) {
     // Adds 'event listener' to the roll button for the player to
     // enable/disable the button
     const details = getCookie.checkUserDetails();
