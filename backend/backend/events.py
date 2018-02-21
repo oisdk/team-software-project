@@ -133,7 +133,7 @@ def check_new_players(output_stream, old_players, new_players):
     """
     if new_players != old_players:
         generate_player_join_event(output_stream, old_players, new_players)
-    return new_players
+    return new_players.copy()
 
 
 def check_new_balances(output_stream, old_balances, new_balances):
@@ -152,7 +152,7 @@ def check_new_balances(output_stream, old_balances, new_balances):
     if new_balances != old_balances:
         generate_player_balance_event(output_stream, old_balances,
                                       new_balances)
-    return new_balances
+    return new_balances.copy()
 
 
 def check_new_positions(output_stream, old_positions, new_positions):
@@ -170,7 +170,7 @@ def check_new_positions(output_stream, old_positions, new_positions):
     """
     if new_positions != old_positions:
         generate_player_move_event(output_stream, old_positions, new_positions)
-    return new_positions
+    return new_positions.copy()
 
 
 def check_game_playing_status(output_stream, game, last_game_state):
