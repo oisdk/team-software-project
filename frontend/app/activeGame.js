@@ -61,16 +61,15 @@ function onPlayerBalance(playerBalanceEvent) {}
  */
  
  // displayBoard should take in player id's and then generate the canvas with its ids.
- // Also appending is causing errors whcih i didn't notice at first.
 function displayBoard() {
     console.log('displayBoard called');
     // need to change id's;
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
-    document.getElementByID('content').append('<canvas id="player1" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :1";></canvas>');
-    document.getElementByID('content').append('<canvas id="player2" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :2";></canvas>');
-    document.getElementByID('content').append('<canvas id="player3" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :3";></canvas>');
-    document.getElementByID('content').append('<canvas id="player4" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :4";></canvas>');
-    document.getElementByID('content').append('<canvas id="game-info" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index :5;"></canvas>');
+    createCanvas('player1', 'content', 1)
+    createCanvas('player2', 'content', 2)
+    createCanvas('player3', 'content', 3)
+    createCanvas('player4', 'content', 4)
+    createCanvas('game-info', 'content', 5)
     const c = document.getElementById('gameBoard');
     const ctx = c.getContext('2d');
     const img = new Image();
@@ -80,6 +79,7 @@ function displayBoard() {
     img.src = 'monopoly.jpg';
 }
 
+// takes in id for canvas, node to append to(<div id="content">), layerNumber always top ?
 function createCanvas(canvasID, appendToNode, layerNumber){
     var canvas = document.createElement('canvas');
     canvas.id = canvasID;
@@ -88,6 +88,6 @@ function createCanvas(canvasID, appendToNode, layerNumber){
     canvas.style.position = 'absolute';
     canvas.style.left = 0;
     canvas.style.top = 0;
-    canvas.style.z-index = layerNumber;
-    document.getElementByID(appendToNode).append(canvas);
+    canvas.style.zIndex = layerNumber;
+    document.getElementById(appendToNode).append(canvas);
 }
