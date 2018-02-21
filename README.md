@@ -43,7 +43,7 @@ The application is structured as a standard web application – game state is st
 
 ## Application Distribution
 
-1. Clients request the initial page from the server via HTTP.
+1. A client requests the initial page from the server via HTTP.
 
 2. The server responds with the page, which includes a javascript program.
 
