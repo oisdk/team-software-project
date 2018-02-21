@@ -48,7 +48,7 @@ export function getCoord(position) {
     return listOfCoordinates[position];
 }
 
-// In the future, can specify image token.
+// In the future, should be able to specify image source for custom token of each player.
 // canvasID aka playerID
 export function movePlayer(canvasID, position) {
     const coordinate = getCoord(position);
