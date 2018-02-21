@@ -1,6 +1,7 @@
 import {getEventSource} from './sse';
-import {generateGameInterface} from './generateGameInterface';
-import {generateUserDetails} from './generateUserDetails';
+// import {generateGameInterface} from './generateGameInterface';
+// import {generateUserDetails} from './generateUserDetails';
+import * as control from './moveFunctions';
 
 // import {generateGameLog} from './generateGameLog';
 
@@ -10,10 +11,11 @@ import {generateUserDetails} from './generateUserDetails';
  * @param gameID The ID for the game that will be displayed.
  */
 export function activeGame(gameID) {
-    generateGameInterface();
-    generateUserDetails();
+    // generateGameInterface();
+    // generateUserDetails();
     // generateGameLog();
     displayBoard();
+    control.movePlayer('layer2', 15);
 
     enableActiveGameListeners();
 }
