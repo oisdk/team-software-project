@@ -7,6 +7,7 @@
     * [Audience and Document Scope](#audience-and-document-scope)
 - [Communication Structure](#communication-structure)
     * [Component & Connector View](#component-connector-view)
+- [Deployment Structure](#deployment-structure)
 
 # Intro
 
