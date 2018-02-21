@@ -90,10 +90,12 @@ export function waitingGame(gameID) {
             }
         }
     }
-    
+
     function successCallback(req, start = activeGame) {
-        playerList = JSON.parse(req.responseText);
-        activeGame(gameID, playerList);
+        const playerList = JSON.parse(req.responseText);
+        console.log(playerList);
+        start(gameID, playerList);
+    }
 
     function onGameStart(startEvent) {
         const startedGameId = startEvent.data;
@@ -102,13 +104,13 @@ export function waitingGame(gameID) {
         if (gameID.toString() === startedGameId) {
             sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
             sseEventSource.removeEventListener('gameStart', onGameStart);
-            
+
             sendJSON.sendJSON({
                 serverAddress: 'cgi-bin/request_players.py',
                 jsonObject: {game_id: gameID},
                 successCallback,
             });
-            // calls activeGame with a number for consistency
+        // calls activeGame with a number for consistency
         }
     }
 }
@@ -117,7 +119,8 @@ export function waitingGame(gameID) {
  * These are private functions exported for testing purposes.
  *
  * @private
+ *
+ *export const privateFunctions = {
+ *   createWaitingGameHTML,
+ *};
  */
-export const privateFunctions = {
-    createWaitingGameHTML,
-};
