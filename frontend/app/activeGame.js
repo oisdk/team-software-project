@@ -61,6 +61,9 @@ function onPlayerBalance(playerBalanceEvent) {}
  */
  
  // displayBoard should take in player id's and then generate the canvas with its ids.
+ // another option instead of using create canvas can be.
+ // document.getElementById('content').insertAdjacentHTML
+ // ('beforeend', '<canvas id="layer2" width="800" height="800" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>');
 function displayBoard() {
     console.log('displayBoard called');
     // need to change id's;
