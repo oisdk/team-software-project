@@ -79,7 +79,7 @@ function displayBoard(playerList) {
     // creates a canvas with player id and layer i.
     // layer 0 = background image, last layer = game info
     for (let i = 1; i <= playerList.length; i += 1) {
-        createCanvas(playerList[i-1], 'content', i);
+        createCanvas(playerList[i - 1], 'content', i);
     }
     createCanvas('game-info', 'content', playerList + 1);
     const c = document.getElementById('gameBoard');
