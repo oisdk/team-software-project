@@ -1,4 +1,4 @@
-import {getEventSource} from './sse';
+// import {getEventSource} from './sse';
 // import {generateGameInterface} from './generateGameInterface';
 // import {generateUserDetails} from './generateUserDetails';
 import * as control from './moveFunctions';
@@ -15,7 +15,7 @@ export function activeGame(gameID, playerList) {
     // generateGameInterface();
     // generateUserDetails();
     // generateGameLog();
-    
+
     // display board and assign starting positions.
     displayBoard(playerList);
     control.movePlayer(1, 0);
@@ -26,6 +26,7 @@ export function activeGame(gameID, playerList) {
     // enableActiveGameListeners();
 }
 
+/**
 function enableActiveGameListeners() {
     const eventSource = getEventSource();
     eventSource.addEventListener('playerMove', onPlayerMove);
@@ -40,27 +41,28 @@ function disableActiveGameListeners(gameEndEvent) {
     eventSource.removeEventListener('playerTurn', onPlayerTurn);
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
 }
+*/
 
 /**
  * Called when a playerMove event happens.
  *
  * Dummy implementation for the moment.
  */
-function onPlayerMove(playerMoveEvent) {}
+// function onPlayerMove(playerMoveEvent) {}
 
 /**
  * Called when a playerTurn event happens.
  *
  * Dummy implementation for the moment.
  */
-function onPlayerTurn(playerTurnEvent) {}
+// function onPlayerTurn(playerTurnEvent) {}
 
 /**
  * Called when a playerBalance event happens.
  *
  * Dummy implementation for the moment.
  */
-function onPlayerBalance(playerBalanceEvent) {}
+// function onPlayerBalance(playerBalanceEvent) {}
 
 /**
  * Mock function for displaying the monopoly board onscreen.
@@ -74,11 +76,11 @@ function displayBoard(playerList) {
     console.log('displayBoard called');
     // need to change id's;
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
-    
-    for(let i=1;i<=playerList.length;i++) {
-        createCanvas( i, 'content', i);
+
+    for (let i = 1; i <= playerList.length; i += 1) {
+        createCanvas(i, 'content', i);
     }
-    createCanvas('game-info', 'content', playerList+1);
+    createCanvas('game-info', 'content', playerList + 1);
     const c = document.getElementById('gameBoard');
     const ctx = c.getContext('2d');
     const img = new Image();

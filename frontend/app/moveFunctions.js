@@ -1,5 +1,5 @@
 // functions to move around the board
-//will have to change coordinates as browser interpret these differently.
+// will have to change coordinates as browser interpret these differently.
 // only test coordinates for now.
 export function getCoord(position) {
     const listOfCoordinates = {
