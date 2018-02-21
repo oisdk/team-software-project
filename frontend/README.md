@@ -1,8 +1,10 @@
 # Monopoly Frontend
 
-|             Table of Contents             |
-| ----------------------------------------- |
-| [Server-Sent Events](#server-sent-events) |
+
+## Table of Contents
+* [Server-Sent Events](#server-sent-events)
+  * [What They are](#what-they-are)
+  * [How to Write an SSE Listener](#how-to-write-a-client-side-sse-listener)
 
 
 ## Server-Sent Events
