@@ -20,7 +20,7 @@ describe('Request sent to get bool comparision result of roll dice values', () =
     });
 
     test('getBoolean', (done) => {
-        functionCall.processRollButton(mockSendJSON);
+        functionCall.requestCompareRolls(mockSendJSON);
         expect(mockSendJSON).toHaveBeenCalled();
         done();
     });
@@ -33,7 +33,32 @@ describe('Disable roll button ', () => {
     const mockFileResponse = {
         status: 200,
         readyState: 4,
-        responseText: 'true',
+        responseText: '{"player_id": [2, 1]}',
+    };
+
+    beforeAll(() => {
+        document.body.innerHTML = '<button type="button" id="roll">Roll die</button>';
+    });
+
+    afterAll(() => {
+        document.body.innerHTML = oldDocumentBody;
+    });
+
+    test(' disable button ', (done) => {
+        functionCall.checkRollValuesEqual(mockFileResponse);
+        expect(document.body.innerHTML).toEqual('<button type="button" id="roll" disabled="">Roll die</button>');
+        done();
+    });
+});
+
+describe('Enable roll button ', () => {
+    const oldDocumentBody = document.body.innerHTML;
+
+    // simulate response
+    const mockFileResponse = {
+        status: 200,
+        readyState: 4,
+        responseText: '{"player_id": [2, 2]}',
     };
 
     beforeAll(() => {
