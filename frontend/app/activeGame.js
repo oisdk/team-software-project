@@ -10,7 +10,7 @@ import * as control from './moveFunctions';
  *
  * @param gameID The ID for the game that will be displayed.
  */
-export function activeGame(gameID) {
+export function activeGame(gameID, playerList) {
     console.log(gameID);
     // generateGameInterface();
     // generateUserDetails();

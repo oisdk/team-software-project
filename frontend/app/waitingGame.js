@@ -93,9 +93,10 @@ export function waitingGame(gameID) {
 
     function successCallback(req, start = activeGame) {
         const playerList = JSON.parse(req.responseText);
-        console.log(playerList);
+        console.log(playerList[ids]);
         console.log("calling actitveGame");
-        start(gameID, playerList);
+        // call active game with these values
+        start(gameID, playerList[ids]);
     }
 
     function onGameStart(startEvent) {

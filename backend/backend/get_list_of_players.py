@@ -17,4 +17,4 @@ def request_list_of_players(source=sys.stdin, output=sys.stdout):
     game_id = request["game_id"]
     game = Game(game_id)
     players = game.players()
-    json.dump(players, output)
+    json.dump({ids:[players]}, output)
