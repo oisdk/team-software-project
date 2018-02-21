@@ -35,9 +35,9 @@ def charge_rent(source=sys.stdin, output=sys.stdout):
         # Accesses owner and rent of property; if the games's
         # current turn's player doesn't own it, charge the player
         # and increase the property owner's balance
-        with Property(position, game_id) as propertie:
-            owner_id = propertie.owner
-            rent = propertie.rent
+        with Property(position, game_id) as property_:
+            owner_id = property_.owner
+            rent = property_.rent
 
             with Player(owner_id) as owner:
                 if owner.uid != player_id:
