@@ -49,7 +49,7 @@ Since the SSE script<sup id="thread-note-source">[1](#thread-note)</sup> is cons
 
 The following diagram shows a deployment view of the project:
 
-![Deployment View](#documentation-images/deployment-view.svg)
+![Deployment View](documentation-images/deployment-view.svg)
 
 # Footnotes
 
