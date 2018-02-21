@@ -20,7 +20,7 @@ describe('Request sent to get bool comparision result of roll dice values', () =
     });
 
     test('getBoolean', (done) => {
-        functionCall.requestCompareRolls(mockSendJSON);
+        functionCall.processRollButton(mockSendJSON);
         expect(mockSendJSON).toHaveBeenCalled();
         done();
     });
