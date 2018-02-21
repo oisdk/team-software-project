@@ -69,7 +69,7 @@ function displayBoard() {
     const c = document.getElementById('gameBoard');
     const ctx = c.getContext('2d');
     const img = new Image();
-    img.onload = function () {
+    img.onload = () => {
         ctx.drawImage(img, 0, 0);
     };
     img.src = 'monopoly.jpg';
