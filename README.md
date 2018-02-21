@@ -5,7 +5,7 @@
 - [Intro](#intro)
     * [Overview](#overview)
     * [Audience and Document Scope](#audience-and-document-scope)
-- [Repository Structure](#repository-structure)
+    * [Repository Structure](#repository-structure)
 - [Communication Structure](#communication-structure)
 - [Deployment Structure](#deployment-structure)
 
