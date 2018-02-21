@@ -6,7 +6,6 @@
     * [Overview](#overview)
     * [Audience and Document Scope](#audience-and-document-scope)
 - [Communication Structure](#communication-structure)
-    * [Component & Connector View](#component-connector-view)
 - [Deployment Structure](#deployment-structure)
 
 # Intro
@@ -24,8 +23,6 @@ For a guide on how to use the application, targeted at end-users, see [the usage
 For a more detailed guide on how to get involved and contribute to the project, see [the contributing document](CONTRIBUTING.md).
 
 # Communication Structure
-
-## Component & Connector View
 
 The following diagram shows a component & connector view of the system:
 
