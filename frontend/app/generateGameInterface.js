@@ -1,7 +1,7 @@
 // Imports
 import * as sendJSON from './sendJSON';
 import * as getCookie from './checkUserIDCookie';
-import {initialiseEventSource} from './sse';
+import {getEventSource} from './sse';
 
 const details = getCookie.checkUserDetails();
 const id = String(details.user_id);
@@ -94,11 +94,10 @@ export function updateGamePage(fileReader) {
 /**
  * Function to generate game interface. Makes a request to local
  * filesystem for a HTML file to display.
- * @param {int} gameID - id used to create eventSource.
  */
-export function generateGameInterface(gameID) {
+export function generateGameInterface() {
     // SSE Events
-    const sseEventSource = initialiseEventSource(gameID);
+    const sseEventSource = getEventSource();
     sseEventSource.addEventListener('playerTurn', (turnEvent) => {
         const turn = String(JSON.parse(turnEvent.data));
         console.log('Turn:');
@@ -113,4 +112,3 @@ export function generateGameInterface(gameID) {
     fileReader.onreadystatechange = () => updateGamePage(fileReader);
     fileReader.send();
 }
-
