@@ -2,15 +2,10 @@
 
 # Table of Contents
 
-* [Intro](#intro)
+- [Intro](#intro)
     * [Overview](#overview)
     * [Audience and Document Scope](#audience-and-document-scope)
-* [Database Organisation](#database-organisation)
-    * [Access Database from Docker](#how-to-accessing-database-from-docker)
-    * [Current Tables in Database](#current-tables-in-the-database)
-    * [Table Structures](#table-structures)
-    * [Glossary](#glossary)
-* [Communication Structure](#communication-structure)
+- [Communication Structure](#communication-structure)
     * [Component & Connector View](#component-connector-view)
 
 # Intro
