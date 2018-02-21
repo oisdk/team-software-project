@@ -6,6 +6,8 @@
     * [Overview](#overview)
     * [Audience and Document Scope](#audience-and-document-scope)
     * [Repository Structure](#repository-structure)
+- [Application Structure](#application-structure)
+    * [Application Distribution](#application-distribution)
 - [Communication Structure](#communication-structure)
 - [Deployment Structure](#deployment-structure)
 
@@ -35,6 +37,17 @@ The repository is broken down into two sub-sections:
 
     * This is structured as a python package. For more info, see [the backend readme](/backend/README.rst).
 
+# Application Structure
+
+The application is structured as a standard web application – game state is stored on a server, to which players’ clients (browsers) connect via HTTP.
+
+## Application Distribution
+
+1. Clients request the initial page from the server via HTTP.
+
+2. The server responds with the page, which includes a javascript program.
+
+3. This javascript program handles client interaction and communicates with the server, and updates the client’s screen in response to changes.
 
 # Communication Structure
 
