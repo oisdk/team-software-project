@@ -32,14 +32,16 @@ def charge_rent(source=sys.stdin, output=sys.stdout):
                 game_id = game
                 break
 
-        # Accesses owner of property; if the games's current
-        # turn player doesn't own it, charge the player and
-        # increase the property owner's balance
+        # Accesses owner and rent of property; if the games's
+        # current turn's player doesn't own it, charge the player
+        # and increase the property owner's balance
         with Property(position, game_id) as propertie:
-            owner = propertie.owner
+            owner_id = propertie.owner
             rent = propertie.rent
-            if owner.uid != player_id:
-                player.balance -= rent
-                owner.balance += rent
+
+            with Player(owner_id) as owner:
+                if owner.uid != player_id:
+                    player.balance -= rent
+                    owner.balance += rent
 
     json.dump({"player_id": "rent"}, output)
