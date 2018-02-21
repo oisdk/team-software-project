@@ -25,9 +25,9 @@ For a more detailed guide on how to get involved and contribute to the project, 
 
 # Repository Structure
 
-The repository is broken down into two sub-sections: `frontend`, which contains the client-side code, and `backend`, which contains the server-side code.
+The repository is broken down into two sub-sections: <frontend>, which contains the client-side code, and <backend>, which contains the server-side code.
 
-The backend is structured as a python package – to find out more about the backend code, see the [backend readme](/backend/README.rst).
+The backend is structured as a python package – to find out more about the backend code, see [the backend readme](/backend/README.rst).
 
 The frontend is structure as a node package – client-side javascript is in <frontend/app>, images are in <frontend/assets>, and html and css are in <frontend/html> and <frontend/css> respectively. For more info on the structure of the frontend code, see [the frontend readme](/frontend/README.md).
 
