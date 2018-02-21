@@ -25,7 +25,7 @@ For a more detailed guide on how to get involved and contribute to the project, 
 
 # Repository Structure
 
-The repository is broken down into two sub-sections: [`frontend`](/frontend), which contains the client-side code, and [`backend`](/backend), which contains the server-side code.
+The repository is broken down into two sub-sections: [frontend](/frontend), which contains the client-side code, and [backend](/backend), which contains the server-side code.
 
 The backend is structured as a python package – to find out more about the backend code, see [the backend readme](/backend/README.rst).
 
