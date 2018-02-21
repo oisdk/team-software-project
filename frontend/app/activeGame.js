@@ -69,14 +69,15 @@ function disableActiveGameListeners(gameEndEvent) {
  */
 
 // displayBoard should take in player id's and then generate the canvas with its ids.
-// another option instead of using create canvas can be.
+// another option instead of using create canvas would be
 // document.getElementById('content').insertAdjacentHTML ('beforeend',
 // '<canvas id="" width="" height="" style=""></canvas>');
 function displayBoard(playerList) {
     console.log('displayBoard called');
-    // need to change id's;
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
 
+    // creates a canvas with player id and layer i.
+    // layer 0 = background image, last layer = game info
     for (let i = 1; i <= playerList.length; i += 1) {
         createCanvas(playerList[i], 'content', i);
     }
@@ -90,7 +91,7 @@ function displayBoard(playerList) {
     img.src = 'monopoly.jpg';
 }
 
-// takes in id for canvas, node to append to(<div id="content">), layerNumber always top ?
+// takes in id for canvas, node to append to(<div id="content">), layerNumber
 function createCanvas(canvasID, appendToNode, layerNumber) {
     const canvas = document.createElement('canvas');
     canvas.id = canvasID;
