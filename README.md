@@ -23,13 +23,18 @@ For a guide on how to use the application, targeted at end-users, see [the usage
 
 For a more detailed guide on how to get involved and contribute to the project, see [the contributing document](CONTRIBUTING.md).
 
-# Repository Structure
+## Repository Structure
 
-The repository is broken down into two sub-sections: [frontend](/frontend), which contains the client-side code, and [backend](/backend), which contains the server-side code.
+The repository is broken down into two sub-sections:
 
-The backend is structured as a python package – to find out more about the backend code, see [the backend readme](/backend/README.rst).
+- [frontend](/frontend): client-side code
 
-The frontend is structure as a node package – client-side javascript is in [frontend/app](/frontend/app), images are in [frontend/assets](/frontend/assets), and html and css are in [frontend/html](/frontend/html) and [frontend/css](/frontend/css) respectively. For more info on the structure of the frontend code, see [the frontend readme](/frontend/README.md).
+    * This is structured as a node package. For more info, see [the frontend readme](/frontend/README.md).
+
+- [backend](/backend): server-side code
+
+    * This is structured as a python package. For more info, see [the backend readme](/backend/README.rst).
+
 
 # Communication Structure
 
