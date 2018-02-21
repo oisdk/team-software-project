@@ -28,11 +28,13 @@ The following diagram shows a component & connector view of the system:
 
 ![Component & Connector View](documentation-images/component-connector-view.svg)
 
-Clients send requests to apache, which runs the corresponding CGI scripts. These scripts interact with a database and send back a response.
+There are two main information flows:
 
-Clients also initialise a Server-sent Events event stream. This starts a script running on the server which polls the database for changes – it sends events back to the client for any changes it finds.
+1. Clients send requests to apache (represented by dashed lines in the diagram), which runs the corresponding CGI scripts. These scripts interact with a database and send back a response.
 
-Since the SSE script<sup id="thread-note-source">[1](#thread-note)</sup> is constantly polling, most CGI scripts don’t require a response, and so mostly write to the database, rather than reading from it.
+2. Clients also initialise a Server-sent Events event stream (represented by a solid line in the diagram). This starts a script running on the server which polls the database for changes – it sends events back to the client for any changes it finds.
+
+Since the SSE script<sup id="thread-note-source">[1](#thread-note)</sup> is constantly polling, most CGI scripts don’t require a response (except possibly an acknowledgement), and so mostly write to the database, rather than reading from it.
 
 # Deployment Structure
 
