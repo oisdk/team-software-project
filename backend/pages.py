@@ -12,4 +12,5 @@ pages = {
     'start-game': 'backend.start_game:start_game',
     'game_event_source': 'backend.events:start_sse_stream',
     'join_game': 'backend.join_game:join_game',
+    'increment_turn': 'backend.increment_turn:increment_turn',
 }

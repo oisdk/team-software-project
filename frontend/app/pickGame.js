@@ -1,4 +1,4 @@
-import {waitingGame} from './pages';
+import {waitingGame} from './waitingGame';
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
 
@@ -10,14 +10,16 @@ import * as sendJSON from './sendJSON';
  * @param {string} sendFunction - Takes in a function name to call.
  */
 export function sendGameId(gameID, waitFunction, sendfunction) {
+    // cast to number for consistency with create game.
+    const gameIdValue = parseInt(gameID.value, 10);
     if (gameID !== null) {
         const details = getCookie.checkUserDetails();
         const id = details.user_id;
         sendfunction({
             serverAddress: 'cgi-bin/join_game.py',
-            jsonObject: {user_id: id, game_id: gameID.value},
+            jsonObject: {user_id: id, game_id: gameIdValue},
         });
-        waitFunction(gameID.value);
+        waitFunction(gameIdValue);
     }
 }
 
@@ -26,6 +28,7 @@ export function sendGameId(gameID, waitFunction, sendfunction) {
  * A radio button is located alongside each game for selection.
  *
  * @param {XMLHttpRequest} xhttp - Contains list of games to display.
+ * @private
  */
 export function pickGame(xhttp) {
     if (xhttp.readyState === 4 && xhttp.status === 200) {

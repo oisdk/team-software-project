@@ -21,15 +21,15 @@ def roll_two_dice():
         An int tuple representing the result of the two dice rolls.
 
     """
-    dice_result = (roll_dice(), roll_dice())
+    dice_result = [roll_dice(), roll_dice()]
     return dice_result
 
 
-def player_roll_dice(source=sys.stdin):
+def player_roll_dice(source=sys.stdin, output=sys.stdout):
     """Rolls two dice for a player, appends there rolls to the database,
        updates their position and the current game turn.
     """
-
+    output.write('Content-Type: application/json\n\n')
     request = json.load(source)
     player_id = request["user_id"]
 
@@ -53,8 +53,4 @@ def player_roll_dice(source=sys.stdin):
                     player.balance += pass_go_amount
                     player.board_position -= number_of_squares
 
-                if rolls[0] != rolls[1]:
-                    if game.current_turn == len(game.players)-1:
-                        game.current_turn = 0
-                    else:
-                        game.current_turn += 1
+                json.dump({"your_rolls": str(rolls)}, output)

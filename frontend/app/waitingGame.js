@@ -1,9 +1,8 @@
 import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
 
-/**
- * This module provides functions which display a certain page to the user.
- */
+// change according to activeGame as currently used with default function
+import activeGame from './activeGame';
 
 /**
  * Creates the html for the waiting game.
@@ -12,6 +11,7 @@ import * as sendJSON from './sendJSON';
  * @param {HTMLElement} rootElement The element to which the html is added.
  * @param {String} playerListID The id the player list element should have.
  * @param {String} startButtonID The id the start game button should have.
+ * @private
  */
 function createWaitingGameHTML({
     gameID,
@@ -88,9 +88,24 @@ export function waitingGame(gameID) {
             }
         }
     });
+
+    // Listen for a gameStart event coming from the server.
+    sseEventSource.addEventListener('gameStart', (startEvent) => {
+        const startedGameId = startEvent.data;
+        // needs casting to string as the gameID is a number
+        // and needs to be compared to the gameID received from the gameStart event.
+        if (gameID.toString() === startedGameId) {
+            // calls activeGame with a number for consistency
+            activeGame(gameID);
+        }
+    });
 }
 
-// Flag createWaitingGameHTML to be a private function
+/**
+ * These are private functions exported for testing purposes.
+ *
+ * @private
+ */
 export const privateFunctions = {
     createWaitingGameHTML,
 };
