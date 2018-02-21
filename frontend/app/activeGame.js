@@ -78,7 +78,7 @@ function displayBoard(playerList) {
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
 
     for (let i = 1; i <= playerList.length; i += 1) {
-        createCanvas(i, 'content', i);
+        createCanvas(playerList[i], 'content', i);
     }
     createCanvas('game-info', 'content', playerList + 1);
     const c = document.getElementById('gameBoard');

@@ -110,7 +110,6 @@ export function waitingGame(gameID) {
                 jsonObject: {game_id: gameID},
                 successCallback,
             });
-        // calls activeGame with a number for consistency
         }
     }
 }
