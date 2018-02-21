@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 # Login to aws and docker
 eval $(aws ecr get-login --no-include-email --region us-west-2)
