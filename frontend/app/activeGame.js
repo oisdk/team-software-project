@@ -1,7 +1,8 @@
 import {getEventSource} from './sse';
 import {generateGameInterface} from './generateGameInterface';
 import {generateUserDetails} from './generateUserDetails';
-import {generateGameLog} from './generateGameLog';
+
+// import {generateGameLog} from './generateGameLog';
 
 /**
  * Displays the page for an active game.
@@ -11,7 +12,7 @@ import {generateGameLog} from './generateGameLog';
 export function activeGame(gameID) {
     generateGameInterface();
     generateUserDetails();
-    generateGameLog();
+    // generateGameLog();
     displayBoard();
 
     enableActiveGameListeners();
@@ -68,9 +69,8 @@ function displayBoard() {
     const c = document.getElementById('gameBoard');
     const ctx = c.getContext('2d');
     const img = new Image();
-    img.onload = function (){
+    img.onload = function () {
         ctx.drawImage(img, 0, 0);
-    }
+    };
     img.src = 'monopoly.jpg';
-    
 }
