@@ -7,6 +7,8 @@ const details = getCookie.checkUserDetails();
 const id = String(details.user_id);
 let turnBoolean = true;
 
+/* eslint no-console: ["error", { allow: ["log"] }] */
+
 
 /**
  * Function to disable game interface.
@@ -113,4 +115,3 @@ export function generateGameInterface(gameID) {
     fileReader.onreadystatechange = () => updateGamePage(fileReader);
     fileReader.send();
 }
-
