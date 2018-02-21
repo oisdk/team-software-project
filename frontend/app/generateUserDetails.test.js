@@ -1,5 +1,4 @@
 import * as generateUserDetails from './generateUserDetails';
-import {initialiseEventSource} from './sse';
 
 describe('updateUserDetails test', () => {
     // Store the current state of the HTML body so it can be restored after the
@@ -16,7 +15,7 @@ describe('updateUserDetails test', () => {
 
     // Create a user_name cookie
     beforeAll(() => {
-        document.body.innerHTML = '<div id="content-left"></div>';
+        document.body.innerHTML = '<div id="content-right"></div>';
         document.cookie = 'user_name=testuser';
     });
 
@@ -28,54 +27,166 @@ describe('updateUserDetails test', () => {
 
     test('should read mockFileResponse and update page with its contents', (done) => {
         generateUserDetails.updateUserDetails(mockFileResponse);
-        expect(document.getElementById('content-left').innerHTML).toEqual('<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>');
+        expect(document.getElementById('content-right').innerHTML).toEqual('<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>');
         expect(document.getElementById('details_username').innerHTML).toEqual('undefined');
         done();
     });
 });
 
-
-describe('generateUserDetails test', () => {
-    // Store the current state of the HTML body so it can be restored after the
-    // test
+describe('rollDice endTurn successCallback tests', () => {
+    // Create a mock for the actual sendJSON function
+    const mockSendJSON = jest.fn();
+    const mockResponse = {responseText: '{"your_rolls": "(1,2)"}'};
     const oldDocumentBody = document.body;
-    const oldXMLHttpRequest = window.XMLHttpRequest;
-    const mockGameId = 1;
-    let mockEventSource;
 
 
-    // Create a mock XMLHttpRequest object
-    const mockXHR = {
-        open: jest.fn(),
-        send: jest.fn(),
-        setRequestHeader: jest.fn(),
-    };
-
-    // Assign the global window XMLHttpRequest to point to the mockXHR object
-    beforeEach(() => {
-        window.XMLHttpRequest = jest.fn(() => mockXHR);
-        mockEventSource = {
-            addEventListener: jest.fn(),
-        };
-        window.EventSource = jest.fn(() => mockEventSource);
-        document.body.innerHTML = '<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>';
+    // Create buttons to test
+    beforeAll(() => {
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
     });
 
-    // Restore the global XMLHttpRequest to the state it was before the tests
-    afterEach(() => {
-        window.XMLHttpRequest = oldXMLHttpRequest;
-        window.EventSource = undefined;
+    // Restore the HTML body
+    afterAll(() => {
         document.body.innerHTML = oldDocumentBody;
     });
 
-    test('should call appropriate XMLHttpRequest/eventSource functions', (done) => {
-        generateUserDetails.generateUserDetails();
-        expect(mockXHR.open).toHaveBeenCalledWith('GET', 'user-info.html', true);
-        const result = initialiseEventSource(mockGameId);
-        expect(result).toBe(mockEventSource);
-        expect(document.getElementById('current-turn').innerHTML).toEqual('');
-        expect(document.getElementById('balance').innerHTML).toEqual('');
-        expect(document.getElementById('properties').innerHTML).toEqual('');
+
+    test('rollDice', (done) => {
+        generateUserDetails.rollDice(mockSendJSON);
+        expect(mockSendJSON).toHaveBeenCalled();
+        done();
+    });
+
+    test('endTurn', (done) => {
+        generateUserDetails.endTurn(mockSendJSON);
+        expect(mockSendJSON).toHaveBeenCalled();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+
+    test('successCallback', (done) => {
+        generateUserDetails.successCallback(mockResponse);
+        jest.spyOn(global.console, 'log');
+        expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+});
+
+describe('disable button tests', () => {
+    // Create a mock for the actual sendJSON function
+    const oldDocumentBody = document.body;
+
+
+    // Create buttons to test
+    beforeAll(() => {
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
+    });
+
+    // Restore the HTML body
+    afterAll(() => {
+        document.body.innerHTML = oldDocumentBody;
+    });
+
+
+    test('disableGameInterface', (done) => {
+        generateUserDetails.disableGameInterface();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+
+    test('enableGameInterface', (done) => {
+        generateUserDetails.enableGameInterface();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+
+    test('enableEndTurn', (done) => {
+        generateUserDetails.enableEndTurn();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled=""'));
+        done();
+    });
+});
+
+describe('rollDice endTurn successCallback tests', () => {
+    // Create a mock for the actual sendJSON function
+    const mockSendJSON = jest.fn();
+    const mockResponse = {responseText: '{"your_rolls": "(1,2)"}'};
+    const oldDocumentBody = document.body;
+
+
+    // Create buttons to test
+    beforeAll(() => {
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
+    });
+
+    // Restore the HTML body
+    afterAll(() => {
+        document.body.innerHTML = oldDocumentBody;
+    });
+
+
+    test('rollDice', (done) => {
+        generateUserDetails.rollDice(mockSendJSON);
+        expect(mockSendJSON).toHaveBeenCalled();
+        done();
+    });
+
+    test('endTurn', (done) => {
+        generateUserDetails.endTurn(mockSendJSON);
+        expect(mockSendJSON).toHaveBeenCalled();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+
+    test('successCallback', (done) => {
+        generateUserDetails.successCallback(mockResponse);
+        jest.spyOn(global.console, 'log');
+        expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+});
+
+describe('disable button tests', () => {
+    // Create a mock for the actual sendJSON function
+    const oldDocumentBody = document.body;
+
+
+    // Create buttons to test
+    beforeAll(() => {
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
+    });
+
+    // Restore the HTML body
+    afterAll(() => {
+        document.body.innerHTML = oldDocumentBody;
+    });
+
+
+    test('disableGameInterface', (done) => {
+        generateUserDetails.disableGameInterface();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+
+    test('enableGameInterface', (done) => {
+        generateUserDetails.enableGameInterface();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        done();
+    });
+
+    test('enableEndTurn', (done) => {
+        generateUserDetails.enableEndTurn();
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled=""'));
         done();
     });
 });
