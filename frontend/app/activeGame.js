@@ -15,9 +15,9 @@ export function activeGame(gameID) {
     // generateUserDetails();
     // generateGameLog();
     displayBoard();
-    control.movePlayer('layer2', 15);
+    // control.movePlayer('layer2', 15);
 
-    enableActiveGameListeners();
+    // enableActiveGameListeners();
 }
 
 function enableActiveGameListeners() {
@@ -59,6 +59,9 @@ function onPlayerBalance(playerBalanceEvent) {}
 /**
  * Mock function for displaying the monopoly board onscreen.
  */
+ 
+ // displayBoard should take in player id's and then generate the canvas with its ids.
+ // Also appending is causing errors whcih i didn't notice at first.
 function displayBoard() {
     console.log('displayBoard called');
     // need to change id's;
@@ -75,4 +78,16 @@ function displayBoard() {
         ctx.drawImage(img, 0, 0);
     };
     img.src = 'monopoly.jpg';
+}
+
+function createCanvas(canvasID, appendToNode, layerNumber){
+    var canvas = document.createElement('canvas');
+    canvas.id = canvasID;
+    canvas.height = 800;
+    canvas.width = 800;
+    canvas.style.position = 'absolute';
+    canvas.style.left = 0;
+    canvas.style.top = 0;
+    canvas.style.z-index = layerNumber;
+    document.getElementByID(appendToNode).append(canvas);
 }
