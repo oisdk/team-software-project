@@ -1,4 +1,4 @@
-// export default './createUserCookie';
+export default './createUserCookie';
 
 /**
  * Function to generate user cookie.
