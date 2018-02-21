@@ -15,8 +15,13 @@ export function activeGame(gameID, playerList) {
     // generateGameInterface();
     // generateUserDetails();
     // generateGameLog();
-    displayBoard();
-    control.movePlayer('layer2', 15);
+    
+    // display board and assign starting positions.
+    displayBoard(playerList);
+    control.movePlayer(1, 0);
+    control.movePlayer(2, 10);
+    control.movePlayer(3, 20);
+    control.movePlayer(4, 30);
 
     // enableActiveGameListeners();
 }
@@ -65,15 +70,15 @@ function onPlayerBalance(playerBalanceEvent) {}
 // another option instead of using create canvas can be.
 // document.getElementById('content').insertAdjacentHTML ('beforeend',
 // '<canvas id="" width="" height="" style=""></canvas>');
-function displayBoard() {
+function displayBoard(playerList) {
     console.log('displayBoard called');
     // need to change id's;
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
-    createCanvas('player1', 'content', 1);
-    createCanvas('player2', 'content', 2);
-    createCanvas('player3', 'content', 3);
-    createCanvas('player4', 'content', 4);
-    createCanvas('game-info', 'content', 5);
+    
+    for(let i=1;i<=playerList.length;i++) {
+        createCanvas( i, 'content', i);
+    }
+    createCanvas('game-info', 'content', playerList+1);
     const c = document.getElementById('gameBoard');
     const ctx = c.getContext('2d');
     const img = new Image();
