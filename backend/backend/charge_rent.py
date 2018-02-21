@@ -21,6 +21,7 @@ def charge_rent(source=sys.stdin, output=sys.stdout):
     request = json.load(source)
     player_id = request["player_id"]
     games = get_games()
+    game_id = None
 
     # Access the game the player is playing in
     # and the position the player is on the board
