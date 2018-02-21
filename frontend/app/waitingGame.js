@@ -94,6 +94,7 @@ export function waitingGame(gameID) {
     function successCallback(req, start = activeGame) {
         const playerList = JSON.parse(req.responseText);
         console.log(playerList);
+        console.log("calling actitveGame");
         start(gameID, playerList);
     }
 
@@ -104,7 +105,7 @@ export function waitingGame(gameID) {
         if (gameID.toString() === startedGameId) {
             sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
             sseEventSource.removeEventListener('gameStart', onGameStart);
-
+            console.log("sendJSO");
             sendJSON.sendJSON({
                 serverAddress: 'cgi-bin/request_players.py',
                 jsonObject: {game_id: gameID},
