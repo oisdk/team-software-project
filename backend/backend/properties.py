@@ -17,7 +17,6 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         self._price = 0
         self._property_type = None
         self._base = 0
-        self._monopoly = 0
         self._house_price = 0
         self._one = 0
         self._two = 0
@@ -45,15 +44,14 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                            (self._position))
             result = cursor.fetchone()
             self._price = result['purchase_price']
-            self._property_type = result['purchase_price']
-            self._base = result['purchase_price']
-            self._monopoly = result['purchase_price']
-            self._house_price = result['purchase_price']
-            self._one = result['purchase_price']
-            self._two = result['purchase_price']
-            self._three = result['purchase_price']
-            self._four = result['purchase_price']
-            self._hotel = result['purchase_price']
+            self._property_type = result['state']
+            self._base = result['base_rent']
+            self._house_price = result['house_price']
+            self._one = result['one_rent']
+            self._two = result['two_rent']
+            self._three = result['three_rent']
+            self._four = result['four_rent']
+            self._hotel = result['hotel_rent']
             del result
         return self
 
@@ -141,7 +139,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         rent = 0
         if (self._houses == 0) and (self._hotels == 0):
             if self._is_in_monopoly:
-                rent = self._monopoly
+                rent = self._base*2
             else:
                 rent = self._base
         elif self._houses == 1:
