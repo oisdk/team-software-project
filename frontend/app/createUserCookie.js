@@ -13,3 +13,4 @@ export function generateUserCookie(userObject) {
     document.cookie = (`user_name = ${user.your_username}`);
     document.cookie = (`user_id =   ${user.your_id}`);
 }
+
