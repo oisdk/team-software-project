@@ -50,7 +50,7 @@ export function getCoord(position) {
 
 // In the future, can specify image token. 
 //canvasID aka playerID
-function movePlayer(canvasID, position) {
+export function movePlayer(canvasID, position) {
     let coordinate = getCoord(position);
     var c = document.getElementById(canvasID);
     const ctx = c.getContext('2d');
@@ -64,7 +64,7 @@ function movePlayer(canvasID, position) {
     imgg.src="p.png";
 }
 
-function clear(canvasID){
+export function clear(canvasID){
     var c = document.getElementById(canvasID);
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, c.width, c.height);
@@ -72,7 +72,7 @@ function clear(canvasID){
 
 //useful for find x and y coordinates.
 // To use add onclick="showCoords(event)" to top layer of canvas.
-function showCoords(event) {
+export function showCoords(event) {
     var x = event.clientX;
     var y = event.clientY;
     var coords = "X coords: " + x + ", Y coords: " + y;
