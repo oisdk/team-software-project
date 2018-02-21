@@ -30,7 +30,7 @@ For a more detailed guide on how to get involved and contribute to the project, 
 
 This diagram shows a component & connector view of the system:
 
-![Component & Connector View](readme-images/component-connector-view.svg)
+![Component & Connector View](documentation-images/component-connector-view.svg)
 
 Clients send requests to apache, which runs the corresponding CGI scripts. These scripts interact with a database and send back a response.
 
