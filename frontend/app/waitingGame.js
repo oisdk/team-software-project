@@ -2,7 +2,7 @@ import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
 
 // change according to activeGame as currently used with default function
-import activeGame from './activeGame';
+import {activeGame} from './activeGame';
 
 /**
  * Creates the html for the waiting game.
