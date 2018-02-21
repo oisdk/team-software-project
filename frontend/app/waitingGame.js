@@ -104,7 +104,7 @@ export function waitingGame(gameID) {
             sseEventSource.removeEventListener('gameStart', onGameStart);
             
             sendJSON.sendJSON({
-                serverAddress: 'cgi-bin/request_list_of_players.py',
+                serverAddress: 'cgi-bin/request_players.py',
                 jsonObject: {game_id: gameID},
                 successCallback,
             });
