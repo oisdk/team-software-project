@@ -86,7 +86,7 @@ def start_sse_stream(output_stream=sys.stdout):
         # Pushes data to update the players info table on game start
         if test and last_game_state == "playing":
             test = False
-            start_game_push(output_stream)
+            start_game_push(output_stream, turn_order)
 
         # Call function to check the current state of this game.
         # A game state may be "waiting" or "playing".
