@@ -1,12 +1,9 @@
 // Imports
 import * as getCookie from './checkUserIDCookie';
-import {getEventSource} from './sse';
-import * as sendJSON from './sendJSON';
 
 let details = getCookie.checkUserDetails();
 let id = details.user_id;
 let userName = details.user_name;
-let turnBoolean = true;
 
 /**
  * Function to disable game interface.
@@ -39,13 +36,8 @@ export function enableEndTurn() {
  * @param {XMLHttpRequest} req1 response.
  */
 export function successCallback(req1) {
-    // console.log(req1);
-    const response = JSON.parse(req1.responseText);
-    if (response.your_rolls[0] !== response.your_rolls[1]) {
-        enableEndTurn();
-    } else {
-        enableGameInterface();
-    }
+    console.log(req1);
+    enableEndTurn();
 }
 
 /**
@@ -58,7 +50,6 @@ export function rollDice(JSONSend) {
         jsonObject: {user_id: id},
         successCallback,
     });
-    turnBoolean = false;
 }
 
 /**
@@ -71,7 +62,6 @@ export function endTurn(JSONSend) {
         jsonObject: {player_id: id},
     });
     disableGameInterface();
-    turnBoolean = true;
 }
 
 /**
