@@ -1,0 +1,29 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/oisdk/team-software-project.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[branch "game-interface"]
+	remote = origin
+	merge = refs/heads/game-interface
+[branch "waiting-game-sse/master"]
+	remote = origin
+	merge = refs/heads/waiting-game-sse/master
+[branch "display-user-info"]
+	remote = origin
+	merge = refs/heads/display-user-info
+[branch "display-game-log"]
+	remote = origin
+	merge = refs/heads/display-game-log
+[branch "activeGame"]
+	remote = origin
+	merge = refs/heads/activeGame
+[branch "update-player-positions-onboard-+-new-active-game-"]
+	remote = origin
+	merge = refs/heads/update-player-positions-onboard-+-new-active-game-
