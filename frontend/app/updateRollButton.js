@@ -12,7 +12,7 @@ export function checkRollValuesEqual(req) {
     // Enables the roll button for the player if the previous
     // roll values are equal
     const response = JSON.parse(req.responseText);
-    const roll = response.player_id;
+    const roll = response.your_rolls;
     const rollDie = document.querySelector('#roll');
     if (roll[0] === roll[1]) {
         rollDie.disabled = false;
