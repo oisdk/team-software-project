@@ -82,7 +82,8 @@ def start_sse_stream(output_stream=sys.stdout):
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
                                         new_positions)
-        
+
+        # Pushes data to update the players info table on game start
         if test and last_game_state == "playing":
             test = False
             start_game_push(output_stream)
@@ -407,6 +408,14 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
 
-def start_game_push(output_stream):
-    generate_player_turn_event(output_stream, 1);
-    generate_player_balance_event(output_stream, {}, {1 :200, 2: 200, 3: 200, 4: 200});
+
+def start_game_push(output_stream, turn_order):
+    """Generates an event for to update the details table at game start.
+
+    Compares two dictionaries and outputs a playerBalance server-sent event if
+    the two dicts differ. Along with the event is JSON containing the
+    difference between the two dicts.
+    """
+    generate_player_turn_event(output_stream, next(iter(turn_order)))
+    generate_player_balance_event(output_stream, {},
+                                  {1: 200, 2: 200, 3: 200, 4: 200})
