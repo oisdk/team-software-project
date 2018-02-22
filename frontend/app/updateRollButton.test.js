@@ -33,7 +33,7 @@ describe('Disable roll button ', () => {
     const mockFileResponse = {
         status: 200,
         readyState: 4,
-        responseText: '{"player_id": [2, 1]}',
+        responseText: '{"your_rolls": [2, 1]}',
     };
 
     beforeAll(() => {
@@ -58,7 +58,7 @@ describe('Enable roll button ', () => {
     const mockFileResponse = {
         status: 200,
         readyState: 4,
-        responseText: '{"player_id": [2, 2]}',
+        responseText: '{"your_rolls": [2, 2]}',
     };
 
     beforeAll(() => {
