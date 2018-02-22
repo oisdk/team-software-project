@@ -32,7 +32,7 @@ export function requestCompareRolls(JSONSend = sendJSON.sendJSON) {
     const details = getCookie.checkUserDetails();
     const id = details.user_id;
     JSONSend({
-        serverAddress: 'cgi-bin/roll_die.py',
+        serverAddress: 'cgi-bin/roll_dice.py',
         jsonObject: {player_id: id},
         checkRollValuesEqual,
     });
