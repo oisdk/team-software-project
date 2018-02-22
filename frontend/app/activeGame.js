@@ -19,9 +19,9 @@ export function activeGame(gameID, playerList) {
     // display board and assign starting positions.
     displayBoard(playerList);
     control.movePlayer(1, 0);
-    control.movePlayer(2, 10);
-    control.movePlayer(3, 20);
-    control.movePlayer(4, 30);
+    control.movePlayer(2, 0);
+    control.movePlayer(3, 0);
+    control.movePlayer(4, 0);
 
     // enableActiveGameListeners();
 }
