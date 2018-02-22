@@ -588,24 +588,26 @@ export function generateHTML() {
 6. To see what's actually stored in the database, do the usual SQL stuff (e.g. `select * from games;`)
 
 ## Current Tables in the Database
-| Tables       |
-| ------------ |
-| games        |
-| players      |
-| playing_in   |
-| rolls        |
+| Tables          |
+| --------------- |
+| games           |
+| players         |
+| playing_in      |
+| properties      |
+| property_values |
+| rolls           |
 
 ## Table Structures
 ### "games"
 | Field        | Type                      | Null | Key | Default | Extra          |
-|--------------|---------------------------|------|-----|---------|----------------|
+| ------------ | ------------------------- | ---- | --- | ------- | -------------- |
 | id           | int(10) unsigned          | NO   | PRI | NULL    | auto_increment |
 | state        | enum('waiting','playing') | NO   |     | waiting |                |
 | current_turn | tinyint(3) unsigned       | NO   |     | 0       |                |
 
 ### "players"
 | Field          | Type                | Null | Key | Default | Extra          |
-|----------------|---------------------|------|-----|---------|----------------|
+| -------------- | ------------------- | ---- | --- | ------- | -------------- |
 | id             | int(10) unsigned    | NO   | PRI | NULL    | auto_increment |
 | username       | varchar(255)        | NO   |     | NULL    |                |
 | balance        | int(11)             | NO   |     | 200     |                |
@@ -614,20 +616,44 @@ export function generateHTML() {
 
 ### "playing_in"
 | Field     | Type             | Null | Key | Default | Extra |
-|-----------|------------------|------|-----|---------|-------|
+| --------- | ---------------- | ---- | --- | ------- | ----- |
 | player_id | int(10) unsigned | NO   | MUL | NULL    |       |
 | game_id   | int(10) unsigned | NO   | MUL | NULL    |       |
 
+### "properties"
+| Field             | Type                    | Null | Key | Default | Extra |
+| ----------------- | ----------------------- | ---- | --- | ------- | ----- |
+| player_id         | int(10) unsigned        | NO   | MUL | NULL    |       |
+| game_id           | int(10) unsigned        | NO   | MUL | NULL    |       |
+| state             | enum('unowned','owned') | NO   |     | unowned |       |
+| property_position | tinyint(3) unsigned     | NO   | MUL | NULL    |       |
+| house_count       | tinyint(3) unsigned     | YES  |     | 0       |       |
+| hotel_count       | tinyint(3) unsigned     | YES  |     | 0       |       |
+
+### "property_values"
+| Field             | Type                                  | Null | Key | Default  | Extra |
+| ----------------- | ------------------------------------- | ---- | --- | -------- | ----- |
+| property_position | tinyint(3) unsigned                   | NO   | PRI | NULL     |       |
+| purchase_price    | smallint(5) unsigned                  | NO   |     | NULL     |       |
+| state             | enum('property','railroad','utility') | NO   |     | property |       |
+| base_rent         | smallint(5) unsigned                  | NO   |     | NULL     |       |
+| house_price       | tinyint(3) unsigned                   | NO   |     | 0        |       |
+| one_rent          | smallint(5) unsigned                  | NO   |     | 0        |       |
+| two_rent          | smallint(5) unsigned                  | NO   |     | 0        |       |
+| three_rent        | smallint(5) unsigned                  | NO   |     | 0        |       |
+| four_rent         | smallint(5) unsigned                  | NO   |     | 0        |       |
+| hotel_rent        | smallint(5) unsigned                  | NO   |     | 0        |       |
+
 ### "rolls"
 | Field | Type                | Null | Key | Default | Extra |
-|-------|---------------------|------|-----|---------|-------|
+| ----- | ------------------- | ---- | --- | ------- | ----- |
 | id    | int(10) unsigned    | NO   | MUL | NULL    |       |
 | roll1 | tinyint(3) unsigned | NO   |     | NULL    |       |
 | roll2 | tinyint(3) unsigned | NO   |     | NULL    |       |
 | num   | int(10) unsigned    | NO   |     | NULL    |       |
 
 ## Glossary
-| Term | Meaning                                                                  | Link to relevant MySQL Docs                               |
-|-----|---------------------------------------------------------------------------|-----------------------------------------------------------|
-| PRI | Primary key: Uniquely identifies each record in the table. Cannot be NULL | https://dev.mysql.com/doc/refman/5.7/en/glossary.html     |
-| MUL | A bit like the opposite of PRI, allows multiple occurrences of same value | https://dev.mysql.com/doc/refman/5.7/en/show-columns.html |
+| Term | Meaning                                                                                                                              | Link to relevant MySQL Docs                               |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
+| PRI  | Primary key: Uniquely identifies each record in the table. Cannot be NULL                                                            | https://dev.mysql.com/doc/refman/5.7/en/glossary.html     |
+| MUL  | A bit like the opposite of PRI, allows multiple occurrences of same value. In this database, they usually indicate a **foreign key** | https://dev.mysql.com/doc/refman/5.7/en/show-columns.html |
