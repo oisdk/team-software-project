@@ -89,7 +89,7 @@ export function generateUserDetails() {
     details = getCookie.checkUserDetails();
     id = details.user_id;
     userName = details.user_name;
-    console.log(`id:${id}`);
+    // console.log(`id:${id}`);
 
     // TODO Properties!
 }
