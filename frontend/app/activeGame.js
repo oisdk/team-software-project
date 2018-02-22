@@ -43,9 +43,14 @@ function disableActiveGameListeners(gameEndEvent) {
 /**
  * Called when a playerMove event happens.
  *
- * Dummy implementation for the moment.
+ * @param playerMoveEvent The SSE event that occurred.
  */
-function onPlayerMove(playerMoveEvent) {}
+function onPlayerMove(playerMoveEvent) {
+    const moveList = JSON.parse(playerMoveEvent.data);
+    for (let i = 0; i < moveList.length; i++) {
+        control.movePlayer(moveList[i][0], moveList[i][1]);
+    }
+}
 
 /**
  * Called when a playerTurn event happens.
