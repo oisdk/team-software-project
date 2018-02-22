@@ -239,7 +239,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             with self._conn.cursor() as cursor:
                 cursor.execute('SELECT COUNT(*) FROM `properties` ',
                                'WHERE `game_id` = %s ',
-                               'AND `property_position` IN (`31`, `33`, `34`)',
+                               'AND `property_position` IN (`31`, `32`, `34`)',
                                ' GROUP BY player_id; ',
                                (self._gid))
                 result = cursor.fetchone()
