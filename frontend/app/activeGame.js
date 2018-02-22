@@ -1,5 +1,3 @@
-// import {getEventSource} from './sse';
-// import {generateGameInterface} from './generateGameInterface';
 import * as generateUserDetails from './generateUserDetails';
 import * as control from './moveFunctions';
 import * as getCookie from './checkUserIDCookie';
@@ -8,10 +6,6 @@ import * as sendJSON from './sendJSON';
 
 let details = getCookie.checkUserDetails();
 let id = details.user_id;
-let userName = details.user_name;
-let turnBoolean = true;
-
-// import {generateGameLog} from './generateGameLog';
 
 /**
  * Displays the page for an active game.
@@ -19,21 +13,11 @@ let turnBoolean = true;
  * @param gameID The ID for the game that will be displayed.
  */
 export function activeGame(gameID, playerList) {
-    console.log(gameID);
-    // generateGameInterface();
-    // generateGameLog();
-
     // display board and assign starting positions.
     displayBoard(playerList);
-    //control.movePlayer(1, 0);
     generateUserDetails.generateUserDetails();
-    // control.movePlayer(2, 10);
-    // control.movePlayer(3, 20);
-    // control.movePlayer(4, 30);
     details = getCookie.checkUserDetails();
     id = details.user_id;
-    userName = details.user_name;
-    turnBoolean = true;
     enableActiveGameListeners();
 }
 
@@ -41,11 +25,11 @@ export function activeGame(gameID, playerList) {
 /**
  * Called when a playerMove event happens.
  *
- * Dummy implementation for the moment.
+ * @param playerMoveEvent The data received from the event
  */
 function onPlayerMove(playerMoveEvent) {
     const move = String(JSON.parse(playerMoveEvent.data));
-    let items = move.split(',');
+    const items = move.split(',');
     console.log(move);
     control.movePlayer(items[0], items[1]);
 }
@@ -53,7 +37,7 @@ function onPlayerMove(playerMoveEvent) {
 /**
  * Called when a playerTurn event happens.
  *
- * Dummy implementation for the moment.
+ * @param playerTurnEvent The data received from the event
  */
 function onPlayerTurn(playerTurnEvent) {
     const turn = String(JSON.parse(playerTurnEvent.data));
@@ -67,16 +51,15 @@ function onPlayerTurn(playerTurnEvent) {
     endTurnButton.disabled = true;
     console.log(`id Test:${id}`);
     console.log(`turn Test:${turn}`);
-    if (turn === String(id) && turnBoolean) {
+    if (turn === String(id)) {
         generateUserDetails.enableGameInterface();
-        console.log('test');
     }
 }
 
 /**
  * Called when a playerBalance event happens.
  *
- * Dummy implementation for the moment.
+ * @param playerBalanceEvent The data received from the event
  */
 function onPlayerBalance(playerBalanceEvent) {
     const data = JSON.parse(playerBalanceEvent.data);
@@ -86,9 +69,9 @@ function onPlayerBalance(playerBalanceEvent) {
         // console.log(item);
         if (String(item[0]) === String(id)) {
             ({1: balance} = item);
+            document.getElementById('balance').innerHTML = balance;
         }
     });
-    document.getElementById('balance').innerHTML = balance;
 }
 
 /**
@@ -139,12 +122,14 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerMove', onPlayerMove);
     eventSource.addEventListener('playerTurn', onPlayerTurn);
     eventSource.addEventListener('playerBalance', onPlayerBalance);
-    eventSource.addEventListener('gameEnd', disableActiveGameListeners);
+    // eventSource.addEventListener('gameEnd', disableActiveGameListeners);
 }
 
+/*
 function disableActiveGameListeners(gameEndEvent) {
     const eventSource = getEventSource();
     eventSource.removeEventListener('playerMove', onPlayerMove);
     eventSource.removeEventListener('playerTurn', onPlayerTurn);
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
 }
+*/
