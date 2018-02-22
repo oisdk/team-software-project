@@ -580,6 +580,7 @@ export function generateHTML() {
 # Database Organisation
 
 ## How-To: Accessing Database from Docker
+
 1. Start Docker: `docker start monopoly`
 2. Log into the Docker shell: `docker exec -it monopoly bash`
 3. Start the MySQL interpreter: `mysql db`
@@ -588,6 +589,7 @@ export function generateHTML() {
 6. To see what's actually stored in the database, do the usual SQL stuff (e.g. `select * from games;`)
 
 ## Current Tables in the Database
+
 | Tables          |
 | --------------- |
 | games           |
@@ -598,7 +600,9 @@ export function generateHTML() {
 | rolls           |
 
 ## Table Structures
+
 ### "games"
+
 | Field        | Type                      | Null | Key | Default | Extra          |
 | ------------ | ------------------------- | ---- | --- | ------- | -------------- |
 | id           | int(10) unsigned          | NO   | PRI | NULL    | auto_increment |
@@ -606,6 +610,7 @@ export function generateHTML() {
 | current_turn | tinyint(3) unsigned       | NO   |     | 0       |                |
 
 ### "players"
+
 | Field          | Type                | Null | Key | Default | Extra          |
 | -------------- | ------------------- | ---- | --- | ------- | -------------- |
 | id             | int(10) unsigned    | NO   | PRI | NULL    | auto_increment |
@@ -615,12 +620,14 @@ export function generateHTML() {
 | board_position | tinyint(3) unsigned | NO   |     | 0       |                |
 
 ### "playing_in"
+
 | Field     | Type             | Null | Key | Default | Extra |
 | --------- | ---------------- | ---- | --- | ------- | ----- |
 | player_id | int(10) unsigned | NO   | MUL | NULL    |       |
 | game_id   | int(10) unsigned | NO   | MUL | NULL    |       |
 
 ### "properties"
+
 | Field             | Type                    | Null | Key | Default | Extra |
 | ----------------- | ----------------------- | ---- | --- | ------- | ----- |
 | player_id         | int(10) unsigned        | NO   | MUL | NULL    |       |
@@ -631,6 +638,7 @@ export function generateHTML() {
 | hotel_count       | tinyint(3) unsigned     | YES  |     | 0       |       |
 
 ### "property_values"
+
 | Field             | Type                                  | Null | Key | Default  | Extra |
 | ----------------- | ------------------------------------- | ---- | --- | -------- | ----- |
 | property_position | tinyint(3) unsigned                   | NO   | PRI | NULL     |       |
@@ -645,6 +653,7 @@ export function generateHTML() {
 | hotel_rent        | smallint(5) unsigned                  | NO   |     | 0        |       |
 
 ### "rolls"
+
 | Field | Type                | Null | Key | Default | Extra |
 | ----- | ------------------- | ---- | --- | ------- | ----- |
 | id    | int(10) unsigned    | NO   | MUL | NULL    |       |
@@ -653,6 +662,7 @@ export function generateHTML() {
 | num   | int(10) unsigned    | NO   |     | NULL    |       |
 
 ## Glossary
+
 | Term | Meaning                                                                                                                              | Link to relevant MySQL Docs                               |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
 | PRI  | Primary key: Uniquely identifies each record in the table. Cannot be NULL                                                            | https://dev.mysql.com/doc/refman/5.7/en/glossary.html     |
