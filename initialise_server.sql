@@ -29,16 +29,10 @@ CREATE TABLE IF NOT EXISTS playing_in (
     FOREIGN KEY (game_id) REFERENCES games(id)
 );
 
-CREATE TABLE IF NOT EXISTS properties (
-    player_id int UNSIGNED NOT NULL,
-	game_id int UNSIGNED NOT NULL,
-	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
-	property_position tinyint UNSIGNED NOT NULL,
-	house_count tinyint UNSIGNED DEFAULT 0,
-	hotel_count tinyint UNSIGNED DEFAULT 0,
-	FOREIGN KEY (player_id) REFERENCES players(id),
-    FOREIGN KEY (game_id) REFERENCES games(id),
-	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
+CREATE TABLE IF NOT EXISTS tax_spaces (
+    board_position tinyint UNSIGNED NOT NULL,
+    tax_amount smallint UNSIGNED NOT NULL,
+    PRIMARY KEY (board_position)
 );
 
 CREATE TABLE IF NOT EXISTS property_values (
@@ -53,6 +47,18 @@ CREATE TABLE IF NOT EXISTS property_values (
 	four_rent smallint UNSIGNED NOT NULL DEFAULT 0,
 	hotel_rent smallint UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (property_position)
+);
+
+CREATE TABLE IF NOT EXISTS properties (
+    player_id int UNSIGNED NOT NULL,
+	game_id int UNSIGNED NOT NULL,
+	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
+	property_position tinyint UNSIGNED NOT NULL,
+	house_count tinyint UNSIGNED DEFAULT 0,
+	hotel_count tinyint UNSIGNED DEFAULT 0,
+	FOREIGN KEY (player_id) REFERENCES players(id),
+    FOREIGN KEY (game_id) REFERENCES games(id),
+	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
 );
 
 INSERT INTO property_values
@@ -78,3 +84,7 @@ VALUES (1, 60, 'property', 2, 50, 10, 30, 90, 160, 250),
 	   (34, 320, 'property', 28, 200, 150, 450, 1000, 1200, 1400),
 	   (37, 350, 'property', 35, 200, 175, 500, 1100, 1300, 1500),
 	   (39, 400, 'property', 50, 200, 200, 600, 1400, 1700, 2000);
+
+INSERT INTO tax_spaces
+VALUES (4,  200),
+       (38, 100);
