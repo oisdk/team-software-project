@@ -81,20 +81,17 @@ export function onPlayerBalance(playerBalanceEvent) {
 }
 
 /**
- * Mock function for displaying the monopoly board onscreen.
+ * Function for displaying the monopoly board onscreen.
+ * @param playerList The list of players in the game
  */
 
-// displayBoard should take in player id's and then generate the canvas with its ids.
-// another option instead of using create canvas would be
-// document.getElementById('content').insertAdjacentHTML ('beforeend',
-// '<canvas id="" width="" height="" style=""></canvas>');
 export function displayBoard(playerList) {
     // console.log('displayBoard called');
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
 
     // creates a canvas with player id and layer i.
     // layer 0 = background image, last layer = game info
-    // creates a token for each player on ther canvas.
+    // creates a token for each player on their canvas.
     for (let i = 1; i <= playerList.length; i += 1) {
         createCanvas(playerList[i - 1], 'content', i);
         control.movePlayer(playerList[i - 1], 0);
