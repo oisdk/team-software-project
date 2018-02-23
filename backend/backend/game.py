@@ -154,7 +154,7 @@ def create_game(host):
         conn.close()
 
 
-def get_games():
+def get_games(with_game_status = 'waiting'):
     """Returns a dictionary where the keys are the game ids, in the waiting
     room and the values is a list of participating players."""
     conn = backend.storage.make_connection()
@@ -163,9 +163,12 @@ def get_games():
         with conn.cursor() as cursor:
             cursor.execute('SELECT playing_in.game_id, players.username '
                            'FROM playing_in '
-                           'INNER JOIN players ON '
-                           'playing_in.player_id = players.id '
-                           'ORDER BY playing_in.game_id;')
+                           'INNER JOIN players '
+                           'INNER JOIN games ON '
+                           'playing_in.player_id = players.id AND '
+                           'playing_in.game_id = games.id '
+                           'WHERE games.state = %s '
+                           'ORDER BY playing_in.game_id;', (with_game_status,))
             result = {game_id: [user['username'] for user in row]
                       for game_id, row
                       in groupby(cursor.fetchall(), itemgetter('game_id'))}
