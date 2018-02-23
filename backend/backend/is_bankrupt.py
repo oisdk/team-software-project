@@ -11,9 +11,17 @@ import backend.properties import Property
 
 cgitb.enable()
 
+
 def is_bankrupt(source=sys.stdin, output=sys.stdout):
     """Player is checked if they are bankrupt or not"""
-    pass
+
+    output.write('Content-Type: application/json\n\n')
+    request = json.load(source)
+    player_id = request['player_id']
+
+    with Player(player_id) as player:
+        if player.balance < 0:
+            remove_player(player_id)
 
 
 def remove_player(player_id):
