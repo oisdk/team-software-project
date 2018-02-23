@@ -46,7 +46,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             self._price = result['purchase_price']
             self._property_type = result['state']
             self._base = result['base_rent']
-			if self._property_type == 'property':
+            if self._property_type == 'property':
                 self._house_price = result['house_price']
                 self._one = result['one_rent']
                 self._two = result['two_rent']
@@ -156,6 +156,20 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                 rent = self._hotel
         elif self.type == 'railroad':
             rent = 25 * (2 ** self.rails_owned())
+        elif self.type == 'utility':
+            with self._conn.cursor() as cursor:
+                cursor.execute('SELECT `roll1`, `roll2`, MAX(`num`)',
+                               'FROM `rolls` ',
+                               'WHERE `id` = %s GROUP BY `num`;',
+                               (self._owner,))
+                result = cursor.fetchone()
+                roll = result['roll1'] + result['roll2']
+                multiplier_type = self.utils_owned()
+                if multiplier_type > 1:
+                    rent = roll * 10
+                else:
+                    rent = roll * 4
+                del result
         return rent
 
     @property
@@ -268,7 +282,21 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             cursor.execute('SELECT COUNT(*) FROM `properties` ',
                            'WHERE `game_id` = %s ',
                            'AND `property_type` = `railroad` ',
-						   'AND `player_id` = %s',
+                           'AND `player_id` = %s',
                            (self._gid, self._owner))
             result = cursor.fetchone()
-            return (result[0] - 1)
+            return result[0] - 1
+
+    def utils_owned(self):
+        """
+        Returns:
+            int: how many utilities are owned by the owner of self.
+        """
+        with self._conn.cursor() as cursor:
+            cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                           'WHERE `game_id` = %s ',
+                           'AND `property_type` = `utility` ',
+                           'AND `player_id` = %s',
+                           (self._gid, self._owner))
+            result = cursor.fetchone()
+            return result[0]
