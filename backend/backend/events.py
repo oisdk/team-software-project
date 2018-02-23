@@ -297,7 +297,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     ...     {5: 4, 6: 6, 7: 5, 8: 0},
     ...     {5: 4, 6: 6, 7: 5, 8: 4})
     event: playerMove
-    data: [[8, 4]]
+    data: [[8, 4, 0]]
     <BLANKLINE>
 
     >>> import sys
@@ -306,7 +306,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     ...     {},
     ...     {5: 4})
     event: playerMove
-    data: [[5, 4]]
+    data: [[5, 4, 0]]
     <BLANKLINE>
 
     """
@@ -339,9 +339,9 @@ def generate_player_turn_event(output_stream, player_id, turn_order):
         player_id: An int representing the player whose turn it is.
 
     >>> import sys
-    >>> generate_player_turn_event(sys.stdout, 2)
+    >>> generate_player_turn_event(sys.stdout, 2, {2:0})
     event: playerTurn
-    data: 2
+    data: [2, 0]
     <BLANKLINE>
 
     """
