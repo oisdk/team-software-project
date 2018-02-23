@@ -33,7 +33,32 @@ describe('Disable roll button ', () => {
     const mockFileResponse = {
         status: 200,
         readyState: 4,
-        responseText: 'true',
+        responseText: '{"your_rolls": [2, 1]}',
+    };
+
+    beforeAll(() => {
+        document.body.innerHTML = '<button type="button" id="roll">Roll die</button>';
+    });
+
+    afterAll(() => {
+        document.body.innerHTML = oldDocumentBody;
+    });
+
+    test(' disable button ', (done) => {
+        functionCall.checkRollValuesEqual(mockFileResponse);
+        expect(document.body.innerHTML).toEqual('<button type="button" id="roll" disabled="">Roll die</button>');
+        done();
+    });
+});
+
+describe('Enable roll button ', () => {
+    const oldDocumentBody = document.body.innerHTML;
+
+    // simulate response
+    const mockFileResponse = {
+        status: 200,
+        readyState: 4,
+        responseText: '{"your_rolls": [2, 2]}',
     };
 
     beforeAll(() => {
