@@ -154,7 +154,7 @@ def create_game(host):
         conn.close()
 
 
-def get_games(with_game_status = 'waiting'):
+def get_games(with_game_status='waiting'):
     """Returns a dictionary where the keys are the game ids, in the waiting
     room and the values is a list of participating players."""
     conn = backend.storage.make_connection()
