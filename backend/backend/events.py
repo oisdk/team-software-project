@@ -418,4 +418,4 @@ def start_game_push(output_stream, turn_order):
     """
     generate_player_turn_event(output_stream, next(iter(turn_order)))
     generate_player_balance_event(output_stream, {},
-                                  {1: 200, 2: 200, 3: 200, 4: 200})
+                                  {1: 1500, 2: 1500, 3: 1500, 4: 1500})
