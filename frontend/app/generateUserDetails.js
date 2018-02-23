@@ -105,7 +105,7 @@ export function generateUserDetails() {
  * @param turnEvent The data received from the event
  */
 export function turnDetails(turnEvent) {
-    const turn = String(JSON.parse(turnEvent.data));
+    const turn = JSON.parse(turnEvent.data);
     document.getElementById('current-turn').innerHTML = `Player ${turn}`;
     // console.log(`Turn:${turn}`);
     const rollDiceButton = document.getElementById('roll-dice');
@@ -116,7 +116,7 @@ export function turnDetails(turnEvent) {
     endTurnButton.disabled = true;
     // console.log(`id Test:${id}`);
     // console.log(`turn Test:${turn}`);
-    if (turn === String(id)) {
+    if (String(turn) === String(id)) {
         enableGameInterface();
     }
 }
