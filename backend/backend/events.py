@@ -53,7 +53,7 @@ def start_sse_stream(output_stream=sys.stdout):
     new_balances = {}
     turn = None
     turn_order = {}
-    test = True
+    push_initial_user_details = True
 
     # These statements are executed constantly once the first request to this
     # file is made.
@@ -84,8 +84,8 @@ def start_sse_stream(output_stream=sys.stdout):
                                         new_positions)
 
         # Pushes data to update the players info table on game start
-        if test and last_game_state == "playing":
-            test = False
+        if push_initial_user_details and last_game_state == "playing":
+            push_initial_user_details = False
             start_game_push(output_stream, turn_order)
 
         # Call function to check the current state of this game.

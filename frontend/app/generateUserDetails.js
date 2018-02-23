@@ -1,5 +1,6 @@
 // Imports
 import * as getCookie from './checkUserIDCookie';
+import * as sendJSON from './sendJSON';
 
 let details = getCookie.checkUserDetails();
 let id = details.user_id;
@@ -92,4 +93,50 @@ export function generateUserDetails() {
     // console.log(`id:${id}`);
 
     // TODO Properties!
+}
+
+
+/**
+ * Called when a playerTurn event happens.
+ * Sets the current turn in the table to the current player.
+ * Checks the users id against the turn and enables their
+ * game interface if it's their turn.
+ *
+ * @param turnEvent The data received from the event
+ */
+export function turnDetails(turnEvent) {
+    const turn = JSON.parse(turnEvent.data);
+    document.getElementById('current-turn').innerHTML = `Player ${turn}`;
+    // console.log(`Turn:${turn}`);
+    const rollDiceButton = document.getElementById('roll-dice');
+    rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
+    rollDiceButton.disabled = true;
+    const endTurnButton = document.getElementById('end-turn');
+    endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
+    endTurnButton.disabled = true;
+    // console.log(`id Test:${id}`);
+    // console.log(`turn Test:${turn}`);
+    if (String(turn) === String(id)) {
+        enableGameInterface();
+    }
+}
+
+/**
+ * Called when a playerBalance event happens.
+ * Takes in all balance event data and checks it against the users id.
+ * If there is a match it updates their id.
+ *
+ * @param balanceEvent The data received from the event
+ */
+export function balanceDetails(balanceEvent) {
+    const data = JSON.parse(balanceEvent.data);
+    let balance = '';
+    // console.log(`Balances:${data}`);
+    data.forEach((item) => {
+        // console.log(item);
+        if (String(item[0]) === String(id)) {
+            ({1: balance} = item);
+            document.getElementById('balance').innerHTML = balance;
+        }
+    });
 }

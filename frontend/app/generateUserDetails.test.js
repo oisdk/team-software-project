@@ -190,3 +190,65 @@ describe('disable button tests', () => {
         done();
     });
 });
+
+
+/*
+describe('onPlayerMove', () => {
+    const oldDocumentBody = document.body;
+    const mockPlayerMoveEvent = {data: '[[1, 10]]'};
+    const mockPlayerList = {1: 'test', 2: 'test2'};
+
+    beforeAll(() => {
+        document.body.innerHTML = '<div id="content"></div>';
+        activeGame.displayBoard(mockPlayerList);
+    });
+
+    afterAll(() => {
+        document.body = oldDocumentBody;
+    });
+
+    it('should call movePlayer', () => {
+        activeGame.onPlayerMove(mockPlayerMoveEvent);
+        expect(control.movePlayer).toHaveBeenCalledWith(1, 10);
+    });
+});
+*/
+
+describe('turnDetails', () => {
+    const oldDocumentBody = document.body;
+    const mockPlayerTurnEvent = {data: '1'};
+
+    beforeAll(() => {
+        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="end-turn">End Turn</button>';
+    });
+
+    afterAll(() => {
+        document.body = oldDocumentBody;
+    });
+
+    it('should set active player', () => {
+        generateUserDetails.turnDetails(mockPlayerTurnEvent);
+        expect(document.getElementById('current-turn').innerHTML).toEqual('Player 1');
+        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
+        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+    });
+});
+
+describe('balanceDetails', () => {
+    const oldDocumentBody = document.body;
+    const mockPlayerBalanceEvent = {data: '[[1, 200]]'};
+
+    beforeAll(() => {
+        document.body.innerHTML = '<table><tr><td id="balance"></td></tr></table>';
+    });
+
+    afterAll(() => {
+        document.body = oldDocumentBody;
+    });
+
+    it('should set players balance', () => {
+        generateUserDetails.balanceDetails(mockPlayerBalanceEvent);
+        expect(document.getElementById('balance').innerHTML).toEqual('');
+    });
+});
+
