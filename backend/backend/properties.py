@@ -46,12 +46,13 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             self._price = result['purchase_price']
             self._property_type = result['state']
             self._base = result['base_rent']
-            self._house_price = result['house_price']
-            self._one = result['one_rent']
-            self._two = result['two_rent']
-            self._three = result['three_rent']
-            self._four = result['four_rent']
-            self._hotel = result['hotel_rent']
+			if self._property_type == 'property':
+                self._house_price = result['house_price']
+                self._one = result['one_rent']
+                self._two = result['two_rent']
+                self._three = result['three_rent']
+                self._four = result['four_rent']
+                self._hotel = result['hotel_rent']
             del result
         return self
 
@@ -137,21 +138,24 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             int: the rent for landing on the property
         """
         rent = 0
-        if (self._houses == 0) and (self._hotels == 0):
-            if self._is_in_monopoly:
-                rent = self._base*2
-            else:
-                rent = self._base
-        elif self._houses == 1:
-            rent = self._one
-        elif self._houses == 2:
-            rent = self._two
-        elif self._houses == 3:
-            rent = self._three
-        elif self._houses == 4:
-            rent = self._four
-        elif self._hotels == 1:
-            rent = self._hotel
+        if self.type == 'property':
+            if (self._houses == 0) and (self._hotels == 0):
+                if self._is_in_monopoly:
+                    rent = self._base*2
+                else:
+                    rent = self._base
+            elif self._houses == 1:
+                rent = self._one
+            elif self._houses == 2:
+                rent = self._two
+            elif self._houses == 3:
+                rent = self._three
+            elif self._houses == 4:
+                rent = self._four
+            elif self._hotels == 1:
+                rent = self._hotel
+        elif self.type == 'railroad':
+            rent = 25 * (2 ** self.rails_owned())
         return rent
 
     @property
@@ -254,3 +258,17 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         if result[0] == 1:
             is_monopoly = True
         return is_monopoly
+
+    def rails_owned(self):
+        """
+        Returns:
+            int: how many railroads are owned by the owner of self.
+        """
+        with self._conn.cursor() as cursor:
+            cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                           'WHERE `game_id` = %s ',
+                           'AND `property_type` = `railroad` ',
+						   'AND `player_id` = %s',
+                           (self._gid, self._owner))
+            result = cursor.fetchone()
+            return (result[0] - 1)
