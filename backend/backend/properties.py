@@ -165,10 +165,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                 result = cursor.fetchone()
                 roll = result['roll1'] + result['roll2']
                 multiplier_type = self.utils_owned()
-                if multiplier_type > 1:
-                    rent = roll * 10
-                else:
-                    rent = roll * 4
+                rent = roll * 4 * multiplier_type
                 del result
         return rent
 
@@ -292,6 +289,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         Returns:
             int: how many utilities are owned by the owner of self.
         """
+        multiplier = 1
         with self._conn.cursor() as cursor:
             cursor.execute('SELECT COUNT(*) FROM `properties` ',
                            'WHERE `game_id` = %s ',
@@ -299,4 +297,6 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                            'AND `player_id` = %s',
                            (self._gid, self._owner))
             result = cursor.fetchone()
-            return result[0]
+            if result[0] == 2:
+                multiplier = 2.5
+            return multiplier
