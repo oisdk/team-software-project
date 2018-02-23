@@ -3,6 +3,7 @@ import * as control from './moveFunctions';
 import * as getCookie from './checkUserIDCookie';
 import {getEventSource} from './sse';
 import * as sendJSON from './sendJSON';
+import * as logEvents from './generateGameLog';
 
 let details = getCookie.checkUserDetails();
 let id = details.user_id;
@@ -29,6 +30,7 @@ export function activeGame(gameID, playerList) {
  * @param playerMoveEvent The data received from the event
  */
 export function onPlayerMove(playerMoveEvent) {
+    logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
     // console.log(playerMoveEvent);
@@ -44,6 +46,7 @@ export function onPlayerMove(playerMoveEvent) {
  * @param playerTurnEvent The data received from the event
  */
 export function onPlayerTurn(playerTurnEvent) {
+    logEvents.logTurnEvent(playerTurnEvent);
     const turn = String(JSON.parse(playerTurnEvent.data));
     document.getElementById('current-turn').innerHTML = `Player ${turn}`;
     // console.log(`Turn:${turn}`);
@@ -68,6 +71,7 @@ export function onPlayerTurn(playerTurnEvent) {
  * @param playerBalanceEvent The data received from the event
  */
 export function onPlayerBalance(playerBalanceEvent) {
+    logEvents.logBalanceEvent(playerBalanceEvent);
     const data = JSON.parse(playerBalanceEvent.data);
     let balance = '';
     // console.log(`Balances:${data}`);
