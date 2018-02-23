@@ -1,11 +1,7 @@
 import * as generateUserDetails from './generateUserDetails';
 import * as control from './moveFunctions';
-import * as getCookie from './checkUserIDCookie';
 import {getEventSource} from './sse';
-import * as sendJSON from './sendJSON';
 
-let details = getCookie.checkUserDetails();
-let id = details.user_id;
 
 /**
  * Displays the page for an active game.
@@ -16,8 +12,6 @@ export function activeGame(gameID, playerList) {
     // display board and assign starting positions.
     displayBoard(playerList);
     generateUserDetails.generateUserDetails();
-    details = getCookie.checkUserDetails();
-    id = details.user_id;
     enableActiveGameListeners();
 }
 
@@ -37,47 +31,22 @@ export function onPlayerMove(playerMoveEvent) {
 
 /**
  * Called when a playerTurn event happens.
- * Sets the current turn in the table to the current player.
- * Checks the users id against the turn and enables their
- * game interface if it's their turn.
+ * Calls the function to update the player turn.
  *
  * @param playerTurnEvent The data received from the event
  */
 export function onPlayerTurn(playerTurnEvent) {
-    const turn = String(JSON.parse(playerTurnEvent.data));
-    document.getElementById('current-turn').innerHTML = `Player ${turn}`;
-    // console.log(`Turn:${turn}`);
-    const rollDiceButton = document.getElementById('roll-dice');
-    rollDiceButton.onclick = () => { generateUserDetails.rollDice(sendJSON.sendJSON); };
-    rollDiceButton.disabled = true;
-    const endTurnButton = document.getElementById('end-turn');
-    endTurnButton.onclick = () => { generateUserDetails.endTurn(sendJSON.sendJSON); };
-    endTurnButton.disabled = true;
-    // console.log(`id Test:${id}`);
-    // console.log(`turn Test:${turn}`);
-    if (turn === String(id)) {
-        generateUserDetails.enableGameInterface();
-    }
+    generateUserDetails.turnDetails(playerTurnEvent);
 }
 
 /**
  * Called when a playerBalance event happens.
- * Takes in all balance event data and checks it against the users id.
- * If there is a match it updates their id.
+ * Calls the function to update the player balance.
  *
  * @param playerBalanceEvent The data received from the event
  */
 export function onPlayerBalance(playerBalanceEvent) {
-    const data = JSON.parse(playerBalanceEvent.data);
-    let balance = '';
-    // console.log(`Balances:${data}`);
-    data.forEach((item) => {
-        // console.log(item);
-        if (String(item[0]) === String(id)) {
-            ({1: balance} = item);
-            document.getElementById('balance').innerHTML = balance;
-        }
-    });
+    generateUserDetails.balanceDetails(playerBalanceEvent);
 }
 
 /**
