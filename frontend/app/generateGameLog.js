@@ -1,25 +1,24 @@
-// Imports
-import {getEventSource} from './sse';
-
-
 /**
  * Callback function to update HTML body with file's contents.
+ *
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
  */
 export function updateLogPage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
         document.getElementById('content-left').innerHTML = fileReader.responseText;
-        document.getElementById('game-log').scrollTop = document.getElementById('game-log').scrollHeight;
     }
 }
 
 /**
  * Function to append data to the game log.
+ *
  * @param {String} data - data to append.
  */
 export function updateGameLog(data) {
-    document.getElementById('game-log').value += data;
-    document.getElementById('game-log').value += '\n';
+    const gameLog = document.getElementById('game-log');
+    gameLog.value += data;
+    gameLog.value += '\n';
+    gameLog.scrollTo(0, gameLog.scrollHeight);
 }
 
 /**
@@ -38,33 +37,38 @@ export function generateGameLog() {
 // SSE Event Functions
 /**
  * Function to update game log for turn event.
+ *
  * @param {data} turnEvent - data used to generate event.
  */
-export function logTurnEvent(turnEvent){
+export function logTurnEvent(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
-    const outputString = `Player ${turn + 1}'s Turn`;
+    const outputString = `Player ${turn[1] + 1}'s Turn`;
     updateGameLog(outputString);
 }
 
 /**
  * Function to update game log for move event.
+ *
  * @param {data} moveEvent - data used to generate event.
  */
-export function logMoveEvent(moveEvent){
-    const move = JSON.parse(moveEvent.data);
-    if (move[0][2] !== 0) {
-        const outputString = `Player ${move[0][0]} Rolled a ${move[0][2]}`;
+export function logMoveEvent(moveEvent) {
+    const move = String(JSON.parse(moveEvent.data));
+    const items = move.split(',');
+    if (items[2] !== 0) {
+        const roll = items[1] - items[2];
+        const outputString = `Player ${items[0]} Rolled ${roll}`;
         updateGameLog(outputString);
     }
 }
 
 /**
  * Function to update game log for balance event.
+ *
  * @param {data} balanceEvent - data used to generate event.
  */
-export function logBalanceEvent(balanceEvent){
+export function logBalanceEvent(balanceEvent) {
     const balance = JSON.parse(balanceEvent.data);
-    if (balance[0][1] !== 200 && balance[0][2] !== 0) {
+    if (balance[0][1] !== 1500 && balance[0][2] !== 0) {
         const outputString = `Player ${balance[0][0]} Got ${balance[0][2]}`;
         updateGameLog(outputString);
     }
