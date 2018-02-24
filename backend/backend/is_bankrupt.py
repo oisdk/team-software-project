@@ -5,9 +5,9 @@
 import json
 import sys
 import cgitb
-import backend.player import Player
-import backend.game import Game
-import backend.properties import Property
+from backend.player import Player
+from backend.game import get_games
+from backend.properties import Property, get_properties
 
 cgitb.enable()
 
@@ -21,11 +21,25 @@ def is_bankrupt(source=sys.stdin, output=sys.stdout):
 
     with Player(player_id) as player:
         if player.balance < 0:
-            remove_player(player_id)
+            player_remove(player_id)
 
 
-def remove_player(player_id):
+def player_remove(player_id):
     """Player is removed from game with their status updated
        and appropriate changes commence (turn order, properties...)
     """
-    pass
+    games = get_games()
+    with Player(player_id) as player:
+        for game in games:
+            if player.username in games[game]:
+                game_id = game
+                # Removes player from the game's list of players
+                game.players.remove(player_id)
+                break
+
+    # This part receives properties owned by player by their
+    # position and marks each property as 'unowned'
+    property_positions = get_properties(player_id)
+    for position in property_positions:
+        with Property(position, game_id) as property_:
+            property_.owner = 'unowned'
