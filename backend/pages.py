@@ -14,4 +14,5 @@ pages = {
     'join_game': 'backend.join_game:join_game',
     'increment_turn': 'backend.increment_turn:increment_turn',
     'charge_rent': 'backend.charge_rent:charge_rent',
+    'check_position': 'backend.check_position:check_position',
 }
