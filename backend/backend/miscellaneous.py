@@ -2,6 +2,7 @@
 
 import backend.storage
 
+
 def get_misc_positions():
     """ Get a list of miscellaneous board positions.
 
@@ -21,6 +22,7 @@ def get_misc_positions():
     finally:
         conn.close()
 
+
 def get_space_details(board_position):
     """ Get the details for a specific miscellaneous space on the board.
 
@@ -31,6 +33,7 @@ def get_space_details(board_position):
         A dictionary with column names as key and row as value.
 
     """
+    conn = backend.storage.make_connection()
     try:
         conn.begin()
         with conn.cursor() as cursor:
