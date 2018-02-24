@@ -254,3 +254,40 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         if result[0] == 1:
             is_monopoly = True
         return is_monopoly
+
+def property_positions():
+    """Get a list of board positions where there are properties
+
+    Returns:
+        A list representing the positions of all properties on the board.
+
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT property_position '
+                           'FROM property_values;')
+            result = [row["property_position"] for row in cursor.fetchall()]
+        return result
+    finally:
+        conn.close()
+
+def is_property_owned(property_position):
+    """ Check if a property is currently owned. """
+
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT * '
+                           'FROM properties '
+                           'WHERE state = "owned" '
+                           'AND property_position = %s;', (property_position))
+
+            if cursor.rowcount > 0:
+                return True;
+            else:
+                return False
+    finally:
+        conn.close()
