@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS playing_in (
 );
 
 CREATE TABLE IF NOT EXISTS properties (
-    player_id int UNSIGNED NOT NULL,
+    player_id int UNSIGNED NOT NULL DEFAULT '',
 	game_id int UNSIGNED NOT NULL,
 	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
 	property_position tinyint UNSIGNED NOT NULL,
