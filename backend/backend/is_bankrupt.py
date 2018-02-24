@@ -42,4 +42,7 @@ def player_remove(player_id):
     property_positions = get_properties(player_id)
     for position in property_positions:
         with Property(position, game_id) as property_:
-            property_.owner = 'unowned'
+            property_.owner = ''
+            property_.state = 'unowned'
+            property_.houses = 0
+            property_.hotels = 0
