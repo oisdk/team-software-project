@@ -1,6 +1,11 @@
-"""Module providing functionality to check the type of space the player is on.
+""" Module providing functionality to check the type of space the player is
+    on. """
 
-"""
+import sys
+import backend.player
+import backend.properties
+import backend.miscellaneous
+
 def check_position(source=sys.stdin):
     """Check the type of space the player is on.
 
@@ -21,7 +26,7 @@ def check_position(source=sys.stdin):
         # Check if property is owned
         if backend.properties.is_property_owned(player_position):
             # Call function to offer buying this property
-            backend.charge_rent()
+            backend.charge_rent(player_id)
         else:
             # Some code to allow purchasing of this property
 
