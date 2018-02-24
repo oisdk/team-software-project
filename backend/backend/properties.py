@@ -255,6 +255,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             is_monopoly = True
         return is_monopoly
 
+
 def property_positions():
     """Get a list of board positions where there are properties
 
@@ -273,6 +274,7 @@ def property_positions():
     finally:
         conn.close()
 
+
 def is_property_owned(property_position):
     """ Check if a property is currently owned. """
 
@@ -285,9 +287,7 @@ def is_property_owned(property_position):
                            'WHERE state = "owned" '
                            'AND property_position = %s;', (property_position))
 
-            if cursor.rowcount > 0:
-                return True;
-            else:
-                return False
+            return bool(cursor.rowcount > 0)
+
     finally:
         conn.close()
