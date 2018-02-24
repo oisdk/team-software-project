@@ -263,7 +263,7 @@ def get_properties(player_id):
             cursor.execute('SELECT `property_position` FROM `playing_in`'
                            'WHERE `player_id` = %s;', (player_id))
             result = {player_id: [row['property_position']
-                      for row in cursor.fetchall()]}
+                                  for row in cursor.fetchall()]}
         conn.commit()
         return result
     finally:
