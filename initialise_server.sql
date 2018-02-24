@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS playing_in (
     FOREIGN KEY (game_id) REFERENCES games(id)
 );
 
+-- Note that only 'tax' uses the value field in this table
 CREATE TABLE IF NOT EXISTS miscellaneous (
     board_position tinyint UNSIGNED NOT NULL,
     type ENUM('tax', 'chance', 'community_chest', 'jail', 'parking', 'to_jail') NOT NULL,
