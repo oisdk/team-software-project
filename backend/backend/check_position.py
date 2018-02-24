@@ -37,7 +37,7 @@ def check_position(source=sys.stdin):
         position_type = misc_position["type"]
         # Check the type of space the player is on, and act appropriately
         if position_type == "tax":
-            backend.charge_tax(player_id)
+            backend.pay_tax(player_id, misc_position["value"])
         elif position_type == "chance":
             pass
         elif position_type == "community_chest":
