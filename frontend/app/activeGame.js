@@ -2,7 +2,7 @@ import * as generateUserDetails from './generateUserDetails';
 import * as control from './moveFunctions';
 import {getEventSource} from './sse';
 
-let playerTokenInformation = {};
+const playerTokenInformation = {};
 
 /**
  * Displays the page for an active game.
@@ -66,9 +66,9 @@ export function displayBoard(playerList) {
     // creates a token for each player on their canvas.
     for (let i = 1; i <= playerList.length; i += 1) {
         createCanvas(playerList[i - 1], 'content', i);
-	playerTokenInformation[String(playerList[i - 1])] = images[tokenSelector];
-	control.movePlayer(playerList[i - 1], 0, images[tokenSelector])
-	tokenSelector += 1;
+        playerTokenInformation[String(playerList[i - 1])] = images[tokenSelector];
+        control.movePlayer(playerList[i - 1], 0, images[tokenSelector]);
+        tokenSelector += 1;
     }
     createCanvas('game-info', 'content', playerList + 1);
     const c = document.getElementById('gameBoard');
