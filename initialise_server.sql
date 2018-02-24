@@ -29,9 +29,10 @@ CREATE TABLE IF NOT EXISTS playing_in (
     FOREIGN KEY (game_id) REFERENCES games(id)
 );
 
-CREATE TABLE IF NOT EXISTS tax_spaces (
+CREATE TABLE IF NOT EXISTS miscellaneous (
     board_position tinyint UNSIGNED NOT NULL,
-    tax_amount smallint UNSIGNED NOT NULL,
+    type ENUM('tax', 'chance', 'community_chest', 'jail', 'parking', 'to_jail') NOT NULL,
+    value smallint UNSIGNED,
     PRIMARY KEY (board_position)
 );
 
@@ -85,6 +86,17 @@ VALUES (1, 60, 'property', 2, 50, 10, 30, 90, 160, 250),
 	   (37, 350, 'property', 35, 200, 175, 500, 1100, 1300, 1500),
 	   (39, 400, 'property', 50, 200, 200, 600, 1400, 1700, 2000);
 
-INSERT INTO tax_spaces
-VALUES (4,  200),
-       (38, 100);
+INSERT INTO miscellaneous (board_position, type)
+VALUES (2, 'community_chest'),
+       (7, 'chance'),
+       (10, 'jail'),
+       (17, 'community_chest'),
+       (20, 'parking'),
+       (22, 'chance'),
+       (30, 'to_jail'),
+       (33, 'community_chest'),
+       (36, 'chance');
+
+INSERT INTO miscellaneous
+VALUES (4, 'tax', 200),
+       (38, 'tax', 100);
