@@ -4,6 +4,7 @@
 import sys
 import json
 import backend.player
+import backend.game
 import backend.properties
 import backend.miscellaneous
 from backend.charge_rent import charge_rent
@@ -21,6 +22,9 @@ def check_position(source=sys.stdin):
     details = json.load(source)
     player_id = details["player_id"]
 
+    # Get the id of the game that the player is currently playing in
+    game_id = backend.game.get_this_game(player_id)
+
     # Create a player instance based who has to pay tax
     player = backend.player.Player(player_id)
     player_position = player.board_position
@@ -28,7 +32,7 @@ def check_position(source=sys.stdin):
     # Check if player on a property space
     if player_position in backend.properties.property_positions():
         # Check if property is owned
-        if backend.properties.is_property_owned(player_position):
+        if backend.properties.is_property_owned(player_position, game_id):
             # Call function to offer buying this property
             charge_rent(player_id)
         else:
