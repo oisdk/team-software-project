@@ -195,6 +195,7 @@ export function getHouseCoord(position, houseNumber) {
             3: [695, 527],
             4: [695, 542],
         },
+
         39: {
             1: [695, 625],
             2: [695, 642],
@@ -206,4 +207,25 @@ export function getHouseCoord(position, houseNumber) {
         return 'Not a valid number';
     }
     return houseCoordinates[position][houseNumber];
+}
+
+// need to add another canvas dedicated to hotels and houses each?
+// clear houses if hotel is built but not all ?
+// May need to consider separate canvas per player for houses and hotels only or
+// keep a global variable to track all current houses/hotels on the board in order
+// to not wipe out all current buildings if one is sold or player is bankupt.
+export function displayHotel(position) {
+    const coordinate = getHotelCoord(position);
+    // change id when canvas is added to activeGame.
+    const c = document.getElementById('hotelLayer');
+    const ctx = c.getContext('2d');
+    const img = new Image();
+    img.onload = () => {
+        // ctx.clearRect(0, 0, 800, 800);
+        ctx.beginPath();
+        ctx.drawImage(img, coordinate[0], coordinate[1]);
+        ctx.closePath();
+    };
+    // double check image when everything is merged!
+    img.src = 'hotel.png';
 }
