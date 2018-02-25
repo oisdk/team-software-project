@@ -1,5 +1,4 @@
 // functions to move around the board
-// will have to change coordinates as browser interprets these differently.
 // only test coordinates for now.
 export function getCoord(position) {
     const listOfCoordinates = {
@@ -50,7 +49,8 @@ export function getCoord(position) {
     return listOfCoordinates[position];
 }
 
-// Takes in canvasID aka playerID, position on board, image to draw.
+// Takes in canvasID aka playerID, position on board, and a dictionary
+// to decide which character corresponds to each player.
 export function movePlayer(canvasID, position, ImageSource) {
     const coordinate = getCoord(position);
     const c = document.getElementById(canvasID);
@@ -62,7 +62,7 @@ export function movePlayer(canvasID, position, ImageSource) {
         ctx.drawImage(img, coordinate[0], coordinate[1]);
         ctx.closePath();
     };
-    img.src = ImageSource;
+    img.src = ImageSource[canvasID];
 }
 
 export function clear(canvasID) {

@@ -27,7 +27,7 @@ export function onPlayerMove(playerMoveEvent) {
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
     // console.log(playerMoveEvent);
-    control.movePlayer(items[0], items[1], playerTokenInformation[items[0]]);
+    control.movePlayer(items[0], items[1], playerTokenInformation);
 }
 
 /**
@@ -67,7 +67,7 @@ export function displayBoard(playerList) {
     for (let i = 1; i <= playerList.length; i += 1) {
         createCanvas(playerList[i - 1], 'content', i);
         playerTokenInformation[String(playerList[i - 1])] = images[tokenSelector];
-        control.movePlayer(playerList[i - 1], 0, images[tokenSelector]);
+        control.movePlayer(playerList[i - 1], 0, playerTokenInformation);
         tokenSelector += 1;
     }
     createCanvas('game-info', 'content', playerList + 1);
