@@ -71,11 +71,6 @@ export function endTurn(JSONSend) {
         serverAddress: 'cgi-bin/increment_turn.py',
         jsonObject: {player_id: id},
     });
-    // Calls page to checking if player declared bankrupt
-    JSONSend({
-        serverAddress: 'cgi-bin/is_player_bankrupt.py',
-        jsonObject: {player_id: id},
-    });
     disableGameInterface();
     turnBoolean = true;
 }
