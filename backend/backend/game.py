@@ -165,8 +165,7 @@ def get_games(with_game_status=None):
             if not with_game_status:
                 cursor.execute('SELECT playing_in.game_id, players.username '
                                'FROM playing_in '
-                               'INNER JOIN players '
-                               'INNER JOIN games ON '
+                               'INNER JOIN players ON '
                                'playing_in.player_id = players.id '
                                'ORDER BY playing_in.game_id;')
                 result = {game_id: [user['username'] for user in row]
