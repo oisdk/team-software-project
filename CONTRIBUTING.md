@@ -661,6 +661,14 @@ export function generateHTML() {
 | roll2 | tinyint(3) unsigned | NO   |     | NULL    |       |
 | num   | int(10) unsigned    | NO   |     | NULL    |       |
 
+### "miscellaneous"
+
+| Field          | Type                                                              | Null | Key | Default | Extra |
+| -------------- | ----------------------------------------------------------------- | ---- | --- | ------- | ----- |
+| board_position | tinyint(3) unsigned                                               | NO   | PRI | NULL    |       |
+| type           | enum('tax','chance','community_chest','jail','parking','to_jail') | NO   |     | NULL    |       |
+| value          | smallint(5) unsigned                                              | YES  |     | NULL    |       |
+
 ## Glossary
 
 | Term | Meaning                                                                                                                              | Link to relevant MySQL Docs                               |
