@@ -275,9 +275,18 @@ def property_positions():
         conn.close()
 
 
-def is_property_owned(property_position):
-    """ Check if a property is currently owned. """
+def is_property_owned(property_position, game_id):
+    """Check if a property is currently owned.
 
+    Arguments:
+        property_position: An int representing the property position on the
+                           board.
+        game_id: An int representing the game id of the game in question.
+
+    Returns:
+        A bool: True if property is owned, False otherwise.
+
+    """
     conn = backend.storage.make_connection()
     try:
         conn.begin()
@@ -285,7 +294,8 @@ def is_property_owned(property_position):
             cursor.execute('SELECT * '
                            'FROM properties '
                            'WHERE state = "owned" '
-                           'AND property_position = %s;', (property_position))
+                           'AND property_position = %s '
+                           'AND game_id = %s;', (property_position, game_id))
 
             return bool(cursor.rowcount > 0)
 
