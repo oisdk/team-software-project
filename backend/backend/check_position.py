@@ -36,18 +36,18 @@ def check_position(source=sys.stdin):
             # Call function to offer buying this property
             charge_rent(player_id)
         else:
-            # Some code to allow purchasing of this property
+            # code to allow purchasing of this property
             pass
 
     # Check if player on miscellaneous space
     elif player_position in backend.miscellaneous.get_misc_positions():
         # Get the details of the miscellaneous space the player is on
-        misc_position = \
+        misc_position_details = \
                     backend.miscellaneous.get_space_details(player_position)
-        position_type = misc_position["type"]
+        position_type = misc_position_details["type"]
         # Check the type of space the player is on, and act appropriately
         if position_type == "tax":
-            pay_tax(player_id, misc_position["value"])
+            pay_tax(player_id, misc_position_details["value"])
         elif position_type == "chance":
             pass
         elif position_type == "community_chest":
