@@ -4,6 +4,7 @@ from operator import itemgetter
 from itertools import groupby
 
 import backend.storage
+from backend.player import Player
 
 
 class Game(object):  # pylint: disable=too-many-instance-attributes
@@ -173,3 +174,25 @@ def get_games():
         return result
     finally:
         conn.close()
+
+
+def get_this_game(player_id):
+    """Return the game that the player is currently playing in.
+
+    Arguments:
+        player_id: An int representing the player's id.
+
+    Returns:
+        A int representing the uid of the game the player is currently in.
+
+    """
+    all_games = get_games()
+    this_game_id = None
+
+    with Player(player_id) as player:
+        for game in all_games:
+            if player.username in all_games[game]:
+                this_game_id = game
+                break
+
+    return this_game_id
