@@ -576,7 +576,6 @@ export function generateHTML() {
     fileReader.send();
 }
 ```
-
 # Database Organisation
 
 ## How-To: Accessing Database from Docker
