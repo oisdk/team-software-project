@@ -209,7 +209,7 @@ export function getHouseCoord(position, houseNumber) {
     return houseCoordinates[position][houseNumber];
 }
 
-// also applies to displayHouse! 
+// also applies to displayHouse!
 // need to add another canvas dedicated to hotels and houses each?
 // clear houses if hotel is built but not all ?
 // May need to consider separate canvas per player for houses and hotels only or
@@ -231,7 +231,7 @@ export function displayHotel(position) {
     img.src = 'hotel.png';
 }
 
-// should only take valid property numbers 
+// should only take valid property numbers
 // 1,3,6,8,9,11,13,14,16,18,19,21,23,24,26,27,29,31,32,34,37,39
 export function displayHouse(position, numberOfHouses) {
     // change id when canvas is added to activeGame.
@@ -241,8 +241,8 @@ export function displayHouse(position, numberOfHouses) {
     img.onload = () => {
         // ctx.clearRect(0, 0, 800, 800);
         // draws number of number of houses corresponding to selected position.
-        for(let i=1;i<=numberOfHouses;i++){
-            let coordinate = getHouseCoord(position, i);
+        for (let i = 1; i <= numberOfHouses; i += 1) {
+            const coordinate = getHouseCoord(position, i);
             ctx.beginPath();
             ctx.drawImage(img, coordinate[0], coordinate[1]);
             ctx.closePath();
