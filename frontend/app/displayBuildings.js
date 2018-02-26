@@ -19,12 +19,12 @@ export function getHotelCoord(position) {
         18: [79, 180],
         19: [79, 120],
 
-        21: [121, 75],
-        23: [255, 75],
-        24: [320, 75],
-        26: [450, 75],
-        27: [517, 75],
-        29: [648, 75],
+        21: [121, 69],
+        23: [255, 69],
+        24: [320, 69],
+        26: [450, 69],
+        27: [517, 69],
+        29: [648, 69],
 
         31: [690, 115],
         32: [690, 183],
@@ -251,3 +251,4 @@ export function displayHouse(position, numberOfHouses) {
     // double check image when everything is merged!
     img.src = 'house.png';
 }
+
