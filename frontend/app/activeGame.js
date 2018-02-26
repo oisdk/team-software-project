@@ -1,6 +1,7 @@
 import * as generateUserDetails from './generateUserDetails';
 import * as control from './moveFunctions';
 import {getEventSource} from './sse';
+import * as logEvents from './generateGameLog';
 
 const playerTokenInformation = {};
 
@@ -13,6 +14,7 @@ export function activeGame(gameID, playerList) {
     // display board and assign starting positions.
     displayBoard(playerList);
     generateUserDetails.generateUserDetails();
+    logEvents.generateGameLog();
     enableActiveGameListeners();
 }
 
@@ -20,10 +22,12 @@ export function activeGame(gameID, playerList) {
 /**
  * Called when a playerMove event happens.
  * Moves the player location on the board using the received data.
+ * Logs this move in the game log.
  *
  * @param playerMoveEvent The data received from the event
  */
 export function onPlayerMove(playerMoveEvent) {
+    logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
     // console.log(playerMoveEvent);
@@ -33,21 +37,25 @@ export function onPlayerMove(playerMoveEvent) {
 /**
  * Called when a playerTurn event happens.
  * Calls the function to update the player turn.
+ * Logs this turn in the game log
  *
  * @param playerTurnEvent The data received from the event
  */
 export function onPlayerTurn(playerTurnEvent) {
     generateUserDetails.turnDetails(playerTurnEvent);
+    logEvents.logTurnEvent(playerTurnEvent);
 }
 
 /**
  * Called when a playerBalance event happens.
  * Calls the function to update the player balance.
+ * Logs this balance change in the game log
  *
  * @param playerBalanceEvent The data received from the event
  */
 export function onPlayerBalance(playerBalanceEvent) {
     generateUserDetails.balanceDetails(playerBalanceEvent);
+    logEvents.logBalanceEvent(playerBalanceEvent);
 }
 
 /**
