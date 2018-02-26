@@ -11,17 +11,13 @@ from backend.charge_rent import charge_rent
 from backend.pay_tax import pay_tax
 
 
-def check_position(source=sys.stdin):
+def check_position(player_id):
     """Check the type of space the player is on.
 
     The two types of space this function recognises are properties and
     miscellaneous (chance, tax, etc.).
 
     """
-    # Get the player id from the client
-    details = json.load(source)
-    player_id = details["player_id"]
-
     # Get the id of the game that the player is currently playing in
     game_id = backend.game.get_this_game(player_id)
 
