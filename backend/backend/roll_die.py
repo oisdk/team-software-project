@@ -4,6 +4,7 @@ import json
 import sys
 from backend.player import Player
 from backend.game import Game, get_games
+from jail import leave_jail
 
 
 def roll_dice():
@@ -41,13 +42,19 @@ def player_roll_dice(source=sys.stdin, output=sys.stdout):
         for game in games:
             if player.username in games[game]:
                 game_id = game
+                in_jail = player.jail_state
                 break
 
         with Game(game_id) as game:
             if game.current_turn == player.turn_position:
                 rolls = roll_two_dice()
                 player.rolls.append(rolls)
-                player.board_position += sum(rolls)
+                if in_jail == 'not_in_jail':
+                    player.board_position += sum(rolls)
+                else:
+                    if rolls[0] == rolls[1]:
+                        leave_jail(player_id)
+
 
                 if player.board_position >= number_of_squares:
                     player.balance += pass_go_amount
