@@ -4,7 +4,6 @@ from operator import itemgetter
 from itertools import groupby
 
 import backend.storage
-from backend.player import Player
 
 
 class Game(object):  # pylint: disable=too-many-instance-attributes
@@ -209,7 +208,7 @@ def get_this_game(player_id):
             cursor.execute('SELECT game_id '
                            'FROM playing_in '
                            'WHERE player_id = %s; ', (player_id))
-            this_game_id = cursor.fetchone()["game_id"];
+            this_game_id = cursor.fetchone()["game_id"]
 
         return this_game_id
 
