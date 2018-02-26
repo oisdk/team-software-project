@@ -60,6 +60,7 @@ def start_sse_stream(output_stream=sys.stdout):
     new_balances = {}
     turn = None
     turn_order = {}
+    push_initial_user_details = True
 
     # These statements are executed constantly once the first request to this
     # function is made.
@@ -89,6 +90,11 @@ def start_sse_stream(output_stream=sys.stdout):
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
                                         new_positions)
+
+        # Pushes data to update the players info table on game start
+        if push_initial_user_details and last_game_state == "playing":
+            push_initial_user_details = False
+            start_game_push(output_stream, turn_order)
 
         # Call function to check the current state of this game.
         # A game state may be "waiting" or "playing".
@@ -141,7 +147,7 @@ def check_new_players(output_stream, old_players, new_players):
     """
     if new_players != old_players:
         generate_player_join_event(output_stream, old_players, new_players)
-    return new_players
+    return new_players.copy()
 
 
 def check_new_balances(output_stream, old_balances, new_balances):
@@ -160,7 +166,7 @@ def check_new_balances(output_stream, old_balances, new_balances):
     if new_balances != old_balances:
         generate_player_balance_event(output_stream, old_balances,
                                       new_balances)
-    return new_balances
+    return new_balances.copy()
 
 
 def check_new_positions(output_stream, old_positions, new_positions):
@@ -178,7 +184,7 @@ def check_new_positions(output_stream, old_positions, new_positions):
     """
     if new_positions != old_positions:
         generate_player_move_event(output_stream, old_positions, new_positions)
-    return new_positions
+    return new_positions.copy()
 
 
 def check_game_playing_status(output_stream, game, last_game_state):
@@ -409,3 +415,15 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
+
+
+def start_game_push(output_stream, turn_order):
+    """Generates an event for to update the details table at game start.
+
+    Compares two dictionaries and outputs a playerBalance server-sent event if
+    the two dicts differ. Along with the event is JSON containing the
+    difference between the two dicts.
+    """
+    generate_player_turn_event(output_stream, next(iter(turn_order)))
+    generate_player_balance_event(output_stream, {},
+                                  {1: 1500, 2: 1500, 3: 1500, 4: 1500})
