@@ -201,13 +201,17 @@ def get_this_game(player_id):
         A int representing the uid of the game the player is currently in.
 
     """
-    all_games = get_games()
-    this_game_id = None
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            this_game_id = None
+            cursor.execute('SELECT game_id '
+                           'FROM playing_in '
+                           'WHERE player_id = %s; ', (player_id))
+            this_game_id = cursor.fetchone()["game_id"];
 
-    with Player(player_id) as player:
-        for game in all_games:
-            if player.username in all_games[game]:
-                this_game_id = game
-                break
+        return this_game_id
 
-    return this_game_id
+    finally:
+        conn.close()
