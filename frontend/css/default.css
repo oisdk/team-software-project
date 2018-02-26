@@ -19,3 +19,9 @@ html,body{
 .ctf{
   padding-top: 1%;
 }
+.form-control{
+  padding-bottom: 1%;
+}
+.center{
+  text-align: center;
+}
