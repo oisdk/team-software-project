@@ -79,6 +79,7 @@ export function displayBoard(playerList) {
         control.movePlayer(playerList[i - 2], 0, playerTokenInformation);
         tokenSelector += 1;
     }
+    control.movePlayer('buildingLayer', 0, 'hat.png');
     createCanvas('game-info', 'content', playerList + 2);
     const c = document.getElementById('gameBoard');
     const ctx = c.getContext('2d');
