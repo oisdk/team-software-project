@@ -13,5 +13,4 @@ pages = {
     'game_event_source': 'backend.events:start_sse_stream',
     'join_game': 'backend.join_game:join_game',
     'increment_turn': 'backend.increment_turn:increment_turn',
-    'check_position': 'backend.check_position:check_position',
 }
