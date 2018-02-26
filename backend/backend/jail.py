@@ -16,12 +16,13 @@ def leave_jail(player_id):
     """Function that removes a player from jail
     """
     with Player(player_id) as player:
-    	player.jail_state = 'not_in_jail'
+        player.jail_state = 'not_in_jail'
 
 def pay_to_leave_jail(player_id):
-	"""Function that removes a player from jail and 
-		deducts fee from balance
+
+    """Function that removes a player from jail for a fee
     """
     with Player(player_id) as player:
-    	player.balance -= 50
-    leave_jail(player_id)
+        player.balance -= 50
+        player.jail_state = 'not_in_jail'
+
