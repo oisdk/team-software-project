@@ -252,7 +252,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             is_monopoly = True
         return is_monopoly
 
-      
+
 def property_positions():
     """Get a list of board positions where there are properties
 
@@ -298,8 +298,8 @@ def is_property_owned(property_position, game_id):
 
     finally:
         conn.close()
-        
-        
+
+
 def get_properties(player_id):
     """Returns a dictionary where a key is the 'player_id' and the value
     is the list of the player's owned property's positions"""
