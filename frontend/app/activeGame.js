@@ -30,7 +30,7 @@ export function onPlayerMove(playerMoveEvent) {
     logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
-    //console.log(playerMoveEvent);
+    // console.log(playerMoveEvent);
     control.movePlayer(items[0], items[1], playerTokenInformation[items[0]]);
 }
 

@@ -45,7 +45,7 @@ export function getCoord(position) {
         37: [735, 510],
         38: [735, 575],
         39: [735, 640],
-        'jail': [45,710],
+        jail: [45, 710],
     };
     return listOfCoordinates[position];
 }
