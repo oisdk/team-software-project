@@ -62,7 +62,7 @@ export function movePlayer(canvasID, position, ImageSource) {
         ctx.drawImage(img, coordinate[0], coordinate[1]);
         ctx.closePath();
     };
-    img.src = ImageSource[canvasID];
+    img.src = ImageSource;
 }
 
 // useful for find x and y coordinates.

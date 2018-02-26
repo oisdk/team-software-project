@@ -30,8 +30,8 @@ export function onPlayerMove(playerMoveEvent) {
     logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
-    // console.log(playerMoveEvent);
-    control.movePlayer(items[0], items[1], playerTokenInformation);
+    //console.log(playerMoveEvent);
+    control.movePlayer(items[0], items[1], playerTokenInformation[items[0]]);
 }
 
 /**
@@ -62,6 +62,7 @@ export function onPlayerBalance(playerBalanceEvent) {
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
  */
+
 export function displayBoard(playerList) {
     let tokenSelector = 0;
     const images = ['hat.png', 'car.png', 'ship.png', 'duck.png'];
@@ -75,7 +76,7 @@ export function displayBoard(playerList) {
     for (let i = 0; i < playerList.length; i += 1) {
         createCanvas(playerList[i], 'content', i + 2);
         playerTokenInformation[String(playerList[i])] = images[tokenSelector];
-        control.movePlayer(playerList[i], 0, playerTokenInformation);
+        control.movePlayer(playerList[i], 0, playerTokenInformation[playerList[i]]);
         tokenSelector += 1;
     }
     createCanvas('game-info', 'content', playerList + 2);
