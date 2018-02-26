@@ -152,7 +152,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             elif self._hotels == 1:
                 rent = self._hotel
         elif self.type == 'railroad':
-            rent = 25 * (2 ** self.rails_owned())
+            rent = 25 * (2 ** (self.rails_owned()-1))
         elif self.type == 'utility':
             with self._conn.cursor() as cursor:
                 cursor.execute('SELECT `roll1`, `roll2`, MAX(`num`)',
@@ -282,7 +282,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                            'AND p.`player_id` = %s',
                            (self._gid, self._owner))
             result = cursor.fetchone()
-            return result[0] - 1
+            return result[result.keys()[0]]
 
     def utils_owned(self):
         """
@@ -297,7 +297,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                            'AND `player_id` = %s',
                            (self._gid, self._owner))
             result = cursor.fetchone()
-            if result[0] == 2:
+            if result[result.keys()[0]] == 2:
                 multiplier = 2.5
             return multiplier
 
