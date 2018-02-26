@@ -60,6 +60,7 @@ def start_sse_stream(output_stream=sys.stdout):
     new_balances = {}
     turn = None
     turn_order = {}
+    push_initial_user_details = True
 
     # These statements are executed constantly once the first request to this
     # function is made.
@@ -89,6 +90,11 @@ def start_sse_stream(output_stream=sys.stdout):
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
                                         new_positions)
+
+        # Pushes data to update the players info table on game start
+        if push_initial_user_details and last_game_state == "playing":
+            push_initial_user_details = False
+            start_game_push(output_stream, turn_order)
 
         # Call function to check the current state of this game.
         # A game state may be "waiting" or "playing".
@@ -122,7 +128,7 @@ def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     if new_turn != old_turn:
         for uid, turn_pos in turn_order.items():
             if turn_pos == new_turn:
-                generate_player_turn_event(output_stream, uid)
+                generate_player_turn_event(output_stream, uid, turn_order)
     return new_turn
 
 
@@ -141,7 +147,7 @@ def check_new_players(output_stream, old_players, new_players):
     """
     if new_players != old_players:
         generate_player_join_event(output_stream, old_players, new_players)
-    return new_players
+    return new_players.copy()
 
 
 def check_new_balances(output_stream, old_balances, new_balances):
@@ -160,7 +166,7 @@ def check_new_balances(output_stream, old_balances, new_balances):
     if new_balances != old_balances:
         generate_player_balance_event(output_stream, old_balances,
                                       new_balances)
-    return new_balances
+    return new_balances.copy()
 
 
 def check_new_positions(output_stream, old_positions, new_positions):
@@ -178,7 +184,7 @@ def check_new_positions(output_stream, old_positions, new_positions):
     """
     if new_positions != old_positions:
         generate_player_move_event(output_stream, old_positions, new_positions)
-    return new_positions
+    return new_positions.copy()
 
 
 def check_game_playing_status(output_stream, game, last_game_state):
@@ -299,7 +305,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     ...     {5: 4, 6: 6, 7: 5, 8: 0},
     ...     {5: 4, 6: 6, 7: 5, 8: 4})
     event: playerMove
-    data: [[8, 4]]
+    data: [[8, 4, 0]]
     <BLANKLINE>
 
     >>> import sys
@@ -308,7 +314,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     ...     {},
     ...     {5: 4})
     event: playerMove
-    data: [[5, 4]]
+    data: [[5, 4, 0]]
     <BLANKLINE>
 
     """
@@ -320,11 +326,11 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     output_stream.write('data: ')
     if not old_positions:
         output_stream.write(json.dumps([
-            [uid, board_position]
+            [uid, board_position, 0]
             for uid, board_position in new_positions.items()]))
     else:
         output_stream.write(json.dumps([
-            [uid, board_position]
+            [uid, board_position, old_positions[uid]]
             for uid, board_position in new_positions.items()
             if board_position != old_positions[uid]]))
 
@@ -332,7 +338,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     output_stream.write('\n\n')
 
 
-def generate_player_turn_event(output_stream, player_id):
+def generate_player_turn_event(output_stream, player_id, turn_order):
     """Generates an event for a change of turn in the game.
 
     Arguments:
@@ -341,9 +347,9 @@ def generate_player_turn_event(output_stream, player_id):
         player_id: An int representing the player whose turn it is.
 
     >>> import sys
-    >>> generate_player_turn_event(sys.stdout, 2)
+    >>> generate_player_turn_event(sys.stdout, 2, {2:0})
     event: playerTurn
-    data: 2
+    data: [2, 0]
     <BLANKLINE>
 
     """
@@ -352,7 +358,8 @@ def generate_player_turn_event(output_stream, player_id):
 
     # Send the integer representing the latest position in the playing queue
     # to the client in the SSE data chunk.
-    output_stream.write('data: ' + str(player_id))
+    output_stream.write('data: ')
+    output_stream.write(json.dumps([player_id, turn_order[player_id]]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
@@ -377,7 +384,7 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     ...     {5: 200, 6: 200, 7: 200, 8: 200},
     ...     {5: 200, 6: 200, 7: 200, 8: 400})
     event: playerBalance
-    data: [[8, 400]]
+    data: [[8, 400, 200]]
     <BLANKLINE>
 
     >>> import sys
@@ -386,7 +393,7 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     ...     {},
     ...     {5: 200})
     event: playerBalance
-    data: [[5, 200]]
+    data: [[5, 200, 0]]
     <BLANKLINE>
 
     """
@@ -399,13 +406,27 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
 
     if not old_balances:
         output_stream.write(json.dumps([
-            [uid, balance]
+            [uid, balance, 0]
             for uid, balance in new_balances.items()]))
     else:
         output_stream.write(json.dumps([
-            [uid, balance]
+            [uid, balance, ((balance - old_balances[uid])
+                            if old_balances[uid] else balance)]
             for uid, balance in new_balances.items()
             if balance != old_balances[uid]]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
+
+
+def start_game_push(output_stream, turn_order):
+    """Generates an event for to update the details table at game start.
+
+    Compares two dictionaries and outputs a playerBalance server-sent event if
+    the two dicts differ. Along with the event is JSON containing the
+    difference between the two dicts.
+    """
+    generate_player_turn_event(output_stream, next(iter(turn_order)),
+                               turn_order)
+    generate_player_balance_event(output_stream, {},
+                                  {1: 1500, 2: 1500, 3: 1500, 4: 1500})
