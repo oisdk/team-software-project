@@ -23,12 +23,19 @@ cgitb.enable()
 def start_sse_stream(output_stream=sys.stdout):
     """Generate a stream of server-sent events according to state changes.
 
+    This function is activated by making a request to the JavaScript
+    function "initialiseEventSource()" which is located in "sse.js".
+    This operation is performed by the JavaScript waitingGame function,
+    and hence, other JavaScript code need only "get" a reference to
+    the EventSource object (by calling "getEventSource()" from
+    "sse.js").
+
     Reads in the game id, and repeatedly does each of the following:
-        1) Check what player's turn it is
+        1) Check who's turn it is.
         2) Check if any new players have joined the waiting game lobby.
         3) Check if any of the players' balances have changed in a game.
         4) Check if any of the players' positions have changed in a game.
-        5) Check if any waiting games have been started.
+        5) Check if the specified game's status has changed to "playing".
 
     """
     # The following headers are compulsory for SSE.
@@ -44,6 +51,7 @@ def start_sse_stream(output_stream=sys.stdout):
     # comparison between it and the corresponding "new" dict has been made.
     input_data = FieldStorage()
     game_id = input_data.getfirst('game')
+    last_game_state = "waiting"
     players = {}
     positions = {}
     balances = {}
@@ -54,16 +62,17 @@ def start_sse_stream(output_stream=sys.stdout):
     turn_order = {}
 
     # These statements are executed constantly once the first request to this
-    # file is made.
+    # function is made.
     while True:
         # Create a Game object representing the game in the database.
         # This can be thought of as a "pointer" to the appropriate game in the
         # database.
         game = Game(game_id)
 
-        # Go through each player in the game (via the database) and populate
-        # the "new" dictionaries with user_id (aka. player_id) as the key, and
+        # Go through each player in the game and populate the "new"
+        # dictionaries with user_id (aka. player_id) as the key, and
         # username/position/balance/turn-order as the value.
+        # These are the latest values retrieved from the database.
         for player in map(Player, game.players):
             new_players[player.uid] = player.username
             new_positions[player.uid] = player.board_position
@@ -71,7 +80,7 @@ def start_sse_stream(output_stream=sys.stdout):
             turn_order[player.uid] = player.turn_position
 
         # Assign the current (aka. non-new) dictionaries to the value of the
-        # "new" (aka. "latest") dictionaries after calling the appropriate
+        # "new" (aka. latest) dictionaries, after calling the appropriate
         # comparison function to determine whether an event should be
         # generated.
         turn = check_new_turn(output_stream, turn, game.current_turn,
@@ -81,9 +90,10 @@ def start_sse_stream(output_stream=sys.stdout):
         positions = check_new_positions(output_stream, positions,
                                         new_positions)
 
-        # Call function to check if any games in the database have a "playing"
-        # status.
-        check_game_playing_status(output_stream, game)
+        # Call function to check the current state of this game.
+        # A game state may be "waiting" or "playing".
+        last_game_state = check_game_playing_status(output_stream, game,
+                                                    last_game_state)
 
         time.sleep(3)
 
@@ -171,17 +181,19 @@ def check_new_positions(output_stream, old_positions, new_positions):
     return new_positions
 
 
-def check_game_playing_status(output_stream, game):
+def check_game_playing_status(output_stream, game, last_game_state):
     """Check if the specified game's status is 'playing'.
 
     Arguments:
         game: The game whose status is being checked.
 
     """
-    if game.state == "playing":
+    if last_game_state == "waiting" and game.state == "playing":
         # Call function to generate appropriate event if game's status is
         # "playing".
         generate_game_start_event(game.uid, output_stream)
+
+    return game.state
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
