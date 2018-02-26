@@ -86,7 +86,6 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         """
         Returns:
             int: the current number of houses on the property
-
         Raises:
             TypeError: if mutated outside of a with statement.
         """
@@ -97,7 +96,6 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         """
         Returns:
             int: amount of hotels on the property
-
         Raises:
             TypeError: if mutated outside of a with statement.
         """
@@ -108,7 +106,6 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         """
         Returns:
             int: the player id of the owner
-
         Raises:
             TypeError: if mutated outside of a with statement.
         """
@@ -255,7 +252,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             is_monopoly = True
         return is_monopoly
 
-
+      
 def property_positions():
     """Get a list of board positions where there are properties
 
@@ -299,5 +296,22 @@ def is_property_owned(property_position, game_id):
 
             return bool(cursor.rowcount > 0)
 
+    finally:
+        conn.close()
+        
+        
+def get_properties(player_id):
+    """Returns a dictionary where a key is the 'player_id' and the value
+    is the list of the player's owned property's positions"""
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT `property_position` FROM `playing_in`'
+                           'WHERE `player_id` = %s;', (player_id))
+            result = {player_id: [row['property_position']
+                                  for row in cursor.fetchall()]}
+        conn.commit()
+        return result
     finally:
         conn.close()
