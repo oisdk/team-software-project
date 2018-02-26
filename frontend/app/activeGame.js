@@ -73,13 +73,13 @@ export function displayBoard(playerList) {
     // creates a canvas with player id and layer i.
     // layer 0 = background image, layer 1 = houses/hotels, last layer = game info
     // creates a token for each player on their canvas.
-    for (let i = 2; i <= playerList.length; i += 1) {
+    for (let i = 2; i <= playerList.length + 1; i += 1) {
+        console.log(i - 2);
         createCanvas(playerList[i - 2], 'content', i);
         playerTokenInformation[String(playerList[i - 2])] = images[tokenSelector];
         control.movePlayer(playerList[i - 2], 0, playerTokenInformation);
         tokenSelector += 1;
     }
-    control.movePlayer('buildingLayer', 0, 'hat.png');
     createCanvas('game-info', 'content', playerList + 2);
     const c = document.getElementById('gameBoard');
     const ctx = c.getContext('2d');
