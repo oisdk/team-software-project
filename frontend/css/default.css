@@ -5,11 +5,17 @@ html,body{
 }
 .header{
   text-align: center;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  background-color: rgb(31, 31, 31);
+  padding-top: 1%;
+  padding-bottom: 1%;
+  background-color: rgb(38, 37, 37);
   color: rgb(242, 190, 5);
+  font-family: Schaeffer;
 }
-.background{
-  z-index: -1;
+
+@@font-face {
+  font-family: Schaeffer;
+  src: url('fonts/Schaeffer.ttf');
+}
+.ctf{
+  padding-top: 1%;
 }
