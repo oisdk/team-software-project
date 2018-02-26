@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS players (
     balance int NOT NULL DEFAULT 1500,
     turn_position tinyint DEFAULT 0,
     board_position tinyint UNSIGNED NOT NULL DEFAULT 0,
+    jail_state ENUM('not_in_jail', 'in_jail') NOT NULL DEFAULT 'not_in_jail',
     PRIMARY KEY (id)
 );
 
