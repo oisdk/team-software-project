@@ -29,18 +29,6 @@ CREATE TABLE IF NOT EXISTS playing_in (
     FOREIGN KEY (game_id) REFERENCES games(id)
 );
 
-CREATE TABLE IF NOT EXISTS properties (
-    player_id int UNSIGNED NOT NULL DEFAULT '',
-	game_id int UNSIGNED NOT NULL,
-	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
-	property_position tinyint UNSIGNED NOT NULL,
-	house_count tinyint UNSIGNED DEFAULT 0,
-	hotel_count tinyint UNSIGNED DEFAULT 0,
-	FOREIGN KEY (player_id) REFERENCES players(id),
-    FOREIGN KEY (game_id) REFERENCES games(id),
-	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
-);
-
 CREATE TABLE IF NOT EXISTS property_values (
     property_position tinyint UNSIGNED NOT NULL,
 	purchase_price smallint UNSIGNED NOT NULL,
@@ -67,6 +55,18 @@ CREATE TABLE IF NOT EXISTS properties (
 	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
 );
 
+CREATE TABLE IF NOT EXISTS properties (
+    player_id int UNSIGNED NOT NULL,
+	game_id int UNSIGNED NOT NULL,
+	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
+	property_position tinyint UNSIGNED NOT NULL,
+	house_count tinyint UNSIGNED DEFAULT 0,
+	hotel_count tinyint UNSIGNED DEFAULT 0,
+	FOREIGN KEY (player_id) REFERENCES players(id),
+    FOREIGN KEY (game_id) REFERENCES games(id),
+	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
+);
+
 CREATE TABLE IF NOT EXISTS cards (
     uniq_id tinyint UNSIGNED NOT NULL AUTO_INCREMENT,
 	card_type ENUM('chance','chest') NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS cards (
     -- operation_value will mean different measures (e.g. money, position) depending on the "operation"
     -- operation_value is blank for "move_to_nearby_util/rail" since server side logic must detect closest position to move to
     operation_value smallint,
-	PRIMARY KEY (board_position)
+	PRIMARY KEY (uniq_id)
 );
 
 INSERT INTO property_values
@@ -109,12 +109,12 @@ VALUES ('chest', "Advance to Go", "move_specific", 0),
    	   ('chest', "Go to Jail", "move_specific", 30),
        ('chest', "Income tax refund – Collect 20", 'get_money', 20),
        ('chest', "From Sale of Stock you get 50", 'get_money', 50),
-       ('chest', "It is Your Birthday Collect $10 from each Player", 'collect_from_opponents', 10),
+       ('chest', "It is Your Birthday Collect 10 from each Player", 'collect_from_opponents', 10),
        ('chest', "Annuity Matures Collect 100", 'get_money', 100),
        ('chest', "Pay your Insurance Premium - Pay 50", 'pay_bank', 50),
        ('chest', "Pay a 10 Fine", 'pay_bank', 10),
        ('chest', "Go Back to Old Kent Road", 'move_specific', 1),
-       ('chest', "Receive Interest on 7% Preference Shares $25", 'get_money', 25),
+       ('chest', "Receive Interest on 7% Preference Shares 25", 'get_money', 25),
    	   ('chest', "Pay hospital 100", 'pay_bank', 100),
    	   ('chest', "You have won second prize in a beauty contest – Collect 10", 'get_money', 10),
    	   ('chest', "You inherit 100", 'get_money', 100),
