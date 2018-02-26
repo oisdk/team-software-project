@@ -4,7 +4,7 @@ import json
 import sys
 from backend.player import Player
 from backend.game import Game, get_games
-from jail import leave_jail
+from backend.jail import leave_jail
 
 
 def roll_dice():
