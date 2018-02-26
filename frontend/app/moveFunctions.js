@@ -65,12 +65,6 @@ export function movePlayer(canvasID, position, ImageSource) {
     img.src = ImageSource[canvasID];
 }
 
-export function clear(canvasID) {
-    const c = document.getElementById(canvasID);
-    const ctx = c.getContext('2d');
-    ctx.clearRect(0, 0, c.width, c.height);
-}
-
 // useful for find x and y coordinates.
 // To use add onclick="showCoords(event)" to top layer of canvas.
 export function showCoords(event) {

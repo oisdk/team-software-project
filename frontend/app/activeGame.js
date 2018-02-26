@@ -66,19 +66,20 @@ export function onPlayerBalance(playerBalanceEvent) {
 export function displayBoard(playerList) {
     let tokenSelector = 0;
     const images = ['hat.png', 'car.png', 'ship.png', 'duck.png'];
-    // console.log('displayBoard called');
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
+    // need a layer to display strictly hotels and houses
+    createCanvas('buildingLayer', 'content', 1);
 
     // creates a canvas with player id and layer i.
-    // layer 0 = background image, last layer = game info
+    // layer 0 = background image, layer 1 = houses/hotels, last layer = game info
     // creates a token for each player on their canvas.
-    for (let i = 1; i <= playerList.length; i += 1) {
-        createCanvas(playerList[i - 1], 'content', i);
-        playerTokenInformation[String(playerList[i - 1])] = images[tokenSelector];
-        control.movePlayer(playerList[i - 1], 0, playerTokenInformation);
+    for (let i = 2; i <= playerList.length; i += 1) {
+        createCanvas(playerList[i - 2], 'content', i);
+        playerTokenInformation[String(playerList[i - 2])] = images[tokenSelector];
+        control.movePlayer(playerList[i - 2], 0, playerTokenInformation);
         tokenSelector += 1;
     }
-    createCanvas('game-info', 'content', playerList + 1);
+    createCanvas('game-info', 'content', playerList + 2);
     const c = document.getElementById('gameBoard');
     const ctx = c.getContext('2d');
     const img = new Image();
