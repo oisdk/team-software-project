@@ -17,4 +17,4 @@ def request_game_list(output=sys.stdout):
     """
 
     output.write('Content-Type: application/json\n\n')
-    json.dump(backend.game.get_games(), output)
+    json.dump(backend.game.get_games('waiting'), output)
