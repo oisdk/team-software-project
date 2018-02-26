@@ -1,5 +1,4 @@
 // functions to move around the board
-// will have to change coordinates as browser interprets these differently.
 // only test coordinates for now.
 export function getCoord(position) {
     const listOfCoordinates = {
@@ -50,9 +49,9 @@ export function getCoord(position) {
     return listOfCoordinates[position];
 }
 
-// In the future, should be able to specify image source for custom token of each player.
-// canvasID aka playerID, so we can move the specified players piece
-export function movePlayer(canvasID, position) {
+// Takes in canvasID aka playerID, position on board, and a dictionary
+// to decide which character corresponds to each player.
+export function movePlayer(canvasID, position, ImageSource) {
     const coordinate = getCoord(position);
     const c = document.getElementById(canvasID);
     const ctx = c.getContext('2d');
@@ -63,7 +62,7 @@ export function movePlayer(canvasID, position) {
         ctx.drawImage(img, coordinate[0], coordinate[1]);
         ctx.closePath();
     };
-    img.src = 'p.png';
+    img.src = ImageSource[canvasID];
 }
 
 export function clear(canvasID) {
