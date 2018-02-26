@@ -276,10 +276,13 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             int: how many railroads are owned by the owner of self.
         """
         with self._conn.cursor() as cursor:
-            cursor.execute('SELECT COUNT(*) FROM `properties` ',
-                           'WHERE `game_id` = %s ',
-                           'AND `property_type` = `railroad` ',
-                           'AND `player_id` = %s',
+            cursor.execute('SELECT COUNT(*) FROM `properties` AS p ',
+                           'JOIN `property_values` AS pv ON ',
+                           'p.`property_position`=',
+                           'pv.`property_position` ',
+                           'WHERE p.`game_id` = %s ',
+                           'AND pv.`property_type` = `railroad` ',
+                           'AND p.`player_id` = %s',
                            (self._gid, self._owner))
             result = cursor.fetchone()
             return result[0] - 1
