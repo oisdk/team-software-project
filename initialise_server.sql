@@ -68,13 +68,13 @@ CREATE TABLE IF NOT EXISTS properties (
 );
 
 CREATE TABLE IF NOT EXISTS cards (
-    board_position tinyint UNSIGNED NOT NULL,
+    uniq_id tinyint UNSIGNED NOT NULL AUTO_INCREMENT,
 	card_type ENUM('chance','chest') NOT NULL,
 	description VARCHAR(255) NOT NULL,
-	operation ENUM('move_specific', 'get_money', 'pay_bank', 'pay_opponents', 'move_to_nearby_util', 'move_to_nearby_rail', 'collect_from_opponents') NOT NULL,
+	operation ENUM('move_specific', 'get_money', 'pay_bank', 'pay_opponents', 'move_to_nearby_util', 'move_to_nearby_rail', 'collect_from_opponents', 'pay_per_house') NOT NULL,
     -- operation_value will mean different measures (e.g. money, position) depending on the "operation"
     -- operation_value is blank for "move_to_nearby_util/rail" since server side logic must detect closest position to move to
-    operation_value smallint UNSIGNED,
+    operation_value smallint,
 	PRIMARY KEY (board_position)
 );
 
@@ -101,3 +101,36 @@ VALUES (1, 60, 'property', 2, 50, 10, 30, 90, 160, 250),
 	   (34, 320, 'property', 28, 200, 150, 450, 1000, 1200, 1400),
 	   (37, 350, 'property', 35, 200, 175, 500, 1100, 1300, 1500),
 	   (39, 400, 'property', 50, 200, 200, 600, 1400, 1700, 2000);
+
+INSERT INTO cards (card_type, description, operation, operation_value)
+VALUES ('chest', "Advance to Go", "move_specific", 0),
+       ('chest', "Bank error in your favour – Collect 200", "get_money", 200),
+   	   ('chest', "Doctor's fees – Pay 50", "pay_bank", 50),
+   	   ('chest', "Go to Jail", "move_specific", 30),
+       ('chest', "Income tax refund – Collect 20", 'get_money', 20),
+       ('chest', "From Sale of Stock you get 50", 'get_money', 50),
+       ('chest', "It is Your Birthday Collect $10 from each Player", 'collect_from_opponents', 10),
+       ('chest', "Annuity Matures Collect 100", 'get_money', 100),
+       ('chest', "Pay your Insurance Premium - Pay 50", 'pay_bank', 50),
+       ('chest', "Pay a 10 Fine", 'pay_bank', 10),
+       ('chest', "Go Back to Old Kent Road", 'move_specific', 1),
+       ('chest', "Receive Interest on 7% Preference Shares $25", 'get_money', 25),
+   	   ('chest', "Pay hospital 100", 'pay_bank', 100),
+   	   ('chest', "You have won second prize in a beauty contest – Collect 10", 'get_money', 10),
+   	   ('chest', "You inherit 100", 'get_money', 100),
+
+       ('chance', "Advance to Mayfair", 'move_specific', 39),
+       ('chance', "You are Assessed for Street Repairs 40 per House", 'pay_per_house', 40),
+       ('chance', "Go to Jail", 'move_specific', 30),
+       ('chance', "Bank pays you Dividend of 50", 'get_money', 50),
+       ('chance', "Go back 3 Spaces", 'move_specific', -3),
+       ('chance', "Pay School Fees of 150", 'pay_bank', 150),
+       ('chance', "Make General Repairs on all of Your Houses - For each House pay 25", 'pay_per_house', 25),
+       ('chance', "Speeding Fine 15", 'pay_bank', 15),
+       ('chance', "You have won a Crossword Competition Collect 100", 'get_money', 100),
+       ('chance', "Your Building and Loan Matures Collect 150", 'get_money', 150),
+       ('chance', "Advance to Trafalgar Square", 'move_specific', 24),
+       ('chance', "Take a Trip to Marylebone Station", 'move_specific', 15),
+       ('chance', "Adbance to Pall Mall", 'move_specific', 11),
+       ('chance', "Drunk in Charge", 'pay_bank', 20),
+       ('chance', "Advance to Go", "move_specific", 0);
