@@ -1,5 +1,8 @@
-// functions to move around the board
-// only test coordinates for now.
+/**
+ * A function that gets the coordinates of a position.
+ *
+ * @param {number} position - position on the board.
+ */
 export function getCoord(position) {
     const listOfCoordinates = {
         0: [735, 730],
@@ -50,6 +53,13 @@ export function getCoord(position) {
     return listOfCoordinates[position];
 }
 
+/**
+ * A function that moves a player to a given position.
+ *
+ * @param {string} canvasID - id of canvas to move.
+ * @param {number} position - position to move player to.
+ * @param {string} ImageSource - name of image to draw.
+ */
 // Takes in canvasID aka playerID, position on board, and a dictionary
 // to decide which character corresponds to each player.
 export function movePlayer(canvasID, position, ImageSource) {
@@ -66,6 +76,11 @@ export function movePlayer(canvasID, position, ImageSource) {
     img.src = ImageSource;
 }
 
+/**
+ * A function which gets the x and y coordinates of a click event.
+ *
+ * @param {event} - mouse click.
+ */
 // useful for find x and y coordinates.
 // To use add onclick="showCoords(event)" to top layer of canvas.
 export function showCoords(event) {

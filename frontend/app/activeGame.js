@@ -89,7 +89,13 @@ export function displayBoard(playerList) {
     img.src = 'monopoly.jpg';
 }
 
-// takes in id for canvas, node to append to(<div id="content">), layerNumber
+/**
+ * A function that creates a canvas and appends to a a given node.
+ *
+ * @param {string} canvasID - id of canvas.
+ * @param {string} appendToNode - id of node to append to.
+ * @param {number} layerNumber - z-index of the canvas.
+ */
 function createCanvas(canvasID, appendToNode, layerNumber) {
     const canvas = document.createElement('canvas');
     canvas.id = canvasID;

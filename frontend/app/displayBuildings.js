@@ -209,12 +209,12 @@ export function getHouseCoord(position, houseNumber) {
     return houseCoordinates[position][houseNumber];
 }
 
-// also applies to displayHouse!
-// need to add another canvas dedicated to hotels and houses each?
-// clear houses if hotel is built but not all ?
-// May need to consider separate canvas per player for houses and hotels only or
-// keep a global variable to track all current houses/hotels on the board in order
-// to not wipe out all current buildings if one is sold or player is bankupt.
+/**
+ * A function that displays a hotel in a specfic position.
+ * This function draws on the buildingLayer canvas.
+ *
+ * @param {number} position - Position on the board.
+ */
 export function displayHotel(position) {
     const coordinate = getHotelCoord(position);
     // change id when canvas is added to activeGame.
@@ -227,10 +227,15 @@ export function displayHotel(position) {
         ctx.drawImage(img, coordinate[0], coordinate[1]);
         ctx.closePath();
     };
-    // double check image when everything is merged!
     img.src = 'hotel.png';
 }
 
+/**
+ * A function that displays houses in a specfic position.
+ *
+ * @param {number} position - Position on the board.
+ * @param {number} numberOfHouses - number of houses to draw on specfic position.
+ */
 // should only take valid property numbers
 // 1,3,6,8,9,11,13,14,16,18,19,21,23,24,26,27,29,31,32,34,37,39
 export function displayHouse(position, numberOfHouses) {
@@ -239,7 +244,7 @@ export function displayHouse(position, numberOfHouses) {
     const img = new Image();
     img.onload = () => {
         // ctx.clearRect(0, 0, 800, 800);
-        // draws number of number of houses corresponding to selected position.
+        // draws number of number of houses corresponding to a selected position.
         for (let i = 1; i <= numberOfHouses; i += 1) {
             const coordinate = getHouseCoord(position, i);
             ctx.beginPath();
@@ -247,10 +252,14 @@ export function displayHouse(position, numberOfHouses) {
             ctx.closePath();
         }
     };
-    // double check image when everything is merged!
     img.src = 'house.png';
 }
 
+/**
+ * A function which wipes a canvas of its drawn images.
+ *
+ * @param {string} canvasID - id of canvas to clear.
+ */
 export function clear(canvasID) {
     const c = document.getElementById(canvasID);
     const ctx = c.getContext('2d');
