@@ -294,7 +294,7 @@ def is_property_owned(property_position, game_id):
                            'AND property_position = %s '
                            'AND game_id = %s;', (property_position, game_id))
 
-            return bool(cursor.rowcount > 0)
+            return cursor.rowcount > 0
 
     finally:
         conn.close()
