@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS miscellaneous (
     type ENUM('tax', 'chance', 'community_chest', 'jail', 'parking', 'to_jail') NOT NULL,
     value smallint UNSIGNED,
     PRIMARY KEY (board_position)
-  
+);
+
 CREATE TABLE IF NOT EXISTS properties (
     player_id int UNSIGNED NOT NULL DEFAULT '',
 	game_id int UNSIGNED NOT NULL,
