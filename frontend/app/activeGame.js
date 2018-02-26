@@ -62,7 +62,6 @@ export function onPlayerBalance(playerBalanceEvent) {
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
  */
-
 export function displayBoard(playerList) {
     let tokenSelector = 0;
     const images = ['hat.png', 'car.png', 'ship.png', 'duck.png'];
@@ -73,11 +72,10 @@ export function displayBoard(playerList) {
     // creates a canvas with player id and layer i.
     // layer 0 = background image, layer 1 = houses/hotels, last layer = game info
     // creates a token for each player on their canvas.
-    for (let i = 2; i <= playerList.length + 1; i += 1) {
-        console.log(i - 2);
-        createCanvas(playerList[i - 2], 'content', i);
-        playerTokenInformation[String(playerList[i - 2])] = images[tokenSelector];
-        control.movePlayer(playerList[i - 2], 0, playerTokenInformation);
+    for (let i = 0; i < playerList.length; i += 1) {
+        createCanvas(playerList[i], 'content', i + 2);
+        playerTokenInformation[String(playerList[i])] = images[tokenSelector];
+        control.movePlayer(playerList[i], 0, playerTokenInformation);
         tokenSelector += 1;
     }
     createCanvas('game-info', 'content', playerList + 2);
