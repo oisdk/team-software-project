@@ -60,6 +60,8 @@ def start_sse_stream(output_stream=sys.stdout):
     new_balances = {}
     turn = None
     turn_order = {}
+    jailed_players = {}
+    new_jailed_players = {}
     push_initial_user_details = True
 
     # These statements are executed constantly once the first request to this
@@ -79,6 +81,7 @@ def start_sse_stream(output_stream=sys.stdout):
             new_positions[player.uid] = player.board_position
             new_balances[player.uid] = player.balance
             turn_order[player.uid] = player.turn_position
+            jailed_players[player.uid] = player.jail_state
 
         # Assign the current (aka. non-new) dictionaries to the value of the
         # "new" (aka. latest) dictionaries, after calling the appropriate
@@ -90,6 +93,7 @@ def start_sse_stream(output_stream=sys.stdout):
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
                                         new_positions)
+        jailed_players = check_new_jailed_players(output_stream, jailed_players, new_jailed_players)
 
         # Pushes data to update the players info table on game start
         if push_initial_user_details and last_game_state == "playing":
@@ -186,6 +190,22 @@ def check_new_positions(output_stream, old_positions, new_positions):
         generate_player_move_event(output_stream, old_positions, new_positions)
     return new_positions.copy()
 
+def check_new_jailed_players(output_stream, jailed_players, new_jailed_players):
+    """Checks if a player has been jailed and sends an SSE event if one has.
+
+    Arguments:
+        jailed_players: A dictionary representing the current jailed status
+            for each player. key = user_id, value = status.
+        new_jailed_players: A dictionary representing the latest
+            jailed status for each player. key = user_id, value = status.
+
+    Returns:
+        A dictionary with the latest jailed state for each player.
+
+    """
+    if new_jailed_players != jailed_players:
+        generate_player_jailed_event(output_stream, jailed_players, new_jailed_players)
+    return new_jailed_players.copy()
 
 def check_game_playing_status(output_stream, game, last_game_state):
     """Check if the specified game's status is 'playing'.
@@ -412,6 +432,59 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
             [uid, balance]
             for uid, balance in new_balances.items()
             if balance != old_balances[uid]]))
+
+    # Standard SSE procedure to have two blank lines after data.
+    output_stream.write('\n\n')
+
+
+def generate_player_jailed_event(output_stream, jailed_players, new_jailed_players):
+    """Generates an event for a change of jailed players in the game.
+
+    Compares two dictionaries and outputs a playerJailed server-sent event if
+    the two dicts differ. Along with the event is JSON containing the
+    difference between the two dicts.
+
+    Arguments:
+        jailed_players: A dictionary representing the current jailed state for each
+            player.
+        new_jailed_players: A dictionary representing the latest jailed state for each
+            player.
+
+    >>> import sys
+    >>> generate_player_jailed_event(
+    ...     sys.stdout,
+    ...     {5: 'not_in_jail', 6: 'not_in_jail'},
+    ...     {5: 'not_in_jail', 6: 'in_jail'})
+    event: playerJailed
+    data: [[6, "in_jail"]]
+    <BLANKLINE>
+
+    >>> import sys
+    >>> generate_player_jailed_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {6: 'not_in_jail'})
+    event: playerJailed
+    data: [[6, "not_in_jail"]]
+    <BLANKLINE>
+
+    """
+    # Send the event name to the client.
+    output_stream.write('event: playerJailed\n')
+
+    # Send the JSON object which contains the elements that are not in common
+    # with the two dictionaries.
+    output_stream.write('data: ')
+
+    if not jailed_players:
+        output_stream.write(json.dumps([
+            [uid, state]
+            for uid, state in new_jailed_players.items()]))
+    else:
+        output_stream.write(json.dumps([
+            [uid, state]
+            for uid, state in new_jailed_players.items()
+            if state != jailed_players[uid]]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
