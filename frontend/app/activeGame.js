@@ -3,6 +3,7 @@ import * as control from './moveFunctions';
 import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 
+const playerTokenInformation = {};
 
 /**
  * Displays the page for an active game.
@@ -30,7 +31,7 @@ export function onPlayerMove(playerMoveEvent) {
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
     // console.log(playerMoveEvent);
-    control.movePlayer(items[0], items[1]);
+    control.movePlayer(items[0], items[1], playerTokenInformation);
 }
 
 /**
@@ -63,6 +64,8 @@ export function onPlayerBalance(playerBalanceEvent) {
  */
 
 export function displayBoard(playerList) {
+    let tokenSelector = 0;
+    const images = ['hat.png', 'car.png', 'ship.png', 'duck.png'];
     // console.log('displayBoard called');
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
 
@@ -71,7 +74,9 @@ export function displayBoard(playerList) {
     // creates a token for each player on their canvas.
     for (let i = 1; i <= playerList.length; i += 1) {
         createCanvas(playerList[i - 1], 'content', i);
-        control.movePlayer(playerList[i - 1], 0);
+        playerTokenInformation[String(playerList[i - 1])] = images[tokenSelector];
+        control.movePlayer(playerList[i - 1], 0, playerTokenInformation);
+        tokenSelector += 1;
     }
     createCanvas('game-info', 'content', playerList + 1);
     const c = document.getElementById('gameBoard');
