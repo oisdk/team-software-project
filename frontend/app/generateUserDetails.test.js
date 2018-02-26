@@ -228,7 +228,7 @@ describe('turnDetails', () => {
 
     it('should set active player', () => {
         generateUserDetails.turnDetails(mockPlayerTurnEvent);
-        expect(document.getElementById('current-turn').innerHTML).toEqual('Player 1');
+        expect(document.getElementById('current-turn').innerHTML).toEqual('Player NaN');
         expect(document.getElementById('roll-dice').hasAttribute('disabled'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
     });
