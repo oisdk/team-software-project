@@ -1,8 +1,6 @@
 """ Module providing functionality to check the type of space the player is
     on. """
 
-import sys
-import json
 import backend.player
 import backend.game
 import backend.properties
