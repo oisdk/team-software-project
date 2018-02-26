@@ -11,5 +11,5 @@ def pay_tax(player_id, tax_payable):
         tax_payable: An int representing the money to deduct from player.
 
     """
-    player = Player(player_id)
-    player.balance -= tax_payable
+    with Player(player_id) as player:
+        player.balance -= tax_payable
