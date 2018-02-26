@@ -1,5 +1,8 @@
 """This module provides the Property class"""
 
+from operator import itemgetter
+from itertools import groupby
+
 import backend.storage
 
 
@@ -254,3 +257,21 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         if result[0] == 1:
             is_monopoly = True
         return is_monopoly
+
+
+def owned_property_positions(game_id):
+    """Return a list of positions of owned properties in a game. """
+    conn = storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT property_position, player_id '
+                'FROM properties '
+                'WHERE game_id = %s '
+                'AND state = %s '
+                'ORDER BY player_id;', (game_id, 'unowned'))
+            return {player_id: [entry['property_position'] for entry in row]
+                for player_id, row
+                in groupby(cursor.fetchall(), itemgetter('player_id'))}
+    finally:
+        conn.close()
