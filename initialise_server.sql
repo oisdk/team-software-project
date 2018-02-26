@@ -67,6 +67,17 @@ CREATE TABLE IF NOT EXISTS properties (
 	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
 );
 
+CREATE TABLE IF NOT EXISTS cards (
+    board_position tinyint UNSIGNED NOT NULL,
+	card_type ENUM('chance','chest') NOT NULL,
+	description VARCHAR(255) NOT NULL,
+	operation ENUM('move_specific', 'get_money', 'pay_bank', 'pay_opponents', 'move_to_nearby_util', 'move_to_nearby_rail', 'collect_from_opponents') NOT NULL,
+    -- operation_value will mean different measures (e.g. money, position) depending on the "operation"
+    -- operation_value is blank for "move_to_nearby_util/rail" since server side logic must detect closest position to move to
+    operation_value smallint UNSIGNED,
+	PRIMARY KEY (board_position)
+);
+
 INSERT INTO property_values
 VALUES (1, 60, 'property', 2, 50, 10, 30, 90, 160, 250),
        (3, 60, 'property', 4, 50, 20, 60, 180, 320, 540),
