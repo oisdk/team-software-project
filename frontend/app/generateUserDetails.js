@@ -12,6 +12,7 @@ let userName = details.user_name;
 export function disableGameInterface() {
     document.getElementById('roll-dice').disabled = true;
     document.getElementById('end-turn').disabled = true;
+    document.getElementById('jail').disabled = true;
 }
 
 /**
@@ -28,6 +29,13 @@ export function enableGameInterface() {
 export function enableEndTurn() {
     document.getElementById('roll-dice').disabled = true;
     document.getElementById('end-turn').disabled = false;
+}
+
+/**
+ * Function to enable leave jail functionality.
+ */
+export function enableLeaveJail() {
+    document.getElementById('jail').disabled = false;
 }
 
 
@@ -63,6 +71,17 @@ export function endTurn(JSONSend) {
         jsonObject: {player_id: id},
     });
     disableGameInterface();
+}
+
+/**
+ * Function to leave jail.
+ * @param {Function} JSONSend - JSON function makes testing easier.
+ */
+export function leaveJail(JSONSend) {
+    JSONSend({
+        serverAddress: 'cgi-bin/leave_jail.py',
+        jsonObject: {player_id: id},
+    });
 }
 
 /**
@@ -114,6 +133,9 @@ export function turnDetails(turnEvent) {
     const endTurnButton = document.getElementById('end-turn');
     endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
     endTurnButton.disabled = true;
+    const leaveJailButton = document.getElementById('jail');
+    leaveJailButton.onclick = () => { leaveJail(sendJSON.sendJSON); };
+    leaveJailButton.disabled = true;
     // console.log(`id Test:${id}`);
     // console.log(`turn Test:${turn}`);
     if (String(turn) === String(id)) {
@@ -137,6 +159,22 @@ export function balanceDetails(balanceEvent) {
         if (String(item[0]) === String(id)) {
             ({1: balance} = item);
             document.getElementById('balance').innerHTML = balance;
+        }
+    });
+}
+
+/**
+ * Called when a jailedEvent event happens.
+ * Enables the button to pay to leave jail.
+ *
+ * @param jailedEvent The data received from the event
+ */
+export function jailedPlayerCallback(jailedEvent) {
+    const data = JSON.parse(jailedEvent.data);
+    data.forEach((item) => {
+        // console.log(item);
+        if (String(item[0]) === String(id)) {
+            enableLeaveJail();
         }
     });
 }
