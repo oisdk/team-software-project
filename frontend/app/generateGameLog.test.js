@@ -42,7 +42,8 @@ describe('updateGameLog test', () => {
 
     // Assign the global window XMLHttpRequest to point to the mockXHR object
     beforeEach(() => {
-        document.body.innerHTML = '<h1>Game Log</h1><textarea rows="5" cols="100" id="game-log"></textarea>';
+        document.body.innerHTML = '<h1>Game Log</h1>
+        <textarea rows="5" cols="100" id="game-log"></textarea>';
     });
 
     // Restore the global XMLHttpRequest to the state it was before the tests
@@ -52,7 +53,8 @@ describe('updateGameLog test', () => {
 
     test('should update textarea appropriately', (done) => {
         generateGameLog.updateGameLog(mockResponse);
-        expect(document.body.innerHTML).toEqual('<h1>Game Log</h1><textarea rows="5" cols="100" id="game-log"></textarea>');
+        expect(document.body.innerHTML).toEqual
+        ('<h1>Game Log</h1><textarea rows="5" cols="100" id="game-log"></textarea>');
         done();
     });
 });
