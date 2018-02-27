@@ -50,6 +50,16 @@ export function onPlayerBalance(playerBalanceEvent) {
 }
 
 /**
+ * Called when a playerJailed event happens.
+ * Calls the function to update the player jailed attributes.
+ *
+ * @param playerJailedEvent The data received from the event
+ */
+export function onPlayerJailed(playerJailedEvent) {
+    generateUserDetails.jailedPlayer(playerJailedEvent);
+}
+
+/**
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
  */
@@ -94,6 +104,7 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerMove', onPlayerMove);
     eventSource.addEventListener('playerTurn', onPlayerTurn);
     eventSource.addEventListener('playerBalance', onPlayerBalance);
+    eventSource.addEventListener('playerJailed', onPlayerJailed);
     // eventSource.addEventListener('gameEnd', disableActiveGameListeners);
 }
 
