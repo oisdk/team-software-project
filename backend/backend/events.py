@@ -204,12 +204,11 @@ def check_property_ownership(output_stream, game_id, old_properties):
     for position in positions:
         this_property = Property(position, game_id)
         new_properties[position] = this_property.owner
-        if old_properties[position] != new_properties[position]:
-            generate_ownership_event(
-                output_stream,
-                property=this_property,
-                old_owner=old_properties[position],
-                new_owner=new_properties[position])
+    if old_properties != new_properties:
+        generate_ownership_events(
+            output_stream,
+            old_properties,
+            new_properties)
     return new_properties
 
 
@@ -425,4 +424,38 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
             if balance != old_balances[uid]]))
 
     # Standard SSE procedure to have two blank lines after data.
+    output_stream.write('\n\n')
+
+
+def generate_ownership_events(
+        output_stream,
+        old_ownership,
+        new_ownership):
+    """Generate an event for properties that have changed owner.
+
+    Include properties that have become owned or unowned.
+
+    Arguments:
+        output_stream: The stream to which the events will be written.
+        old_ownership: The old ownership data, as a dictionary where the keys
+            are property positions and the values are owner ids.
+        new_ownership: The new ownership data, in the same format as
+            old_ownership.
+    """
+    changes = {}
+    positions = list(old_ownership.keys()).append(new_ownership.keys())
+    for position in positions:
+        changes[position] = {}
+        if position in new_ownership:
+            changes[position]['newOwner'] = new_ownership[position]
+        else:
+            changes[position]['newOwner'] = None
+        if position in old_ownership:
+            changes[position]['oldOwner'] = old_ownership[position]
+        else:
+            changes[position]['oldOwner'] = None
+
+    output_stream.write('event: propertyOwnerChanges\n')
+    output_stream.write('data:')
+    output_stream.write(json.dumps(changes))
     output_stream.write('\n\n')
