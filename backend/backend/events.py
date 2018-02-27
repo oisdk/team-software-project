@@ -175,15 +175,7 @@ def generate_player_turn_event(output_stream, player_id):
     <BLANKLINE>
 
     """
-    # Send the event name to the client.
-    output_stream.write('event: playerTurn\n')
-
-    # Send the integer representing the latest position in the playing queue
-    # to the client in the SSE data chunk.
-    output_stream.write('data: ' + str(player_id))
-
-    # Standard SSE procedure to have two blank lines after data.
-    output_stream.write('\n\n')
+    output_event(output_stream, 'playerTurn', player_id)
 
 
 def check_new_players(output_stream, old_players, new_players):
