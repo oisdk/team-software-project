@@ -472,8 +472,8 @@ def generate_ownership_events(
     changes = {}
     positions = list(old_ownership.keys()) + list(new_ownership.keys())
     for position in positions:
-        old = old_ownership.get(position, None)
-        new = new_ownership.get(position, None)
+        old = old_ownership.get(position, default=None)
+        new = new_ownership.get(position, default=None)
         if old != new:
             changes[position] = {'newOwner': new, 'oldOwner': old}
 
