@@ -24,12 +24,19 @@ cgitb.enable()
 def start_sse_stream(output_stream=sys.stdout):
     """Generate a stream of server-sent events according to state changes.
 
+    This function is activated by making a request to the JavaScript
+    function "initialiseEventSource()" which is located in "sse.js".
+    This operation is performed by the JavaScript waitingGame function,
+    and hence, other JavaScript code need only "get" a reference to
+    the EventSource object (by calling "getEventSource()" from
+    "sse.js").
+
     Reads in the game id, and repeatedly does each of the following:
-        1) Check what player's turn it is
+        1) Check whose turn it is.
         2) Check if any new players have joined the waiting game lobby.
         3) Check if any of the players' balances have changed in a game.
         4) Check if any of the players' positions have changed in a game.
-        5) Check if any waiting games have been started.
+        5) Check if the specified game's status has changed to "playing".
 
     """
     # The following headers are compulsory for SSE.
@@ -54,18 +61,20 @@ def start_sse_stream(output_stream=sys.stdout):
     new_balances = {}
     turn = None
     turn_order = {}
+    push_initial_user_details = True
 
     # These statements are executed constantly once the first request to this
-    # file is made.
+    # function is made.
     while True:
         # Create a Game object representing the game in the database.
         # This can be thought of as a "pointer" to the appropriate game in the
         # database.
         game = Game(game_id)
 
-        # Go through each player in the game (via the database) and populate
-        # the "new" dictionaries with user_id (aka. player_id) as the key, and
+        # Go through each player in the game and populate the "new"
+        # dictionaries with user_id (aka. player_id) as the key, and
         # username/position/balance/turn-order as the value.
+        # These are the latest values retrieved from the database.
         for player in map(Player, game.players):
             new_players[player.uid] = player.username
             new_positions[player.uid] = player.board_position
@@ -73,7 +82,7 @@ def start_sse_stream(output_stream=sys.stdout):
             turn_order[player.uid] = player.turn_position
 
         # Assign the current (aka. non-new) dictionaries to the value of the
-        # "new" (aka. "latest") dictionaries after calling the appropriate
+        # "new" (aka. latest) dictionaries, after calling the appropriate
         # comparison function to determine whether an event should be
         # generated.
         turn = check_new_turn(output_stream, turn, game.current_turn,
@@ -82,6 +91,11 @@ def start_sse_stream(output_stream=sys.stdout):
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
                                         new_positions)
+
+        # Pushes data to update the players info table on game start
+        if push_initial_user_details and last_game_state == "playing":
+            push_initial_user_details = False
+            start_game_push(output_stream, turn_order)
 
         # Call function to check the current state of this game.
         # A game state may be "waiting" or "playing".
@@ -165,11 +179,11 @@ def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     if new_turn != old_turn:
         for uid, turn_pos in turn_order.items():
             if turn_pos == new_turn:
-                generate_player_turn_event(output_stream, uid)
+                generate_player_turn_event(output_stream, uid, turn_order)
     return new_turn
 
 
-def generate_player_turn_event(output_stream, player_id):
+def generate_player_turn_event(output_stream, player_id, turn_order):
     """Generates an event for a change of turn in the game.
 
     Arguments:
@@ -178,13 +192,12 @@ def generate_player_turn_event(output_stream, player_id):
         player_id: An int representing the player whose turn it is.
 
     >>> import sys
-    >>> generate_player_turn_event(sys.stdout, 2)
+    >>> generate_player_turn_event(sys.stdout, 2, {2:0})
     event: playerTurn
-    data: 2
+    data: [2, 0]
     <BLANKLINE>
-
     """
-    output_event(output_stream, 'playerTurn', player_id)
+    output_event(output_stream, 'playerTurn', [player_id, turn_order[player_id]])
 
 
 def check_new_players(output_stream, old_players, new_players):
@@ -202,7 +215,7 @@ def check_new_players(output_stream, old_players, new_players):
     """
     if new_players != old_players:
         generate_player_join_event(output_stream, old_players, new_players)
-    return new_players
+    return new_players.copy()
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
@@ -261,7 +274,7 @@ def check_new_balances(output_stream, old_balances, new_balances):
     if new_balances != old_balances:
         generate_player_balance_event(output_stream, old_balances,
                                       new_balances)
-    return new_balances
+    return new_balances.copy()
 
 
 def generate_player_balance_event(output_stream, old_balances, new_balances):
@@ -283,7 +296,7 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     ...     {5: 200, 6: 200, 7: 200, 8: 200},
     ...     {5: 200, 6: 200, 7: 200, 8: 400})
     event: playerBalance
-    data: [[8, 400]]
+    data: [[8, 400, 200]]
     <BLANKLINE>
 
     >>> import sys
@@ -292,7 +305,7 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     ...     {},
     ...     {5: 200})
     event: playerBalance
-    data: [[5, 200]]
+    data: [[5, 200, 0]]
     <BLANKLINE>
 
     """
@@ -300,11 +313,12 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     # with the two dictionaries.
     if not old_balances:
         data = [
-            [uid, balance]
+            [uid, balance, 0]
             for uid, balance in new_balances.items()]
     else:
         data = [
-            [uid, balance]
+            [uid, balance, ((balance - old_balances[uid])
+                            if old_balances[uid] else balance)]
             for uid, balance in new_balances.items()
             if balance != old_balances[uid]]
 
@@ -326,7 +340,7 @@ def check_new_positions(output_stream, old_positions, new_positions):
     """
     if new_positions != old_positions:
         generate_player_move_event(output_stream, old_positions, new_positions)
-    return new_positions
+    return new_positions.copy()
 
 
 def generate_player_move_event(output_stream, old_positions, new_positions):
@@ -348,7 +362,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     ...     {5: 4, 6: 6, 7: 5, 8: 0},
     ...     {5: 4, 6: 6, 7: 5, 8: 4})
     event: playerMove
-    data: [[8, 4]]
+    data: [[8, 4, 0]]
     <BLANKLINE>
 
     >>> import sys
@@ -357,7 +371,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     ...     {},
     ...     {5: 4})
     event: playerMove
-    data: [[5, 4]]
+    data: [[5, 4, 0]]
     <BLANKLINE>
 
     """
@@ -365,15 +379,14 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     # with the two dictionaries.
     if not old_positions:
         data = [
-            [uid, board_position]
+            [uid, board_position, 0]
             for uid, board_position in new_positions.items()]
     else:
         data = [
-            [uid, board_position]
+            [uid, board_position, old_positions[uid]]
             for uid, board_position in new_positions.items()
             if board_position != old_positions[uid]]
     output_event(output_stream, 'playerMove', data)
-
 
 def check_game_playing_status(output_stream, game, last_game_state):
     """Check if the specified game's status is 'playing'.
@@ -482,3 +495,16 @@ def generate_ownership_events(
             changes[position] = {'newOwner': new, 'oldOwner': old}
 
     output_event(output_stream, 'propertyOwnerChanges', changes)
+
+
+def start_game_push(output_stream, turn_order):
+    """Generates an event for to update the details table at game start.
+
+    Compares two dictionaries and outputs a playerBalance server-sent event if
+    the two dicts differ. Along with the event is JSON containing the
+    difference between the two dicts.
+    """
+    generate_player_turn_event(output_stream, next(iter(turn_order)),
+                               turn_order)
+    generate_player_balance_event(output_stream, {},
+                                  {1: 1500, 2: 1500, 3: 1500, 4: 1500})

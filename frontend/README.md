@@ -1,15 +1,19 @@
 # Monopoly Frontend
 
-## Table of Contents:
-[Server-Sent Events](#server-sent-events)
 
-## Server-Sent Events:
+## Table of Contents
+* [Server-Sent Events](#server-sent-events)
+  * [What They are](#what-they-are)
+  * [How to Write an SSE Listener](#how-to-write-a-client-side-sse-listener)
 
-### What They are:
+
+## Server-Sent Events
+
+### What They are
 They're essentially a means for a server to send data to a client **without**
 the client having to make any requests.
 
-#### From a Brief Implementation Perspective:
+#### How it Works (from a brief implementation perspective)
 1. The client makes an **event listener**, just like any ol' event listener
 (click, mouseover, keypress, etc.).
 2. The server sends the event (which has the **same name** as what the client
@@ -17,7 +21,10 @@ is listening for) to standard output along with data (which can be something
 like a bit of JSON).
 3. The client will receive this event and trigger the event callback.
 
-### How to Write a Client-Side SSE Listener:
+#### Diagram
+![SSE Diagram](../documentation-images/sse_implementation.png)
+
+### How to Write a Client-Side SSE Listener
 1. In your JavaScript code, add the following import statement:
 
    `import {getEventSource} from './sse';`
@@ -43,7 +50,7 @@ like a bit of JSON).
    **Note**: The event type will vary depending on the event type that will be
    sent by the server. In this example, the event type is "gameStart".
    Other types used in this project include "playerMove" and "playerJoin".
-   
+
    If you created a server-side event generator in events.py, then you know
    what the event type is. If you're receiving events from someone else's
    server-side event generator, then find out what event type their code
