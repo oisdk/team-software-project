@@ -54,7 +54,6 @@ def start_sse_stream(output_stream=sys.stdout):
     new_balances = {}
     turn = None
     turn_order = {}
-    property_checker = property_updates(game_id)
 
     # These statements are executed constantly once the first request to this
     # file is made.
@@ -190,19 +189,28 @@ def check_game_playing_status(output_stream, game, last_game_state):
     return game.state
 
 
-def property_updates(game_id):
-    properties = {}
+def check_property_ownership(output_stream, game_id, old_properties):
+    """Issue events if the ownership of any properties has changed.
+
+    Arguments:
+        game_id: The id of the game the events are being issued for.
+
+    Returns:
+        The current property ownership data, as a dictionary where the keys
+        are property positions, and the values are owner player ids.
+    """
     positions = owned_property_positions(game_id)
-    while True:
-        new_properties = {}
-        for position in positions:
-            this_property = Property(position, game_id)
-            if this_property.owner not in new_properties:
-                new_properties[this_property.owner] = [position]
-            else:
-                new_properties[this_property.owner].append(position)
-        yield new_properties
-        properties = new_properties
+    new_properties = {}
+    for position in positions:
+        this_property = Property(position, game_id)
+        new_properties[position] = this_property.owner
+        if old_properties[position] != new_properties[position]:
+            generate_ownership_event(
+                output_stream,
+                property=this_property,
+                old_owner=old_properties[position],
+                new_owner=new_properties[position])
+    return new_properties
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
