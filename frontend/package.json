@@ -110,10 +110,11 @@
       "import/prefer-default-export": "off",
       "no-use-before-define": [
         "error",
-        {"functions": false}
+        {
+          "functions": false
+        }
       ]
     }
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

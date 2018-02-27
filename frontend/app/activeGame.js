@@ -4,6 +4,9 @@ import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 
 const playerTokenInformation = {};
+const playerPositions = {}; // value id : position on board ie previous position.
+let timer = '';
+let currentPlayer = '';
 
 /**
  * Displays the page for an active game.
@@ -31,7 +34,14 @@ export function onPlayerMove(playerMoveEvent) {
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
     // console.log(playerMoveEvent);
-    control.movePlayer(items[0], items[1], playerTokenInformation);
+    // had to add these in because litner was complaining,
+    // says  'Use array destructuring' but i cant get it to work.
+    const player = items[0];
+    currentPlayer = player;
+    const endPosition = items[1];
+    playerPositions[currentPlayer].end = parseInt(endPosition, 10);
+    startAnimation();
+    // control.movePlayer(items[0], items[1], playerTokenInformation);
 }
 
 /**
@@ -75,6 +85,8 @@ export function displayBoard(playerList) {
     for (let i = 1; i <= playerList.length; i += 1) {
         createCanvas(playerList[i - 1], 'content', i);
         playerTokenInformation[String(playerList[i - 1])] = images[tokenSelector];
+        // {player1: start 0 and end 0 }
+        playerPositions[String(playerList[i - 1])] = {current: 0, end: 0};
         control.movePlayer(playerList[i - 1], 0, playerTokenInformation);
         tokenSelector += 1;
     }
@@ -110,6 +122,25 @@ function enableActiveGameListeners() {
     // eventSource.addEventListener('gameEnd', disableActiveGameListeners);
 }
 
+function startAnimation() {
+    timer = setInterval(animate, 500);
+}
+
+function animate() {
+    playerPositions[currentPlayer].current += 1;
+    let nextPosition = playerPositions[currentPlayer].current;
+    console.log(nextPosition);
+    if (nextPosition > 39) {
+        nextPosition -= 40;
+        playerPositions[currentPlayer].current = nextPosition;
+    }
+    control.movePlayer(currentPlayer, nextPosition, playerTokenInformation);
+    if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
+        clearInterval(timer);
+        console.log('ended');
+        currentPlayer = '';
+    }
+}
 /*
 function disableActiveGameListeners(gameEndEvent) {
     const eventSource = getEventSource();
