@@ -441,21 +441,43 @@ def generate_ownership_events(
             are property positions and the values are owner ids.
         new_ownership: The new ownership data, in the same format as
             old_ownership.
+
+    >>> import sys
+    >>> generate_ownership_events(
+    ...     sys.stdout,
+    ...     {4: 1, 5: 8},
+    ...     {4: 3, 5: 8})
+    event: propertyOwnerChanges
+    data: {"4": {"newOwner": 3, "oldOwner": 1}}
+    <BLANKLINE>
+
+    >>> import sys
+    >>> generate_ownership_events(
+    ...     sys.stdout,
+    ...     {5: 8},
+    ...     {4: 3, 5: 8})
+    event: propertyOwnerChanges
+    data: {"4": {"newOwner": 3, "oldOwner": null}}
+    <BLANKLINE>
+
+    >>> import sys
+    >>> generate_ownership_events(
+    ...     sys.stdout,
+    ...     {4: 3, 5: 8},
+    ...     {5: 8})
+    event: propertyOwnerChanges
+    data: {"4": {"newOwner": null, "oldOwner": 3}}
+    <BLANKLINE>
     """
     changes = {}
     positions = list(old_ownership.keys()) + list(new_ownership.keys())
     for position in positions:
-        changes[position] = {}
-        if position in new_ownership:
-            changes[position]['newOwner'] = new_ownership[position]
-        else:
-            changes[position]['newOwner'] = None
-        if position in old_ownership:
-            changes[position]['oldOwner'] = old_ownership[position]
-        else:
-            changes[position]['oldOwner'] = None
+        old = old_ownership.get(position, None)
+        new = new_ownership.get(position, None)
+        if old != new:
+            changes[position] = {'newOwner': new, 'oldOwner': old}
 
     output_stream.write('event: propertyOwnerChanges\n')
-    output_stream.write('data:')
-    output_stream.write(json.dumps(changes))
+    output_stream.write('data: ')
+    output_stream.write(json.dumps(changes, sort_keys=True))
     output_stream.write('\n\n')
