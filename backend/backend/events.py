@@ -226,24 +226,14 @@ def generate_player_join_event(output_stream, old_players, new_players):
     <BLANKLINE>
 
     """
-    # Send the event name to the client.
-    output_stream.write('event: playerJoin\n')
-
-    # Send the JSON object which contains the elements that are not in common
-    # with the two dictionaries.
-    output_stream.write('data: ')
     if not old_players:
-        output_stream.write(json.dumps([
-            uname
-            for uid, uname in new_players.items()]))
+        data = [uname for uid, uname in new_players.items()]
     else:
-        output_stream.write(json.dumps([
+        data = [
             uname
             for uid, uname in new_players.items()
-            if uid not in old_players]))
-
-    # Standard SSE procedure to have two blank lines after data.
-    output_stream.write('\n\n')
+            if uid not in old_players]
+    output_event(output_stream, 'playerJoin', data)
 
 
 def check_new_balances(output_stream, old_balances, new_balances):
