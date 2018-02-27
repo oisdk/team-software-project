@@ -481,7 +481,4 @@ def generate_ownership_events(
         if old != new:
             changes[position] = {'newOwner': new, 'oldOwner': old}
 
-    output_stream.write('event: propertyOwnerChanges\n')
-    output_stream.write('data: ')
-    output_stream.write(json.dumps(changes, sort_keys=True))
-    output_stream.write('\n\n')
+    output_event(output_stream, 'propertyOwnerChanges', changes)
