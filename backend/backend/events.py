@@ -81,7 +81,7 @@ def start_sse_stream(output_stream=sys.stdout):
             new_positions[player.uid] = player.board_position
             new_balances[player.uid] = player.balance
             turn_order[player.uid] = player.turn_position
-            jailed_players[player.uid] = player.jail_state
+            new_jailed_players[player.uid] = player.jail_state
 
         # Assign the current (aka. non-new) dictionaries to the value of the
         # "new" (aka. latest) dictionaries, after calling the appropriate
