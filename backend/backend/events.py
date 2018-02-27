@@ -443,7 +443,7 @@ def generate_ownership_events(
             old_ownership.
     """
     changes = {}
-    positions = list(old_ownership.keys()).append(new_ownership.keys())
+    positions = list(old_ownership.keys()) + list(new_ownership.keys())
     for position in positions:
         changes[position] = {}
         if position in new_ownership:
