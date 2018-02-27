@@ -404,8 +404,6 @@ def generate_game_start_event(game_id, output_stream):
     event: gameStart
     data: 5
     <BLANKLINE>
-    <BLANKLINE>
-
     """
     output_event(output_stream, 'gameStart', game_id)
 
