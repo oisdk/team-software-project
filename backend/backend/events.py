@@ -99,6 +99,15 @@ def start_sse_stream(output_stream=sys.stdout):
 def output_event(output_stream, event, data):
     """Output a sse event as json with the given details.
 
+    An SSE event consists of data and an optional name. The name is the
+    identifier that is listened for on the client side (if no name is given,
+    the event can be listened for as "message"). Here’s the rough format:
+
+    [event: <event name>]
+    data: <event data>
+    [data: <continued event data>]
+    <blank line>
+
     Arguments:
         output_stream: The stream to output the sse event to.
         event: The name of the event to output.
