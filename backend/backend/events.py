@@ -352,24 +352,18 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     <BLANKLINE>
 
     """
-    # Send the event name to the client.
-    output_stream.write('event: playerMove\n')
-
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
-    output_stream.write('data: ')
     if not old_positions:
-        output_stream.write(json.dumps([
+        data = [
             [uid, board_position]
-            for uid, board_position in new_positions.items()]))
+            for uid, board_position in new_positions.items()]
     else:
-        output_stream.write(json.dumps([
+        data = [
             [uid, board_position]
             for uid, board_position in new_positions.items()
-            if board_position != old_positions[uid]]))
-
-    # Standard SSE procedure to have two blank lines after data.
-    output_stream.write('\n\n')
+            if board_position != old_positions[uid]]
+    output_event(output_stream, 'playerMove', data)
 
 
 def check_game_playing_status(output_stream, game, last_game_state):
