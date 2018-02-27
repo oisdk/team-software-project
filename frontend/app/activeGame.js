@@ -4,6 +4,9 @@ import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 
 const playerTokenInformation = {};
+const playerPositions = {}; // value id : position on board ie previous position.
+let timer = '';
+let currentPlayer = '';
 
 /**
  * Displays the page for an active game.
@@ -31,7 +34,12 @@ export function onPlayerMove(playerMoveEvent) {
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
     // console.log(playerMoveEvent);
-    control.movePlayer(items[0], items[1], playerTokenInformation[items[0]]);
+    const player = items[0];
+    currentPlayer = player;
+    const endPosition = items[1];
+    playerPositions[currentPlayer].end = parseInt(endPosition, 10);
+    startAnimation();
+    // control.movePlayer(items[0], items[1], playerTokenInformation[items[0]]);
 }
 
 /**
@@ -76,6 +84,8 @@ export function displayBoard(playerList) {
     for (let i = 0; i < playerList.length; i += 1) {
         createCanvas(playerList[i], 'content', i + 2);
         playerTokenInformation[String(playerList[i])] = images[tokenSelector];
+        // {player1: start 0 and end 0 }
+        playerPositions[String(playerList[i - 1])] = {current: 0, end: 0};
         control.movePlayer(playerList[i], 0, playerTokenInformation[playerList[i]]);
         tokenSelector += 1;
     }
@@ -115,6 +125,27 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerTurn', onPlayerTurn);
     eventSource.addEventListener('playerBalance', onPlayerBalance);
     // eventSource.addEventListener('gameEnd', disableActiveGameListeners);
+}
+
+function startAnimation() {
+    timer = setInterval(animate, 500);
+}
+
+function animate() {
+    playerPositions[currentPlayer].current += 1;
+    let nextPosition = playerPositions[currentPlayer].current;
+    console.log(nextPosition);
+    if (nextPosition > 39) {
+        nextPosition -= 40;
+        playerPositions[currentPlayer].current = nextPosition;
+    }
+    console.log(playerTokenInformation[currentPlayer]);
+    control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
+    if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
+        clearInterval(timer);
+        console.log('ended');
+        currentPlayer = '';
+    }
 }
 
 /*
