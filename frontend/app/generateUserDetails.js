@@ -191,5 +191,8 @@ export function jailedPlayer(jailedEvent) {
         if (String(item[0]) === String(id) && String(item[1]) === 'in_jail') {
             jail = true;
         }
+        else{
+            jail = false;
+        }
     });
 }
