@@ -43,9 +43,9 @@ def check_position(player_id):
         if position_type == "tax":
             pay_tax(player_id, misc_position_details["value"])
         elif position_type == "chance":
-            pass
+            activate_chance(player_id) # Game id can be retrieved with convenience method if needed for some cards
         elif position_type == "community_chest":
-            pass
+            activate_chest(player_id) # Game id can be retrieved with convenience method if needed for some cards
         elif position_type == "jail":
             pass
         elif position_type == "to_jail":
