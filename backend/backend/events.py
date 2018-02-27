@@ -96,6 +96,47 @@ def start_sse_stream(output_stream=sys.stdout):
         output_stream.flush()
 
 
+def output_event(output_stream, event, data):
+    """Output a sse event as json with the given details.
+
+    Arguments:
+        output_stream: The stream to output the sse event to.
+        event: The name of the event to output.
+        data: The data to be output. This will be serialised using json.dumps.
+
+    Testing strings:
+    >>> import sys
+    >>> output_event(sys.stdout, 'hello', 'goodbye')
+    event: hello
+    data: "goodbye"
+    <BLANKLINE>
+
+    Testing numbers:
+    >>> import sys
+    >>> output_event(sys.stdout, 'hello', 3)
+    event: hello
+    data: 3
+    <BLANKLINE>
+
+    Testing dictionaries:
+    >>> import sys
+    >>> output_event(sys.stdout, 'hello', {3: 4, 5: 'q'})
+    event: hello
+    data: {"3": 4, "5": "q"}
+    <BLANKLINE>
+
+    Testing lists:
+    >>> import sys
+    >>> output_event(sys.stdout, 'hello', [3, 4, 5, 4])
+    event: hello
+    data: [3, 4, 5, 4]
+    <BLANKLINE>
+    """
+    output_stream.write(
+        'event: {}\n'
+        'data: {}\n'
+        '\n'.format(event, json.dumps(data, sort_keys=True)))
+
 def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     """Checks if the turn has changed to a different player and sends an SSE
     event if it has.
