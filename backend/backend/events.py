@@ -16,6 +16,7 @@ from cgi import FieldStorage
 import cgitb
 from backend.game import Game
 from backend.player import Player
+from backend.properties import owned_property_positions, Property
 
 cgitb.enable()
 
@@ -195,14 +196,13 @@ def property_updates(game_id):
     while True:
         new_properties = {}
         for position in positions:
-            this_property = Property(position)
+            this_property = Property(position, game_id)
             if this_property.owner not in new_properties:
                 new_properties[this_property.owner] = [position]
             else:
                 new_properties[this_property.owner].append(position)
         yield new_properties
         properties = new_properties
-
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
