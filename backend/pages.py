@@ -13,5 +13,6 @@ pages = {
     'game_event_source': 'backend.events:start_sse_stream',
     'join_game': 'backend.join_game:join_game',
     'increment_turn': 'backend.increment_turn:increment_turn',
+    'request_players': 'backend.get_list_of_players:request_list_of_players',
     'charge_rent': 'backend.charge_rent:charge_rent',
 }
