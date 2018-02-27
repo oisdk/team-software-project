@@ -119,6 +119,32 @@ def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     return new_turn
 
 
+def generate_player_turn_event(output_stream, player_id):
+    """Generates an event for a change of turn in the game.
+
+    Arguments:
+        new_turn: An int representing the latest position in the playing
+            queue.
+        player_id: An int representing the player whose turn it is.
+
+    >>> import sys
+    >>> generate_player_turn_event(sys.stdout, 2)
+    event: playerTurn
+    data: 2
+    <BLANKLINE>
+
+    """
+    # Send the event name to the client.
+    output_stream.write('event: playerTurn\n')
+
+    # Send the integer representing the latest position in the playing queue
+    # to the client in the SSE data chunk.
+    output_stream.write('data: ' + str(player_id))
+
+    # Standard SSE procedure to have two blank lines after data.
+    output_stream.write('\n\n')
+
+
 def check_new_players(output_stream, old_players, new_players):
     """Checks if a new player joined the game and sends an SSE event if it has.
 
@@ -135,81 +161,6 @@ def check_new_players(output_stream, old_players, new_players):
     if new_players != old_players:
         generate_player_join_event(output_stream, old_players, new_players)
     return new_players
-
-
-def check_new_balances(output_stream, old_balances, new_balances):
-    """Checks if a player's balance changed and sends an SSE event if it has.
-
-    Arguments:
-        old_balances: A dictionary representing the current balance
-            for each player. key = user_id, value = balance.
-        new_balances: A dictionary representing the latest (aka. "new")
-            balance for each player. key = user_id, value = balance.
-
-    Returns:
-        A dictionary with the latest balance for each player.
-
-    """
-    if new_balances != old_balances:
-        generate_player_balance_event(output_stream, old_balances,
-                                      new_balances)
-    return new_balances
-
-
-def check_new_positions(output_stream, old_positions, new_positions):
-    """Checks if a player has moved and sends an SSE event if it has.
-
-    Arguments:
-        old_positions: A dictionary representing the current position
-            for each player. key = user_id, value = position.
-        new_positions: A dictionary representing the latest (aka. "new")
-            position for each player. key = user_id, value = position.
-
-    Returns:
-        A dictionary with the latest positions for each player.
-
-    """
-    if new_positions != old_positions:
-        generate_player_move_event(output_stream, old_positions, new_positions)
-    return new_positions
-
-
-def check_game_playing_status(output_stream, game, last_game_state):
-    """Check if the specified game's status is 'playing'.
-
-    Arguments:
-        game: The game whose status is being checked.
-
-    """
-    if last_game_state == "waiting" and game.state == "playing":
-        # Call function to generate appropriate event if game's status is
-        # "playing".
-        generate_game_start_event(game.uid, output_stream)
-
-    return game.state
-
-
-def check_property_ownership(output_stream, game_id, old_properties):
-    """Issue events if the ownership of any properties has changed.
-
-    Arguments:
-        game_id: The id of the game the events are being issued for.
-
-    Returns:
-        The current property ownership data, as a dictionary where the keys
-        are property positions, and the values are owner player ids.
-    """
-    positions = owned_property_positions(game_id)
-    new_properties = {}
-    for position in positions:
-        this_property = Property(position, game_id)
-        new_properties[position] = this_property.owner
-    if old_properties != new_properties:
-        generate_ownership_events(
-            output_stream,
-            old_properties,
-            new_properties)
-    return new_properties
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
@@ -262,38 +213,94 @@ def generate_player_join_event(output_stream, old_players, new_players):
     output_stream.write('\n\n')
 
 
-def generate_game_start_event(game_id, output_stream):
-    """Generate a gameStart event for the appropriate game.
-
-    Sends a gameStart server-sent event, along with data representing the
-    game_id.
+def check_new_balances(output_stream, old_balances, new_balances):
+    """Checks if a player's balance changed and sends an SSE event if it has.
 
     Arguments:
-        game_id: An int representing the started game's id.
+        old_balances: A dictionary representing the current balance
+            for each player. key = user_id, value = balance.
+        new_balances: A dictionary representing the latest (aka. "new")
+            balance for each player. key = user_id, value = balance.
+
+    Returns:
+        A dictionary with the latest balance for each player.
+
+    """
+    if new_balances != old_balances:
+        generate_player_balance_event(output_stream, old_balances,
+                                      new_balances)
+    return new_balances
+
+
+def generate_player_balance_event(output_stream, old_balances, new_balances):
+    """Generates an event for a change in the balance of players in the game.
+
+    Compares two dictionaries and outputs a playerBalance server-sent event if
+    the two dicts differ. Along with the event is JSON containing the
+    difference between the two dicts.
+
+    Arguments:
+        old_balances: A dictionary representing the current balance for each
+            player.
+        new_balances: A dictionary representing the latest balance for each
+            player.
 
     >>> import sys
-    >>> generate_game_start_event(5, sys.stdout)
-    event: gameStart
-    data: 5
+    >>> generate_player_balance_event(
+    ...     sys.stdout,
+    ...     {5: 200, 6: 200, 7: 200, 8: 200},
+    ...     {5: 200, 6: 200, 7: 200, 8: 400})
+    event: playerBalance
+    data: [[8, 400]]
     <BLANKLINE>
+
+    >>> import sys
+    >>> generate_player_balance_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {5: 200})
+    event: playerBalance
+    data: [[5, 200]]
     <BLANKLINE>
 
     """
-    # Send the gameStart event to the client. The client will listen for this
-    # event. i.e sseEventSource.addEventListener('gameStart', callback)
-    output_stream.write('event: gameStart\n')
+    # Send the event name to the client.
+    output_stream.write('event: playerBalance\n')
 
-    # Send the game_id to the client in the SSE data chunk.
-    # For the client to read this data in the "gameStart" event listener, they
-    # would do something like the following:
-    # sseEventSource.addEventListener('gameStart', (gameStartEvent) => {
-    #     const theData = gameStartEvent.data;
-    #     // Do something with 'theData'
-    # })
-    output_stream.write('data: %s\n' % (game_id))
+    # Send the JSON object which contains the elements that are not in common
+    # with the two dictionaries.
+    output_stream.write('data: ')
+
+    if not old_balances:
+        output_stream.write(json.dumps([
+            [uid, balance]
+            for uid, balance in new_balances.items()]))
+    else:
+        output_stream.write(json.dumps([
+            [uid, balance]
+            for uid, balance in new_balances.items()
+            if balance != old_balances[uid]]))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
+
+
+def check_new_positions(output_stream, old_positions, new_positions):
+    """Checks if a player has moved and sends an SSE event if it has.
+
+    Arguments:
+        old_positions: A dictionary representing the current position
+            for each player. key = user_id, value = position.
+        new_positions: A dictionary representing the latest (aka. "new")
+            position for each player. key = user_id, value = position.
+
+    Returns:
+        A dictionary with the latest positions for each player.
+
+    """
+    if new_positions != old_positions:
+        generate_player_move_event(output_stream, old_positions, new_positions)
+    return new_positions
 
 
 def generate_player_move_event(output_stream, old_positions, new_positions):
@@ -348,83 +355,76 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     output_stream.write('\n\n')
 
 
-def generate_player_turn_event(output_stream, player_id):
-    """Generates an event for a change of turn in the game.
+def check_game_playing_status(output_stream, game, last_game_state):
+    """Check if the specified game's status is 'playing'.
 
     Arguments:
-        new_turn: An int representing the latest position in the playing
-            queue.
-        player_id: An int representing the player whose turn it is.
+        game: The game whose status is being checked.
+
+    """
+    if last_game_state == "waiting" and game.state == "playing":
+        # Call function to generate appropriate event if game's status is
+        # "playing".
+        generate_game_start_event(game.uid, output_stream)
+
+    return game.state
+
+
+def generate_game_start_event(game_id, output_stream):
+    """Generate a gameStart event for the appropriate game.
+
+    Sends a gameStart server-sent event, along with data representing the
+    game_id.
+
+    Arguments:
+        game_id: An int representing the started game's id.
 
     >>> import sys
-    >>> generate_player_turn_event(sys.stdout, 2)
-    event: playerTurn
-    data: 2
+    >>> generate_game_start_event(5, sys.stdout)
+    event: gameStart
+    data: 5
+    <BLANKLINE>
     <BLANKLINE>
 
     """
-    # Send the event name to the client.
-    output_stream.write('event: playerTurn\n')
+    # Send the gameStart event to the client. The client will listen for this
+    # event. i.e sseEventSource.addEventListener('gameStart', callback)
+    output_stream.write('event: gameStart\n')
 
-    # Send the integer representing the latest position in the playing queue
-    # to the client in the SSE data chunk.
-    output_stream.write('data: ' + str(player_id))
+    # Send the game_id to the client in the SSE data chunk.
+    # For the client to read this data in the "gameStart" event listener, they
+    # would do something like the following:
+    # sseEventSource.addEventListener('gameStart', (gameStartEvent) => {
+    #     const theData = gameStartEvent.data;
+    #     // Do something with 'theData'
+    # })
+    output_stream.write('data: %s\n' % (game_id))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
 
 
-def generate_player_balance_event(output_stream, old_balances, new_balances):
-    """Generates an event for a change in the balance of players in the game.
-
-    Compares two dictionaries and outputs a playerBalance server-sent event if
-    the two dicts differ. Along with the event is JSON containing the
-    difference between the two dicts.
+def check_property_ownership(output_stream, game_id, old_properties):
+    """Issue events if the ownership of any properties has changed.
 
     Arguments:
-        old_balances: A dictionary representing the current balance for each
-            player.
-        new_balances: A dictionary representing the latest balance for each
-            player.
+        game_id: The id of the game the events are being issued for.
 
-    >>> import sys
-    >>> generate_player_balance_event(
-    ...     sys.stdout,
-    ...     {5: 200, 6: 200, 7: 200, 8: 200},
-    ...     {5: 200, 6: 200, 7: 200, 8: 400})
-    event: playerBalance
-    data: [[8, 400]]
-    <BLANKLINE>
-
-    >>> import sys
-    >>> generate_player_balance_event(
-    ...     sys.stdout,
-    ...     {},
-    ...     {5: 200})
-    event: playerBalance
-    data: [[5, 200]]
-    <BLANKLINE>
-
+    Returns:
+        The current property ownership data, as a dictionary where the keys
+        are property positions, and the values are owner player ids.
     """
-    # Send the event name to the client.
-    output_stream.write('event: playerBalance\n')
-
-    # Send the JSON object which contains the elements that are not in common
-    # with the two dictionaries.
-    output_stream.write('data: ')
-
-    if not old_balances:
-        output_stream.write(json.dumps([
-            [uid, balance]
-            for uid, balance in new_balances.items()]))
-    else:
-        output_stream.write(json.dumps([
-            [uid, balance]
-            for uid, balance in new_balances.items()
-            if balance != old_balances[uid]]))
-
-    # Standard SSE procedure to have two blank lines after data.
-    output_stream.write('\n\n')
+    positions = owned_property_positions(game_id)
+    new_properties = {}
+    for position in positions:
+        this_property = Property(position, game_id)
+        new_properties[position] = this_property.owner
+    if old_properties != new_properties:
+        generate_ownership_events(
+            output_stream,
+            old_properties,
+            new_properties)
+    return new_properties
 
 
 def generate_ownership_events(
