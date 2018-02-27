@@ -90,7 +90,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         if self._in_context:
             return getattr(self, attribute)
         else:
-            conn = make_connection()
+            conn = backend.storage.make_connection()
             try:
                 with conn.cursor() as cursor:
                     query_string = cursor.mogrify(
@@ -328,12 +328,12 @@ def owned_property_positions(game_id):
         conn.begin()
         with conn.cursor() as cursor:
             cursor.execute('SELECT property_position, player_id '
-                'FROM properties '
-                'WHERE game_id = %s '
-                'AND state = %s '
-                'ORDER BY player_id;', (game_id, 'unowned'))
+                           'FROM properties '
+                           'WHERE game_id = %s '
+                           'AND state = %s '
+                           'ORDER BY player_id;', (game_id, 'unowned'))
             return {player_id: [entry['property_position'] for entry in row]
-                for player_id, row
-                in groupby(cursor.fetchall(), itemgetter('player_id'))}
+                    for player_id, row
+                    in groupby(cursor.fetchall(), itemgetter('player_id'))}
     finally:
         conn.close()
