@@ -53,6 +53,7 @@ def start_sse_stream(output_stream=sys.stdout):
     new_balances = {}
     turn = None
     turn_order = {}
+    property_checker = property_updates(game_id)
 
     # These statements are executed constantly once the first request to this
     # file is made.
@@ -186,6 +187,22 @@ def check_game_playing_status(output_stream, game, last_game_state):
         generate_game_start_event(game.uid, output_stream)
 
     return game.state
+
+
+def property_updates(game_id):
+    properties = {}
+    positions = owned_property_positions(game_id)
+    while True:
+        new_properties = {}
+        for position in positions:
+            this_property = Property(position)
+            if this_property.owner not in new_properties:
+                new_properties[this_property.owner] = [position]
+            else:
+                new_properties[this_property.owner].append(position)
+        yield new_properties
+        properties = new_properties
+
 
 
 def generate_player_join_event(output_stream, old_players, new_players):
