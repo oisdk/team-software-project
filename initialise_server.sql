@@ -52,30 +52,6 @@ CREATE TABLE IF NOT EXISTS property_values (
 );
 
 CREATE TABLE IF NOT EXISTS properties (
-    player_id int UNSIGNED NOT NULL DEFAULT '',
-	game_id int UNSIGNED NOT NULL,
-	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
-	property_position tinyint UNSIGNED NOT NULL,
-	house_count tinyint UNSIGNED DEFAULT 0,
-	hotel_count tinyint UNSIGNED DEFAULT 0,
-	FOREIGN KEY (player_id) REFERENCES players(id),
-    FOREIGN KEY (game_id) REFERENCES games(id),
-	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
-);
-
-CREATE TABLE IF NOT EXISTS properties (
-    player_id int UNSIGNED NOT NULL,
-	game_id int UNSIGNED NOT NULL,
-	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
-	property_position tinyint UNSIGNED NOT NULL,
-	house_count tinyint UNSIGNED DEFAULT 0,
-	hotel_count tinyint UNSIGNED DEFAULT 0,
-	FOREIGN KEY (player_id) REFERENCES players(id),
-    FOREIGN KEY (game_id) REFERENCES games(id),
-	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
-);
-
-CREATE TABLE IF NOT EXISTS properties (
     player_id int UNSIGNED NOT NULL,
 	game_id int UNSIGNED NOT NULL,
 	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
