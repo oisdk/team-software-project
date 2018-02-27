@@ -106,7 +106,7 @@ export function generateUserDetails() {
  */
 export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn}`;
+    document.getElementById('current-turn').innerHTML = `Player ${turn[1] + 1}`;
     // console.log(`Turn:${turn}`);
     const rollDiceButton = document.getElementById('roll-dice');
     rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
@@ -116,7 +116,7 @@ export function turnDetails(turnEvent) {
     endTurnButton.disabled = true;
     // console.log(`id Test:${id}`);
     // console.log(`turn Test:${turn}`);
-    if (String(turn) === String(id)) {
+    if (String(turn[0]) === String(id)) {
         enableGameInterface();
     }
 }

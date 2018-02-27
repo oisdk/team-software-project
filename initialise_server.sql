@@ -29,6 +29,14 @@ CREATE TABLE IF NOT EXISTS playing_in (
     FOREIGN KEY (game_id) REFERENCES games(id)
 );
 
+-- Note that only 'tax' uses the value field in this table
+CREATE TABLE IF NOT EXISTS miscellaneous (
+    board_position tinyint UNSIGNED NOT NULL,
+    type ENUM('tax', 'chance', 'community_chest', 'jail', 'parking', 'to_jail') NOT NULL,
+    value smallint UNSIGNED,
+    PRIMARY KEY (board_position)
+);
+
 CREATE TABLE IF NOT EXISTS property_values (
     property_position tinyint UNSIGNED NOT NULL,
 	purchase_price smallint UNSIGNED NOT NULL,
@@ -41,6 +49,18 @@ CREATE TABLE IF NOT EXISTS property_values (
 	four_rent smallint UNSIGNED NOT NULL DEFAULT 0,
 	hotel_rent smallint UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (property_position)
+);
+
+CREATE TABLE IF NOT EXISTS properties (
+    player_id int UNSIGNED NOT NULL DEFAULT '',
+	game_id int UNSIGNED NOT NULL,
+	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
+	property_position tinyint UNSIGNED NOT NULL,
+	house_count tinyint UNSIGNED DEFAULT 0,
+	hotel_count tinyint UNSIGNED DEFAULT 0,
+	FOREIGN KEY (player_id) REFERENCES players(id),
+    FOREIGN KEY (game_id) REFERENCES games(id),
+	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
 );
 
 CREATE TABLE IF NOT EXISTS properties (
@@ -134,3 +154,18 @@ VALUES ('chest', "Advance to Go", "move_specific", 0),
        ('chance', "Adbance to Pall Mall", 'move_specific', 11),
        ('chance', "Drunk in Charge", 'pay_bank', 20),
        ('chance', "Advance to Go", "move_specific", 0);
+
+INSERT INTO miscellaneous (board_position, type)
+VALUES (2, 'community_chest'),
+       (7, 'chance'),
+       (10, 'jail'),
+       (17, 'community_chest'),
+       (20, 'parking'),
+       (22, 'chance'),
+       (30, 'to_jail'),
+       (33, 'community_chest'),
+       (36, 'chance');
+
+INSERT INTO miscellaneous
+VALUES (4, 'tax', 200),
+       (38, 'tax', 100);
