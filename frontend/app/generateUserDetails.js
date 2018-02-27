@@ -5,6 +5,7 @@ import * as sendJSON from './sendJSON';
 let details = getCookie.checkUserDetails();
 let id = details.user_id;
 let userName = details.user_name;
+let jail = false;
 
 /**
  * Function to disable game interface.
@@ -29,6 +30,7 @@ export function enableGameInterface() {
 export function enableEndTurn() {
     document.getElementById('roll-dice').disabled = true;
     document.getElementById('end-turn').disabled = false;
+    document.getElementById('jail').disabled = true;
 }
 
 /**
@@ -38,6 +40,12 @@ export function enableLeaveJail() {
     document.getElementById('jail').disabled = false;
 }
 
+/**
+ * Function to disable leave jail functionality.
+ */
+export function disableLeaveJail() {
+    document.getElementById('jail').disabled = true;
+}
 
 /**
  * Callback to check user rolls and enable end turn.
@@ -82,6 +90,8 @@ export function leaveJail(JSONSend) {
         serverAddress: 'cgi-bin/leave_jail.py',
         jsonObject: {player_id: id},
     });
+    jail = false;
+    enableEndTurn();
 }
 
 /**
@@ -138,7 +148,11 @@ export function turnDetails(turnEvent) {
     leaveJailButton.disabled = true;
     // console.log(`id Test:${id}`);
     // console.log(`turn Test:${turn}`);
-    if (String(turn) === String(id)) {
+    if (jail === true && String(turn) === String(id)) {
+        enableGameInterface();
+        enableLeaveJail();
+    }
+    else if (String(turn) === String(id)) {
         enableGameInterface();
     }
 }
@@ -169,12 +183,13 @@ export function balanceDetails(balanceEvent) {
  *
  * @param jailedEvent The data received from the event
  */
-export function jailedPlayerCallback(jailedEvent) {
+export function jailedPlayer(jailedEvent) {
     const data = JSON.parse(jailedEvent.data);
+    console.log(data);
     data.forEach((item) => {
         // console.log(item);
-        if (String(item[0]) === String(id)) {
-            enableLeaveJail();
+        if (String(item[0]) === String(id) && String(item[1]) === 'in_jail') {
+            jail = true;
         }
     });
 }
