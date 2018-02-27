@@ -160,6 +160,7 @@ def output_event(output_stream, event, data):
         'data: {}\n'
         '\n'.format(event, json.dumps(data, sort_keys=True)))
 
+
 def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     """Checks if the turn has changed to a different player and sends an SSE
     event if it has.
@@ -197,7 +198,10 @@ def generate_player_turn_event(output_stream, player_id, turn_order):
     data: [2, 0]
     <BLANKLINE>
     """
-    output_event(output_stream, 'playerTurn', [player_id, turn_order[player_id]])
+    output_event(
+        output_stream,
+        'playerTurn',
+        [player_id, turn_order[player_id]])
 
 
 def check_new_players(output_stream, old_players, new_players):
@@ -387,6 +391,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
             for uid, board_position in new_positions.items()
             if board_position != old_positions[uid]]
     output_event(output_stream, 'playerMove', data)
+
 
 def check_game_playing_status(output_stream, game, last_game_state):
     """Check if the specified game's status is 'playing'.
