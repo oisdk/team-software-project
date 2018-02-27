@@ -287,25 +287,19 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     <BLANKLINE>
 
     """
-    # Send the event name to the client.
-    output_stream.write('event: playerBalance\n')
-
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
-    output_stream.write('data: ')
-
     if not old_balances:
-        output_stream.write(json.dumps([
+        data = [
             [uid, balance]
-            for uid, balance in new_balances.items()]))
+            for uid, balance in new_balances.items()]
     else:
-        output_stream.write(json.dumps([
+        data = [
             [uid, balance]
             for uid, balance in new_balances.items()
-            if balance != old_balances[uid]]))
+            if balance != old_balances[uid]]
 
-    # Standard SSE procedure to have two blank lines after data.
-    output_stream.write('\n\n')
+    output_event(output_stream, 'playerBalance', data)
 
 
 def check_new_positions(output_stream, old_positions, new_positions):
