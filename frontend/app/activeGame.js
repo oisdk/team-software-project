@@ -147,6 +147,8 @@ function disableActiveGameListeners(_gameEndEvent) {
     eventSource.removeEventListener('playerMove', onPlayerMove);
     eventSource.removeEventListener('playerTurn', onPlayerTurn);
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
+    eventSource.removeEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
+    eventSource.removeEventListener('gameEnd', disableActiveGameListeners);
 }
 
 /**
