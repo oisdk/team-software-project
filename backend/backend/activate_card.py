@@ -3,19 +3,24 @@
 from random import randint
 from backend.player import Player
 from backend.property import Property
+from backend.cards import get_card_details
 
 size_of_card_deck = 15
 
-def activate_chance(player_id, game_id):
+def activate_card(player_id, game_id):
     # Pick a random number to index the card deck in the database
     card_table_id = randint(0, size_of_card_deck)
+
     # Dive into database to get the card details
     card_details = get_card_details(card_table_id)
-    # Send the description to the client
-    card_description = card_details["description"]
-    pass
+
     # Check what type of chance card it is
     card_type = card_details["operation_type"]
+
+    # Send the type and description to the client
+    card_description = card_details["description"]
+    pass
+
     # Get value
     # This card_value is unique in that it represents different things
     # depending on the card_type. See below comments for more information
@@ -33,7 +38,6 @@ def activate_chance(player_id, game_id):
             else:
                 # The card value here indicates the board position to move to
                 player.board_position = int(card_value)
-
 
     # If it's a "pay_per_house" type of chance card
     if card_type == "pay_per_house":
@@ -64,3 +68,25 @@ def activate_chance(player_id, game_id):
         with Player(player_id) as player:
             # The card_value here indicates how much to deduct from balance
             player.balance -= int(card_value) # CHECK TYPES
+
+    if card_type == "collect_from_opponents":
+        # Get a list of *opponents* in this game
+        with Game(game_id) as game:
+            # ".remove" will remove this player's id from the list of all
+            # players
+            opponents = game.players.remove(player_id)
+
+        # Iterate through each player and deduct from their balance
+        for opponent_id in opponents:
+            with Player(opponent_id) as opponent:
+                # card_value here indicates the amount to deduct from
+                # opponent's balance
+                opponent.balance -= int(card_value) # Check types
+
+        # Add to this player's balance the total amount deducted from the
+        # opponents.
+        # Note that the amount to add to this player's balance can be found
+        # by simply multiplying the amount to deduct per opponent
+        # (aka. card_value) by the *number* of opponents
+        with Player(player_id) as player:
+            player.balance += int(card_value) * len(opponents)
