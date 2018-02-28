@@ -25,3 +25,18 @@ html,body{
 .center{
   text-align: center;
 }
+.infoheaders{
+  font-family: Schaeffer;
+  
+  background-color: rgb(38, 37, 37);
+  padding-top: 1%;
+  color: rgb(242, 190, 5);
+}
+.infodata{
+  padding-top: 1%;
+  padding-bottom: 1%;
+  background-color: rgb(182, 178, 178);
+}
+.ctr{
+  padding: 1%;
+}
