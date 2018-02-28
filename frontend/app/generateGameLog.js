@@ -54,8 +54,14 @@ export function logTurnEvent(turnEvent) {
 export function logMoveEvent(moveEvent) {
     const move = String(JSON.parse(moveEvent.data));
     const items = move.split(',');
+    console.log(`Items:${items}`);
+    let roll = '';
     if (items[2] !== 0) {
-        const roll = items[1] - items[2];
+        if (parseInt(items[2], 10) > parseInt(items[1], 10)) {
+            roll = items[1] - (items[2] - 40);
+        } else {
+            roll = items[1] - items[2];
+        }
         const outputString = `Player ${items[0]} Rolled ${roll}`;
         updateGameLog(outputString);
     }
