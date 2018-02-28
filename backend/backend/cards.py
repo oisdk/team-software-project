@@ -1,5 +1,8 @@
 """ Module to provide accessors for the "cards" database table. """
 
+import backend.storage
+
+
 def get_card_details(unique_id):
     conn = backend.storage.make_connection()
     try:
