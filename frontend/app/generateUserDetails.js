@@ -95,6 +95,47 @@ export function generateUserDetails() {
     // TODO Properties!
 }
 
+/**
+ * Function to display properties which are (un)mortgaged.
+ * @param req - Response from server-side.
+ */
+export function updateDropDown(req) {
+    const request = JSON.parse(req.responseText);
+    const propertyState = request.player_id[0];
+    const propertyNames = request.player_id[1];
+    const select = document.getElementById(propertyState);
+    for (let i = 0; i < propertyNames.length; i += 1) {
+        const option = document.createElement('option');
+
+        // set values for option
+        option.setAttribute('value', propertyNames[i]);
+        option.innerHTML = propertyNames[i];
+
+        // add option to the select
+        select.appendChild(option);
+    }
+}
+
+/**
+ * Called when a mortgage/unmortgage button is presses.
+ * Calls function which handles property state and player
+ * Result is list of properties by property_state
+ *
+ * @param {Function} JSONSend - JSON function makes testing easier.
+ * @param {Object} button - Object of the button pressed.
+ * @param {String} state - The desired state of a property.
+ */
+export function changePropState(JSONSend, button, state) {
+    const optionIndex = button.selectedIndex;
+    // This gets the name by the index of the property name selected
+    // from the property options
+    const propertyName = optionIndex.options[optionIndex.selectedIndex].value;
+    JSONSend({
+        serverAddress: 'cgi-bin/property_state.py',
+        jsonObject: {player_id: [state, propertyName, id]},
+        updateDropDown,
+    });
+}
 
 /**
  * Called when a playerTurn event happens.
@@ -106,17 +147,23 @@ export function generateUserDetails() {
  */
 export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn}`;
+    document.getElementById('current-turn').innerHTML = `Player ${turn[1] + 1}`;
     // console.log(`Turn:${turn}`);
     const rollDiceButton = document.getElementById('roll-dice');
     rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
     rollDiceButton.disabled = true;
+
+    const mortgageButton = document.getElementById('mort-check');
+    mortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, mortgageButton, 'unmortgage'); };
+    const unmortgageButton = document.getElementById('unmort-check');
+    unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage'); };
+
     const endTurnButton = document.getElementById('end-turn');
     endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
     endTurnButton.disabled = true;
     // console.log(`id Test:${id}`);
     // console.log(`turn Test:${turn}`);
-    if (String(turn) === String(id)) {
+    if (String(turn[0]) === String(id)) {
         enableGameInterface();
     }
 }
