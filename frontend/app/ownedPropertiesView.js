@@ -15,7 +15,7 @@ export class OwnedPropertiesView {
      */
     constructor(rootDisplayElement) {
         this.rootElement = rootDisplayElement;
-        this.table = OwnedPropertiesView.createTable(rootDisplayElement);
+        this.tableBody = OwnedPropertiesView.createTable(rootDisplayElement);
         this.rows = {};
     }
 
@@ -69,7 +69,7 @@ export class OwnedPropertiesView {
      * @param {String} newOwner The name of the new owner of the property.
      */
     addNewProperty({property, newOwner}) {
-        const row = this.table.insertRow(-1);
+        const row = this.tableBody.insertRow(-1);
         row.insertCell(0).innerHTML = property;
         row.insertCell(1).innerHTML = newOwner;
         this.rows[property] = row;
@@ -91,7 +91,7 @@ export class OwnedPropertiesView {
      * @param {String} property The name of the property to remove.
      */
     removeProperty({property}) {
-        this.table.deleteRow(this.rows[property].rowIndex);
+        this.tableBody.deleteRow(this.rows[property].rowIndex - 1);
         delete this.rows[property];
     }
 }
