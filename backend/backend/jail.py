@@ -1,9 +1,8 @@
 """ Jail module """
-from backend.player import Player
-from backend.game import Game
 import sys
 import cgitb
 import json
+from backend.player import Player
 
 cgitb.enable()
 
@@ -13,8 +12,9 @@ def go_to_jail(player_id):
     """Function that sends a player to jail
     """
     with Player(player_id) as player:
-    	player.board_position = 10
-    	player.jail_state = 'in_jail'
+        player.board_position = 10
+        player.jail_state = 'in_jail'
+
 
 def leave_jail(player_id):
 
@@ -22,6 +22,7 @@ def leave_jail(player_id):
     """
     with Player(player_id) as player:
         player.jail_state = 'not_in_jail'
+
 
 def pay_to_leave_jail(source=sys.stdin, output=sys.stdout):
 
