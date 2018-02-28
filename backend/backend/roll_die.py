@@ -4,7 +4,6 @@ import json
 import sys
 from backend.player import Player
 from backend.game import Game, get_games
-from backend.jail import leave_jail
 
 
 def roll_dice():
@@ -54,7 +53,6 @@ def player_roll_dice(source=sys.stdin, output=sys.stdout):
                 else:
                     if rolls[0] == rolls[1]:
                         player.jail_state = 'not_in_jail'
-
 
                 if player.board_position >= number_of_squares:
                     player.balance += pass_go_amount
