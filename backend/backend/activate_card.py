@@ -27,9 +27,8 @@ def activate_card(player_id, game_id):  # pylint: disable=too-many-locals
     # Check what type of chance card it is
     card_type = card_details["operation_type"]
 
-    # Send the type and description to the client
-    # card_description = card_details["description"]
-    pass
+    # Send the *type* and *description* to the client
+    # ...
 
     # Get value
     # This card_value is unique in that it represents different things
