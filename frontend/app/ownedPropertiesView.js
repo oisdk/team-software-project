@@ -15,7 +15,7 @@ export class OwnedPropertiesView {
      */
     constructor(rootDisplayElement) {
         this.rootElement = rootDisplayElement;
-        this.table = this.createPropertiesTable(rootDisplayElement);
+        this.table = OwnedPropertiesView.createTable(rootDisplayElement);
         this.rows = {};
     }
 
@@ -26,15 +26,15 @@ export class OwnedPropertiesView {
      *        will be appended.
      * @return {HTMLElement} The root element of the created table.
      */
-    createPropertiesTable(rootElement) {
+    static createTable(rootElement) {
         const table = document.createElement('table');
 
         const header = table.createTHead();
         const headerRow = header.insertRow(0);
         const firstHeaderCell = headerRow.insertCell(0);
         const secondHeaderCell = headerRow.insertCell(1);
-        firstHeaderCell.innerHTML = "Properties";
-        secondHeaderCell.innerHTML = "Owner";
+        firstHeaderCell.innerHTML = 'Properties';
+        secondHeaderCell.innerHTML = 'Owner';
 
         rootElement.appendChild(table);
         return table;
@@ -48,7 +48,7 @@ export class OwnedPropertiesView {
      *        "property": <property name>}
      */
     update(changes) {
-        for (let i = 0; i < changes.length; i++) {
+        for (let i = 0; i < changes.length; i += 1) {
             if (changes[i].oldOwner === null) {
                 this.addNewProperty(changes[i]);
             } else if (changes[i].newOwner === null) {
