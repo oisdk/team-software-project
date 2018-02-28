@@ -91,10 +91,10 @@ def start_sse_stream(output_stream=sys.stdout):
                               turn_order)
         players = check_new_players(output_stream, players, new_players)
         balances = check_new_balances(output_stream, balances, new_balances)
-        positions = check_new_positions(output_stream, positions,
-                                        new_positions)
         jailed_players = check_new_jailed_players(
             output_stream, jailed_players, new_jailed_players)
+        positions = check_new_positions(output_stream, positions,
+                                        new_positions, new_jailed_players)
 
         # Pushes data to update the players info table on game start
         if push_initial_user_details and last_game_state == "playing":
@@ -174,7 +174,8 @@ def check_new_balances(output_stream, old_balances, new_balances):
     return new_balances.copy()
 
 
-def check_new_positions(output_stream, old_positions, new_positions):
+def check_new_positions(output_stream, old_positions, new_positions,
+                        jailed_players):
     """Checks if a player has moved and sends an SSE event if it has.
 
     Arguments:
@@ -188,7 +189,8 @@ def check_new_positions(output_stream, old_positions, new_positions):
 
     """
     if new_positions != old_positions:
-        generate_player_move_event(output_stream, old_positions, new_positions)
+        generate_player_move_event(
+            output_stream, old_positions, new_positions, jailed_players)
     return new_positions.copy()
 
 
@@ -311,7 +313,8 @@ def generate_game_start_event(game_id, output_stream):
     output_stream.write('\n\n')
 
 
-def generate_player_move_event(output_stream, old_positions, new_positions):
+def generate_player_move_event(output_stream, old_positions, new_positions,
+                               jailed_players):
     """Generates an event for a change in the position of players in the game.
 
     Compares two dictionaries and outputs a playerMove server-sent event if
@@ -328,18 +331,20 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     >>> generate_player_move_event(
     ...     sys.stdout,
     ...     {5: 4, 6: 6, 7: 5, 8: 0},
-    ...     {5: 4, 6: 6, 7: 5, 8: 4})
+    ...     {5: 4, 6: 6, 7: 5, 8: 4},
+    ...     {8: 'in_jail'})
     event: playerMove
-    data: [[8, 4, 0]]
+    data: [[8, 4, 0, "in_jail"]]
     <BLANKLINE>
 
     >>> import sys
     >>> generate_player_move_event(
     ...     sys.stdout,
     ...     {},
-    ...     {5: 4})
+    ...     {5: 4},
+    ...     {})
     event: playerMove
-    data: [[5, 4, 0]]
+    data: [[5, 4, 0, "not_in_jail"]]
     <BLANKLINE>
 
     """
@@ -351,11 +356,12 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     output_stream.write('data: ')
     if not old_positions:
         output_stream.write(json.dumps([
-            [uid, board_position, 0]
+            [uid, board_position, 0, 'not_in_jail']
             for uid, board_position in new_positions.items()]))
     else:
         output_stream.write(json.dumps([
-            [uid, board_position, old_positions[uid]]
+            [uid, board_position, old_positions[uid],
+             (jailed_players[uid] if uid in jailed_players else 'not_in_jail')]
             for uid, board_position in new_positions.items()
             if board_position != old_positions[uid]]))
 
