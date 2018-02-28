@@ -102,7 +102,7 @@ def start_sse_stream(output_stream=sys.stdout):
         last_game_state = check_game_playing_status(output_stream, game,
                                                     last_game_state)
 
-        time.sleep(3)
+        time.sleep(0.5)
 
         # Flush standard out which forcefully sends everything that might be
         # buffered in standard out to the client. No need to worry about tech
