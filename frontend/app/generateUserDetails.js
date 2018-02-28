@@ -147,16 +147,19 @@ export function turnDetails(turnEvent) {
     const leaveJailButton = document.getElementById('jail');
     leaveJailButton.onclick = () => { leaveJail(sendJSON.sendJSON); };
     leaveJailButton.disabled = true;
-    // console.log(`id Test:${id}`);
-    // console.log(`turn Test:${turn}`);
-    if (jail === true && String(turn) === String(id) && jailCounter < 3) {
+    console.log(`id Test:${id}`);
+    console.log(`turn Test:${turn}`);
+    if (jail === true && String(turn[0]) === String(id) && jailCounter < 3) {
         enableGameInterface();
         enableLeaveJail();
         jailCounter += 1;
-    } else if (jail === true && String(turn) === String(id)) {
+        console.log(`turn Test: If`);
+    } else if (jail === true && String(turn[0]) === String(id)) {
         enableLeaveJail();
-    } else if (String(turn) === String(id)) {
+        console.log(`turn Test: elIf1`);
+    } else if (String(turn[0]) === String(id)) {
         enableGameInterface();
+        console.log(`turn Test: elIf2`);
     }
 }
 
