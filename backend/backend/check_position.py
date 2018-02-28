@@ -7,6 +7,7 @@ import backend.properties
 import backend.miscellaneous
 from backend.charge_rent import charge_rent
 from backend.pay_tax import pay_tax
+import backend.activate_card as cards
 
 
 def check_position(player_id):
@@ -43,9 +44,9 @@ def check_position(player_id):
         if position_type == "tax":
             pay_tax(player_id, misc_position_details["value"])
         elif position_type == "chance":
-            activate_chance(player_id, game_id) # Game id can be retrieved with convenience method if needed for some cards
+            cards.activate_chance(player_id, game_id)
         elif position_type == "community_chest":
-            activate_chest(player_id, game_id) # Game id can be retrieved with convenience method if needed for some cards
+            cards.activate_chest(player_id, game_id)
         elif position_type == "jail":
             pass
         elif position_type == "to_jail":
