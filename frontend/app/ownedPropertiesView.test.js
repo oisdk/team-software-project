@@ -8,11 +8,13 @@ describe('OwnedPropertiesView', () => {
     const mockElement = createMockElement();
     const view = new OwnedPropertiesView(mockElement);
     const table = mockElement.appendChild.mock.calls[0][0];
+    const headerRow = table.rows[0];
 
     it('should create a table under the given root', () => {
         expect(view).toBeDefined();
         expect(mockElement.appendChild).toHaveBeenCalled();
         expect(table).toBeInstanceOf(HTMLTableElement);
+        expect(headerRow).toBeDefined();
     });
 
     const testProperty = 'Old Kent Road';
@@ -55,5 +57,6 @@ describe('OwnedPropertiesView', () => {
         ]);
 
         expect(table.rows.length).toEqual(1);
+        expect(table.rows[0]).toBe(headerRow);
     });
 });
