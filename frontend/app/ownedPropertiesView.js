@@ -24,7 +24,7 @@ export class OwnedPropertiesView {
      *
      * @param {HTMLElement} rootElement The element to which the property table
      *        will be appended.
-     * @return {HTMLElement} The root element of the created table.
+     * @return {HTMLElement} The tbody element of the created table.
      */
     static createTable(rootElement) {
         const table = document.createElement('table');
@@ -36,8 +36,11 @@ export class OwnedPropertiesView {
         firstHeaderCell.innerHTML = 'Properties';
         secondHeaderCell.innerHTML = 'Owner';
 
+        const body = document.createElement('tbody');
+        table.appendChild(body);
+
         rootElement.appendChild(table);
-        return table;
+        return body;
     }
 
     /**
