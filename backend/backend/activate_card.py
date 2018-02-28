@@ -11,6 +11,13 @@ SIZE_OF_CARD_DECK = 15
 
 
 def activate_card(player_id, game_id):  # pylint: disable=too-many-locals
+    """Read a chance or community chest card that the player landed on.
+
+    Arguments:
+        player_id: An int representing the current player id.
+        game_id: An int representing the current game id.
+
+    """
     # Pick a random number to index the card deck in the database
     card_table_id = randint(0, SIZE_OF_CARD_DECK)
 
