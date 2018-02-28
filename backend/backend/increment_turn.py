@@ -4,6 +4,7 @@ import sys
 import cgitb
 from backend.game import Game, get_games
 from backend.player import Player
+from backend.is_bankrupt import is_bankrupt
 
 cgitb.enable()
 
@@ -29,4 +30,7 @@ def increment_turn(source=sys.stdin, output=sys.stdout):
             else:
                 turn += 1
             game.current_turn = turn
+
+    is_bankrupt(player_id)
+
     json.dump({"turn": "turn_over"}, output)
