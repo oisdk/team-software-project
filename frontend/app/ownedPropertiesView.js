@@ -67,7 +67,7 @@ export class OwnedPropertiesView {
      * @param {String} newOwner The name of the new owner of the property.
      */
     addNewProperty({property, newOwner}) {
-        const row = this.table.insertRow();
+        const row = this.table.insertRow(-1);
         row.insertCell(0).innerHTML = property;
         row.insertCell(1).innerHTML = newOwner;
         this.rows[property] = row;
