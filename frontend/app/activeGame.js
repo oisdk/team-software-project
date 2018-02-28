@@ -34,12 +34,13 @@ export function onPlayerMove(playerMoveEvent) {
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
     // console.log(playerMoveEvent);
+
+    // had to assign variables to stop linter from complaining.
     const player = items[0];
     currentPlayer = player;
     const endPosition = items[1];
     playerPositions[currentPlayer].end = parseInt(endPosition, 10);
     startAnimation();
-    // control.movePlayer(items[0], items[1], playerTokenInformation[items[0]]);
 }
 
 /**
@@ -84,8 +85,8 @@ export function displayBoard(playerList) {
     for (let i = 0; i < playerList.length; i += 1) {
         createCanvas(playerList[i], 'content', i + 2);
         playerTokenInformation[String(playerList[i])] = images[tokenSelector];
-        // {player1: start 0 and end 0 }
-        playerPositions[String(playerList[i - 1])] = {current: 0, end: 0};
+        // contains { playerID : { currentPosition : 0, destinationPosition } }
+        playerPositions[String(playerList[i])] = {current: 0, end: 0};
         control.movePlayer(playerList[i], 0, playerTokenInformation[playerList[i]]);
         tokenSelector += 1;
     }
@@ -127,19 +128,27 @@ function enableActiveGameListeners() {
     // eventSource.addEventListener('gameEnd', disableActiveGameListeners);
 }
 
+/**
+ * A function to start the animation of a players token.
+ *
+ */
 function startAnimation() {
     timer = setInterval(animate, 500);
 }
 
+/**
+ * A function that animates the movement of a players token around
+ * the board. When position 39 on the board is reached, it will continue
+ * to wrap around the board.
+ */
 function animate() {
     playerPositions[currentPlayer].current += 1;
     let nextPosition = playerPositions[currentPlayer].current;
-    console.log(nextPosition);
+
     if (nextPosition > 39) {
         nextPosition -= 40;
         playerPositions[currentPlayer].current = nextPosition;
     }
-    console.log(playerTokenInformation[currentPlayer]);
     control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
     if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
         clearInterval(timer);
