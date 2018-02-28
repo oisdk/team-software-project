@@ -11,12 +11,14 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         self._position = position
         self._in_context = False
         self._property_state = None
+		self._mortgage = None
         self._houses = 0
         self._hotels = 0
         self._owner = None
         self._price = 0
         self._property_type = None
         self._base = 0
+		self._name = ""
         self._house_price = 0
         self._one = 0
         self._two = 0
@@ -35,6 +37,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                            (self._gid, self._position))
             result = cursor.fetchone()
             self._property_state = result['state']
+			self._mortgage = result['mortgaged']
             self._houses = result['house_count']
             self._hotels = result['hotel_count']
             self._owner = result['player_id']
@@ -48,6 +51,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             self._base = result['base_rent']
             if self._property_type == 'property':
                 self._house_price = result['house_price']
+				self._name = result['name']
                 self._one = result['one_rent']
                 self._two = result['two_rent']
                 self._three = result['three_rent']
@@ -61,12 +65,13 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             with self._conn.cursor() as cursor:
                 cursor.execute('UPDATE `properties` '
                                'SET `player_id` = %s, '
+                               '`mortgaged` = `%s`',
                                '`state` = %s, '
                                '`house_count` = %s, '
                                '`hotel_count` = %s'
                                'WHERE `game_id` = %s '
                                'AND `property_position` = %s',
-                               (self._owner, self._property_state,
+                               (self._owner, self._name, self._property_state,
                                 self._houses, self._hotels, self._gid,
                                 self._position))
             self._conn.commit()
@@ -102,6 +107,30 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         """
         return self._hotels
 
+"""
+Uncomment once request property is merged in
+	@property
+    def name(self):
+        \"""
+        Returns:
+            str: name of property
+        \"""
+        return self._request_property(
+            table='property_values',
+            field='name',
+            attribute='_name')
+
+	@property
+    def mortgage(self):
+        \"""
+        Returns:
+            str: status of whether the property is mortgaged
+        \"""
+        return self._request_property(
+            table='properties',
+            field='mortgaged',
+            attribute='_mortgaged')
+"""
     @property
     def owner(self):
         """
