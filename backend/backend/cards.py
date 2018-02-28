@@ -5,7 +5,7 @@ def get_card_details(unique_id):
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('SELECT card_type, description, operation, operation_value '
+            cursor.execute('SELECT * '
                            'FROM cards '
                            'WHERE unique_id = %s;', (unique_id))
             result = cursor.fetchone()
