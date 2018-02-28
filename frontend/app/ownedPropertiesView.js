@@ -29,13 +29,12 @@ export class OwnedPropertiesView {
     static createTable(rootElement) {
         const table = document.createElement('table');
 
-        const header = table.insertRow(0);
-        const firstHeaderCell = document.createElement('th');
-        const secondHeaderCell = document.createElement('th');
+        const header = table.createTHead();
+        const headerRow = header.insertRow(0);
+        const firstHeaderCell = headerRow.insertCell(0);
+        const secondHeaderCell = headerRow.insertCell(1);
         firstHeaderCell.innerHTML = 'Properties';
         secondHeaderCell.innerHTML = 'Owner';
-        header.appendChild(firstHeaderCell);
-        header.appendChild(secondHeaderCell);
 
         rootElement.appendChild(table);
         return table;
