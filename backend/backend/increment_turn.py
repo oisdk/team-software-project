@@ -4,7 +4,7 @@ import sys
 import cgitb
 from backend.game import Game, get_games
 from backend.player import Player
-from bankend.is_bankrupt import is_bankrupt
+from backend.is_bankrupt import is_bankrupt
 
 cgitb.enable()
 
