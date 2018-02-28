@@ -7,7 +7,7 @@ import backend.properties
 import backend.miscellaneous
 from backend.charge_rent import charge_rent
 from backend.pay_tax import pay_tax
-import backend.activate_card as activate_card
+from backend.activate_card import activate_card
 
 
 def check_position(player_id):
