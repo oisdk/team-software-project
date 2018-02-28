@@ -188,3 +188,29 @@ def get_games(with_game_status=None):
         return result
     finally:
         conn.close()
+
+
+def get_this_game(player_id):
+    """Return the game that the player is currently playing in.
+
+    Arguments:
+        player_id: An int representing the player's id.
+
+    Returns:
+        A int representing the uid of the game the player is currently in.
+
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            this_game_id = None
+            cursor.execute('SELECT game_id '
+                           'FROM playing_in '
+                           'WHERE player_id = %s; ', (player_id))
+            this_game_id = cursor.fetchone()["game_id"]
+
+        return this_game_id
+
+    finally:
+        conn.close()

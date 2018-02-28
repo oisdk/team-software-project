@@ -29,6 +29,14 @@ CREATE TABLE IF NOT EXISTS playing_in (
     FOREIGN KEY (game_id) REFERENCES games(id)
 );
 
+-- Note that only 'tax' uses the value field in this table
+CREATE TABLE IF NOT EXISTS miscellaneous (
+    board_position tinyint UNSIGNED NOT NULL,
+    type ENUM('tax', 'chance', 'community_chest', 'jail', 'parking', 'to_jail') NOT NULL,
+    value smallint UNSIGNED,
+    PRIMARY KEY (board_position)
+);
+
 CREATE TABLE IF NOT EXISTS property_values (
     property_position tinyint UNSIGNED NOT NULL,
     purchase_price smallint UNSIGNED NOT NULL,
@@ -78,3 +86,18 @@ CREATE TABLE IF NOT EXISTS properties (
     FOREIGN KEY (game_id) REFERENCES games(id),
     FOREIGN KEY (property_position) REFERENCES property_values(property_position)
 );
+
+INSERT INTO miscellaneous (board_position, type)
+VALUES (2, 'community_chest'),
+       (7, 'chance'),
+       (10, 'jail'),
+       (17, 'community_chest'),
+       (20, 'parking'),
+       (22, 'chance'),
+       (30, 'to_jail'),
+       (33, 'community_chest'),
+       (36, 'chance');
+
+INSERT INTO miscellaneous
+VALUES (4, 'tax', 200),
+       (38, 'tax', 100);
