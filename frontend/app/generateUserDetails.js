@@ -153,13 +153,10 @@ export function turnDetails(turnEvent) {
         enableGameInterface();
         enableLeaveJail();
         jailCounter += 1;
-        console.log(`turn Test: If`);
     } else if (jail === true && String(turn[0]) === String(id)) {
         enableLeaveJail();
-        console.log(`turn Test: elIf1`);
     } else if (String(turn[0]) === String(id)) {
         enableGameInterface();
-        console.log(`turn Test: elIf2`);
     }
 }
 
