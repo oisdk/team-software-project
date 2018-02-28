@@ -210,6 +210,10 @@ Uncomment once request property is merged in
             raise TypeError('Must be within "with" statement to mutate the '
                             'Player class')
 
+    @mortgage.setter
+    def mortgage(self, mortgage):
+        self._set_property('mortgage', mortgage)
+
     @houses.setter
     def houses(self, houses):
         self._set_property('houses', houses)
