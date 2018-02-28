@@ -332,6 +332,8 @@ def owned_property_positions(game_id):
             return {player_id: [entry['property_position'] for entry in row]
                     for player_id, row
                     in groupby(cursor.fetchall(), itemgetter('player_id'))}
+    finally:
+        conn.close()
 
 
 def property_positions():
