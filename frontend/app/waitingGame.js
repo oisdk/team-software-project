@@ -118,8 +118,7 @@ export function waitingGame(gameID) {
  * These are private functions exported for testing purposes.
  *
  * @private
- *
- *export const privateFunctions = {
- *   createWaitingGameHTML,
- *};
  */
+export const privateFunctions = {
+    createWaitingGameHTML,
+};
