@@ -42,7 +42,11 @@ def activate_chance(player_id, game_id):
             player.balance -= to_pay
 
     # If it's a get_money
-    # update player balance in players table with chance "value"
+    if card_type == "get_money":
+        with Player(player_id) as player:
+            player.board_position += int(card_value) # CHECK TYPES
 
     # If it's a pay_bank
-    # deduct chance "value" from player
+    if card_type == "pay_bank":
+        with Player(player_id) as player:
+            player.board_position += int(card_value) # CHECK TYPES
