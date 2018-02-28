@@ -88,7 +88,6 @@ function onPropertyOwnerChanges(changesEvent) {
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
  */
-
 export function displayBoard(playerList) {
     let tokenSelector = 0;
     const images = ['hat.png', 'car.png', 'ship.png', 'duck.png'];
