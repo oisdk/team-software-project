@@ -1,3 +1,7 @@
+/**
+ * Handles user interaction during a game that has started.
+ * @module
+ */
 import * as generateUserDetails from './generateUserDetails';
 import * as control from './moveFunctions';
 import {getEventSource} from './sse';
