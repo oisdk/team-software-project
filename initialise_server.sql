@@ -64,14 +64,14 @@ CREATE TABLE IF NOT EXISTS properties (
 );
 
 CREATE TABLE IF NOT EXISTS cards (
-    uniq_id tinyint UNSIGNED NOT NULL AUTO_INCREMENT,
+    unique_id tinyint UNSIGNED NOT NULL AUTO_INCREMENT,
 	card_type ENUM('chance','chest') NOT NULL,
 	description VARCHAR(255) NOT NULL,
 	operation ENUM('move_specific', 'get_money', 'pay_bank', 'pay_opponents', 'move_to_nearby_util', 'move_to_nearby_rail', 'collect_from_opponents', 'pay_per_house') NOT NULL,
     -- operation_value will mean different measures (e.g. money, position) depending on the "operation"
     -- operation_value is blank for "move_to_nearby_util/rail" since server side logic must detect closest position to move to
     operation_value smallint,
-	PRIMARY KEY (uniq_id)
+	PRIMARY KEY (unique_id)
 );
 
 INSERT INTO property_values
