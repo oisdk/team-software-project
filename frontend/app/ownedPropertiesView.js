@@ -1,16 +1,11 @@
 /**
- * Provides a class for displaying the owned properties in a game.
- * @module
- */
-
-/**
  * Displays owned properties in a game.
  */
 export class OwnedPropertiesView {
     /**
      * Creates a new view.
      *
-     * @param rootDisplayElement The root element the display will be
+     * @param {HTMLElement} rootDisplayElement The root element the display will be
      *        constructed under.
      */
     constructor(rootDisplayElement) {
@@ -44,11 +39,22 @@ export class OwnedPropertiesView {
     }
 
     /**
+     * A description of a change in the ownership of a property.
+     *
+     * @typedef {Object} propertyOwnershipChange
+     * @property {String} property The name of the property.
+     * @property {String} oldOwner The previous owner of the property, or null
+     *           if it was previously unowned.
+     * @property {String} newOwner The new owner of the property, or null if it
+     *           is now unowned.
+     * @global
+     */
+
+    /**
      * Updates the table.
      *
-     * @param {object} changes An array of objects with the following format:
-     *        {"newOwner": <username>, "oldOwner": <username>,
-     *        "property": <property name>}
+     * @param {Array<propertyOwnershipChange>} changes The changes in property
+     *        ownership that have happened.
      */
     update(changes) {
         for (let i = 0; i < changes.length; i += 1) {
