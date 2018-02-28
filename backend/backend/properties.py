@@ -335,6 +335,53 @@ Uncomment once request property is merged in
             return multiplier
 
 
+def property_positions():
+    """Get a list of board positions where there are properties
+
+    Returns:
+        A list representing the positions of all properties on the board.
+
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT property_position '
+                           'FROM property_values;')
+            result = [row["property_position"] for row in cursor.fetchall()]
+        return result
+    finally:
+        conn.close()
+
+
+def is_property_owned(property_position, game_id):
+    """Check if a property is currently owned.
+
+    Arguments:
+        property_position: An int representing the property position on the
+                           board.
+        game_id: An int representing the game id of the game in question.
+
+    Returns:
+        A bool: True if property is owned, False otherwise.
+
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT * '
+                           'FROM properties '
+                           'WHERE state = "owned" '
+                           'AND property_position = %s '
+                           'AND game_id = %s;', (property_position, game_id))
+
+            return cursor.rowcount > 0
+
+    finally:
+        conn.close()
+
+
 def get_properties(player_id):
     """Returns a dictionary where a key is the 'player_id' and the value
     is the list of the player's owned property's positions"""
