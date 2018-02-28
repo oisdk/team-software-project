@@ -328,7 +328,7 @@ def owned_property_positions(game_id):
                            'FROM properties '
                            'WHERE game_id = %s '
                            'AND state = %s '
-                           'ORDER BY player_id;', (game_id, 'unowned'))
+                           'ORDER BY player_id;', (game_id, 'owned'))
             return {player_id: [entry['property_position'] for entry in row]
                     for player_id, row
                     in groupby(cursor.fetchall(), itemgetter('player_id'))}
