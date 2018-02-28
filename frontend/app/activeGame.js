@@ -2,8 +2,10 @@ import * as generateUserDetails from './generateUserDetails';
 import * as control from './moveFunctions';
 import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
+import {OwnedPropertiesView} from './ownedPropertiesView';
 
 const playerTokenInformation = {};
+let propertyView;
 
 /**
  * Displays the page for an active game.
@@ -15,6 +17,7 @@ export function activeGame(gameID, playerList) {
     displayBoard(playerList);
     generateUserDetails.generateUserDetails();
     logEvents.generateGameLog();
+    propertyView = new OwnedPropertiesView(document.getElementById('content-right'));
     enableActiveGameListeners();
 }
 
@@ -56,6 +59,16 @@ export function onPlayerTurn(playerTurnEvent) {
 export function onPlayerBalance(playerBalanceEvent) {
     generateUserDetails.balanceDetails(playerBalanceEvent);
     logEvents.logBalanceEvent(playerBalanceEvent);
+}
+
+/**
+ * Called when a propertyOwnerChanges event happens, and passes the data to
+ * the property view.
+ *
+ * @param {event} changesEvent The event that occurred.
+ */
+function onPropertyOwnerChanges(changesEvent) {
+    propertyView.update(JSON.parse(changesEvent.data));
 }
 
 /**
@@ -107,6 +120,7 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerMove', onPlayerMove);
     eventSource.addEventListener('playerTurn', onPlayerTurn);
     eventSource.addEventListener('playerBalance', onPlayerBalance);
+    eventSource.addEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
     eventSource.addEventListener('gameEnd', disableActiveGameListeners);
 }
 
