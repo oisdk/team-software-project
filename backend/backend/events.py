@@ -93,7 +93,8 @@ def start_sse_stream(output_stream=sys.stdout):
         balances = check_new_balances(output_stream, balances, new_balances)
         positions = check_new_positions(output_stream, positions,
                                         new_positions)
-        jailed_players = check_new_jailed_players(output_stream, jailed_players, new_jailed_players)
+        jailed_players = check_new_jailed_players(
+            output_stream, jailed_players, new_jailed_players)
 
         # Pushes data to update the players info table on game start
         if push_initial_user_details and last_game_state == "playing":
@@ -190,7 +191,9 @@ def check_new_positions(output_stream, old_positions, new_positions):
         generate_player_move_event(output_stream, old_positions, new_positions)
     return new_positions.copy()
 
-def check_new_jailed_players(output_stream, jailed_players, new_jailed_players):
+
+def check_new_jailed_players(output_stream,
+                             jailed_players, new_jailed_players):
     """Checks if a player has been jailed and sends an SSE event if one has.
 
     Arguments:
@@ -204,8 +207,10 @@ def check_new_jailed_players(output_stream, jailed_players, new_jailed_players):
 
     """
     if new_jailed_players != jailed_players:
-        generate_player_jailed_event(output_stream, jailed_players, new_jailed_players)
+        generate_player_jailed_event(
+            output_stream, jailed_players, new_jailed_players)
     return new_jailed_players.copy()
+
 
 def check_game_playing_status(output_stream, game, last_game_state):
     """Check if the specified game's status is 'playing'.
@@ -437,7 +442,8 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     output_stream.write('\n\n')
 
 
-def generate_player_jailed_event(output_stream, jailed_players, new_jailed_players):
+def generate_player_jailed_event(
+        output_stream, jailed_players, new_jailed_players):
     """Generates an event for a change of jailed players in the game.
 
     Compares two dictionaries and outputs a playerJailed server-sent event if
@@ -445,10 +451,10 @@ def generate_player_jailed_event(output_stream, jailed_players, new_jailed_playe
     difference between the two dicts.
 
     Arguments:
-        jailed_players: A dictionary representing the current jailed state for each
-            player.
-        new_jailed_players: A dictionary representing the latest jailed state for each
-            player.
+        jailed_players: A dictionary representing the
+            current jailed state for each player.
+        new_jailed_players: A dictionary representing
+             the latest jailed state for each player.
 
     >>> import sys
     >>> generate_player_jailed_event(
