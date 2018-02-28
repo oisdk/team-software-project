@@ -107,14 +107,12 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerMove', onPlayerMove);
     eventSource.addEventListener('playerTurn', onPlayerTurn);
     eventSource.addEventListener('playerBalance', onPlayerBalance);
-    // eventSource.addEventListener('gameEnd', disableActiveGameListeners);
+    eventSource.addEventListener('gameEnd', disableActiveGameListeners);
 }
 
-/*
-function disableActiveGameListeners(gameEndEvent) {
+function disableActiveGameListeners(_gameEndEvent) {
     const eventSource = getEventSource();
     eventSource.removeEventListener('playerMove', onPlayerMove);
     eventSource.removeEventListener('playerTurn', onPlayerTurn);
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
 }
-*/
