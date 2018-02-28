@@ -136,7 +136,7 @@ export function generateUserDetails() {
  */
 export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn}`;
+    document.getElementById('current-turn').innerHTML = `Player ${turn[1] + 1}`;
     // console.log(`Turn:${turn}`);
     const rollDiceButton = document.getElementById('roll-dice');
     rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };

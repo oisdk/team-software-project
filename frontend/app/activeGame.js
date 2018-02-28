@@ -1,7 +1,9 @@
 import * as generateUserDetails from './generateUserDetails';
 import * as control from './moveFunctions';
 import {getEventSource} from './sse';
+import * as logEvents from './generateGameLog';
 
+const playerTokenInformation = {};
 
 /**
  * Displays the page for an active game.
@@ -12,6 +14,7 @@ export function activeGame(gameID, playerList) {
     // display board and assign starting positions.
     displayBoard(playerList);
     generateUserDetails.generateUserDetails();
+    logEvents.generateGameLog();
     enableActiveGameListeners();
 }
 
@@ -19,34 +22,40 @@ export function activeGame(gameID, playerList) {
 /**
  * Called when a playerMove event happens.
  * Moves the player location on the board using the received data.
+ * Logs this move in the game log.
  *
  * @param playerMoveEvent The data received from the event
  */
 export function onPlayerMove(playerMoveEvent) {
+    logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
     // console.log(playerMoveEvent);
-    control.movePlayer(items[0], items[1]);
+    control.movePlayer(items[0], items[1], playerTokenInformation);
 }
 
 /**
  * Called when a playerTurn event happens.
  * Calls the function to update the player turn.
+ * Logs this turn in the game log
  *
  * @param playerTurnEvent The data received from the event
  */
 export function onPlayerTurn(playerTurnEvent) {
     generateUserDetails.turnDetails(playerTurnEvent);
+    logEvents.logTurnEvent(playerTurnEvent);
 }
 
 /**
  * Called when a playerBalance event happens.
  * Calls the function to update the player balance.
+ * Logs this balance change in the game log
  *
  * @param playerBalanceEvent The data received from the event
  */
 export function onPlayerBalance(playerBalanceEvent) {
     generateUserDetails.balanceDetails(playerBalanceEvent);
+    logEvents.logBalanceEvent(playerBalanceEvent);
 }
 
 /**
@@ -65,6 +74,8 @@ export function onPlayerJailed(playerJailedEvent) {
  */
 
 export function displayBoard(playerList) {
+    let tokenSelector = 0;
+    const images = ['hat.png', 'car.png', 'ship.png', 'duck.png'];
     // console.log('displayBoard called');
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
 
@@ -73,7 +84,9 @@ export function displayBoard(playerList) {
     // creates a token for each player on their canvas.
     for (let i = 1; i <= playerList.length; i += 1) {
         createCanvas(playerList[i - 1], 'content', i);
-        control.movePlayer(playerList[i - 1], 0);
+        playerTokenInformation[String(playerList[i - 1])] = images[tokenSelector];
+        control.movePlayer(playerList[i - 1], 0, playerTokenInformation);
+        tokenSelector += 1;
     }
     createCanvas('game-info', 'content', playerList + 1);
     const c = document.getElementById('gameBoard');
