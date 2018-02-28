@@ -153,11 +153,9 @@ export function turnDetails(turnEvent) {
         enableGameInterface();
         enableLeaveJail();
         jailCounter += 1;
-    }
-    else if (jail === true && String(turn) === String(id)) {
+    } else if (jail === true && String(turn) === String(id)) {
         enableLeaveJail();
-    }
-    else if (String(turn) === String(id)) {
+    } else if (String(turn) === String(id)) {
         enableGameInterface();
     }
 }
@@ -190,13 +188,12 @@ export function balanceDetails(balanceEvent) {
  */
 export function jailedPlayer(jailedEvent) {
     const data = JSON.parse(jailedEvent.data);
-    console.log(data);
     data.forEach((item) => {
         // console.log(item);
         if (String(item[0]) === String(id) && String(item[1]) === 'in_jail') {
             jail = true;
-        }
-        else if (String(item[0]) === String(id) && String(item[1]) === 'not_in_jail'){
+            enableEndTurn();
+        } else if (String(item[0]) === String(id) && String(item[1]) === 'not_in_jail') {
             jail = false;
             jailCounter = 0;
         }
