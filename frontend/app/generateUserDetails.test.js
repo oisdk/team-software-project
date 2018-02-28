@@ -42,7 +42,7 @@ describe('rollDice endTurn successCallback tests', () => {
 
     // Create buttons to test
     beforeAll(() => {
-        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button><button id="jail">Jail</button>';
     });
 
     // Restore the HTML body
@@ -81,7 +81,7 @@ describe('disable button tests', () => {
 
     // Create buttons to test
     beforeAll(() => {
-        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button><button id="jail">Jail</button>';
     });
 
     // Restore the HTML body
@@ -121,7 +121,7 @@ describe('rollDice endTurn successCallback tests', () => {
 
     // Create buttons to test
     beforeAll(() => {
-        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button><button id="jail">Jail</button>';
     });
 
     // Restore the HTML body
@@ -160,7 +160,7 @@ describe('disable button tests', () => {
 
     // Create buttons to test
     beforeAll(() => {
-        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button>';
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button><button id="jail">Jail</button>';
     });
 
     // Restore the HTML body
@@ -173,6 +173,7 @@ describe('disable button tests', () => {
         generateUserDetails.disableGameInterface();
         expect(document.getElementById('roll-dice').hasAttribute('disabled'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        expect(document.getElementById('jail').hasAttribute('disabled'));
         done();
     });
 
@@ -219,7 +220,7 @@ describe('turnDetails', () => {
     const mockPlayerTurnEvent = {data: '1'};
 
     beforeAll(() => {
-        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="end-turn">End Turn</button>';
+        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="end-turn">End Turn</button><button id="jail">Jail</button>';
     });
 
     afterAll(() => {
