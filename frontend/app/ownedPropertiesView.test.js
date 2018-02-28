@@ -5,20 +5,20 @@ function createMockElement() {
 }
 
 describe('OwnedPropertiesView', () => {
+    const mockElement = createMockElement();
+    const view = new OwnedPropertiesView(mockElement);
+    const table = mockElement.appendChild.mock.calls[0][0];
+
     it('should create a table under the given root', () => {
-        const mockElement = createMockElement();
-        const view = new OwnedPropertiesView(mockElement);
         expect(view).toBeDefined();
         expect(mockElement.appendChild).toHaveBeenCalled();
-        const child = mockElement.appendChild.mock.calls[0][0];
-        expect(child).toBeInstanceOf(HTMLTableElement);
+        expect(table).toBeInstanceOf(HTMLTableElement);
     });
 
+    const testProperty = 'Old Kent Road';
+    const testOwner = 'Kate';
+
     it('should create new rows', () => {
-        const mockElement = createMockElement();
-        const testProperty = 'Old Kent Road';
-        const testOwner = 'Beth';
-        const view = new OwnedPropertiesView(mockElement);
         view.update([
             {
                 property: testProperty,
@@ -26,9 +26,34 @@ describe('OwnedPropertiesView', () => {
                 newOwner: testOwner,
             },
         ]);
-        const table = mockElement.appendChild.mock.calls[0][0];
         expect(table.rows.length).toEqual(2);
         expect(table.rows[1].cells[0].innerHTML).toEqual(testProperty);
         expect(table.rows[1].cells[1].innerHTML).toEqual(testOwner);
+    });
+
+    const newTestOwner = 'Beth';
+
+    it('should update rows', () => {
+        view.update([
+            {
+                property: testProperty,
+                oldOwner: testOwner,
+                newOwner: newTestOwner,
+            },
+        ]);
+
+        expect(table.rows[1].cells[1].innerHTML).toEqual(newTestOwner);
+    });
+
+    it('should delete rows', () => {
+        view.update([
+            {
+                property: testProperty,
+                oldOwner: newTestOwner,
+                newOwner: null,
+            },
+        ]);
+
+        expect(table.rows.length).toEqual(1);
     });
 });
