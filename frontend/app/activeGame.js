@@ -66,6 +66,7 @@ export function onPlayerBalance(playerBalanceEvent) {
  */
 export function onPlayerJailed(playerJailedEvent) {
     generateUserDetails.jailedPlayer(playerJailedEvent);
+    logEvents.logJailEvent(playerJailedEvent);
 }
 
 /**
