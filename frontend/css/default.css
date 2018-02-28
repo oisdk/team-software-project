@@ -2,6 +2,8 @@ html,body{
   text-align: center;
   padding: none;
   margin: none;
+  background-color: rgb(48, 48, 48);
+
 }
 .header{
   text-align: center;
@@ -27,7 +29,7 @@ html,body{
 }
 .infoheaders{
   font-family: Schaeffer;
-  
+
   background-color: rgb(38, 37, 37);
   padding-top: 1%;
   color: rgb(242, 190, 5);
@@ -36,7 +38,14 @@ html,body{
   padding-top: 1%;
   padding-bottom: 1%;
   background-color: rgb(182, 178, 178);
+  color: rgb(0, 0, 0);
+
 }
-.ctr{
-  padding: 1%;
+.properties{
+  max-height: 200px;
+  overflow-y: scroll;
+}
+.container-fluid{
+  background-color: rgb(48, 48, 48);
+  color:rgb(233, 233, 233);
 }
