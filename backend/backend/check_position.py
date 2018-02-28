@@ -43,10 +43,8 @@ def check_position(player_id):
         # Check the *type* of space the player is on, and act appropriately
         if position_type == "tax":
             pay_tax(player_id, misc_position_details["value"])
-        elif position_type == "chance":
-            activate_card.activate_chance(player_id, game_id)
-        elif position_type == "community_chest":
-            activate_card.activate_chest(player_id, game_id)
+        elif position_type == "chance" or position_type == "community_chest":
+            activate_card(player_id, game_id)
         elif position_type == "jail":
             pass
         elif position_type == "to_jail":
