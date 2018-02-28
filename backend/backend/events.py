@@ -460,44 +460,76 @@ def generate_ownership_events(
     Arguments:
         output_stream: The stream to which the events will be written.
         old_ownership: The old ownership data, as a dictionary where the keys
-            are property positions and the values are owner ids.
+            are property ids and the values are dictionaries which have
+            'name' and 'owner' fields, containing the property name and the
+            owner username respectively.
         new_ownership: The new ownership data, in the same format as
             old_ownership.
 
     >>> import sys
     >>> generate_ownership_events(
     ...     sys.stdout,
-    ...     {4: 1, 5: 8},
-    ...     {4: 3, 5: 8})
+    ...     {
+    ...         1: {'name': 'p1', 'owner': 'u2'},
+    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...     },
+    ...     {
+    ...         1: {'name': 'p1', 'owner': 'u2'},
+    ...         4: {'name': 'p4', 'owner': 'u6'}
+    ...     })
     event: propertyOwnerChanges
-    data: {"4": {"newOwner": 3, "oldOwner": 1}}
+    data: [{"newOwner": "u6", "oldOwner": "u7", "property": "p4"}]
     <BLANKLINE>
 
     >>> import sys
     >>> generate_ownership_events(
     ...     sys.stdout,
-    ...     {5: 8},
-    ...     {4: 3, 5: 8})
+    ...     {
+    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...     },
+    ...     {
+    ...         1: {'name': 'p1', 'owner': 'u2'},
+    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...     })
     event: propertyOwnerChanges
-    data: {"4": {"newOwner": 3, "oldOwner": null}}
+    data: [{"newOwner": "u2", "oldOwner": null, "property": "p1"}]
     <BLANKLINE>
 
     >>> import sys
     >>> generate_ownership_events(
     ...     sys.stdout,
-    ...     {4: 3, 5: 8},
-    ...     {5: 8})
+    ...     {
+    ...         1: {'name': 'p1', 'owner': 'u2'},
+    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...     },
+    ...     {
+    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...     })
     event: propertyOwnerChanges
-    data: {"4": {"newOwner": null, "oldOwner": 3}}
+    data: [{"newOwner": null, "oldOwner": "u2", "property": "p1"}]
     <BLANKLINE>
     """
-    changes = {}
-    positions = list(old_ownership.keys()) + list(new_ownership.keys())
+    changes = []
+    positions = set(old_ownership.keys()).union(new_ownership.keys())
     for position in positions:
-        old = old_ownership.get(position, None)
-        new = new_ownership.get(position, None)
-        if old != new:
-            changes[position] = {'newOwner': new, 'oldOwner': old}
+        if position in old_ownership and position in new_ownership:
+            old_owner = old_ownership[position]['owner']
+            new_owner = new_ownership[position]['owner']
+            property_name = new_ownership[position]['name']
+        elif position not in new_ownership:
+            old_owner = old_ownership[position]['owner']
+            new_owner = None
+            property_name = old_ownership[position]['name']
+        else:  # position not in old_ownership
+            old_owner = None
+            new_owner = new_ownership[position]['owner']
+            property_name = new_ownership[position]['name']
+
+        if old_owner != new_owner:
+            changes.append({
+                'newOwner': new_owner,
+                'oldOwner': old_owner,
+                'property': property_name})
 
     output_event(output_stream, 'propertyOwnerChanges', changes)
 
