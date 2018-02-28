@@ -4,6 +4,8 @@ import * as sendJSON from './sendJSON';
 // change according to activeGame as currently used with default function
 import {activeGame} from './activeGame';
 
+const playersInGame = [];
+
 /**
  * Creates the html for the waiting game.
  *
@@ -70,11 +72,13 @@ export function waitingGame(gameID) {
         const playerListElement = document.getElementById(playerListID);
         for (let i = 0; i < playerList.length; i += 1) {
             const player = playerList[i];
-            const playerElement = document.createElement('div');
-            playerElement.innerHTML = player;
-            playerListElement.appendChild(playerElement);
-
-            numberOfPlayers += 1;
+            if (!playersInGame.includes(player)) {
+                const playerElement = document.createElement('div');
+                playerElement.innerHTML = player;
+                playerListElement.appendChild(playerElement);
+                numberOfPlayers += 1;
+            }
+            playersInGame.push(player);
             // Only enable the "start game" button when 4 players have joined
             if (numberOfPlayers === 4) {
                 document.getElementById(startButtonID).disabled = false;
