@@ -54,7 +54,7 @@ export function logTurnEvent(turnEvent) {
 export function logMoveEvent(moveEvent) {
     const move = String(JSON.parse(moveEvent.data));
     const items = move.split(',');
-    if (items[2] !== 0) {
+    if (items[2] !== 0 && items[3] !== 'in_jail') {
         const roll = items[1] - items[2];
         const outputString = `Player ${items[0]} Rolled ${roll}`;
         updateGameLog(outputString);
@@ -69,7 +69,25 @@ export function logMoveEvent(moveEvent) {
 export function logBalanceEvent(balanceEvent) {
     const balance = JSON.parse(balanceEvent.data);
     if (balance[0][1] !== 1500 && balance[0][2] !== 0) {
-        const outputString = `Player ${balance[0][0]} Got ${balance[0][2]}`;
+        const outputString = `Player ${balance[0][0]} Balance ${balance[0][2]}`;
         updateGameLog(outputString);
     }
+}
+
+/**
+ * Function to update game log for jail event.
+ *
+ * @param {data} jailEvent - data used to generate event.
+ */
+export function logJailEvent(jailEvent) {
+    const data = String(JSON.parse(jailEvent.data));
+    const items = data.split(',');
+    console.log(data);
+    let outputString = `Player ${items[0]} `;
+    if (items[1] === 'in_jail') {
+        outputString += 'went to jail';
+    } else {
+        outputString += 'got out of jail';
+    }
+    updateGameLog(outputString);
 }
