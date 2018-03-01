@@ -28,6 +28,7 @@ def leave_jail(player_id):
     """
     with Player(player_id) as player:
         player.jail_state = 'not_in_jail'
+        player.board_position = 10
 
 
 def pay_to_leave_jail(source=sys.stdin, output=sys.stdout):
