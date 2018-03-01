@@ -158,10 +158,7 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerMove', onPlayerMove);
     eventSource.addEventListener('playerTurn', onPlayerTurn);
     eventSource.addEventListener('playerBalance', onPlayerBalance);
-<<<<<<< HEAD
     eventSource.addEventListener('playerJailed', onPlayerJailed);
-    // eventSource.addEventListener('gameEnd', disableActiveGameListeners);
-=======
     eventSource.addEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
     eventSource.addEventListener('gameEnd', disableActiveGameListeners);
 }
@@ -173,7 +170,6 @@ function disableActiveGameListeners(_gameEndEvent) {
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
     eventSource.removeEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
     eventSource.removeEventListener('gameEnd', disableActiveGameListeners);
->>>>>>> master
 }
 
 /**
