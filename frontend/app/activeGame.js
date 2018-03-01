@@ -4,6 +4,9 @@ import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 
 const playerTokenInformation = {};
+const playerPositions = {}; // value id : position on board ie previous position.
+let timer = '';
+let currentPlayer = '';
 
 /**
  * Displays the page for an active game.
@@ -31,7 +34,13 @@ export function onPlayerMove(playerMoveEvent) {
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
     // console.log(playerMoveEvent);
-    control.movePlayer(items[0], items[1], playerTokenInformation);
+
+    // had to assign variables to stop linter from complaining.
+    const player = items[0];
+    currentPlayer = player;
+    const endPosition = items[1];
+    playerPositions[currentPlayer].end = parseInt(endPosition, 10);
+    startAnimation();
 }
 
 /**
@@ -77,19 +86,22 @@ export function onPlayerJailed(playerJailedEvent) {
 export function displayBoard(playerList) {
     let tokenSelector = 0;
     const images = ['hat.png', 'car.png', 'ship.png', 'duck.png'];
-    // console.log('displayBoard called');
     document.getElementById('content').innerHTML = '<canvas id="gameBoard" height="800" width = "800" style="position: absolute; left: 0 ; top: 0 ;z-index : 0;"></canvas>';
+    // need a layer to display strictly hotels and houses
+    createCanvas('buildingLayer', 'content', 1);
 
     // creates a canvas with player id and layer i.
-    // layer 0 = background image, last layer = game info
+    // layer 0 = background image, layer 1 = houses/hotels, last layer = game info
     // creates a token for each player on their canvas.
-    for (let i = 1; i <= playerList.length; i += 1) {
-        createCanvas(playerList[i - 1], 'content', i);
-        playerTokenInformation[String(playerList[i - 1])] = images[tokenSelector];
-        control.movePlayer(playerList[i - 1], 0, playerTokenInformation);
+    for (let i = 0; i < playerList.length; i += 1) {
+        createCanvas(playerList[i], 'content', i + 2);
+        playerTokenInformation[String(playerList[i])] = images[tokenSelector];
+        // contains { playerID : { currentPosition : 0, destinationPosition } }
+        playerPositions[String(playerList[i])] = {current: 0, end: 0};
+        control.movePlayer(playerList[i], 0, playerTokenInformation[playerList[i]]);
         tokenSelector += 1;
     }
-    createCanvas('game-info', 'content', playerList + 1);
+    createCanvas('game-info', 'content', playerList + 2);
     const c = document.getElementById('gameBoard');
     const ctx = c.getContext('2d');
     const img = new Image();
@@ -99,7 +111,13 @@ export function displayBoard(playerList) {
     img.src = 'monopoly.jpg';
 }
 
-// takes in id for canvas, node to append to(<div id="content">), layerNumber
+/**
+ * A function that creates a canvas and appends to a a given node.
+ *
+ * @param {string} canvasID - id of canvas.
+ * @param {string} appendToNode - id of node to append to.
+ * @param {number} layerNumber - z-index of the canvas.
+ */
 function createCanvas(canvasID, appendToNode, layerNumber) {
     const canvas = document.createElement('canvas');
     canvas.id = canvasID;
@@ -120,6 +138,35 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerBalance', onPlayerBalance);
     eventSource.addEventListener('playerJailed', onPlayerJailed);
     // eventSource.addEventListener('gameEnd', disableActiveGameListeners);
+}
+
+/**
+ * A function to start the animation of a players token.
+ *
+ */
+function startAnimation() {
+    timer = setInterval(animate, 500);
+}
+
+/**
+ * A function that animates the movement of a players token around
+ * the board. When position 39 on the board is reached, it will continue
+ * to wrap around the board.
+ */
+function animate() {
+    playerPositions[currentPlayer].current += 1;
+    let nextPosition = playerPositions[currentPlayer].current;
+
+    if (nextPosition > 39) {
+        nextPosition -= 40;
+        playerPositions[currentPlayer].current = nextPosition;
+    }
+    control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
+    if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
+        clearInterval(timer);
+        console.log('ended');
+        currentPlayer = '';
+    }
 }
 
 /*
