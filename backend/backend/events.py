@@ -396,6 +396,14 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     data: [[5, 200, 0]]
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_player_balance_event(
+    ...     sys.stdout,
+    ...     {3: 100},
+    ...     {5: 200, 3: 100})
+    event: playerBalance
+    data: [[5, 200, 0]]
+    <BLANKLINE>
     """
     # Send the event name to the client.
     output_stream.write('event: playerBalance\n')
