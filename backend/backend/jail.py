@@ -10,6 +10,9 @@ cgitb.enable()
 def go_to_jail(player_id):
 
     """Function that sends a player to jail
+
+    Args:
+        player_id(int) the player's unique id.
     """
     with Player(player_id) as player:
         player.board_position = -1
@@ -19,6 +22,9 @@ def go_to_jail(player_id):
 def leave_jail(player_id):
 
     """Function that removes a player from jail
+    
+    Args:
+        player_id(int) the player's unique id.
     """
     with Player(player_id) as player:
         player.jail_state = 'not_in_jail'
