@@ -20,11 +20,17 @@ let propertyView;
  * @param gameID The ID for the game that will be displayed.
  */
 export function activeGame(gameID, playerList) {
+    const rightPane = document.getElementById('content-right');
+    const userDetailsPane = document.createElement('div');
+    const propertiesPane = document.createElement('div');
+    rightPane.appendChild(userDetailsPane);
+    rightPane.appendChild(propertiesPane);
+    
     // display board and assign starting positions.
     displayBoard(playerList);
-    generateUserDetails.generateUserDetails();
+    generateUserDetails.generateUserDetails(userDetailsPane);
     logEvents.generateGameLog();
-    propertyView = new OwnedPropertiesView(document.getElementById('content-right'));
+    propertyView = new OwnedPropertiesView(propertiesPane);
     enableActiveGameListeners();
 }
 
