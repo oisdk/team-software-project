@@ -171,7 +171,7 @@ export function displayOwnedProperties(JSONSend) {
  */
 export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn[1] + 1}`;
+    document.getElementById('current-turn').innerHTML = `Player ${turn[0] + 1}`;
     // console.log(`Turn:${turn}`);
 
     // displayOwnedProperties(sendJSON.sendJSON);
