@@ -7,6 +7,7 @@ let id = details.user_id;
 let userName = details.user_name;
 let jail = false;
 let jailCounter = 0;
+let doubleCounter = 0;
 
 /**
  * Function to disable game interface.
@@ -60,9 +61,11 @@ export function successCallback(req1) {
     const rollDie = document.querySelector('#roll-dice');
     if (roll[0] === roll[1]) {
         rollDie.disabled = false;
+        doubleCounter += 1;
     } else {
         rollDie.disabled = true;
         enableEndTurn();
+        doubleCounter = 0;
     }
 }
 
@@ -106,12 +109,10 @@ export function leaveJail(JSONSend) {
 /**
  * Callback function to update HTML body with file's contents.
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
- * @param {HTMLElement} rootElement The element to attach the user details to.
  */
-export function updateUserDetails(fileReader, rootElement) {
+export function updateUserDetails(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
-        const element = rootElement;
-        element.innerHTML = fileReader.responseText;
+        document.getElementById('content-right').innerHTML = fileReader.responseText;
         document.getElementById('details_username').innerHTML = userName;
     }
 }
@@ -120,14 +121,12 @@ export function updateUserDetails(fileReader, rootElement) {
  * Function to generate game details. Makes a request to local
  * filesystem for a HTML file to display.
  * @param {int} gameID - id used to create eventSource.
- * @param {HTMLElement} rootElement User details will be displayed as a child
- *     of this node.
  */
-export function generateUserDetails(rootElement) {
+export function generateUserDetails() {
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
     fileReader.open('GET', 'user-info.html', true);
-    fileReader.onreadystatechange = () => updateUserDetails(fileReader, rootElement);
+    fileReader.onreadystatechange = () => updateUserDetails(fileReader);
     fileReader.send();
     details = getCookie.checkUserDetails();
     id = details.user_id;
