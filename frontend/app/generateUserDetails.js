@@ -33,12 +33,20 @@ export function enableEndTurn() {
 
 /**
  * Callback to check user rolls and enable end turn.
- *
+ * Enables roll-dice if a double is rolled.
  * @param {XMLHttpRequest} req1 response.
  */
 export function successCallback(req1) {
     console.log(req1);
-    enableEndTurn();
+    const response = JSON.parse(req1.responseText);
+    const roll = response.your_rolls;
+    const rollDie = document.querySelector('#roll-dice');
+    if (roll[0] === roll[1]) {
+        rollDie.disabled = false;
+    } else {
+        rollDie.disabled = true;
+        enableEndTurn();
+    }
 }
 
 /**
