@@ -25,7 +25,7 @@ export function activeGame(gameID, playerList) {
     const propertiesPane = document.createElement('div');
     rightPane.appendChild(userDetailsPane);
     rightPane.appendChild(propertiesPane);
-    
+
     // display board and assign starting positions.
     displayBoard(playerList);
     generateUserDetails.generateUserDetails(userDetailsPane);
