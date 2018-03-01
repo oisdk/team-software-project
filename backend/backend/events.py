@@ -412,16 +412,16 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     # with the two dictionaries.
     output_stream.write('data: ')
 
-    if not old_balances:
-        output_stream.write(json.dumps([
-            [uid, balance, 0]
-            for uid, balance in new_balances.items()]))
-    else:
-        output_stream.write(json.dumps([
-            [uid, balance, ((balance - old_balances[uid])
-                            if old_balances[uid] else balance)]
-            for uid, balance in new_balances.items()
-            if balance != old_balances[uid]]))
+    data = []
+    for uid, balance in new_balances.items():
+        if uid in old_balances:
+            old = old_balances[uid]
+            if old != balance:
+                data.append([uid, balance, balance - old])
+        else :
+            data.append([uid, balance, 0])
+
+    output_stream.write(json.dumps(data))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
