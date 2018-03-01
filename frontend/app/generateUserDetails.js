@@ -67,6 +67,9 @@ export function successCallback(req1) {
         enableEndTurn();
         doubleCounter = 0;
     }
+    if (doubleCounter === 3) {
+        goToJail(sendJSON.sendJSON);
+    }
 }
 
 /**
@@ -103,6 +106,19 @@ export function leaveJail(JSONSend) {
         jsonObject: {player_id: id},
     });
     jail = false;
+    enableEndTurn();
+}
+
+/**
+ * Function to go to jail.
+ * @param {Function} JSONSend - JSON function makes testing easier.
+ */
+export function goToJail(JSONSend) {
+    JSONSend({
+        serverAddress: 'cgi-bin/go_to_jail.py',
+        jsonObject: {player_id: id},
+    });
+    jail = true;
     enableEndTurn();
 }
 
