@@ -96,23 +96,30 @@ export function generateUserDetails() {
 }
 
 /**
- * Function to display properties which are (un)mortgaged.
+ * Function to update properties displayed on the
+ * drop downs.
  * @param req - Response from server-side.
  */
 export function updateDropDown(req) {
     const request = JSON.parse(req.responseText);
-    const propertyState = request.player_id[0];
-    const propertyNames = request.player_id[1];
-    const select = document.getElementById(propertyState);
-    for (let i = 0; i < propertyNames.length; i += 1) {
-        const option = document.createElement('option');
+    const names = ['mortgage', 'unmortgage'];
+    const options = [request.mortgage, request.unmortgage];
+    let select;
+    let propertyNames;
+    for (let i = 0; i < names.length; i += 1) {
+        select = document.getElementById(names[i]);
+        propertyNames = options[i];
 
-        // set values for option
-        option.setAttribute('value', propertyNames[i]);
-        option.innerHTML = propertyNames[i];
+        for (let j = 0; j < propertyNames.length; j += 1) {
+            const option = document.createElement('option');
 
-        // add option to the select
-        select.appendChild(option);
+            // set values for option
+            option.setAttribute('value', propertyNames[j]);
+            option.innerHTML = propertyNames[j];
+
+            // add option to the select
+            select.appendChild(option);
+        }
     }
 }
 
@@ -123,7 +130,7 @@ export function updateDropDown(req) {
  *
  * @param {Function} JSONSend - JSON function makes testing easier.
  * @param {Object} button - Object of the button pressed.
- * @param {String} state - The desired state of a property.
+ * @param {String} state - The initial state of a property.
  */
 export function changePropState(JSONSend, button, state) {
     const optionIndex = button.selectedIndex;
@@ -138,10 +145,27 @@ export function changePropState(JSONSend, button, state) {
 }
 
 /**
+ * Called at the start of turn to display the properties owned by the
+ * player allowing to be mortgaged or unmortgaged.
+ *
+ * @param {Function} JSONSend - JSON function makes testing easier.
+
+ */
+export function displayOwnedProperties(JSONSend) {
+    JSONSend({
+        serverAddress: 'cgi-bin/property_state.py',
+        jsonObject: {player_id: ['None', 'None', id]},
+        updateDropDown,
+    });
+}
+
+/**
  * Called when a playerTurn event happens.
  * Sets the current turn in the table to the current player.
  * Checks the users id against the turn and enables their
  * game interface if it's their turn.
+ * The dropdown item from mortgage or unmortgage is managed
+ * from here
  *
  * @param turnEvent The data received from the event
  */
@@ -149,6 +173,9 @@ export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
     document.getElementById('current-turn').innerHTML = `Player ${turn[1] + 1}`;
     // console.log(`Turn:${turn}`);
+
+    // displayOwnedProperties(sendJSON.sendJSON);
+
     const rollDiceButton = document.getElementById('roll-dice');
     rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
     rollDiceButton.disabled = true;
