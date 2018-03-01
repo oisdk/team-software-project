@@ -59,7 +59,7 @@ export function successCallback(req1) {
     const response = JSON.parse(req1.responseText);
     const roll = response.your_rolls;
     const rollDie = document.querySelector('#roll-dice');
-    if (roll[0] === roll[1]) {
+    if (roll[0] === roll[1] && jail == false) {
         rollDie.disabled = false;
         doubleCounter += 1;
     } else {
@@ -68,6 +68,7 @@ export function successCallback(req1) {
         doubleCounter = 0;
     }
     if (doubleCounter === 3) {
+        doubleCounter = 0;
         goToJail(sendJSON.sendJSON);
     }
 }
@@ -105,7 +106,6 @@ export function leaveJail(JSONSend) {
         serverAddress: 'cgi-bin/leave_jail.py',
         jsonObject: {player_id: id},
     });
-    jail = false;
     enableEndTurn();
 }
 
