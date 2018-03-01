@@ -66,6 +66,6 @@ def player_roll_dice(source=sys.stdin, output=sys.stdout):
                     player.balance += pass_go_amount
                     player.board_position -= number_of_squares
 
-                check_position(player_id)
+                # check_position(player_id)
 
                 json.dump({"your_rolls": rolls}, output)
