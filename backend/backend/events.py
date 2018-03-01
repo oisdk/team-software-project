@@ -317,6 +317,14 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     data: [[5, 4, 0]]
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_player_move_event(
+    ...     sys.stdout,
+    ...     {3: 10},
+    ...     {5: 4, 3: 10})
+    event: playerMove
+    data: [[5, 4, 0]]
+    <BLANKLINE>
     """
     # Send the event name to the client.
     output_stream.write('event: playerMove\n')
@@ -324,15 +332,17 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
     output_stream.write('data: ')
-    if not old_positions:
-        output_stream.write(json.dumps([
-            [uid, board_position, 0]
-            for uid, board_position in new_positions.items()]))
-    else:
-        output_stream.write(json.dumps([
-            [uid, board_position, old_positions[uid]]
-            for uid, board_position in new_positions.items()
-            if board_position != old_positions[uid]]))
+
+    data = []
+    for uid, new_position in new_positions.items():
+        if uid not in old_positions:
+            data.append([uid, new_position, 0])
+        else:
+            old_position = old_positions[uid]
+            if old_position != new_position:
+                data.append([uid, new_position, old_position])
+
+    output_stream.write(json.dumps(data))
 
     # Standard SSE procedure to have two blank lines after data.
     output_stream.write('\n\n')
