@@ -52,6 +52,9 @@ export function onPlayerMove(playerMoveEvent) {
     // had to assign variables to stop linter from complaining.
     const player = items[0];
     currentPlayer = player;
+    if (items[2] === '-1') {
+        playerPositions[currentPlayer].current = 9;
+    }
     if (items[1] === '-1') {
         endPosition = 99;
     } else {
