@@ -54,7 +54,7 @@ export function logTurnEvent(turnEvent) {
 export function logMoveEvent(moveEvent) {
     const move = String(JSON.parse(moveEvent.data));
     const items = move.split(',');
-    if (items[2] !== 0 && items[2] !== -1 && items[3] !== 'in_jail') {
+    if (items[2] !== 0 && items[1] !== -1 && items[3] !== 'in_jail') {
         const roll = items[1] - items[2];
         const outputString = `Player ${items[0]} Rolled ${roll}`;
         updateGameLog(outputString);
