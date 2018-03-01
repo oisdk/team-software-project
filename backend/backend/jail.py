@@ -22,7 +22,7 @@ def go_to_jail(player_id):
 def leave_jail(player_id):
 
     """Function that removes a player from jail
-    
+
     Args:
         player_id(int) the player's unique id.
     """
