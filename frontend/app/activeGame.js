@@ -30,6 +30,7 @@ export function activeGame(gameID, playerList) {
  * @param playerMoveEvent The data received from the event
  */
 export function onPlayerMove(playerMoveEvent) {
+    let endPosition = '';
     logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
@@ -38,7 +39,12 @@ export function onPlayerMove(playerMoveEvent) {
     // had to assign variables to stop linter from complaining.
     const player = items[0];
     currentPlayer = player;
-    const endPosition = items[1];
+    if (items[1] === '-1') {
+        endPosition = 99;
+    } else {
+        const endPositionValue = items[1];
+        endPosition = endPositionValue;
+    }
     playerPositions[currentPlayer].end = parseInt(endPosition, 10);
     startAnimation();
 }
@@ -154,17 +160,26 @@ function startAnimation() {
  * to wrap around the board.
  */
 function animate() {
-    playerPositions[currentPlayer].current += 1;
-    let nextPosition = playerPositions[currentPlayer].current;
+    if (playerPositions[currentPlayer].end !== 99) {
+        playerPositions[currentPlayer].current += 1;
+        let nextPosition = playerPositions[currentPlayer].current;
 
-    if (nextPosition > 39) {
-        nextPosition -= 40;
-        playerPositions[currentPlayer].current = nextPosition;
-    }
-    control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
-    if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
+        if (nextPosition > 39) {
+            nextPosition -= 40;
+            playerPositions[currentPlayer].current = nextPosition;
+        }
+        control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
+        if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
+            clearInterval(timer);
+            console.log('ended');
+            currentPlayer = '';
+        }
+    } else {
+        // go to jail.
+        control.movePlayer(currentPlayer, 99, playerTokenInformation[currentPlayer]);
+        playerPositions[currentPlayer].current = 99;
         clearInterval(timer);
-        console.log('ended');
+        console.log('Jailed 99');
         currentPlayer = '';
     }
 }
