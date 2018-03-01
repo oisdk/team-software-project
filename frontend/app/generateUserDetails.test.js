@@ -215,7 +215,7 @@ describe('onPlayerMove', () => {
 
 describe('turnDetails', () => {
     const oldDocumentBody = document.body;
-    const mockPlayerTurnEvent = {data: JSON.stringify(['1'])};
+    const mockPlayerTurnEvent = {data: '[1]')};
 
     beforeAll(() => {
         document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="mort-check">Mortgage</button><button id="unmort-check">Unmortgage</button><button id="end-turn">End Turn</button>';
@@ -227,7 +227,7 @@ describe('turnDetails', () => {
 
     it('should set active player', () => {
         generateUserDetails.turnDetails(mockPlayerTurnEvent);
-        expect(document.getElementById('current-turn').innerHTML).toEqual('Player NaN');
+        expect(document.getElementById('current-turn').innerHTML).toEqual('Player 2');
         expect(document.getElementById('roll-dice').hasAttribute('disabled'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
         expect(document.getElementById('mort-check').hasAttribute('disabled=""'));
