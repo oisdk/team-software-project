@@ -312,19 +312,24 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     data: [[5, 200, 0]]
     <BLANKLINE>
 
+    >>> generate_player_balance_event(
+    ...     sys.stdout,
+    ...     {3: 100},
+    ...     {5: 200, 3: 100})
+    event: playerBalance
+    data: [[5, 200, 0]]
+    <BLANKLINE>
     """
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
-    if not old_balances:
-        data = [
-            [uid, balance, 0]
-            for uid, balance in new_balances.items()]
-    else:
-        data = [
-            [uid, balance, ((balance - old_balances[uid])
-                            if old_balances[uid] else balance)]
-            for uid, balance in new_balances.items()
-            if balance != old_balances[uid]]
+    data = []
+    for uid, balance in new_balances.items():
+        if uid in old_balances:
+            old = old_balances[uid]
+            if old != balance:
+                data.append([uid, balance, balance - old])
+        else:
+            data.append([uid, balance, 0])
 
     output_event(output_stream, 'playerBalance', data)
 
@@ -378,18 +383,26 @@ def generate_player_move_event(output_stream, old_positions, new_positions):
     data: [[5, 4, 0]]
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_player_move_event(
+    ...     sys.stdout,
+    ...     {3: 10},
+    ...     {5: 4, 3: 10})
+    event: playerMove
+    data: [[5, 4, 0]]
+    <BLANKLINE>
     """
     # Send the JSON object which contains the elements that are not in common
     # with the two dictionaries.
-    if not old_positions:
-        data = [
-            [uid, board_position, 0]
-            for uid, board_position in new_positions.items()]
-    else:
-        data = [
-            [uid, board_position, old_positions[uid]]
-            for uid, board_position in new_positions.items()
-            if board_position != old_positions[uid]]
+    data = []
+    for uid, new_position in new_positions.items():
+        if uid not in old_positions:
+            data.append([uid, new_position, 0])
+        else:
+            old_position = old_positions[uid]
+            if old_position != new_position:
+                data.append([uid, new_position, old_position])
+
     output_event(output_stream, 'playerMove', data)
 
 
