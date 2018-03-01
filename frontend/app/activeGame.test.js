@@ -28,7 +28,7 @@ describe('onPlayerTurn', () => {
     const mockPlayerTurnEvent = {data: '1'};
 
     beforeAll(() => {
-        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="end-turn">End Turn</button>';
+        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="mort-check">Mortgage</button><button id="unmort-check">Unmortgage</button><button id="end-turn">End Turn</button>';
     });
 
     afterAll(() => {
