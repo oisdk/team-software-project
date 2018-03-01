@@ -20,28 +20,36 @@ def property_state(source=sys.stdin, output=sys.stdout):
     owned (un)mortgaged properties.
     Returns {player_id: [state, [list of properties]]}
     """
+
     output.write('Content-Type: application/json\n\n')
     request = json.load(source)
+
     # The initial state of the property wished to be changed
     prop_state = request["player_id"][0]
     prop_name = request["player_id"][1]
     player_id = request["player_id"][2]
-    new_state = ""
 
-    property_position = get_position_by_name(player_id, prop_name)
-    game_id = get_propertys_gameid(player_id, property_position)
+    # Change property state and player balance if prop_name
+    # and prop_state isn't None. It means state for property
+    # and player's balance is to be changed.
+    if prop_name != "None" and prop_state != "None":
 
-    with Property(property_position, game_id) as property_:
-        with Player(player_id) as player:
-            # Property_state is unmortgaged, now mortgaged
-            if prop_state == "unmortgaged":
-                player.balance += property_.price//2
-                new_state = "mortgaged"
-                property_.property_state = new_state
-            elif prop_state == "mortgaged":
-                player.balance -= property_.price//2
-                new_state = "unmortgaged"
-                property_.property_state = new_state
+        # State desired to be changed to for a property
+        change_state_to = "mortgage" if prop_state == "unmortgage" \
+                                     else "unmortgage"
 
-    # for displaying the mortgaged/ unmortgaged properties.
-    json.dump(get_un_mortgage(player_id, prop_state), output)
+        # Retrieving the property position and gameID for property object
+        property_position = get_position_by_name(player_id, prop_name)
+        game_id = get_propertys_gameid(player_id, property_position)
+
+        with Property(property_position, game_id) as property_:
+            with Player(player_id) as player:
+                # Property_state was unmortgaged, now mortgaged
+                property_.property_state = change_state_to
+                if change_state_to == "unmortgage":
+                    player.balance -= property_.price//2
+                elif change_state_to == "mortgage":
+                    player.balance += property_.price//2
+
+    # For displaying the mortgaged/ unmortgaged properties.
+    json.dump(get_un_mortgage(player_id), output)
