@@ -107,30 +107,28 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         """
         return self._hotels
 
-    """
-Uncomment once request property is merged in
-    @property
-    def name(self):
-        \"""
-        Returns:
-            str: name of property
-        \"""
-        return self._request_property(
-            table='property_values',
-            field='name',
-            attribute='_name')
+# Uncomment once request property is merged in
+#   @property
+#   def name(self):
+#       """
+#       Returns:
+#           str: name of property
+#       """
+#       return self._request_property(
+#           table='property_values',
+#           field='name',
+#           attribute='_name')
 
-    @property
-    def mortgage(self):
-        \"""
-        Returns:
-            str: status of whether the property is mortgaged
-        \"""
-        return self._request_property(
-            table='properties',
-            field='mortgaged',
-            attribute='_mortgaged')
-    """
+#    @property
+#    def mortgage(self):
+#        """
+#        Returns:
+#            str: status of whether the property is mortgaged
+#        """
+#        return self._request_property(
+#            table='properties',
+#            field='mortgaged',
+#            attribute='_mortgaged')
 
     @property
     def owner(self):
@@ -211,11 +209,9 @@ Uncomment once request property is merged in
             raise TypeError('Must be within "with" statement to mutate the '
                             'Player class')
 
-    """
-    @mortgage.setter
-    def mortgage(self, mortgage):
-        self._set_property('mortgage', mortgage)
-    """
+#    @mortgage.setter
+#    def mortgage(self, mortgage):
+#        self._set_property('mortgage', mortgage)
 
     @houses.setter
     def houses(self, houses):
