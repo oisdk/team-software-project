@@ -63,7 +63,6 @@ export function waitingGame(gameID) {
 
     let numberOfPlayers = 0;
     function onPlayerJoin(joinEvent) {
-        console.log(`joinEvent:${joinEvent}`);
         // Parse the "data" portion of the server-sent event from the server
         // which should contain the list of new users who have joined the
         // waiting game lobby.
@@ -76,7 +75,6 @@ export function waitingGame(gameID) {
             playerListElement.appendChild(playerElement);
 
             numberOfPlayers += 1;
-            console.log(`Players:${numberOfPlayers}`);
             // Only enable the "start game" button when 4 players have joined
             if (numberOfPlayers === 2) {
                 document.getElementById(startButtonID).disabled = false;
