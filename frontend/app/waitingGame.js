@@ -4,6 +4,8 @@ import * as sendJSON from './sendJSON';
 // change according to activeGame as currently used with default function
 import {activeGame} from './activeGame';
 
+const playersInGame = [];
+
 /**
  * Creates the html for the waiting game.
  *
@@ -70,11 +72,13 @@ export function waitingGame(gameID) {
         const playerListElement = document.getElementById(playerListID);
         for (let i = 0; i < playerList.length; i += 1) {
             const player = playerList[i];
-            const playerElement = document.createElement('div');
-            playerElement.innerHTML = player;
-            playerListElement.appendChild(playerElement);
-
-            numberOfPlayers += 1;
+            if (!playersInGame.includes(player)) {
+                const playerElement = document.createElement('div');
+                playerElement.innerHTML = player;
+                playerListElement.appendChild(playerElement);
+                numberOfPlayers += 1;
+            }
+            playersInGame.push(player);
             // Only enable the "start game" button when 4 players have joined
             if (numberOfPlayers === 2) {
                 document.getElementById(startButtonID).disabled = false;
@@ -99,18 +103,15 @@ export function waitingGame(gameID) {
     }
 
     function onGameStart(startEvent) {
-        const startedGameId = startEvent.data;
-        // needs casting to string as the gameID is a number
-        // and needs to be compared to the gameID received from the gameStart event.
-        if (gameID.toString() === startedGameId) {
-            sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
-            sseEventSource.removeEventListener('gameStart', onGameStart);
-            sendJSON.sendJSON({
-                serverAddress: 'cgi-bin/request_players.py',
-                jsonObject: {game_id: gameID},
-                successCallback,
-            });
-        }
+        const startedGameId = JSON.parse(startEvent.data);
+        console.log(`startedGameId = ${startedGameId}`);
+        sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
+        sseEventSource.removeEventListener('gameStart', onGameStart);
+        sendJSON.sendJSON({
+            serverAddress: 'cgi-bin/request_players.py',
+            jsonObject: {game_id: gameID},
+            successCallback,
+        });
     }
 }
 
@@ -118,8 +119,7 @@ export function waitingGame(gameID) {
  * These are private functions exported for testing purposes.
  *
  * @private
- *
- *export const privateFunctions = {
- *   createWaitingGameHTML,
- *};
  */
+export const privateFunctions = {
+    createWaitingGameHTML,
+};

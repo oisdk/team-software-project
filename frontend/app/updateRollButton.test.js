@@ -37,7 +37,7 @@ describe('Disable roll button ', () => {
     };
 
     beforeAll(() => {
-        document.body.innerHTML = '<button type="button" id="roll">Roll die</button>';
+        document.body.innerHTML = '<button type="button" id="roll-dice">Roll die</button>';
     });
 
     afterAll(() => {
@@ -46,7 +46,7 @@ describe('Disable roll button ', () => {
 
     test(' disable button ', (done) => {
         functionCall.checkRollValuesEqual(mockFileResponse);
-        expect(document.body.innerHTML).toEqual('<button type="button" id="roll" disabled="">Roll die</button>');
+        expect(document.body.innerHTML).toEqual('<button type="button" id="roll-dice" disabled="">Roll die</button>');
         done();
     });
 });
@@ -62,7 +62,7 @@ describe('Enable roll button ', () => {
     };
 
     beforeAll(() => {
-        document.body.innerHTML = '<button type="button" id="roll">Roll die</button>';
+        document.body.innerHTML = '<button type="button" id="roll-dice">Roll die</button>';
     });
 
     afterAll(() => {
@@ -71,7 +71,7 @@ describe('Enable roll button ', () => {
 
     test(' disable button ', (done) => {
         functionCall.checkRollValuesEqual(mockFileResponse);
-        expect(document.body.innerHTML).toEqual('<button type="button" id="roll">Roll die</button>');
+        expect(document.body.innerHTML).toEqual('<button type="button" id="roll-dice">Roll die</button>');
         done();
     });
 });

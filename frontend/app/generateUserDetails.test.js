@@ -25,9 +25,12 @@ describe('updateUserDetails test', () => {
         document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     });
 
+    const mockRootElement = document.createElement('div');
+
     test('should read mockFileResponse and update page with its contents', (done) => {
-        generateUserDetails.updateUserDetails(mockFileResponse);
-        expect(document.getElementById('content-right').innerHTML).toEqual('<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>');
+        document.getElementById('content-right').appendChild(mockRootElement);
+        generateUserDetails.updateUserDetails(mockFileResponse, mockRootElement);
+        expect(mockRootElement.innerHTML).toEqual('<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>');
         expect(document.getElementById('details_username').innerHTML).toEqual('undefined');
         done();
     });
@@ -252,4 +255,3 @@ describe('balanceDetails', () => {
         expect(document.getElementById('balance').innerHTML).toEqual('');
     });
 });
-
