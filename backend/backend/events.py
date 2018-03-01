@@ -339,7 +339,8 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     output_event(output_stream, 'playerBalance', data)
 
 
-def check_new_positions(output_stream, old_positions, new_positions, jailed_players):
+def check_new_positions(output_stream, old_positions, new_positions,
+                        jailed_players):
     """Checks if a player has moved and sends an SSE event if it has.
 
     Arguments:
@@ -353,7 +354,8 @@ def check_new_positions(output_stream, old_positions, new_positions, jailed_play
 
     """
     if new_positions != old_positions:
-        generate_player_move_event(output_stream, old_positions, new_positions, jailed_players)
+        generate_player_move_event(output_stream, old_positions,
+                                   new_positions, jailed_players)
     return new_positions.copy()
 
 
@@ -579,7 +581,6 @@ def check_new_jailed_players(output_stream,
         generate_player_jailed_event(
             output_stream, jailed_players, new_jailed_players)
     return new_jailed_players.copy()
-
 
 
 def generate_player_jailed_event(
