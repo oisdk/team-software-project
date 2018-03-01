@@ -6,9 +6,12 @@
 from backend.properties import get_properties_by_state
 
 
-def get_un_mortgage(player_id, prop_state):
-    """Requesting list of player_id owned (un)mortgaged
-    properties.
-    Returns {player_id: [state, [list of properties]]}
+def get_un_mortgage(player_id):
+    """Requests seperately mortgaged and unmortgaged properties
+    owned by player.
+    Returns {"unmortgage": [list of mortgaged properties],
+             "mortgage": [list of unmortgaged properties]}
     """
-    return get_properties_by_state(player_id, prop_state)
+
+    return {"unmortgage": get_properties_by_state(player_id, "mortgage"),
+            "mortgage": get_properties_by_state(player_id, "unmortgage")}
