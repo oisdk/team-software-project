@@ -418,7 +418,7 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
             old = old_balances[uid]
             if old != balance:
                 data.append([uid, balance, balance - old])
-        else :
+        else:
             data.append([uid, balance, 0])
 
     output_stream.write(json.dumps(data))
