@@ -68,10 +68,12 @@ export function endTurn(JSONSend) {
 /**
  * Callback function to update HTML body with file's contents.
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
+ * @param {HTMLElement} rootElement The element to attach the user details to.
  */
-export function updateUserDetails(fileReader) {
+export function updateUserDetails(fileReader, rootElement) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
-        document.getElementById('content-right').innerHTML = fileReader.responseText;
+        const element = rootElement;
+        element.innerHTML = fileReader.responseText;
         document.getElementById('details_username').innerHTML = userName;
     }
 }
@@ -80,12 +82,14 @@ export function updateUserDetails(fileReader) {
  * Function to generate game details. Makes a request to local
  * filesystem for a HTML file to display.
  * @param {int} gameID - id used to create eventSource.
+ * @param {HTMLElement} rootElement User details will be displayed as a child
+ *     of this node.
  */
-export function generateUserDetails() {
+export function generateUserDetails(rootElement) {
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
     fileReader.open('GET', 'user-info.html', true);
-    fileReader.onreadystatechange = () => updateUserDetails(fileReader);
+    fileReader.onreadystatechange = () => updateUserDetails(fileReader, rootElement);
     fileReader.send();
     details = getCookie.checkUserDetails();
     id = details.user_id;
