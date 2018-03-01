@@ -318,19 +318,18 @@ def get_properties(player_id):
 
 
 def get_properties_by_state(player_id, state):
-    """Returns a dictionary where a key is the 'player_id' and the value
-    is a list with the property_state and a list of the player's owned
-    properties by property 'state' specified."""
+    """Returns an ordered list by price of the player's owned properties by
+    its 'state' specified."""
     conn = backend.storage.make_connection()
     try:
         conn.begin()
         with conn.cursor() as cursor:
             cursor.execute('SELECT `name`, FROM `properties`'
-                           'WHERE `player_id` = %s;'
-                           'AND `property_state` = %s',
+                           'WHERE `player_id` = %s'
+                           'AND `property_state` = %s'
+                           'ORDER BY `price` ASC;',
                            (player_id, state))
-            result = {player_id: [state, [row['name']
-                                          for row in cursor.fetchall()]]}
+            result = [row['name'] for row in cursor.fetchall()]
         conn.commit()
         return result
     finally:
@@ -346,7 +345,7 @@ def get_position_by_name(player_id, property_name):
         with conn.cursor() as cursor:
             cursor.execute('SELECT `property_position`, FROM `properties`'
                            'WHERE `player_id` = %s;'
-                           'AND `property_name` = %s',
+                           'AND `property_name;` = %s',
                            (player_id, property_name))
 
             result = cursor.fetchone()
@@ -366,7 +365,7 @@ def get_propertys_gameid(player_id, property_position):
         with conn.cursor() as cursor:
             cursor.execute('SELECT `game_id`, FROM `properties`'
                            'WHERE `player_id` = %s;'
-                           'AND `property_position` = %s',
+                           'AND `property_position` = %s;',
                            (player_id, property_position))
 
             result = cursor.fetchone()
