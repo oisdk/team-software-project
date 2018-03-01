@@ -12,7 +12,7 @@ def go_to_jail(player_id):
     """Function that sends a player to jail
     """
     with Player(player_id) as player:
-        player.board_position = 10
+        player.board_position = -1
         player.jail_state = 'in_jail'
 
 
@@ -36,4 +36,5 @@ def pay_to_leave_jail(source=sys.stdin, output=sys.stdout):
     with Player(player_id) as player:
         player.balance -= 50
         player.jail_state = 'not_in_jail'
+        player.board_position = 10
     json.dump({player_id: 'not_in_jail'}, output)
