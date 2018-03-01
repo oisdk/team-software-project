@@ -79,10 +79,10 @@ def start_sse_stream(output_stream=sys.stdout):
         # These are the latest values retrieved from the database.
         for player in map(Player, game.players):
             new_players[player.uid] = player.username
+            new_jailed_players[player.uid] = player.jail_state
             new_positions[player.uid] = player.board_position
             new_balances[player.uid] = player.balance
             turn_order[player.uid] = player.turn_position
-            new_jailed_players[player.uid] = player.jail_state
 
         # Assign the current (aka. non-new) dictionaries to the value of the
         # "new" (aka. latest) dictionaries, after calling the appropriate
@@ -339,7 +339,7 @@ def generate_player_balance_event(output_stream, old_balances, new_balances):
     output_event(output_stream, 'playerBalance', data)
 
 
-def check_new_positions(output_stream, old_positions, new_positions):
+def check_new_positions(output_stream, old_positions, new_positions, jailed_players):
     """Checks if a player has moved and sends an SSE event if it has.
 
     Arguments:
@@ -353,7 +353,7 @@ def check_new_positions(output_stream, old_positions, new_positions):
 
     """
     if new_positions != old_positions:
-        generate_player_move_event(output_stream, old_positions, new_positions)
+        generate_player_move_event(output_stream, old_positions, new_positions, jailed_players)
     return new_positions.copy()
 
 
