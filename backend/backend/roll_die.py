@@ -55,7 +55,7 @@ def player_roll_dice(source=sys.stdin, output=sys.stdout):
                 if in_jail == 'not_in_jail':
                     player.board_position += sum(rolls)
                     if player.board_position == 30:
-                        player.board_position == -1
+                        player.board_position = -1
                         player.jail_state = 'in_jail'
                 else:
                     if rolls[0] == rolls[1]:
