@@ -72,7 +72,8 @@ export function endTurn(JSONSend) {
  */
 export function updateUserDetails(fileReader, rootElement) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
-        rootElement.innerHTML = fileReader.responseText;
+        const element = rootElement;
+        element.innerHTML = fileReader.responseText;
         document.getElementById('details_username').innerHTML = userName;
     }
 }
