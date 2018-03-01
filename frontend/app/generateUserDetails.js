@@ -59,7 +59,7 @@ export function successCallback(req1) {
     const response = JSON.parse(req1.responseText);
     const roll = response.your_rolls;
     const rollDie = document.querySelector('#roll-dice');
-    if (roll[0] === roll[1] && jail == false) {
+    if (roll[0] === roll[1] && jail === false) {
         rollDie.disabled = false;
         doubleCounter += 1;
     } else {
