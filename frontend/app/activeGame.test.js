@@ -25,7 +25,7 @@ describe('onPlayerMove', () => {
 
 describe('onPlayerTurn', () => {
     const oldDocumentBody = document.body;
-    const mockPlayerTurnEvent = {data: '1'};
+    const mockPlayerTurnEvent = {data: '[1]'};
 
     beforeAll(() => {
         document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="mort-check">Mortgage</button><button id="unmort-check">Unmortgage</button><button id="end-turn">End Turn</button>';
@@ -37,7 +37,7 @@ describe('onPlayerTurn', () => {
 
     it('should set active player', () => {
         activeGame.onPlayerTurn(mockPlayerTurnEvent);
-        expect(document.getElementById('current-turn').innerHTML).toEqual('Player 1');
+        expect(document.getElementById('current-turn').innerHTML).toEqual('Player 2');
         expect(document.getElementById('roll-dice').hasAttribute('disabled'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
     });
