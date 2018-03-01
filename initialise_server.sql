@@ -51,6 +51,18 @@ CREATE TABLE IF NOT EXISTS property_values (
     PRIMARY KEY (property_position)
 );
 
+CREATE TABLE IF NOT EXISTS properties (
+    player_id int UNSIGNED NOT NULL,
+    game_id int UNSIGNED NOT NULL,
+    state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
+    property_position tinyint UNSIGNED NOT NULL,
+    house_count tinyint UNSIGNED DEFAULT 0,
+    hotel_count tinyint UNSIGNED DEFAULT 0,
+    FOREIGN KEY (player_id) REFERENCES players(id),
+    FOREIGN KEY (game_id) REFERENCES games(id),
+    FOREIGN KEY (property_position) REFERENCES property_values(property_position)
+);
+
 CREATE TABLE IF NOT EXISTS cards (
     unique_id tinyint UNSIGNED NOT NULL AUTO_INCREMENT,
 	card_type ENUM('chance','chest') NOT NULL,
@@ -85,18 +97,6 @@ VALUES (1, 60, 'property', 2, 50, 10, 30, 90, 160, 250),
        (34, 320, 'property', 28, 200, 150, 450, 1000, 1200, 1400),
        (37, 350, 'property', 35, 200, 175, 500, 1100, 1300, 1500),
        (39, 400, 'property', 50, 200, 200, 600, 1400, 1700, 2000);
-
-CREATE TABLE IF NOT EXISTS properties (
-    player_id int UNSIGNED NOT NULL DEFAULT '',
-    game_id int UNSIGNED NOT NULL,
-    state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
-    property_position tinyint UNSIGNED NOT NULL,
-    house_count tinyint UNSIGNED DEFAULT 0,
-    hotel_count tinyint UNSIGNED DEFAULT 0,
-    FOREIGN KEY (player_id) REFERENCES players(id),
-    FOREIGN KEY (game_id) REFERENCES games(id),
-    FOREIGN KEY (property_position) REFERENCES property_values(property_position)
-);
 
 INSERT INTO cards (card_type, description, operation, operation_value)
 VALUES ('chest', "Advance to Go", "move_specific", 0),
