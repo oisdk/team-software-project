@@ -8,13 +8,14 @@ import json
 import cgitb
 
 from backend.player import Player
-from backend.properties import Property, get_position_by_name
+from backend.properties import Property, get_position_by_name, \
+                               get_propertys_gameid
 from backend.get_un_mortgage import get_un_mortgage
 
 cgitb.enable()
 
 
-def property_state(source=sys.stdin):
+def property_state(source=sys.stdin, output=sys.stdout):
     """Entry point for the service of requesting list of player_id
     owned (un)mortgaged properties.
     Returns {player_id: [state, [list of properties]]}
@@ -41,7 +42,6 @@ def property_state(source=sys.stdin):
                 player.balance -= property_.price//2
                 new_state = "unmortgaged"
                 property_.property_state = new_state
-
 
     # for displaying the mortgaged/ unmortgaged properties.
     json.dump(get_un_mortgage(player_id, prop_state), output)
