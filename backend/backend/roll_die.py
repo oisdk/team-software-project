@@ -29,6 +29,9 @@ def roll_two_dice():
 def player_roll_dice(source=sys.stdin, output=sys.stdout):
     """Rolls two dice for a player, appends there rolls to the database,
        updates their position and the current game turn.
+       Checks if the user is in jail and does not increment their position
+       if so. Also has a check for the board position 30(go to jail)
+       and sends the player to the jail position if so.
     """
     output.write('Content-Type: application/json\n\n')
     request = json.load(source)
@@ -51,6 +54,9 @@ def player_roll_dice(source=sys.stdin, output=sys.stdout):
                 player.rolls.append(rolls)
                 if in_jail == 'not_in_jail':
                     player.board_position += sum(rolls)
+                    if player.board_position == 30:
+                        player.board_position == -1
+                        player.jail_state = 'in_jail'
                 else:
                     if rolls[0] == rolls[1]:
                         player.jail_state = 'not_in_jail'
