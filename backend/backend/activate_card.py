@@ -7,19 +7,27 @@ from backend.properties import Property
 from backend.properties import get_properties
 from backend.cards import get_card_details
 
-SIZE_OF_CARD_DECK = 15
+LAST_CHANCE_INDEX_IN_TABLE = 14
+LAST_CHEST_INDEX_IN_TABLE = 29
 
 
-def activate_card(player_id, game_id):  # pylint: disable=too-many-locals
+def activate_card(player_id, game_id, card_landed_on):
+    # pylint: disable=too-many-locals
     """Read a chance or community chest card that the player landed on.
 
     Arguments:
         player_id: An int representing the current player id.
         game_id: An int representing the current game id.
+        card_landed_on: An int representing the type of card the player has
+            activated
 
     """
-    # Pick a random number to index the card deck in the database
-    card_table_id = randint(0, SIZE_OF_CARD_DECK)
+    # Check if card is chance or community chest
+    if card_landed_on == "chance":
+        card_table_id = randint(0, LAST_CHANCE_INDEX_IN_TABLE)
+    else:
+        card_table_id = randint(LAST_CHANCE_INDEX_IN_TABLE + 1,
+                                LAST_CHEST_INDEX_IN_TABLE)
 
     # Dive into database to get the card details
     card_details = get_card_details(card_table_id)
