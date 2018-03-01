@@ -103,18 +103,15 @@ export function waitingGame(gameID) {
     }
 
     function onGameStart(startEvent) {
-        const startedGameId = startEvent.data;
-        // needs casting to string as the gameID is a number
-        // and needs to be compared to the gameID received from the gameStart event.
-        if (gameID.toString() === startedGameId) {
-            sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
-            sseEventSource.removeEventListener('gameStart', onGameStart);
-            sendJSON.sendJSON({
-                serverAddress: 'cgi-bin/request_players.py',
-                jsonObject: {game_id: gameID},
-                successCallback,
-            });
-        }
+        const startedGameId = JSON.parse(startEvent.data);
+        console.log(`startedGameId = ${startedGameId}`);
+        sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
+        sseEventSource.removeEventListener('gameStart', onGameStart);
+        sendJSON.sendJSON({
+            serverAddress: 'cgi-bin/request_players.py',
+            jsonObject: {game_id: gameID},
+            successCallback,
+        });
     }
 }
 
@@ -122,8 +119,7 @@ export function waitingGame(gameID) {
  * These are private functions exported for testing purposes.
  *
  * @private
- *
- *export const privateFunctions = {
- *   createWaitingGameHTML,
- *};
  */
+export const privateFunctions = {
+    createWaitingGameHTML,
+};

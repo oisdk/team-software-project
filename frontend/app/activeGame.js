@@ -1,12 +1,18 @@
+/**
+ * Handles user interaction during a game that has started.
+ * @module
+ */
 import * as generateUserDetails from './generateUserDetails';
 import * as control from './moveFunctions';
 import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
+import {OwnedPropertiesView} from './ownedPropertiesView';
 
 const playerTokenInformation = {};
 const playerPositions = {}; // value id : position on board ie previous position.
 let timer = '';
 let currentPlayer = '';
+let propertyView;
 
 /**
  * Displays the page for an active game.
@@ -14,10 +20,17 @@ let currentPlayer = '';
  * @param gameID The ID for the game that will be displayed.
  */
 export function activeGame(gameID, playerList) {
+    const rightPane = document.getElementById('content-right');
+    const userDetailsPane = document.createElement('div');
+    const propertiesPane = document.createElement('div');
+    rightPane.appendChild(userDetailsPane);
+    rightPane.appendChild(propertiesPane);
+
     // display board and assign starting positions.
     displayBoard(playerList);
-    generateUserDetails.generateUserDetails();
+    generateUserDetails.generateUserDetails(userDetailsPane);
     logEvents.generateGameLog();
+    propertyView = new OwnedPropertiesView(propertiesPane);
     enableActiveGameListeners();
 }
 
@@ -68,10 +81,19 @@ export function onPlayerBalance(playerBalanceEvent) {
 }
 
 /**
+ * Called when a propertyOwnerChanges event happens, and passes the data to
+ * the property view.
+ *
+ * @param {event} changesEvent The event that occurred.
+ */
+function onPropertyOwnerChanges(changesEvent) {
+    propertyView.update(JSON.parse(changesEvent.data));
+}
+
+/**
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
  */
-
 export function displayBoard(playerList) {
     let tokenSelector = 0;
     const images = ['hat.png', 'car.png', 'ship.png', 'duck.png'];
@@ -125,7 +147,17 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerMove', onPlayerMove);
     eventSource.addEventListener('playerTurn', onPlayerTurn);
     eventSource.addEventListener('playerBalance', onPlayerBalance);
-    // eventSource.addEventListener('gameEnd', disableActiveGameListeners);
+    eventSource.addEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
+    eventSource.addEventListener('gameEnd', disableActiveGameListeners);
+}
+
+function disableActiveGameListeners(_gameEndEvent) {
+    const eventSource = getEventSource();
+    eventSource.removeEventListener('playerMove', onPlayerMove);
+    eventSource.removeEventListener('playerTurn', onPlayerTurn);
+    eventSource.removeEventListener('playerBalance', onPlayerBalance);
+    eventSource.removeEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
+    eventSource.removeEventListener('gameEnd', disableActiveGameListeners);
 }
 
 /**
@@ -156,12 +188,3 @@ function animate() {
         currentPlayer = '';
     }
 }
-
-/*
-function disableActiveGameListeners(gameEndEvent) {
-    const eventSource = getEventSource();
-    eventSource.removeEventListener('playerMove', onPlayerMove);
-    eventSource.removeEventListener('playerTurn', onPlayerTurn);
-    eventSource.removeEventListener('playerBalance', onPlayerBalance);
-}
-*/
