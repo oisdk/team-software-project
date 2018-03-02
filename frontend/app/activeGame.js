@@ -146,7 +146,7 @@ export function displayBoard(playerList) {
     img.onload = () => {
         ctx.drawImage(img, 0, 0);
     };
-    img.src = 'monopoly.jpg';
+    img.src = 'uk.jpg';
 }
 
 /**
