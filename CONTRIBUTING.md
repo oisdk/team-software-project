@@ -48,7 +48,7 @@ This document covers the following aspects of the project:
 
 For a high-level overview of the project (inc. Architecture, Design), see the [top level README](README.md).
 
-For usage instructions, targetted at end-user of the software, see the [user manual](USAGE.md).
+For usage instructions, targeted at end-user of the software, see the [user manual](USAGE.md).
 
 For deployment instructions, see the [deployment manual](#).
 
