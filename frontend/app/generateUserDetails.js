@@ -52,6 +52,8 @@ export function disableLeaveJail() {
 /**
  * Callback to check user rolls and enable end turn.
  * Enables roll-dice if a double is rolled.
+ * increments/resets counter for doubles and
+ * sends player to jail if 3 doubles rolled.
  * @param {XMLHttpRequest} req1 response.
  */
 export function successCallback(req1) {
@@ -71,7 +73,6 @@ export function successCallback(req1) {
         doubleCounter = 0;
         goToJail(sendJSON.sendJSON);
     }
-    console.log(`Double:${doubleCounter}`);
 }
 
 /**
@@ -112,6 +113,8 @@ export function leaveJail(JSONSend) {
 
 /**
  * Function to go to jail.
+ *
+ * Sets jail boolean true and enables end turn.
  * @param {Function} JSONSend - JSON function makes testing easier.
  */
 export function goToJail(JSONSend) {
@@ -135,9 +138,8 @@ export function updateUserDetails(fileReader) {
 }
 
 /**
- * Function to generate game details. Makes a request to local
+ * Function to generate game details. Makes a request to
  * filesystem for a HTML file to display.
- * @param {int} gameID - id used to create eventSource.
  */
 export function generateUserDetails() {
     // Generate a HTML page with user interface
@@ -148,19 +150,22 @@ export function generateUserDetails() {
     details = getCookie.checkUserDetails();
     id = details.user_id;
     userName = details.user_name;
-    // console.log(`id:${id}`);
-
-    // TODO Properties!
 }
 
 
 /**
  * Called when a playerTurn event happens.
+ *
  * Sets the current turn in the table to the current player.
  * Checks the users id against the turn and enables their
  * game interface if it's their turn.
  *
+ * Checks the jail counter and decides on appropriate action.
+ *
  * @param turnEvent The data received from the event
+ *
+ * turnEvent[0] holds the players unique id.
+ * turnEvent[1] holds the players position in the turn order.
  */
 export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
@@ -175,8 +180,11 @@ export function turnDetails(turnEvent) {
     const leaveJailButton = document.getElementById('jail');
     leaveJailButton.onclick = () => { leaveJail(sendJSON.sendJSON); };
     leaveJailButton.disabled = true;
-    console.log(`id Test:${id}`);
-    console.log(`turn Test:${turn}`);
+
+    // Checks if player is in jail and jailCounter is less than 3
+    // enables leave jail and roll buttons
+    // If jail counter is 3 enables only the leave jail button.
+    // Otherwise only enable the roll button.
     if (jail === true && String(turn[0]) === String(id) && jailCounter < 3) {
         enableGameInterface();
         enableLeaveJail();
@@ -194,6 +202,10 @@ export function turnDetails(turnEvent) {
  * If there is a match it updates their id.
  *
  * @param balanceEvent The data received from the event
+ *
+ * balanceEvent[0] holds the players unique id.
+ * balanceEvent[1] holds the players new balance.
+ * balanceEvent[2] holds the amount the balance has changed by.
  */
 export function balanceDetails(balanceEvent) {
     const data = JSON.parse(balanceEvent.data);
@@ -213,6 +225,9 @@ export function balanceDetails(balanceEvent) {
  * Enables the button to pay to leave jail.
  *
  * @param jailedEvent The data received from the event
+ *
+ * jailEvent[0] holds the players unique id.
+ * jailEvent[1] holds the players jailed status.
  */
 export function jailedPlayer(jailedEvent) {
     const data = JSON.parse(jailedEvent.data);
