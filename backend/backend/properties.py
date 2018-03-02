@@ -14,12 +14,14 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         self._position = position
         self._in_context = False
         self._property_state = None
+        self._mortgage = None
         self._houses = 0
         self._hotels = 0
         self._owner = None
         self._price = 0
         self._property_type = None
         self._base = 0
+        self._name = ""
         self._house_price = 0
         self._one = 0
         self._two = 0
@@ -38,6 +40,7 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                            (self._gid, self._position))
             result = cursor.fetchone()
             self._property_state = result['state']
+            self._mortgage = result['mortgaged']
             self._houses = result['house_count']
             self._hotels = result['hotel_count']
             self._owner = result['player_id']
@@ -49,12 +52,14 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             self._price = result['purchase_price']
             self._property_type = result['state']
             self._base = result['base_rent']
-            self._house_price = result['house_price']
-            self._one = result['one_rent']
-            self._two = result['two_rent']
-            self._three = result['three_rent']
-            self._four = result['four_rent']
-            self._hotel = result['hotel_rent']
+            if self._property_type == 'property':
+                self._house_price = result['house_price']
+                self._name = result['name']
+                self._one = result['one_rent']
+                self._two = result['two_rent']
+                self._three = result['three_rent']
+                self._four = result['four_rent']
+                self._hotel = result['hotel_rent']
             del result
         return self
 
@@ -63,12 +68,13 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             with self._conn.cursor() as cursor:
                 cursor.execute('UPDATE `properties` '
                                'SET `player_id` = %s, '
+                               '`mortgaged` = `%s`',
                                '`state` = %s, '
                                '`house_count` = %s, '
                                '`hotel_count` = %s'
                                'WHERE `game_id` = %s '
                                'AND `property_position` = %s',
-                               (self._owner, self._property_state,
+                               (self._owner, self._name, self._property_state,
                                 self._houses, self._hotels, self._gid,
                                 self._position))
             self._conn.commit()
@@ -144,6 +150,28 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             table='properties',
             field='hotel_count',
             attribute='_hotels')
+
+    @property
+    def name(self):
+        """
+        Returns:
+            str: name of property
+        """
+        return self._request_property(
+            table='property_values',
+            field='name',
+            attribute='_name')
+
+    @property
+    def mortgage(self):
+        """
+        Returns:
+            str: status of whether the property is mortgaged
+        """
+        return self._request_property(
+            table='properties',
+            field='mortgaged',
+            attribute='_mortgaged')
 
     @property
     def owner(self):
@@ -231,6 +259,10 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             raise TypeError('Must be within "with" statement to mutate the '
                             'Player class')
 
+    @mortgage.setter
+    def mortgage(self, mortgage):
+        self._set_property('mortgage', mortgage)
+
     @houses.setter
     def houses(self, houses):
         self._set_property('houses', houses)
@@ -316,6 +348,40 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         if result[0] == 1:
             is_monopoly = True
         return is_monopoly
+
+    def rails_owned(self):
+        """
+        Returns:
+            int: how many railroads are owned by the owner of self.
+        """
+        with self._conn.cursor() as cursor:
+            cursor.execute('SELECT COUNT(*) FROM `properties` AS p ',
+                           'JOIN `property_values` AS pv ON ',
+                           'p.`property_position`=',
+                           'pv.`property_position` ',
+                           'WHERE p.`game_id` = %s ',
+                           'AND pv.`property_type` = `railroad` ',
+                           'AND p.`player_id` = %s',
+                           (self._gid, self._owner))
+            result = cursor.fetchone()
+            return result[result.keys()[0]]
+
+    def utils_owned(self):
+        """
+        Returns:
+            int: how many utilities are owned by the owner of self.
+        """
+        multiplier = 1
+        with self._conn.cursor() as cursor:
+            cursor.execute('SELECT COUNT(*) FROM `properties` ',
+                           'WHERE `game_id` = %s ',
+                           'AND `property_type` = `utility` ',
+                           'AND `player_id` = %s',
+                           (self._gid, self._owner))
+            result = cursor.fetchone()
+            if result[result.keys()[0]] == 2:
+                multiplier = 2.5
+            return multiplier
 
 
 def owned_property_positions(game_id):
