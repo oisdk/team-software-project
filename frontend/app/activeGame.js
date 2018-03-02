@@ -39,8 +39,15 @@ export function activeGame(gameID, playerList) {
  * Called when a playerMove event happens.
  * Moves the player location on the board using the received data.
  * Logs this move in the game log.
+ * Checks if the playr is in/has left jail and deals with this
+ * appropriately in the animation.
  *
  * @param playerMoveEvent The data received from the event
+ *
+ * moveEvent[0] holds the players unique id.
+ * moveEvent[1] holds the players new board position.
+ * moveEvent[2] holds the players old board position.
+ * moveEvent[3] holds the players jailed status.
  */
 export function onPlayerMove(playerMoveEvent) {
     let endPosition = '';
