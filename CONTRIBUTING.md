@@ -1,6 +1,6 @@
 # Introduction
 
-## Document Target Audience:
+## Target Audience of this Document:
 
 This document is geared towards developers interested in contributing code to this project. It is **not** intended to be read by end-users of the software, those interested in the software architecture, or operators who are deploying the software.
 
