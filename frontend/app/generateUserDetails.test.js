@@ -187,7 +187,7 @@ describe('turnDetails', () => {
     const mockPlayerTurnEvent = {data: '1'};
 
     beforeAll(() => {
-        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="end-turn">End Turn</button><button id="jail">Jail</button>';
+        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="mort-check" name="mortgage">Mortgage</button><button id="unmort-check" name="unmortgage">Unmortgage</button><button id="end-turn">End Turn</button><button id="jail">Jail</button>';
     });
 
     afterAll(() => {
