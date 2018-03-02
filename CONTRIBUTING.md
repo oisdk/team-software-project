@@ -1,3 +1,25 @@
+# Introduction
+
+## Document Target Audience:
+
+This document is geared towards developers interested in contributing code to this project. It is **not** intended to be read by end-users of the software, those interested in the software architecture, or operators who are deploying the software.
+
+## Document Scope:
+
+This document covers the following aspects of the project:
+* Working on a local copy of this project.
+* The Continuous Integration server.
+* Directory and database structure.
+* Testing your code.
+
+## External Documentation:
+
+For a high-level overview of the project (inc. Architecture, Design), see the [top level README](README.md).
+
+For usage instructions, targetted at end-user of the software, see the [user manual](USAGE.md).
+
+For deployment instructions, see the [deployment manual](#).
+
 # Downloading the project and making changes
 
 Before you can make changes to the code, you'll have to download it to your local machine so you can open it up in your editor. If you're already familiar with git and github, all you need to know is: don't make commits to master. Make a branch, commit on there, and make a pull request back to master. If you're not familiar, here's a short guide:
