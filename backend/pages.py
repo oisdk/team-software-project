@@ -14,4 +14,7 @@ pages = {
     'join_game': 'backend.join_game:join_game',
     'increment_turn': 'backend.increment_turn:increment_turn',
     'request_players': 'backend.get_list_of_players:request_list_of_players',
+    'charge_rent': 'backend.charge_rent:charge_rent',
+    'leave_jail': 'backend.jail:pay_to_leave_jail',
+    'go_to_jail': 'backend.jail:go_to_jail',
 }

@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS players (
     username varchar(255) CHARACTER SET utf8mb4 NOT NULL,
     balance int NOT NULL DEFAULT 1500,
     turn_position tinyint DEFAULT 0,
-    board_position tinyint UNSIGNED NOT NULL DEFAULT 0,
+    board_position tinyint NOT NULL DEFAULT 0,
+    jail_state ENUM('not_in_jail', 'in_jail') NOT NULL DEFAULT 'not_in_jail',
     PRIMARY KEY (id)
 );
 
