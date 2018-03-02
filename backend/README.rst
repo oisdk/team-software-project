@@ -4,7 +4,7 @@ About this Document
 Summary
 -------
 
-This document provides details on how the backend of the software works, and provides "How to" for writing code to work with certain components. It is designed to supplement (and not repeat) the contents of the `contributing document <../CONTRIBUTING.md`_ at the top-level of this project file hierarchy.
+This document provides details on how the backend of the software works, and provides "How to" for writing code to work with certain components. It is designed to supplement (and not repeat) the contents of the `contributing document <../CONTRIBUTING.md>`_ at the top-level of this project file hierarchy.
 
 Target Audience
 ---------------
@@ -20,7 +20,7 @@ This document covers the following backend aspects of the project:
 External Documentation
 ----------------------
 
-If you are starting to contribute to this project for the first time, it is stongly recommended that you review the `contributing document <../CONTRIBUTING.md>`_, which covers everything needed to write code for this project.
+If you are starting to contribute to this project for the first time, it is stongly recommended that you review the `contributing document <../CONTRIBUTING.md>`_, which covers everything needed to start writing code for this project.
 
 For developers interested in contributing to the project frontend, see the `frontend README <../frontend/README.md>`_.
 

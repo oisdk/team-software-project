@@ -14,7 +14,7 @@ This document will cover aspects of the software related to frontend only. For i
 
 ## External Documentation:
 
-If you are starting to contribute to this project for the first time, it is stongly recommended that you review the [contributing document](../CONTRIBUTING.md), which covers everything needed to write code for this project.
+If you are starting to contribute to this project for the first time, it is stongly recommended that you review the [contributing document](../CONTRIBUTING.md), which covers everything needed to start writing code for this project.
 
 For developers interested in contributing to the project backend, see the [backend README](../backend/README.rst).
 
