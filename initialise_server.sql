@@ -53,9 +53,9 @@ CREATE TABLE IF NOT EXISTS property_values (
 );
 
 CREATE TABLE IF NOT EXISTS properties (
-    player_id int UNSIGNED NOT NULL DEFAULT '',
+    player_id int UNSIGNED NOT NULL DEFAULT 0,
 	game_id int UNSIGNED NOT NULL,
-	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
+	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'owned',
 	mortgaged ENUM('unmortgaged', 'mortgaged') NOT NULL DEFAULT 'unmortgaged',
 	property_position tinyint UNSIGNED NOT NULL,
 	house_count tinyint UNSIGNED DEFAULT 0,
@@ -88,12 +88,12 @@ VALUES (1, 'Old Kent Road', 60, 'property', 2, 50, 10, 30, 90, 160, 250),
 	   (34, 'Bond Street', 320, 'property', 28, 200, 150, 450, 1000, 1200, 1400),
 	   (37, 'Park Lane', 350, 'property', 35, 200, 175, 500, 1100, 1300, 1500),
 	   (39, 'Mayfair', 400, 'property', 50, 200, 200, 600, 1400, 1700, 2000),
-	   (5, 'Kings Cross Station', 200, 'railroad', 25),
-	   (15, 'Marylebone Station', 200, 'railroad', 25),
-	   (25, 'Fenchurch Street Station', 200, 'railroad', 25),
-	   (35, 'Liverpool Street Station', 200, 'railroad', 25),
-	   (12, 'Electric Company', 150, 'utility', 4),
-	   (28, 'Water Works', 150, 'utility', 4);
+	   (5, 'Kings Cross Station', 200, 'railroad', 25, 0, 0 , 0, 0, 0, 0),
+	   (15, 'Marylebone Station', 200, 'railroad', 25, 0, 0 , 0, 0, 0, 0),
+	   (25, 'Fenchurch Street Station', 200, 'railroad', 25, 0, 0 , 0, 0, 0, 0),
+	   (35, 'Liverpool Street Station', 200, 'railroad', 25, 0, 0 , 0, 0, 0, 0),
+	   (12, 'Electric Company', 150, 'utility', 4, 0, 0 , 0, 0, 0, 0),
+	   (28, 'Water Works', 150, 'utility', 4, 0, 0 , 0, 0, 0, 0);
 
 INSERT INTO miscellaneous (board_position, type)
 VALUES (2, 'community_chest'),
