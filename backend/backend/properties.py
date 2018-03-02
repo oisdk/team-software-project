@@ -1,5 +1,8 @@
 """This module provides the Property class"""
 
+from operator import itemgetter
+from itertools import groupby
+
 import backend.storage
 
 
@@ -73,13 +76,48 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             self._in_context = False
             self._conn.close()
 
+    def _request_property(self, table, field, attribute):
+        """Helper function to implement requesting a property from
+        the database.
+
+        Arguments:
+            table: The name of the table that should be queried for this
+                attribute.
+            field: The name of the table field that corresponds to this
+                property.
+            attribute: The name of the attribute used for this property.
+        """
+        if self._in_context:
+            return getattr(self, attribute)
+        else:
+            conn = backend.storage.make_connection()
+            try:
+                with conn.cursor() as cursor:
+                    query_string = cursor.mogrify(
+                        'SELECT %s FROM %s',
+                        (field, table))
+                    query_string += cursor.mogrify(
+                        ' WHERE property_position = %s',
+                        self._position)
+                    if table == 'properties':
+                        query_string += cursor.mogrify(
+                            ' AND game_id = %s',
+                            (self._gid))
+                    cursor.execute(query_string)
+                    return cursor.fetchone()[field]
+            finally:
+                conn.close()
+
     @property
     def property_state(self):
         """
         Returns:
             str: the state of the property, 'owned' or 'unowned'
         """
-        return self._property_state
+        return self._request_property(
+            table='properties',
+            field='state',
+            attribute='_property_state')
 
     @property
     def houses(self):
@@ -89,7 +127,10 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if mutated outside of a with statement.
         """
-        return self._houses
+        return self._request_property(
+            table='properties',
+            field='house_count',
+            attribute='_houses')
 
     @property
     def hotels(self):
@@ -99,7 +140,10 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if mutated outside of a with statement.
         """
-        return self._hotels
+        return self._request_property(
+            table='properties',
+            field='hotel_count',
+            attribute='_hotels')
 
     @property
     def owner(self):
@@ -109,7 +153,10 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         Raises:
             TypeError: if mutated outside of a with statement.
         """
-        return self._owner
+        return self._request_property(
+            table='properties',
+            field='player_id',
+            attribute='_owner')
 
     @property
     def price(self):
@@ -117,7 +164,10 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         Returns:
             int: the cost to purchase the property
         """
-        return self._price
+        return self._request_property(
+            table='property_values',
+            field='house_price',
+            attribute='_price')
 
     @property
     def type(self):
@@ -125,7 +175,10 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         Returns:
             str: the type of property it is: property, railroad or utility
         """
-        return self._property_type
+        return self._request_property(
+            table='property_values',
+            field='state',
+            attribute='_property_type')
 
     @property
     def rent(self):
@@ -133,23 +186,32 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         Returns:
             int: the rent for landing on the property
         """
-        rent = 0
+        multiplier = 1
         if (self._houses == 0) and (self._hotels == 0):
+            attribute = '_base'
+            field = 'base_rent'
             if self._is_in_monopoly:
-                rent = self._base*2
-            else:
-                rent = self._base
+                multiplier = 2
         elif self._houses == 1:
-            rent = self._one
+            attribute = '_one'
+            field = 'one_rent'
         elif self._houses == 2:
-            rent = self._two
+            attribute = '_two'
+            field = 'two_rent'
         elif self._houses == 3:
-            rent = self._three
+            attribute = '_three'
+            field = 'three_rent'
         elif self._houses == 4:
-            rent = self._four
+            attribute = '_four'
+            field = 'four_rent'
         elif self._hotels == 1:
-            rent = self._hotel
-        return rent
+            attribute = '_hotel'
+            field = 'hotel_rent'
+
+        return multiplier * self._request_property(
+            table='property_values',
+            field=field,
+            attribute=attribute)
 
     @property
     def house_price(self):
@@ -157,7 +219,10 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         Returns:
             int: The cost to put a house or hotel on the property
         """
-        return self._house_price
+        return self._request_property(
+            table='property_values',
+            field='house_price',
+            attribute='_house_price')
 
     def _set_property(self, name, new_value):
         if self._in_context:
@@ -251,6 +316,70 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         if result[0] == 1:
             is_monopoly = True
         return is_monopoly
+
+
+def owned_property_positions(game_id):
+    """Return a list of positions of owned properties in a game. """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT property_position, player_id '
+                           'FROM properties '
+                           'WHERE game_id = %s '
+                           'AND state = %s '
+                           'ORDER BY player_id;', (game_id, 'owned'))
+            return {player_id: [entry['property_position'] for entry in row]
+                    for player_id, row
+                    in groupby(cursor.fetchall(), itemgetter('player_id'))}
+    finally:
+        conn.close()
+
+
+def property_positions():
+    """Get a list of board positions where there are properties
+
+    Returns:
+        A list representing the positions of all properties on the board.
+
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT property_position '
+                           'FROM property_values;')
+            result = [row["property_position"] for row in cursor.fetchall()]
+        return result
+    finally:
+        conn.close()
+
+
+def is_property_owned(property_position, game_id):
+    """Check if a property is currently owned.
+
+    Arguments:
+        property_position: An int representing the property position on the
+                           board.
+        game_id: An int representing the game id of the game in question.
+
+    Returns:
+        A bool: True if property is owned, False otherwise.
+
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT * '
+                           'FROM properties '
+                           'WHERE state = "owned" '
+                           'AND property_position = %s '
+                           'AND game_id = %s;', (property_position, game_id))
+
+            return cursor.rowcount > 0
+    finally:
+        conn.close()
 
 
 def get_properties(player_id):
