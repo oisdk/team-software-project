@@ -1,58 +1,68 @@
-// functions to move around the board
-// will have to change coordinates as browser interprets these differently.
-// only test coordinates for now.
+/**
+ * A function that gets the coordinates of a position.
+ *
+ * @param {number} position - position on the board.
+ */
 export function getCoord(position) {
     const listOfCoordinates = {
-        0: [735, 720],
-        1: [640, 720],
-        2: [578, 720],
-        3: [512, 720],
-        4: [444, 720],
-        5: [380, 720],
-        6: [310, 720],
-        7: [250, 720],
-        8: [183, 720],
-        9: [119, 720],
+        0: [735, 730],
+        1: [635, 730],
+        2: [570, 730],
+        3: [506, 730],
+        4: [440, 730],
+        5: [375, 730],
+        6: [310, 730],
+        7: [245, 730],
+        8: [180, 730],
+        9: [114, 730],
 
-        10: [15, 720],
-        11: [24, 643],
-        12: [24, 580],
-        13: [24, 519],
-        14: [24, 450],
-        15: [24, 386],
-        16: [24, 321],
-        17: [24, 255],
-        18: [24, 190],
-        19: [24, 125],
-        20: [24, 40],
+        10: [12, 754],
+        11: [18, 637],
+        12: [18, 575],
+        13: [18, 510],
+        14: [18, 445],
+        15: [18, 382],
+        16: [18, 316],
+        17: [18, 250],
+        18: [18, 185],
+        19: [18, 120],
+        20: [20, 40],
 
-        21: [119, 32],
-        22: [183, 32],
-        23: [250, 32],
-        24: [310, 32],
-        25: [380, 32],
-        26: [444, 32],
-        27: [512, 32],
-        28: [578, 32],
-        29: [640, 32],
-        30: [735, 32],
+        21: [113, 24],
+        22: [179, 24],
+        23: [243, 24],
+        24: [308, 24],
+        25: [374, 24],
+        26: [439, 24],
+        27: [505, 24],
+        28: [570, 24],
+        29: [634, 24],
+        30: [735, 24],
 
-        31: [735, 120],
-        32: [735, 190],
-        33: [735, 255],
-        34: [735, 320],
-        35: [735, 386],
-        36: [735, 450],
-        37: [735, 519],
-        38: [735, 580],
-        39: [735, 643],
+        31: [735, 115],
+        32: [735, 182],
+        33: [735, 247],
+        34: [735, 312],
+        35: [735, 378],
+        36: [735, 443],
+        37: [735, 510],
+        38: [735, 575],
+        39: [735, 640],
+        jail: [45, 710],
     };
     return listOfCoordinates[position];
 }
 
-// In the future, should be able to specify image source for custom token of each player.
-// canvasID aka playerID, so we can move the specified players piece
-export function movePlayer(canvasID, position) {
+/**
+ * A function that moves a player to a given position.
+ *
+ * @param {string} canvasID - id of canvas to move.
+ * @param {number} position - position to move player to.
+ * @param {string} ImageSource - name of image to draw.
+ */
+// Takes in canvasID aka playerID, position on board, and a dictionary
+// to decide which character corresponds to each player.
+export function movePlayer(canvasID, position, ImageSource) {
     const coordinate = getCoord(position);
     const c = document.getElementById(canvasID);
     const ctx = c.getContext('2d');
@@ -63,15 +73,14 @@ export function movePlayer(canvasID, position) {
         ctx.drawImage(img, coordinate[0], coordinate[1]);
         ctx.closePath();
     };
-    img.src = 'p.png';
+    img.src = ImageSource;
 }
 
-export function clear(canvasID) {
-    const c = document.getElementById(canvasID);
-    const ctx = c.getContext('2d');
-    ctx.clearRect(0, 0, c.width, c.height);
-}
-
+/**
+ * A function which gets the x and y coordinates of a click event.
+ *
+ * @param {event} - mouse click.
+ */
 // useful for find x and y coordinates.
 // To use add onclick="showCoords(event)" to top layer of canvas.
 export function showCoords(event) {

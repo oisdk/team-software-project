@@ -13,7 +13,7 @@ export function checkRollValuesEqual(req) {
     // roll values are equal
     const response = JSON.parse(req.responseText);
     const roll = response.your_rolls;
-    const rollDie = document.querySelector('#roll');
+    const rollDie = document.querySelector('#roll-dice');
     if (roll[0] === roll[1]) {
         rollDie.disabled = false;
     } else {
