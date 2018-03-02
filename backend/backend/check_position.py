@@ -7,6 +7,7 @@ import backend.properties
 import backend.miscellaneous
 from backend.charge_rent import charge_rent
 from backend.pay_tax import pay_tax
+from backend.jail import jail_player
 
 
 def check_position(player_id):
@@ -46,9 +47,7 @@ def check_position(player_id):
             pass
         elif position_type == "community_chest":
             pass
-        elif position_type == "jail":
-            pass
         elif position_type == "to_jail":
-            pass
+            jail_player(player_id)
         elif position_type == "parking":
             pass
