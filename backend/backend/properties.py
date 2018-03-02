@@ -464,7 +464,8 @@ def get_properties(player_id):
     finally:
         conn.close()
 
-def get_property_position_by_name(property_name):
+
+def get_property_position_by_name(property_name, player_id):
     """Returns a dictionary where a key is the 'player_id' and the value
     is the list of the player's owned property's positions"""
     conn = backend.storage.make_connection()
@@ -477,5 +478,26 @@ def get_property_position_by_name(property_name):
                                   for row in cursor.fetchall()]}
         conn.commit()
         return result
+    finally:
+        conn.close()
+
+
+def create_property(game_id, player_id, position):
+    """Create a new property on the server
+
+    Args:
+        game_id(id): the id of the game the property is in.
+        player_id(id): the id of the player that owns the property.
+        position(int): the position of the property.
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('INSERT INTO `properties` '
+                           '(player_id, game_id, property_position) '
+                           'VALUES (%s, %s, %s);',
+                           (player_id, game_id, position))
+        conn.commit()
     finally:
         conn.close()
