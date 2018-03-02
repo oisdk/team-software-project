@@ -39,10 +39,18 @@ export function activeGame(gameID, playerList) {
  * Called when a playerMove event happens.
  * Moves the player location on the board using the received data.
  * Logs this move in the game log.
+ * Checks if the playr is in/has left jail and deals with this
+ * appropriately in the animation.
  *
  * @param playerMoveEvent The data received from the event
+ *
+ * moveEvent[0] holds the players unique id.
+ * moveEvent[1] holds the players new board position.
+ * moveEvent[2] holds the players old board position.
+ * moveEvent[3] holds the players jailed status.
  */
 export function onPlayerMove(playerMoveEvent) {
+    let endPosition = '';
     logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
@@ -51,7 +59,15 @@ export function onPlayerMove(playerMoveEvent) {
     // had to assign variables to stop linter from complaining.
     const player = items[0];
     currentPlayer = player;
-    const endPosition = items[1];
+    if (items[2] === '-1') {
+        playerPositions[currentPlayer].current = 9;
+    }
+    if (items[1] === '-1') {
+        endPosition = 99;
+    } else {
+        const endPositionValue = items[1];
+        endPosition = endPositionValue;
+    }
     playerPositions[currentPlayer].end = parseInt(endPosition, 10);
     startAnimation();
 }
@@ -81,6 +97,17 @@ export function onPlayerBalance(playerBalanceEvent) {
 }
 
 /**
+ * Called when a playerJailed event happens.
+ * Calls the function to update the player jailed attributes.
+ *
+ * @param playerJailedEvent The data received from the event
+ */
+export function onPlayerJailed(playerJailedEvent) {
+    generateUserDetails.jailedPlayer(playerJailedEvent);
+    logEvents.logJailEvent(playerJailedEvent);
+}
+
+/*
  * Called when a propertyOwnerChanges event happens, and passes the data to
  * the property view.
  *
@@ -147,6 +174,7 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerMove', onPlayerMove);
     eventSource.addEventListener('playerTurn', onPlayerTurn);
     eventSource.addEventListener('playerBalance', onPlayerBalance);
+    eventSource.addEventListener('playerJailed', onPlayerJailed);
     eventSource.addEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
     eventSource.addEventListener('gameEnd', disableActiveGameListeners);
 }
@@ -174,17 +202,26 @@ function startAnimation() {
  * to wrap around the board.
  */
 function animate() {
-    playerPositions[currentPlayer].current += 1;
-    let nextPosition = playerPositions[currentPlayer].current;
+    if (playerPositions[currentPlayer].end !== 99) {
+        playerPositions[currentPlayer].current += 1;
+        let nextPosition = playerPositions[currentPlayer].current;
 
-    if (nextPosition > 39) {
-        nextPosition -= 40;
-        playerPositions[currentPlayer].current = nextPosition;
-    }
-    control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
-    if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
+        if (nextPosition > 39) {
+            nextPosition -= 40;
+            playerPositions[currentPlayer].current = nextPosition;
+        }
+        control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
+        if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
+            clearInterval(timer);
+            console.log('ended');
+            currentPlayer = '';
+        }
+    } else {
+        // go to jail.
+        control.movePlayer(currentPlayer, 99, playerTokenInformation[currentPlayer]);
+        playerPositions[currentPlayer].current = 99;
         clearInterval(timer);
-        console.log('ended');
+        console.log('Jailed 99');
         currentPlayer = '';
     }
 }
