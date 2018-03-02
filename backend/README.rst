@@ -21,7 +21,7 @@ This document covers the following backend aspects of the project:
 External Documentation
 ----------------------
 
-For developers interested in contributing to the project fronend, see the `frontend README <../frontend/README.md>`_ and `contributing document <./CONTRIBUTING.md>`_ .
+For developers interested in contributing to the project fronend, see the `frontend README <../frontend/README.md>`_ and `contributing document <../CONTRIBUTING.md>`_ .
 
 Server-Sent Events
 ==================
