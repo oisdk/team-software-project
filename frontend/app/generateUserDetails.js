@@ -140,6 +140,7 @@ export function updateUserDetails(fileReader) {
 /**
  * Function to generate game details. Makes a request to
  * filesystem for a HTML file to display.
+ * @param {int} gameID - id used to create eventSource.
  */
 export function generateUserDetails() {
     // Generate a HTML page with user interface
@@ -152,6 +153,69 @@ export function generateUserDetails() {
     userName = details.user_name;
 }
 
+/**
+ * Function to update properties displayed on the
+ * drop downs.
+ * @param req - Response from server-side.
+ */
+export function updateDropDown(req) {
+    const request = JSON.parse(req.responseText);
+    const names = ['mortgage', 'unmortgage'];
+    const options = [request.mortgage, request.unmortgage];
+    let select;
+    let propertyNames;
+    for (let i = 0; i < names.length; i += 1) {
+        select = document.getElementById(names[i]);
+        propertyNames = options[i];
+
+        for (let j = 0; j < propertyNames.length; j += 1) {
+            const option = document.createElement('option');
+
+            // set values for option
+            option.setAttribute('value', propertyNames[j]);
+            option.innerHTML = propertyNames[j];
+
+            // add option to the select
+            select.appendChild(option);
+        }
+    }
+}
+
+/**
+ * Called when a mortgage/unmortgage button is presses.
+ * Calls function which handles property state and player
+ * Result is list of properties by property_state
+ *
+ * @param {Function} JSONSend - JSON function makes testing easier.
+ * @param {Object} button - Object of the button pressed.
+ * @param {String} state - The initial state of a property.
+ */
+export function changePropState(JSONSend, button, state) {
+    const optionIndex = button.selectedIndex;
+    // This gets the name by the index of the property name selected
+    // from the property options
+    const propertyName = optionIndex.options[optionIndex.selectedIndex].value;
+    JSONSend({
+        serverAddress: 'cgi-bin/property_state.py',
+        jsonObject: {player_id: [state, propertyName, id]},
+        updateDropDown,
+    });
+}
+
+/**
+ * Called at the start of turn to display the properties owned by the
+ * player allowing to be mortgaged or unmortgaged.
+ *
+ * @param {Function} JSONSend - JSON function makes testing easier.
+
+ */
+export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
+    JSONSend({
+        serverAddress: 'cgi-bin/property_state.py',
+        jsonObject: {player_id: ['None', 'None', id]},
+        updateDropDown,
+    });
+}
 
 /**
  * Called when a playerTurn event happens.
@@ -159,6 +223,8 @@ export function generateUserDetails() {
  * Sets the current turn in the table to the current player.
  * Checks the users id against the turn and enables their
  * game interface if it's their turn.
+ * The dropdown item from mortgage or unmortgage is managed
+ * from here
  *
  * Checks the jail counter and decides on appropriate action.
  *
@@ -169,11 +235,20 @@ export function generateUserDetails() {
  */
 export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn[1] + 1}`;
+    document.getElementById('current-turn').innerHTML = `Player ${turn[0] + 1}`;
     // console.log(`Turn:${turn}`);
+
+    // displayOwnedProperties(sendJSON.sendJSON);
+
     const rollDiceButton = document.getElementById('roll-dice');
     rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
     rollDiceButton.disabled = true;
+
+    const mortgageButton = document.getElementById('mort-check');
+    mortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, mortgageButton, 'unmortgage'); };
+    const unmortgageButton = document.getElementById('unmort-check');
+    unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage'); };
+
     const endTurnButton = document.getElementById('end-turn');
     endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
     endTurnButton.disabled = true;

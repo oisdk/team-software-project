@@ -8,6 +8,7 @@ import backend.miscellaneous
 from backend.charge_rent import charge_rent
 from backend.pay_tax import pay_tax
 from backend.activate_card import activate_card
+from backend.jail import jail_player
 
 
 def check_position(player_id):
@@ -45,9 +46,7 @@ def check_position(player_id):
             pay_tax(player_id, misc_position_details["value"])
         elif position_type == "chance" or position_type == "community_chest":
             activate_card(player_id, game_id, position_type)
-        elif position_type == "jail":
-            pass
         elif position_type == "to_jail":
-            pass
+            jail_player(player_id)
         elif position_type == "parking":
             pass
