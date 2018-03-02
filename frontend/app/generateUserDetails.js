@@ -209,7 +209,7 @@ export function changePropState(JSONSend, button, state) {
  * @param {Function} JSONSend - JSON function makes testing easier.
 
  */
-export function displayOwnedProperties(JSONSend) {
+export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: ['None', 'None', id]},
