@@ -1,41 +1,5 @@
 import * as generateUserDetails from './generateUserDetails';
 
-describe('updateUserDetails test', () => {
-    // Store the current state of the HTML body so it can be restored after the
-    // test
-    const oldDocumentBody = document.body;
-
-
-    // Create a mock XMLHttpRequest response which contains a HTML page
-    const mockFileResponse = {
-        status: 200,
-        readyState: 4,
-        responseText: '<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>',
-    };
-
-    // Create a user_name cookie
-    beforeAll(() => {
-        document.body.innerHTML = '<div id="content-right"></div>';
-        document.cookie = 'user_name=testuser';
-    });
-
-    // Restore the HTML body to its state before the test and delete the cookie
-    afterAll(() => {
-        document.body.innerHTML = oldDocumentBody;
-        document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    });
-
-    const mockRootElement = document.createElement('div');
-
-    test('should read mockFileResponse and update page with its contents', (done) => {
-        document.getElementById('content-right').appendChild(mockRootElement);
-        generateUserDetails.updateUserDetails(mockFileResponse, mockRootElement);
-        expect(mockRootElement.innerHTML).toEqual('<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>');
-        expect(document.getElementById('details_username').innerHTML).toEqual('undefined');
-        done();
-    });
-});
-
 describe('rollDice endTurn successCallback tests', () => {
     // Create a mock for the actual sendJSON function
     const mockSendJSON = jest.fn();
