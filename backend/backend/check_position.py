@@ -48,6 +48,6 @@ def check_position(player_id):
         elif position_type == "community_chest":
             pass
         elif position_type == "to_jail":
-            jail_player(player_id
+            jail_player(player_id)
         elif position_type == "parking":
             pass
