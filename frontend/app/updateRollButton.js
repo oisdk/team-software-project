@@ -11,9 +11,14 @@ import * as getCookie from './checkUserIDCookie';
 export function checkRollValuesEqual(req) {
     // Enables the roll button for the player if the previous
     // roll values are equal
-    const state = JSON.parse(req.responseText);
-    const rollDie = document.querySelector('#roll');
-    rollDie.disabled = !state;
+    const response = JSON.parse(req.responseText);
+    const roll = response.your_rolls;
+    const rollDie = document.querySelector('#roll-dice');
+    if (roll[0] === roll[1]) {
+        rollDie.disabled = false;
+    } else {
+        rollDie.disabled = true;
+    }
 }
 
 /**
@@ -27,7 +32,7 @@ export function requestCompareRolls(JSONSend = sendJSON.sendJSON) {
     const details = getCookie.checkUserDetails();
     const id = details.user_id;
     JSONSend({
-        serverAddress: 'cgi-bin/compare_dice_rolls.py',
+        serverAddress: 'cgi-bin/roll_dice.py',
         jsonObject: {player_id: id},
         checkRollValuesEqual,
     });

@@ -4,6 +4,7 @@ import json
 import sys
 from backend.player import Player
 from backend.game import Game, get_games
+from backend.check_position import check_position
 
 
 def roll_dice():
@@ -18,7 +19,7 @@ def roll_two_dice():
     """Simulates the rolling of two 6-sided dice.
 
     Returns:
-        An int tuple representing the result of the two dice rolls.
+        An int list representing the result of the two dice rolls.
 
     """
     dice_result = [roll_dice(), roll_dice()]
@@ -53,4 +54,6 @@ def player_roll_dice(source=sys.stdin, output=sys.stdout):
                     player.balance += pass_go_amount
                     player.board_position -= number_of_squares
 
-                json.dump({"your_rolls": str(rolls)}, output)
+                check_position(player_id)
+
+                json.dump({"your_rolls": rolls}, output)

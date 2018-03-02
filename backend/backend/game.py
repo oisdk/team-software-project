@@ -154,22 +154,63 @@ def create_game(host):
         conn.close()
 
 
-def get_games():
+def get_games(with_game_status=None):
     """Returns a dictionary where the keys are the game ids, in the waiting
     room and the values is a list of participating players."""
     conn = backend.storage.make_connection()
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('SELECT playing_in.game_id, players.username '
-                           'FROM playing_in '
-                           'INNER JOIN players ON '
-                           'playing_in.player_id = players.id '
-                           'ORDER BY playing_in.game_id;')
-            result = {game_id: [user['username'] for user in row]
-                      for game_id, row
-                      in groupby(cursor.fetchall(), itemgetter('game_id'))}
+            result = None
+            if not with_game_status:
+                cursor.execute('SELECT playing_in.game_id, players.username '
+                               'FROM playing_in '
+                               'INNER JOIN players ON '
+                               'playing_in.player_id = players.id '
+                               'ORDER BY playing_in.game_id;')
+                result = {game_id: [user['username'] for user in row]
+                          for game_id, row
+                          in groupby(cursor.fetchall(), itemgetter('game_id'))}
+            else:
+                cursor.execute('SELECT playing_in.game_id, players.username '
+                               'FROM playing_in '
+                               'INNER JOIN players '
+                               'INNER JOIN games ON '
+                               'playing_in.player_id = players.id AND '
+                               'playing_in.game_id = games.id '
+                               'WHERE games.state = %s '
+                               'ORDER BY playing_in.game_id;',
+                               (with_game_status,))
+                result = {game_id: [user['username'] for user in row]
+                          for game_id, row
+                          in groupby(cursor.fetchall(), itemgetter('game_id'))}
         conn.commit()
         return result
+    finally:
+        conn.close()
+
+
+def get_this_game(player_id):
+    """Return the game that the player is currently playing in.
+
+    Arguments:
+        player_id: An int representing the player's id.
+
+    Returns:
+        A int representing the uid of the game the player is currently in.
+
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            this_game_id = None
+            cursor.execute('SELECT game_id '
+                           'FROM playing_in '
+                           'WHERE player_id = %s; ', (player_id))
+            this_game_id = cursor.fetchone()["game_id"]
+
+        return this_game_id
+
     finally:
         conn.close()

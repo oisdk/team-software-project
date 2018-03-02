@@ -2,7 +2,9 @@ import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
 
 // change according to activeGame as currently used with default function
-import activeGame from './activeGame';
+import {activeGame} from './activeGame';
+
+const playersInGame = [];
 
 /**
  * Creates the html for the waiting game.
@@ -53,14 +55,16 @@ export function waitingGame(gameID) {
         startButtonID,
     });
 
-    let numberOfPlayers = 0;
-
     // Initialise an event source from where server-sent events will come.
     // See the sse.js file for more details.
     const sseEventSource = initialiseEventSource(gameID);
-
     // Listen for a playerJoin event coming from the server
-    sseEventSource.addEventListener('playerJoin', (joinEvent) => {
+    sseEventSource.addEventListener('playerJoin', onPlayerJoin);
+    // Listen for a gameStart event coming from the server.
+    sseEventSource.addEventListener('gameStart', onGameStart);
+
+    let numberOfPlayers = 0;
+    function onPlayerJoin(joinEvent) {
         // Parse the "data" portion of the server-sent event from the server
         // which should contain the list of new users who have joined the
         // waiting game lobby.
@@ -68,11 +72,13 @@ export function waitingGame(gameID) {
         const playerListElement = document.getElementById(playerListID);
         for (let i = 0; i < playerList.length; i += 1) {
             const player = playerList[i];
-            const playerElement = document.createElement('div');
-            playerElement.innerHTML = player;
-            playerListElement.appendChild(playerElement);
-
-            numberOfPlayers += 1;
+            if (!playersInGame.includes(player)) {
+                const playerElement = document.createElement('div');
+                playerElement.innerHTML = player;
+                playerListElement.appendChild(playerElement);
+                numberOfPlayers += 1;
+            }
+            playersInGame.push(player);
             // Only enable the "start game" button when 4 players have joined
             if (numberOfPlayers === 4) {
                 document.getElementById(startButtonID).disabled = false;
@@ -84,21 +90,29 @@ export function waitingGame(gameID) {
                         serverAddress: 'cgi-bin/start-game.py',
                         jsonObject: {game_id: gameID},
                     });
-                }, false);
+                });
             }
         }
-    });
+    }
 
-    // Listen for a gameStart event coming from the server.
-    sseEventSource.addEventListener('gameStart', (startEvent) => {
-        const startedGameId = startEvent.data;
-        // needs casting to string as the gameID is a number
-        // and needs to be compared to the gameID received from the gameStart event.
-        if (gameID.toString() === startedGameId) {
-            // calls activeGame with a number for consistency
-            activeGame(gameID);
-        }
-    });
+    function successCallback(req, start = activeGame) {
+        const playerList = JSON.parse(req.responseText);
+        console.log('calling actitveGame');
+        // call active game with these values
+        start(gameID, playerList);
+    }
+
+    function onGameStart(startEvent) {
+        const startedGameId = JSON.parse(startEvent.data);
+        console.log(`startedGameId = ${startedGameId}`);
+        sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
+        sseEventSource.removeEventListener('gameStart', onGameStart);
+        sendJSON.sendJSON({
+            serverAddress: 'cgi-bin/request_players.py',
+            jsonObject: {game_id: gameID},
+            successCallback,
+        });
+    }
 }
 
 /**
