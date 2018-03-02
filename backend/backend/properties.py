@@ -397,3 +397,19 @@ def get_properties(player_id):
         return result
     finally:
         conn.close()
+
+def get_property_position_by_name(property_name):
+    """Returns a dictionary where a key is the 'player_id' and the value
+    is the list of the player's owned property's positions"""
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT `property_position` FROM `property_values`'
+                           'WHERE `name` = %s;', (property_name))
+            result = {player_id: [row['property_position']
+                                  for row in cursor.fetchall()]}
+        conn.commit()
+        return result
+    finally:
+        conn.close()
