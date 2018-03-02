@@ -1,5 +1,9 @@
 # About this Document
 
+## Summary:
+
+This document provides details on how to contribute code to the software project.
+
 ## Target Audience
 
 This document is geared towards developers interested in contributing code to this project. It is **not** intended to be read by end-users of the software, those interested in the software architecture, or operators who are deploying the software.
