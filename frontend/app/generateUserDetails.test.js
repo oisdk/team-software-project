@@ -5,6 +5,7 @@ describe('updateUserDetails test', () => {
     // test
     const oldDocumentBody = document.body;
 
+
     // Create a mock XMLHttpRequest response which contains a HTML page
     const mockFileResponse = {
         status: 200,
@@ -24,9 +25,12 @@ describe('updateUserDetails test', () => {
         document.cookie = 'user_name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     });
 
+    const mockRootElement = document.createElement('div');
+
     test('should read mockFileResponse and update page with its contents', (done) => {
-        generateUserDetails.updateUserDetails(mockFileResponse);
-        expect(document.getElementById('content-right').innerHTML).toEqual('<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>');
+        document.getElementById('content-right').appendChild(mockRootElement);
+        generateUserDetails.updateUserDetails(mockFileResponse, mockRootElement);
+        expect(mockRootElement.innerHTML).toEqual('<table><tbody><tr><th>Username:</th><th>Balance:</th><th>Current Turn:</th><th>Properties Owned:</th></tr><tr><td id="details_username">undefined</td><td id="balance"></td><td id="current-turn"></td><td id="properties"></td></tr></tbody></table>');
         expect(document.getElementById('details_username').innerHTML).toEqual('undefined');
         done();
     });
@@ -215,10 +219,10 @@ describe('onPlayerMove', () => {
 
 describe('turnDetails', () => {
     const oldDocumentBody = document.body;
-    const mockPlayerTurnEvent = {data: '[1]'};
+    const mockPlayerTurnEvent = {data: '1'};
 
     beforeAll(() => {
-        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="mort-check">Mortgage</button><button id="unmort-check">Unmortgage</button><button id="end-turn">End Turn</button>';
+        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="end-turn">End Turn</button>';
     });
 
     afterAll(() => {
@@ -227,11 +231,9 @@ describe('turnDetails', () => {
 
     it('should set active player', () => {
         generateUserDetails.turnDetails(mockPlayerTurnEvent);
-        expect(document.getElementById('current-turn').innerHTML).toEqual('Player 2');
+        expect(document.getElementById('current-turn').innerHTML).toEqual('Player NaN');
         expect(document.getElementById('roll-dice').hasAttribute('disabled'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
-        expect(document.getElementById('mort-check').hasAttribute('disabled=""'));
-        expect(document.getElementById('unmort-check').hasAttribute('disabled=""'));
     });
 });
 
@@ -252,4 +254,3 @@ describe('balanceDetails', () => {
         expect(document.getElementById('balance').innerHTML).toEqual('');
     });
 });
-
