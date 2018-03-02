@@ -4,7 +4,7 @@ import json
 import sys
 from backend.player import Player
 from backend.game import Game, get_games
-from backend.check_position import check_position
+# from backend.check_position import check_position
 
 
 def roll_dice():
