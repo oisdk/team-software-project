@@ -1,9 +1,27 @@
+# About this Document
+
+## Target Audience
+
+This document is geared towards developers interested in contributing code to this project. It is **not** intended to be read by end-users of the software, those interested in the software architecture, or operators who are deploying the software.
+
+## Document Scope
+
+This document covers the following aspects of the project:
+* Working on a local copy of this project.
+* The Continuous Integration server.
+* Directory and database structure.
+* Testing your code.
+
+## External Documentation
+
+For a high-level overview of the project (inc. Architecture, Design), see the [top level README](README.md).
+
+For usage instructions, targeted at end-user of the software, see the [user manual](USAGE.md).
+
+For deployment instructions, see the [deployment manual](#).
+
 # Table of Contents
 
-- [Introduction](#introduction)
-    * [Target Audience](#target-audience-of-this-document)
-    * [Document Scope](#document-scope)
-    * [External Documentation](#external-documentation)
 - [Downloading the Project](#downloading-the-project-and-making-changes)
 - [Continuous Integration](#continuous-integration)
 - [Python (backend)](#python)
@@ -29,28 +47,6 @@
     * [Current Tables](#current-tables-in-the-database)
     * [Table Structures](#table-structures)
     * [Database Glossary](#glossary)
-
-# Introduction
-
-## Target Audience of this Document:
-
-This document is geared towards developers interested in contributing code to this project. It is **not** intended to be read by end-users of the software, those interested in the software architecture, or operators who are deploying the software.
-
-## Document Scope:
-
-This document covers the following aspects of the project:
-* Working on a local copy of this project.
-* The Continuous Integration server.
-* Directory and database structure.
-* Testing your code.
-
-## External Documentation:
-
-For a high-level overview of the project (inc. Architecture, Design), see the [top level README](README.md).
-
-For usage instructions, targeted at end-user of the software, see the [user manual](USAGE.md).
-
-For deployment instructions, see the [deployment manual](#).
 
 # Downloading the project and making changes
 

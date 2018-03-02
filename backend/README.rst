@@ -1,19 +1,13 @@
-Table of Contents
-=================
+About this Document
+===================
 
-- `Introduction`_
-- `Server-Sent Events`_
-
-Introduction
-============
-
-Target Audience of this Document
---------------------------------
+Target Audience
+---------------
 
 This document is targeted towards developers interested in contributing to the backend of this software project. See the `External Documentation`_ section for links to documents relevant to other areas of this project (e.g. frontend).
 
-Scope of this Document
-----------------------
+Document Scope
+--------------
 
 This document covers the following backend aspects of the project:
   * Server-sent Events.
@@ -22,6 +16,11 @@ External Documentation
 ----------------------
 
 For developers interested in contributing to the project fronend, see the `frontend README <../frontend/README.md>`_ and `contributing document <../CONTRIBUTING.md>`_ .
+
+Table of Contents
+=================
+
+- `Server-Sent Events`_
 
 Server-Sent Events
 ==================
