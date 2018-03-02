@@ -7,7 +7,7 @@ from backend.player import Player
 cgitb.enable()
 
 
-def jail(player_id):
+def jail_player(player_id):
 
     """Function that sends a player to jail
 
@@ -28,7 +28,7 @@ def go_to_jail(source=sys.stdin, output=sys.stdout):
 
     request = json.load(source)
     player_id = request["player_id"]
-    jail(player_id)
+    jail_player(player_id)
     json.dump({player_id: 'in_jail'}, output)
 
 

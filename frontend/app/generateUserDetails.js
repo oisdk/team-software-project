@@ -71,6 +71,7 @@ export function successCallback(req1) {
         doubleCounter = 0;
         goToJail(sendJSON.sendJSON);
     }
+    console.log(`Double:${doubleCounter}`);
 }
 
 /**
