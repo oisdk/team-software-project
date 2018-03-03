@@ -16,7 +16,7 @@ This document is part of the larger documentation associated with this project. 
 
 For a guide on how to use the application, targeted at end-users, see [the usage document](USAGE.md).
 
-For a more detailed guide on how to get involved and contribute to the project, see [the contributing document](./CONTRIBUTING).
+For a more detailed guide on how to get involved and contribute to the project, see [the contributing document](CONTRIBUTING.md).
 
 ## Repository Structure
 
@@ -24,11 +24,11 @@ The repository is broken down into two sub-sections:
 
 - [frontend](/frontend): client-side code
 
-    * This is structured as a node package. For more info, see [the frontend readme](./frontend/README).
+    * This is structured as a node package. For more info, see [the frontend readme](/frontend/README.md).
 
 - [backend](/backend): server-side code
 
-    * This is structured as a python package. For more info, see [the backend readme](./backend/README).
+    * This is structured as a python package. For more info, see [the backend readme](/backend/README.rst).
 
 # Application Structure
 
