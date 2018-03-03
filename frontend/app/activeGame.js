@@ -7,6 +7,7 @@ import * as control from './moveFunctions';
 import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 import {OwnedPropertiesView} from './ownedPropertiesView';
+import {displayOwnedProperties} from './generateUserDetails';
 
 const playerTokenInformation = {};
 const playerPositions = {}; // value id : position on board ie previous position.
@@ -81,6 +82,7 @@ export function onPlayerMove(playerMoveEvent) {
  */
 export function onPlayerTurn(playerTurnEvent) {
     generateUserDetails.turnDetails(playerTurnEvent);
+    displayOwnedProperties();
     logEvents.logTurnEvent(playerTurnEvent);
 }
 
