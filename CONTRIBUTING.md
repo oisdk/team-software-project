@@ -1,3 +1,10 @@
+---
+title: Contributing Guide
+author: Team 2
+titlepage: true
+toc: true
+...
+
 # Downloading the project and making changes
 
 Before you can make changes to the code, you'll have to download it to your local machine so you can open it up in your editor. If you're already familiar with git and github, all you need to know is: don't make commits to master. Make a branch, commit on there, and make a pull request back to master. If you're not familiar, here's a short guide:
