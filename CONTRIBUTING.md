@@ -664,13 +664,15 @@ export function generateHTML() {
 
 ### "players"
 
-| Field          | Type                | Null | Key | Default | Extra          |
-| -------------- | ------------------- | ---- | --- | ------- | -------------- |
-| id             | int(10) unsigned    | NO   | PRI | NULL    | auto_increment |
-| username       | varchar(255)        | NO   |     | NULL    |                |
-| balance        | int(11)             | NO   |     | 200     |                |
-| turn_position  | tinyint(4)          | YES  |     | 0       |                |
-| board_position | tinyint(3) unsigned | NO   |     | 0       |                |
+| Field          | Type                          | Null | Key | Default     | Extra          |
+| -------------- | ----------------------------- | ---- | --- | ----------- | -------------- |
+| id             | int(10) unsigned              | NO   | PRI | NULL        | auto_increment |
+| username       | varchar(255)                  | NO   |     | NULL        |                |
+| balance        | int(11)                       | NO   |     | 1500        |                |
+| turn_position  | tinyint(4)                    | YES  |     | 0           |                |
+| board_position | tinyint(4)                    | NO   |     | 0           |                |
+| jail_state     | enum('not_in_jail','in_jail') | NO   |     | not_in_jail |                |
+
 
 ### "playing_in"
 
