@@ -51,6 +51,8 @@ function call_pandoc {
                 --filter docs/pandoc/filters/change_link_extensions.py
 }
 
+# Creates a directory if it doesn’t exist.
+# Also creates any non-existant directories on the path to the directory.
 function ensure_directory {
         if [ ! -d "$1" ]; then
                 mkdir -p "$1"
