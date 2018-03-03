@@ -24,8 +24,17 @@ function call_pandoc {
                 --filter docs/pandoc/filters/change_link_extensions.py
 }
 
-echo "[1/1] Running pandoc…"
+echo "[1/3] Running pandoc…"
 call_pandoc README.md docs/README.pdf .
 call_pandoc CONTRIBUTING.md docs/CONTRIBUTING.pdf .
 call_pandoc frontend/README.md docs/frontend/README.pdf frontend
 call_pandoc backend/README.rst docs/backend/README.pdf backend
+
+echo "[2/3] Running jsdoc…"
+rm docs/frontend/jsdoc/*
+jsdoc -r frontend/app -d docs/frontend/jsdoc
+
+echo "[3/3] Running pydoc…"
+cd docs/backend/pydoc
+rm *
+pydoc3 -w ../../../backend/
