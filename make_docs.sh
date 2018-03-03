@@ -18,6 +18,7 @@ function call_pandoc {
                 --table-of-contents \
                 --metadata=author:"Team 2" \
                 --variable=titlepage \
+                --variable=colorlinks \
                 --resource-path="$3" \
                 --filter docs/pandoc/filters/change_link_extensions.py
 }
