@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
 ##
+# This program generates some documentation for the repository.
+#
+# First, it converts the markdown documentation to pdf format using pandoc.
+# Next, it generates documentation from the jsdoc comments in the frontend and
+# the docstrings in the backend.
+##
+
+##
 # Calls pandoc with a set of options.
 #
 # Arguments:
