@@ -12,13 +12,14 @@
 function call_pandoc {
         pandoc "$1" \
                 -o "$2" \
-                --template docs/templates/eisvogel.latex  \
+                --template docs/pandoc/templates/eisvogel.latex  \
                 --standalone \
                 --listings \
                 --table-of-contents \
                 --metadata=author:"Team 2" \
                 --variable=titlepage \
-                --resource-path="$3"
+                --resource-path="$3" \
+                --filter docs/pandoc/filters/change_link_extensions.py
 }
 
 echo "[1/1] Running pandoc…"
