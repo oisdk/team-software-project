@@ -24,11 +24,11 @@ The repository is broken down into two sub-sections:
 
 - [frontend](/frontend): client-side code
 
-    * This is structured as a node package. For more info, see [the frontend readme](/frontend/README.md).
+    * This is structured as a node package. For more info, see [the frontend readme](frontend/README.md).
 
 - [backend](/backend): server-side code
 
-    * This is structured as a python package. For more info, see [the backend readme](/backend/README.rst).
+    * This is structured as a python package. For more info, see [the backend readme](backend/README.rst).
 
 # Application Structure
 
