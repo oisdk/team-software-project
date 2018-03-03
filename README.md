@@ -4,17 +4,6 @@ title: Readme
 
 [![Build Status](https://travis-ci.org/oisdk/team-software-project.svg?branch=master)](https://travis-ci.org/oisdk/team-software-project)
 
-# Table of Contents
-
-- [Intro](#intro)
-    * [Overview](#overview)
-    * [Audience and Document Scope](#audience-and-document-scope)
-    * [Repository Structure](#repository-structure)
-- [Application Structure](#application-structure)
-    * [Application Distribution](#application-distribution)
-- [Communication Structure](#communication-structure)
-- [Deployment Structure](#deployment-structure)
-
 # Intro
 
 ## Overview

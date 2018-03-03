@@ -4,13 +4,6 @@ Monopoly Backend
 This is the backend for the monopoly app.
 
 
-Table of Contents
------------------
-
-- Server-Sent-Events_
-
-
-.. _Server-Sent-Events:
 Server-Sent Events
 ------------------
 
