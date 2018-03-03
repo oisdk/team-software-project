@@ -3,9 +3,13 @@
 ##
 # This program generates some documentation for the repository.
 #
+# Arguments:
+#       $1: The destination folder for the documentation. Defaults to ./docs.
+#
 # First, it converts the markdown documentation to pdf format using pandoc.
 # Next, it generates documentation from the jsdoc comments in the frontend and
 # the docstrings in the backend.
+
 #
 # Several things are required to be installed for this script to run
 # successfully. At the top level:
@@ -26,6 +30,12 @@
 #                 linux is similar, with whatever your package manager is.
 #                 Windows is a mystery.
 ##
+
+if [ ! -z "$1" ]; then
+        dest="$1"
+else
+        dest="docs"
+fi
 
 ##
 # Calls pandoc with a set of options.
@@ -59,20 +69,20 @@ function ensure_directory {
         fi
 }
 
-ensure_directory docs/frontend/jsdoc
-ensure_directory docs/backend/pydoc
+ensure_directory "$dest"/frontend/jsdoc
+ensure_directory "$dest"/backend/pydoc
 
 echo "[1/3] Running pandoc…"
-call_pandoc README.md docs/README.pdf .
-call_pandoc CONTRIBUTING.md docs/CONTRIBUTING.pdf .
-call_pandoc frontend/README.md docs/frontend/README.pdf frontend
-call_pandoc backend/README.rst docs/backend/README.pdf backend
+call_pandoc README.md "$dest"/README.pdf .
+call_pandoc CONTRIBUTING.md "$dest"/CONTRIBUTING.pdf .
+call_pandoc frontend/README.md "$dest"/frontend/README.pdf frontend
+call_pandoc backend/README.rst "$dest"/backend/README.pdf backend
 
 echo "[2/3] Running jsdoc…"
-rm docs/frontend/jsdoc/*
-jsdoc -r frontend/app -d docs/frontend/jsdoc
+rm "$dest"/frontend/jsdoc/*
+jsdoc -r frontend/app -d "$dest"/frontend/jsdoc
 
 echo "[3/3] Running pydoc…"
-cd docs/backend/pydoc
+cd "$dest"/backend/pydoc
 rm *
 pydoc3 -w ../../../backend/
