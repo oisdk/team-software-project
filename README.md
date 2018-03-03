@@ -1,8 +1,6 @@
 ---
 title: Readme
 author: Team 2
-titlepage: true
-toc: true
 ...
 
 [![Build Status](https://travis-ci.org/oisdk/team-software-project.svg?branch=master)](https://travis-ci.org/oisdk/team-software-project)

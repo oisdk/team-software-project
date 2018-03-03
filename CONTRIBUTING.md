@@ -1,8 +1,6 @@
 ---
 title: Contributing Guide
 author: Team 2
-titlepage: true
-toc: true
 ...
 
 # Downloading the project and making changes
