@@ -51,6 +51,15 @@ function call_pandoc {
                 --filter docs/pandoc/filters/change_link_extensions.py
 }
 
+function ensure_directory {
+        if [ ! -d "$1" ]; then
+                mkdir -p "$1"
+        fi
+}
+
+ensure_directory docs/frontend/jsdoc
+ensure_directory docs/backend/pydoc
+
 echo "[1/3] Running pandoc…"
 call_pandoc README.md docs/README.pdf .
 call_pandoc CONTRIBUTING.md docs/CONTRIBUTING.pdf .
