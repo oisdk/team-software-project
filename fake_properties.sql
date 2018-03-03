@@ -1,13 +1,10 @@
 /* Set the player_id for all the statements */
 
-UPDATE properties,
-SET player_id = 1, mortgaged = 'mortgaged',
-WHERE property_position = 8;
+INSERT INTO properties (player_id, game_id, property_position, mortgaged) VALUES
+(1, 1, 8, 'mortgaged');
 
-UPDATE properties,
-SET player_id = 1, mortgaged = 'unmortgaged',
-WHERE property_position = 6;
+INSERT INTO properties (player_id, game_id, property_position, mortgaged) VALUES
+(1, 1, 6, 'unmortgaged');
 
-UPDATE properties,
-SET player_id = 1, mortgaged = 'unmortgaged',
-WHERE property_position = 21;
+INSERT INTO properties (player_id, game_id, property_position, mortgaged) VALUES
+(1, 1, 21, 'unmortgaged');
