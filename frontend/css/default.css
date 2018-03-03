@@ -42,7 +42,7 @@ html,body{
 
 }
 .properties{
-  max-height: 200px;
+  max-height: 50px;
   overflow-y: scroll;
 }
 .container-fluid{
