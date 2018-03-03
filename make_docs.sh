@@ -21,6 +21,7 @@ function call_pandoc {
                 --resource-path="$3"
 }
 
+echo "[1/1] Running pandoc…"
 call_pandoc README.md docs/README.pdf .
 call_pandoc CONTRIBUTING.md docs/CONTRIBUTING.pdf .
 call_pandoc frontend/README.md docs/frontend/README.pdf frontend
