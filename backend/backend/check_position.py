@@ -25,6 +25,9 @@ def check_position(player_id):
     player = backend.player.Player(player_id)
     player_position = player.board_position
 
+    # Create card_details variable to store card description for client
+    card_details = None
+
     # Check if player on a property space
     if player_position in backend.properties.property_positions():
         # Check if property is owned
@@ -45,8 +48,10 @@ def check_position(player_id):
         if position_type == "tax":
             pay_tax(player_id, misc_position_details["value"])
         elif position_type == "chance" or position_type == "community_chest":
-            activate_card(player_id, game_id, position_type)
+            card_details = activate_card(player_id, game_id, position_type)
         elif position_type == "to_jail":
             jail_player(player_id)
         elif position_type == "parking":
             pass
+
+    return card_details

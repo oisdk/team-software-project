@@ -35,8 +35,8 @@ def activate_card(player_id, game_id, card_landed_on):
     # Check what type of chance card it is
     card_type = card_details["operation_type"]
 
-    # Send the *type* and *description* to the client
-    # ...
+    # Get the card description, this is what's sent to the client
+    card_description = card_details["description"]
 
     # Get value
     # This card_value is unique in that it represents different things
@@ -107,3 +107,5 @@ def activate_card(player_id, game_id, card_landed_on):
         # (aka. card_value) by the *number* of opponents
         with Player(player_id) as player:
             player.balance += int(card_value) * len(opponents)
+
+    return card_description
