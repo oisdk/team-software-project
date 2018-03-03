@@ -92,7 +92,7 @@ export function rollDice(JSONSend) {
     JSONSend({
         serverAddress: 'cgi-bin/roll_dice.py',
         jsonObject: {user_id: id},
-        successCallback: req1 => successCallback(req1),
+        successCallback,
     });
 }
 
