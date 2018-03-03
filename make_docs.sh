@@ -16,6 +16,7 @@ function call_pandoc {
                 --standalone \
                 --listings \
                 --table-of-contents \
+                --metadata=author:"Team 2" \
                 --variable=titlepage \
                 --resource-path="$3"
 }

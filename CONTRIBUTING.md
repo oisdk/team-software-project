@@ -1,6 +1,5 @@
 ---
 title: Contributing Guide
-author: Team 2
 ...
 
 # Downloading the project and making changes
