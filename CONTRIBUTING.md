@@ -1,3 +1,7 @@
+---
+title: Contributing Guide
+...
+
 # About this Document
 
 ## Summary:
@@ -11,6 +15,7 @@ This document is geared towards developers interested in contributing code to th
 ## Document Scope
 
 This document covers the following aspects of the project:
+
 * Working on a local copy of this project.
 * The Continuous Integration server.
 * Directory and database structure.
@@ -23,34 +28,6 @@ For a high-level overview of the project (inc. Architecture, Design), see the [t
 For usage instructions, targeted at end-user of the software, see the [user manual](USAGE.md).
 
 For deployment instructions, see the [deployment manual](#).
-
-# Table of Contents
-
-- [Downloading the Project](#downloading-the-project-and-making-changes)
-- [Continuous Integration](#continuous-integration)
-- [Python (backend)](#python)
-    * [Code Structure](#python-code-structure)
-    * [Getting Code on the Server](#getting-python-code-on-the-server)
-    * [Passing the CI](#passing-the-continuous-integration)
-        * [Linter](#linter)
-        * [Tests](#tests)
-        * [Coverage](#coverage)
-    * [Adding Dependencies](#adding-a-dependency)
-    * [Adding a New Module](#adding-a-new-module)
-- [JavaScript (frontend)](#javascript-and-frontend)
-    * [Code Structure](#structure)
-    * [Install and Serve Locally](#installing-and-serving-locally)
-    * [Editing JavaScript](#making-changes-to-the-javascript)
-    * [Passing the CI](#passing-the-continuous-integration)
-        * [Linter](#linter-1)
-        * [Tests](#tests-1)
-        * [Adding Dependencies](#adding-a-dependency-1)
-- [HTML](#html)
-- [Database Organisation](#database-organisation)
-    * [Access from Docker](#how-to-accessing-database-from-docker)
-    * [Current Tables](#current-tables-in-the-database)
-    * [Table Structures](#table-structures)
-    * [Database Glossary](#glossary)
 
 # Downloading the project and making changes
 

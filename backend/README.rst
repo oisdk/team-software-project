@@ -1,3 +1,7 @@
+================
+ Backend Readme
+================
+
 About this Document
 ===================
 
@@ -23,11 +27,6 @@ External Documentation
 If you are starting to contribute to this project for the first time, it is stongly recommended that you review the `contributing document <../CONTRIBUTING.md>`_, which covers everything needed to start writing code for this project.
 
 For developers interested in contributing to the project frontend, see the `frontend README <../frontend/README.md>`_.
-
-Table of Contents
-=================
-
-- `Server-Sent Events`_
 
 Server-Sent Events
 ==================
