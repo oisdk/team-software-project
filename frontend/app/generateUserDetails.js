@@ -1,6 +1,7 @@
 // Imports
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
+import {updateGameLog} from './generateGameLog';
 
 let details = getCookie.checkUserDetails();
 let id = details.user_id;
@@ -50,16 +51,20 @@ export function disableLeaveJail() {
 }
 
 /**
- * Callback to check user rolls and enable end turn.
+ * Callback to check user rolls and enable end turn. Also displays chance and
+ * community chest card details to the client.
  * Enables roll-dice if a double is rolled.
  * increments/resets counter for doubles and
  * sends player to jail if 3 doubles rolled.
  * @param {XMLHttpRequest} req1 response.
  */
-export function successCallback(req1) {
+export function successCallback(req1, logUpdater = updateGameLog) {
     console.log(req1);
     const response = JSON.parse(req1.responseText);
     const roll = response.your_rolls;
+    // Get the description of the card that was landed on
+    const cardDetails = response.card_details;
+
     const rollDie = document.querySelector('#roll-dice');
     if (roll[0] === roll[1] && jail === false) {
         rollDie.disabled = false;
@@ -72,6 +77,10 @@ export function successCallback(req1) {
     if (doubleCounter === 3) {
         doubleCounter = 0;
         goToJail(sendJSON.sendJSON);
+    }
+    if (cardDetails !== null) {
+        logUpdater('Activated card:');
+        logUpdater(cardDetails);
     }
 }
 
