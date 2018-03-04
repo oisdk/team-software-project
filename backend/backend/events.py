@@ -550,21 +550,30 @@ def generate_ownership_events(
         if position in old_ownership and position in new_ownership:
             old_owner = old_ownership[position]['owner']
             new_owner = new_ownership[position]['owner']
-            property_name = new_ownership[position]['name']
+            property_details = {
+                'position': position,
+                'name': new_ownership[position]['name']
+            }
         elif position not in new_ownership:
             old_owner = old_ownership[position]['owner']
             new_owner = None
-            property_name = old_ownership[position]['name']
+            property_details = {
+                'position': position,
+                'name': old_ownership[position]['name']
+            }
         else:  # position not in old_ownership
             old_owner = None
             new_owner = new_ownership[position]['owner']
-            property_name = new_ownership[position]['name']
+            property_details = {
+                'position': position,
+                'name': new_ownership[position]['name']
+            }
 
         if old_owner != new_owner:
             changes.append({
                 'newOwner': new_owner,
                 'oldOwner': old_owner,
-                'property': property_name})
+                'property': property_details})
 
     output_event(output_stream, 'propertyOwnerChanges', changes)
 
