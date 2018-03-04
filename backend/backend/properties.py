@@ -491,9 +491,10 @@ def get_position_by_name(player_id, property_name):
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('SELECT `property_position`, FROM `properties`'
-                           'WHERE `player_id` = %s;'
-                           'AND `property_name;` = %s',
+            cursor.execute('SELECT properties.property_position'
+                           ' FROM properties INNER JOIN property_values'
+                           ' ON properties.property_position = property_values.property_position '
+                           'WHERE player_id = %s and name = %s ',
                            (player_id, property_name))
 
             result = cursor.fetchone()
