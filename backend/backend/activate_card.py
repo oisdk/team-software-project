@@ -51,13 +51,13 @@ def activate_card(player_id, game_id, card_landed_on):
             # or simply *jump* to a specific space on the board
             if card_value < 0:
                 # The card value here indicates how many spaces to move back
-                player.board_position -= card_value
+                player.board_position += card_value
             else:
                 # The card value here indicates the board position to move to
                 player.board_position = card_value
 
     # If it's a "pay_per_house" type of chance card
-    if card_type == "pay_per_house":
+    elif card_type == "pay_per_house":
         # Variable to store total houses owned (hotels are worth four houses)
         total_houses = 0
         # Get a *list* of all properties owned by the current player
@@ -75,18 +75,18 @@ def activate_card(player_id, game_id, card_landed_on):
             player.balance -= to_pay
 
     # If it's a "get_money" type of chance card
-    if card_type == "get_money":
+    elif card_type == "get_money":
         with Player(player_id) as player:
             # The card_value here indicates how much money to add to balance
             player.balance += card_value
 
     # If it's a "pay_bank" type of chance card
-    if card_type == "pay_bank":
+    elif card_type == "pay_bank":
         with Player(player_id) as player:
             # The card_value here indicates how much to deduct from balance
             player.balance -= card_value
 
-    if card_type == "collect_from_opponents":
+    elif card_type == "collect_from_opponents":
         # Get a list of *opponents* in this game
         with Game(game_id) as game:
             # ".remove" will remove this player's id from the list of all
