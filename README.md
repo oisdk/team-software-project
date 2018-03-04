@@ -14,9 +14,35 @@ This is Team 2’s project as part of the CS3305 module in 2018, which is an onl
 
 This document is part of the larger documentation associated with this project. It is intended to give a high-level overview of the project, targeted at developers new to the project, and at developers currently involved.
 
+### Other Documentation
+
 For a guide on how to use the application, targeted at end-users, see [the usage document](USAGE.md).
 
 For a more detailed guide on how to get involved and contribute to the project, see [the contributing document](CONTRIBUTING.md).
+
+#### `make_docs` Script
+
+The script `make_docs.sh`, located at the repository root, converts the markdown documentation to pdf format, and generates some additional documentation (in html format) from the jsdoc comments and docstrings in the codebase.
+
+Several things are required to be installed for this script to run successfully. At the top level, you need the following:
+
+- pandoc (https://pandoc.org/)
+- jsdoc (https://github.com/jsdoc3/jsdoc)
+- pydoc (should be installed with python)
+
+As well as that, however, pandoc requires a few other things to be installed:
+
+- latex
+- pdflatex
+  * Pandoc can be run with alternative pdf engines if you need, but you’ll have to modify the script.
+- rsvg2pdf
+  * This is needed for converting the svg images we’ve used. On macOS you can use [homebrew](https://brew.sh/):
+
+    ```bash
+    brew install librsvg
+    ```
+   
+    I think Linux is similar, with whatever your package manager is.
 
 ## Repository Structure
 

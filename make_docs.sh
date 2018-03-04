@@ -9,26 +9,8 @@
 # First, it converts the markdown documentation to pdf format using pandoc.
 # Next, it generates documentation from the jsdoc comments in the frontend and
 # the docstrings in the backend.
-
 #
-# Several things are required to be installed for this script to run
-# successfully. At the top level:
-#
-#       - pandoc (https://pandoc.org/)
-#       - jsdoc (https://github.com/jsdoc3/jsdoc)
-#       - pydoc (should be installed with python)
-#
-# As well as that, however, pandoc requires a few other things to be installed:
-#
-#       - latex
-#       - pdflatex
-#               * Pandoc can be run with alternative pdf engines if you
-#                 need, but you’ll have to modify the script.
-#       - rsvg2pdf
-#               * This is needed for converting the svg images we’ve used. On
-#                 macOS you can use brew: `brew install librsvg`. I think
-#                 linux is similar, with whatever your package manager is.
-#                 Windows is a mystery.
+# There are some installation requirements to run it – see the top-level README.
 ##
 
 if [ ! -z "$1" ]; then
