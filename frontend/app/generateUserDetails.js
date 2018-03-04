@@ -160,6 +160,7 @@ export function generateUserDetails() {
  */
 export function updateDropDown(req) {
     const request = JSON.parse(req.responseText);
+    console.log(`Response:${request}`);
     const names = ['mortgage', 'unmortgage', 'properties-house'];
     const options = [request.mortgage, request.unmortgage, request.unmortgage];
     let select;
@@ -210,6 +211,7 @@ export function changePropState(JSONSend, button, state) {
 
  */
 export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
+    console.log("test");
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: ['None', 'None', id]},
@@ -255,7 +257,7 @@ export function turnDetails(turnEvent) {
     document.getElementById('current-turn').innerHTML = `Player ${turn[0]}`;
     // console.log(`Turn:${turn}`);
 
-    // displayOwnedProperties(sendJSON.sendJSON);
+    displayOwnedProperties(sendJSON.sendJSON);
 
     const rollDiceButton = document.getElementById('roll-dice');
     rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
