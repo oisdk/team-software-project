@@ -70,16 +70,9 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         try:
             with self._conn.cursor() as cursor:
                 cursor.execute('UPDATE `properties` '
-                               'SET `player_id` = %s, '
-                               '`mortgaged` = `%s`,'
-                               '`state` = %s, '
-                               '`house_count` = %s, '
-                               '`hotel_count` = %s'
-                               'WHERE `game_id` = %s '
-                               'AND `property_position` = %s;',
-                               (self._owner, self._name, self._property_state,
-                                self._houses, self._hotels, self._gid,
-                                self._position))
+                               'SET `player_id` = %s,`mortgaged` = %s,`state` = %s,`house_count` = %s,`hotel_count` = %s '
+                               'WHERE `game_id` = %s AND `property_position` = %s;',
+                                (self._owner, self._mortgage, self._property_state, self._houses, self._hotels, self._gid, self._position))
             self._conn.commit()
         finally:
             self._in_context = False
