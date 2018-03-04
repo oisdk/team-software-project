@@ -218,6 +218,23 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
 }
 
 /**
+ * Called when the buy house button is presses.
+ *
+ * @param {Function} JSONSend - JSON function makes testing easier.
+ * @param {Object} button - Object of the button pressed.
+ */
+export function buyHouse(JSONSend, button) {
+    const optionIndex = button.selectedIndex;
+    // This gets the name by the index of the property name selected
+    // from the property options
+    const propertyName = optionIndex.options[optionIndex.selectedIndex].value;
+    JSONSend({
+        serverAddress: 'cgi-bin/buy_house.py',
+        jsonObject: {player_id:  id, property_name: propertyName},
+    });
+}
+
+/**
  * Called when a playerTurn event happens.
  *
  * Sets the current turn in the table to the current player.
@@ -235,7 +252,7 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
  */
 export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn[0] + 1}`;
+    document.getElementById('current-turn').innerHTML = `Player ${turn[0]}`;
     // console.log(`Turn:${turn}`);
 
     // displayOwnedProperties(sendJSON.sendJSON);
