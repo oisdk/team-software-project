@@ -2,6 +2,8 @@
 
 from operator import itemgetter
 from itertools import groupby
+import sys
+import json
 
 import backend.storage
 
@@ -522,3 +524,28 @@ def get_propertys_gameid(player_id, property_position):
         return result
     finally:
         conn.close()
+
+
+def buy_property(source=sys.stdin, output=sys.stdout):
+    """Marks a property as bought by a particular player.
+
+    The input should be json and should include the following properties:
+
+    - property_position: The position of the property that was bought.
+    - user_id: The id of the user that bought the property.
+    - game_id: The id of the game the user bought the property in.
+
+    Arguments:
+        source: The stream input data should be read from.
+        output: The stream output data should be written to.
+    """
+    request = json.load(source)
+    property_position = request["property_position"]
+    user_id = request["user_id"]
+    game_id = request["game_id"]
+    with Property(property_position, game_id) as prop:
+        prop.property_state = 'owned'
+        prop.owner = user_id
+
+    output.write('Content-Type: text/plain\n\n')
+    json.dump('Property bought', output)
