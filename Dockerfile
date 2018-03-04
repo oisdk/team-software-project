@@ -34,6 +34,10 @@ RUN cd /frontend; npm install; npm start && cp -r dist/* /var/www/html
 RUN cd /var/www/html/cgi-bin; find . -type f -not -name "*.py" -exec mv {} {}.py ';'
 RUN chmod -R 755 /var/www/html
 
+RUN cd /backend/backend; find . -type f -name "*.py" -exec pydoc3 -w {} ';'; mkdir /var/www/html/pydoc;for filename in *.html; do mv $filename /var/www/html/pydoc/$filename; done
+RUN npm install -g jsdoc
+RUN cd /frontend; jsdoc ./app; mv out /var/www/html/jsdoc
+
 EXPOSE 80
 
 COPY initialise_server.sql /
