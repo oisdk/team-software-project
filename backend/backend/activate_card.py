@@ -41,7 +41,7 @@ def activate_card(player_id, game_id, card_landed_on):
     # Get value
     # This card_value is unique in that it represents different things
     # depending on the card_type. See below comments for more information
-    card_value = card_details["value"]
+    card_value = card_details["operation_value"]
 
     # If it's a "move_specific" type of chance card
     if card_type == "move_specific":
