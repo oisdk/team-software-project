@@ -465,10 +465,10 @@ def get_properties_by_state(player_id, state):
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('SELECT `name`, FROM `properties`'
-                           'WHERE `player_id` = %s'
-                           'AND `property_state` = %s'
-                           'ORDER BY `price` ASC;',
+            cursor.execute('SELECT property_values.name'
+                           ' FROM properties INNER JOIN property_values'
+                           ' ON properties.property_position = property_values.property_position '
+                           'WHERE player_id = %s and mortgaged = %s ',
                            (player_id, state))
             result = [row['name'] for row in cursor.fetchall()]
         conn.commit()
