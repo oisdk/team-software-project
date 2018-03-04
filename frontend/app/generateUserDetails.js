@@ -160,8 +160,8 @@ export function generateUserDetails() {
  */
 export function updateDropDown(req) {
     const request = JSON.parse(req.responseText);
-    const names = ['mortgage', 'unmortgage'];
-    const options = [request.mortgage, request.unmortgage];
+    const names = ['mortgage', 'unmortgage', 'properties-house'];
+    const options = [request.mortgage, request.unmortgage, request.unmortgage];
     let select;
     let propertyNames;
     for (let i = 0; i < names.length; i += 1) {
@@ -248,6 +248,9 @@ export function turnDetails(turnEvent) {
     mortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, mortgageButton, 'unmortgage'); };
     const unmortgageButton = document.getElementById('unmort-check');
     unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage'); };
+
+    const buyHouseButton = document.getElementById('buy-house');
+    buyHouseButton.onclick = () => { buyHouse(sendJSON.sendJSON, buyHouseButton); };
 
     const endTurnButton = document.getElementById('end-turn');
     endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
