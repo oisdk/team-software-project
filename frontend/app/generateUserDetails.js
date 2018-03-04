@@ -50,6 +50,17 @@ export function disableLeaveJail() {
 }
 
 /**
+ * Gives the player the option to buy a property, and lists the cost.
+ *
+ * @param cost The cost of the property.
+ */
+export function enableBuyPropertyButton(cost) {
+    const button = document.getElementById('buy_property');
+    button.disabled = false;
+    button.innerHTML = `Buy Property (${cost})`;
+}
+
+/**
  * Callback to check user rolls and enable end turn.
  * Enables roll-dice if a double is rolled.
  * increments/resets counter for doubles and
