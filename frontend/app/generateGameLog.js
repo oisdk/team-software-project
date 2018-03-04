@@ -24,7 +24,6 @@ export function updateGameLog(data) {
 /**
  * Function to generate game log. Makes a request to local
  * filesystem for a HTML file to display.
- * @param {int} gameID - id used to create eventSource.
  */
 export function generateGameLog() {
     // Generate a HTML page with user interface
@@ -39,6 +38,8 @@ export function generateGameLog() {
  * Function to update game log for turn event.
  *
  * @param {data} turnEvent - data used to generate event.
+ * turnEvent[0] holds the players unique id.
+ * turnEvent[1] holds the players position in the turn order.
  */
 export function logTurnEvent(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
@@ -49,14 +50,23 @@ export function logTurnEvent(turnEvent) {
 /**
  * Function to update game log for move event.
  *
+ * Checks if the player is in jail and does not update the log.
+ * Checks if the player has passed go and updates the log appropriately.
+ *
  * @param {data} moveEvent - data used to generate event.
+ *
+ * moveEvent[0] holds the players unique id.
+ * moveEvent[1] holds the players new board position.
+ * moveEvent[2] holds the players old board position.
+ * moveEvent[3] holds the players jailed status.
  */
 export function logMoveEvent(moveEvent) {
     const move = String(JSON.parse(moveEvent.data));
+    // console.log(`Move:${move}`);
     const items = move.split(',');
     let roll = '';
-    if (items[2] !== 0) {
-        if (parseInt(items[2], 10) > parseInt(items[1], 10)) {
+    if (parseInt(items[2], 10) !== -1 && items[3] !== 'in_jail') {
+        if (parseInt(items[1], 10) < parseInt(items[2], 10)) {
             roll = items[1] - (items[2] - 40);
         } else {
             roll = items[1] - items[2];
@@ -70,11 +80,63 @@ export function logMoveEvent(moveEvent) {
  * Function to update game log for balance event.
  *
  * @param {data} balanceEvent - data used to generate event.
+ *
+ * balanceEvent[0] holds the players unique id.
+ * balanceEvent[1] holds the players new balance.
+ * balanceEvent[2] holds the amount the balance has changed by.
  */
 export function logBalanceEvent(balanceEvent) {
     const balance = JSON.parse(balanceEvent.data);
+    let outputString = '';
     if (balance[0][1] !== 1500 && balance[0][2] !== 0) {
-        const outputString = `Player ${balance[0][0]} Got ${balance[0][2]}`;
+        if (balance[0][2] > 0) {
+            outputString = `Player ${balance[0][0]} Balance + ${balance[0][2]}`;
+        } else {
+            outputString = `Player ${balance[0][0]} Balance ${balance[0][2]}`;
+        }
         updateGameLog(outputString);
     }
+}
+
+/**
+ * Function to update game log for properties events.
+ *
+ * If the old owner is null output the player bought a property,
+ * otherwise output the player that the property was gotten from.
+ *
+ * @param {data} propertyEvent - data used to generate event.
+ */
+export function logPropertyEvent(propertyEvent) {
+    const property = JSON.parse(propertyEvent.data);
+    // console.log(`Property: ${property}`);
+    let outputString;
+    for (let i = 0; i < property.length; i += 1) {
+        if (property[i].oldOwner === null) {
+            outputString = `Player ${property[i].newOwner} Bought ${property[i].property}`;
+        } else {
+            outputString = `Player ${property[i].newOwner} Got ${property[i].property} from ${property[i].oldOwner}`;
+        }
+        updateGameLog(outputString);
+    }
+}
+
+/**
+ * Function to update game log for jail event.
+ *
+ * @param {data} jailEvent - data used to generate event.
+ *
+ * jailEvent[0] holds the players unique id.
+ * jailEvent[1] holds the players jailed status.
+ */
+export function logJailEvent(jailEvent) {
+    const data = String(JSON.parse(jailEvent.data));
+    const items = data.split(',');
+    // console.log(data);
+    let outputString = `Player ${items[0]} `;
+    if (items[1] === 'in_jail') {
+        outputString += 'went to jail';
+    } else {
+        outputString += 'got out of jail';
+    }
+    updateGameLog(outputString);
 }

@@ -48,6 +48,7 @@ class Player(object):  # pylint: disable=too-many-instance-attributes
         self._board_position = None
         self._conn = None
         self._balance = None
+        self._jail_state = None
 
     def __enter__(self):
         self._in_context = True
@@ -61,6 +62,7 @@ class Player(object):  # pylint: disable=too-many-instance-attributes
             self._balance = result['balance']
             self._turn_position = result['turn_position']
             self._board_position = result['board_position']
+            self._jail_state = result['jail_state']
             del result
             cursor.execute('SELECT `roll1`, `roll2` FROM `rolls` '
                            'WHERE `id` = %s ORDER BY `num`;',
@@ -76,11 +78,12 @@ class Player(object):  # pylint: disable=too-many-instance-attributes
                                'SET `username` = %s, '
                                '`balance` = %s, '
                                '`turn_position` = %s, '
-                               '`board_position` = %s '
+                               '`board_position` = %s, '
+                               '`jail_state` = %s '
                                'WHERE `id` = %s;',
                                (self.username, self.balance,
                                 self.turn_position, self.board_position,
-                                self.uid))
+                                self.jail_state, self.uid))
                 if self.rolls != []:
                     cursor.executemany('REPLACE INTO `rolls` '
                                        'VALUES (%s, %s, %s, %s);',
@@ -150,6 +153,18 @@ class Player(object):  # pylint: disable=too-many-instance-attributes
                                                 'players', 'board_position')
 
     @property
+    def jail_state(self):
+        """
+        Returns:
+            String: the current jail state of the player.
+
+        Raises:
+            TypeError: if mutated outside of a with statement.
+        """
+        return backend.storage.request_property(self, self._in_context,
+                                                'players', 'jail_state')
+
+    @property
     def rolls(self):
         """
         Returns:
@@ -194,6 +209,10 @@ class Player(object):  # pylint: disable=too-many-instance-attributes
     @board_position.setter
     def board_position(self, board_position):
         self._set_property('board_position', board_position)
+
+    @jail_state.setter
+    def jail_state(self, jail_state):
+        self._set_property('jail_state', jail_state)
 
     @rolls.setter
     def rolls(self, rolls):
