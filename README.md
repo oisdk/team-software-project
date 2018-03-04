@@ -41,7 +41,7 @@ As well as that, however, pandoc requires a few other things to be installed:
     ```bash
     brew install librsvg
     ```
-   
+
     I think Linux is similar, with whatever your package manager is.
 
 ## Repository Structure
@@ -72,7 +72,7 @@ The application is structured as a standard web application – game state is st
 
 The following diagram shows a component & connector view of the system:
 
-![Component & Connector View](documentation-images/component-connector-view.svg)
+![Component & Connector View](documentation-images/component-connector-view.png)
 
 There are two main information flows:
 
@@ -88,4 +88,4 @@ Since the SSE script[^threadnote] is constantly polling, most CGI scripts don’
 
 The following diagram shows a deployment view of the project:
 
-![Deployment View](documentation-images/deployment-view.svg)
+![Deployment View](documentation-images/deployment-view.png)
