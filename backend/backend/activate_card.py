@@ -7,8 +7,8 @@ from backend.properties import Property
 from backend.properties import get_properties
 from backend.cards import get_card_details
 
-LAST_CHANCE_INDEX_IN_TABLE = 14
-LAST_CHEST_INDEX_IN_TABLE = 29
+LAST_CHANCE_INDEX_IN_TABLE = 29
+LAST_CHEST_INDEX_IN_TABLE = 14
 
 
 def activate_card(player_id, game_id, card_landed_on):
@@ -23,17 +23,17 @@ def activate_card(player_id, game_id, card_landed_on):
 
     """
     # Check if card is chance or community chest
-    if card_landed_on == "chance":
-        card_table_id = randint(0, LAST_CHANCE_INDEX_IN_TABLE)
+    if card_landed_on == "chest":
+        card_table_id = randint(0, LAST_CHEST_INDEX_IN_TABLE)
     else:
-        card_table_id = randint(LAST_CHANCE_INDEX_IN_TABLE + 1,
-                                LAST_CHEST_INDEX_IN_TABLE)
+        card_table_id = randint(LAST_CHEST_INDEX_IN_TABLE + 1,
+                                LAST_CHANCE_INDEX_IN_TABLE)
 
     # Dive into database to get the card details
     card_details = get_card_details(card_table_id)
 
     # Check what type of chance card it is
-    card_type = card_details["operation_type"]
+    card_type = card_details["operation"]
 
     # Get the card description, this is what's sent to the client
     card_description = card_details["description"]
