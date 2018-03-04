@@ -41,6 +41,9 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                            'AND `property_position` = %s; ',
                            (self._gid, self._position))
             result = cursor.fetchone()
+            print("Test Position:",self._position)
+            print("Test GID:",self._gid)
+            print("Test:",result)
             self._property_state = result['state']
             self._mortgage = result['mortgaged']
             self._houses = result['house_count']
@@ -70,12 +73,12 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             with self._conn.cursor() as cursor:
                 cursor.execute('UPDATE `properties` '
                                'SET `player_id` = %s, '
-                               '`mortgaged` = `%s`',
+                               '`mortgaged` = `%s`,'
                                '`state` = %s, '
                                '`house_count` = %s, '
                                '`hotel_count` = %s'
                                'WHERE `game_id` = %s '
-                               'AND `property_position` = %s',
+                               'AND `property_position` = %s;',
                                (self._owner, self._name, self._property_state,
                                 self._houses, self._hotels, self._gid,
                                 self._position))
