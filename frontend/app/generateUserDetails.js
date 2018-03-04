@@ -61,6 +61,15 @@ export function enableBuyPropertyButton(cost) {
 }
 
 /**
+ * Removes the option to buy a property.
+ */
+export function disableBuyPropertyButton() {
+    const button = document.getElementById('buy_property');
+    button.disabled = true;
+    button.innerHTML = 'Buy Property';
+}
+
+/**
  * Callback to check user rolls and enable end turn.
  * Enables roll-dice if a double is rolled.
  * increments/resets counter for doubles and
