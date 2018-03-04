@@ -172,3 +172,10 @@ typings/
 site_/
 dist/
 *.swp
+
+#
+# Documentation
+#
+docs/backend
+docs/frontend
+docs/*.pdf

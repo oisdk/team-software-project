@@ -1,3 +1,7 @@
+---
+title: Frontend Readme
+...
+
 # About this Document
 
 ## Summary
@@ -19,11 +23,6 @@ If you are starting to contribute to this project for the first time, it is ston
 For developers interested in contributing to the project backend, see the [backend README](../backend/README.rst).
 
 # Monopoly Frontend
-
-## Table of Contents
-* [Server-Sent Events](#server-sent-events)
-  * [What They are](#what-they-are)
-  * [How to Write an SSE Listener](#how-to-write-a-client-side-sse-listener)
 
 ## Server-Sent Events
 
