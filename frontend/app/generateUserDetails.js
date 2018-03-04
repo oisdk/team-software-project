@@ -51,18 +51,37 @@ export function disableLeaveJail() {
 
 /**
  * Gives the player the option to buy a property.
+ *
+ * @param gameID The id of the game the player is in.
+ * @param userID The user id of the player.
+ * @param propertyPosition The position of the property that the player has
+ *     landed on.
  */
-export function enableBuyPropertyButton() {
+export function enableBuyPropertyButton(gameID, userID, propertyPosition) {
     const button = document.getElementById('buy_property');
     button.disabled = false;
+    button.addEventListener('click', buyProperty);
+
+    function buyProperty() {
+        sendJSON.sendJSON({
+            serverAddress: 'buy_property',
+            jsonObject: {
+                game_id: gameID,
+                user_id: userID,
+                property_position: propertyPosition
+            }
+        });
+        disableBuyPropertyButton(buyProperty);
+    }
 }
 
 /**
  * Removes the option to buy a property.
  */
-export function disableBuyPropertyButton() {
+export function disableBuyPropertyButton(listenerFunction) {
     const button = document.getElementById('buy_property');
     button.disabled = true;
+    button.removeEventListener('click', listenerFunction);
 }
 
 /**
