@@ -51,10 +51,10 @@ def activate_card(player_id, game_id, card_landed_on):
             # or simply *jump* to a specific space on the board
             if card_value < 0:
                 # The card value here indicates how many spaces to move back
-                player.board_position -= int(card_value)  # CHECK TYPES
+                player.board_position -= card_value
             else:
                 # The card value here indicates the board position to move to
-                player.board_position = int(card_value)
+                player.board_position = card_value
 
     # If it's a "pay_per_house" type of chance card
     if card_type == "pay_per_house":
@@ -78,13 +78,13 @@ def activate_card(player_id, game_id, card_landed_on):
     if card_type == "get_money":
         with Player(player_id) as player:
             # The card_value here indicates how much money to add to balance
-            player.balance += int(card_value)  # CHECK TYPES
+            player.balance += card_value
 
     # If it's a "pay_bank" type of chance card
     if card_type == "pay_bank":
         with Player(player_id) as player:
             # The card_value here indicates how much to deduct from balance
-            player.balance -= int(card_value)  # CHECK TYPES
+            player.balance -= card_value
 
     if card_type == "collect_from_opponents":
         # Get a list of *opponents* in this game
@@ -98,7 +98,7 @@ def activate_card(player_id, game_id, card_landed_on):
             with Player(opponent_id) as opponent:
                 # card_value here indicates the amount to deduct from
                 # opponent's balance
-                opponent.balance -= int(card_value)  # Check types
+                opponent.balance -= card_value
 
         # Add to this player's balance the total amount deducted from the
         # opponents.
@@ -106,6 +106,6 @@ def activate_card(player_id, game_id, card_landed_on):
         # by simply multiplying the amount to deduct per opponent
         # (aka. card_value) by the *number* of opponents
         with Player(player_id) as player:
-            player.balance += int(card_value) * len(opponents)
+            player.balance += card_value * len(opponents)
 
     return card_description
