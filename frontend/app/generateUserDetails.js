@@ -79,7 +79,7 @@ export function successCallback(req1, logUpdater = updateGameLog) {
         goToJail(sendJSON.sendJSON);
     }
     if (cardDetails !== null) {
-        logUpdater('Activated card:');
+        logUpdater('Activated card details:');
         logUpdater(cardDetails);
     }
 }
