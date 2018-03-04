@@ -41,6 +41,9 @@ def player_roll_dice(source=sys.stdin, output=sys.stdout):
     pass_go_amount = 200
     games = get_games()
 
+    rolls = []
+    player_board_position = 0
+
     with Player(player_id) as player:
         for game in games:
             if player.username in games[game]:
@@ -65,8 +68,9 @@ def player_roll_dice(source=sys.stdin, output=sys.stdout):
                 if player.board_position >= number_of_squares:
                     player.balance += pass_go_amount
                     player.board_position -= number_of_squares
+                    
+        player_board_position = player.board_position
 
-                card_details = check_position(player_id, player.board_position)
+    card_details = check_position(player_id, player_board_position)
 
-                json.dump({"your_rolls": rolls, "card_details": card_details},
-                          output)
+    json.dump({"your_rolls": rolls, "card_details": card_details}, output)
