@@ -1,7 +1,6 @@
 """ Module providing functionality to check the type of space the player is
     on. """
 
-import backend.player
 import backend.game
 import backend.properties
 import backend.miscellaneous
@@ -11,7 +10,7 @@ from backend.activate_card import activate_card
 from backend.jail import jail_player
 
 
-def check_position(player_id):
+def check_position(player_id, player_position):
     """Check the type of space the player is on.
 
     The two types of space this function recognises are properties and
@@ -21,11 +20,7 @@ def check_position(player_id):
     # Get the id of the game that the player is currently playing in
     game_id = backend.game.get_this_game(player_id)
 
-    # Create a player instance based who has to pay tax
-    player = backend.player.Player(player_id)
-    player_position = player.board_position
-
-    # Create card_details variable to store card description for client
+    # Create card_details variable to store the card description for client
     card_details = None
 
     # Check if player on a property space
