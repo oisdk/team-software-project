@@ -50,14 +50,11 @@ export function disableLeaveJail() {
 }
 
 /**
- * Gives the player the option to buy a property, and lists the cost.
- *
- * @param cost The cost of the property.
+ * Gives the player the option to buy a property.
  */
-export function enableBuyPropertyButton(cost) {
+export function enableBuyPropertyButton() {
     const button = document.getElementById('buy_property');
     button.disabled = false;
-    button.innerHTML = `Buy Property (${cost})`;
 }
 
 /**
@@ -66,7 +63,6 @@ export function enableBuyPropertyButton(cost) {
 export function disableBuyPropertyButton() {
     const button = document.getElementById('buy_property');
     button.disabled = true;
-    button.innerHTML = 'Buy Property';
 }
 
 /**
