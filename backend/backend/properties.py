@@ -39,9 +39,6 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
                            'AND `property_position` = %s; ',
                            (self._gid, self._position))
             result = cursor.fetchone()
-            print("Test Position:",self._position)
-            print("Test GID:",self._gid)
-            print("Test:",result)
             self._property_state = result['state']
             self._mortgage = result['mortgaged']
             self._houses = result['house_count']
