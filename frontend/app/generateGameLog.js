@@ -99,6 +99,28 @@ export function logBalanceEvent(balanceEvent) {
 }
 
 /**
+ * Function to update game log for properties events.
+ *
+ * If the old owner is null output the player bought a property,
+ * otherwise output the player that the property was gotten from.
+ *
+ * @param {data} propertyEvent - data used to generate event.
+ */
+export function logPropertyEvent(propertyEvent) {
+    const property = JSON.parse(propertyEvent.data);
+    // console.log(`Property: ${property}`);
+    let outputString;
+    for (let i = 0; i < property.length; i += 1) {
+        if (property[i].oldOwner === null) {
+            outputString = `Player ${property[i].newOwner} Bought ${property[i].property}`;
+        } else {
+            outputString = `Player ${property[i].newOwner} Got ${property[i].property} from ${property[i].oldOwner}`;
+        }
+        updateGameLog(outputString);
+    }
+}
+
+/**
  * Function to update game log for jail event.
  *
  * @param {data} jailEvent - data used to generate event.

@@ -79,7 +79,7 @@ export function onPlayerMove(playerMoveEvent) {
  *
  * @param playerTurnEvent The data received from the event
  */
-export function onPlayerTurn(playerTurnEvent) {
+function onPlayerTurn(playerTurnEvent) {
     generateUserDetails.turnDetails(playerTurnEvent);
     logEvents.logTurnEvent(playerTurnEvent);
 }
@@ -91,7 +91,7 @@ export function onPlayerTurn(playerTurnEvent) {
  *
  * @param playerBalanceEvent The data received from the event
  */
-export function onPlayerBalance(playerBalanceEvent) {
+function onPlayerBalance(playerBalanceEvent) {
     generateUserDetails.balanceDetails(playerBalanceEvent);
     logEvents.logBalanceEvent(playerBalanceEvent);
 }
@@ -115,6 +115,7 @@ export function onPlayerJailed(playerJailedEvent) {
  */
 function onPropertyOwnerChanges(changesEvent) {
     propertyView.update(JSON.parse(changesEvent.data));
+    logEvents.logPropertyEvent(changesEvent);
 }
 
 /**
