@@ -499,43 +499,49 @@ def generate_ownership_events(
     >>> generate_ownership_events(
     ...     sys.stdout,
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     },
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u6'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 6, 'name': 'u6'}}
     ...     })
     event: propertyOwnerChanges
-    data: [{"newOwner": "u6", "oldOwner": "u7", "property": "p4"}]
+    data: [{"newOwner": {"id": 6, "name": "u6"}, \
+"oldOwner": {"id": 7, "name": "u7"}, \
+"property": {"name": "p4", "position": 4}}]
     <BLANKLINE>
 
     >>> import sys
     >>> generate_ownership_events(
     ...     sys.stdout,
     ...     {
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     },
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     })
     event: propertyOwnerChanges
-    data: [{"newOwner": "u2", "oldOwner": null, "property": "p1"}]
+    data: [{"newOwner": {"id": 2, "name": "u2"}, \
+"oldOwner": null, \
+"property": {"name": "p1", "position": 1}}]
     <BLANKLINE>
 
     >>> import sys
     >>> generate_ownership_events(
     ...     sys.stdout,
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     },
     ...     {
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     })
     event: propertyOwnerChanges
-    data: [{"newOwner": null, "oldOwner": "u2", "property": "p1"}]
+    data: [{"newOwner": null, \
+"oldOwner": {"id": 2, "name": "u2"}, \
+"property": {"name": "p1", "position": 1}}]
     <BLANKLINE>
     """
     changes = []
