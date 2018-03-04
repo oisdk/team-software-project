@@ -5,7 +5,7 @@ import json
 import cgitb
 
 from backend.player import Player
-from backend.properties import Property, get_property_position_by_name
+from backend.properties import Property, get_position_by_name
 from backend.game import get_games
 
 cgitb.enable()
@@ -18,7 +18,7 @@ def add_house(source=sys.stdin, output=sys.stdout):
     player_id = request["player_id"]
     property_name = request["property_name"]
     game_id = None
-    property_position = get_property_position_by_name(property_name, player_id)
+    property_position = get_position_by_name(player_id, property_name)
     games = get_games()
 
     with Player(player_id) as player:
