@@ -522,3 +522,37 @@ def get_propertys_gameid(player_id, property_position):
         return result
     finally:
         conn.close()
+
+
+def get_properties_names():
+    """Returns the properties names."""
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT `*`, FROM `property_values`')
+
+            result = {row["property_position"]: row["name"] for row in cursor.fetchall()}
+
+        conn.commit()
+        return result
+    finally:
+        conn.close()        
+
+
+def get_players_properties(source=sys.stdin, output=sys.stdout):
+    """Entry point for the service of requesting list of player_id
+    owned  properties.
+    """
+
+    output.write('Content-Type: application/json\n\n')
+    request = json.load(source)
+
+    player_id = request["player_id"]
+    property_positions = get_properties(player_id)
+    property_names = get_properties_names()
+    
+    
+
+    # For displaying the mortgaged/ unmortgaged properties.
+    json.dump(get_un_mortgage(player_id), output)
