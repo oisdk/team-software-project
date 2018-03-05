@@ -159,10 +159,11 @@ export function generateUserDetails() {
  * @param req - Response from server-side.
  */
 export function updateDropDown(req) {
+    console.log('test2');
     const request = JSON.parse(req.responseText);
     console.log(`Response:${request}`);
     const names = ['mortgage', 'unmortgage', 'properties-house'];
-    const options = [request.mortgage, request.unmortgage, request.unmortgage];
+    const options = [request.mortgage, request.unmortgage, request.mortgage];
     let select;
     let propertyNames;
     for (let i = 0; i < names.length; i += 1) {
@@ -199,7 +200,7 @@ export function changePropState(JSONSend, button, state) {
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: [state, propertyName, id]},
-        updateDropDown,
+        successCallback:updateDropDown,
     });
 }
 
@@ -211,11 +212,11 @@ export function changePropState(JSONSend, button, state) {
 
  */
 export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
-    console.log("test");
+    console.log('test');
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: ['None', 'None', id]},
-        updateDropDown,
+        successCallback:updateDropDown,
     });
 }
 
@@ -232,7 +233,7 @@ export function buyHouse(JSONSend, button) {
     const propertyName = optionIndex.options[optionIndex.selectedIndex].value;
     JSONSend({
         serverAddress: 'cgi-bin/buy_house.py',
-        jsonObject: {player_id:  id, property_name: propertyName},
+        jsonObject: {player_id: id, property_name: propertyName},
     });
 }
 
