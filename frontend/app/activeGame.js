@@ -118,7 +118,7 @@ export function onPlayerJailed(playerJailedEvent) {
     logEvents.logJailEvent(playerJailedEvent);
 }
 
-/*
+/**
  * Called when a propertyOwnerChanges event happens, and passes the data to
  * the property view.
  *
