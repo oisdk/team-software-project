@@ -146,14 +146,14 @@ def create_game(host):
             cursor.execute('INSERT INTO `games` () VALUES ();', ())
             cursor.execute('SELECT LAST_INSERT_ID();')
             result = cursor.fetchone()['LAST_INSERT_ID()']
-            cursor.execute('INSERT INTO `playing_in` VALUES (%s, %s)',
+            cursor.execute('INSERT INTO `playing_in` VALUES (%s, %s);',
                            (host, result))
             places = [1, 3, 6, 8, 9, 11, 13, 14, 16, 18, 19, 21, 23, 24, 26]
             places += [27, 29, 31, 32, 34, 37, 39, 5, 15, 25, 35, 12, 28]
             for x in places:
-                cursor.execute('INSERT INTO `properties`',
-                               ' (game_id, property_position)',
-                               ' VALUES (%s, %s)',
+                cursor.execute('INSERT INTO `properties`'
+                               ' (game_id, property_position)'
+                               ' VALUES (%s, %s);',
                                (result, x))
         conn.commit()
         return result
