@@ -16,6 +16,7 @@ export function disableGameInterface() {
     document.getElementById('roll-dice').disabled = true;
     document.getElementById('end-turn').disabled = true;
     document.getElementById('jail').disabled = true;
+    document.getElementById('properties-house').disabled = true;
 }
 
 /**
@@ -24,6 +25,7 @@ export function disableGameInterface() {
 export function enableGameInterface() {
     document.getElementById('roll-dice').disabled = false;
     document.getElementById('end-turn').disabled = true;
+    document.getElementById('properties-house').disabled = false;
 }
 
 /**
