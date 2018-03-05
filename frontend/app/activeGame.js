@@ -118,6 +118,10 @@ function onPropertyOwnerChanges(changesEvent) {
     logEvents.logPropertyEvent(changesEvent);
 }
 
+function onWin(playerBalanceEvent) {
+    console.log("winner");
+}
+
 /**
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game

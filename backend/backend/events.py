@@ -64,6 +64,7 @@ def start_sse_stream(output_stream=sys.stdout):
     jailed_players = {}
     new_jailed_players = {}
     push_initial_user_details = True
+    winner = None
 
     # These statements are executed constantly once the first request to this
     # function is made.
@@ -106,7 +107,9 @@ def start_sse_stream(output_stream=sys.stdout):
         # A game state may be "waiting" or "playing".
         last_game_state = check_game_playing_status(output_stream, game,
                                                     last_game_state)
-
+                                                    
+        winner = check_for_winner(output_stream, game)
+        
         time.sleep(3)
 
         # Flush standard out which forcefully sends everything that might be
@@ -648,3 +651,19 @@ def start_game_push(output_stream, turn_order):
                                turn_order)
     generate_player_balance_event(output_stream, {},
                                   {1: 1500, 2: 1500, 3: 1500, 4: 1500})
+                                  
+def check_for_winner(output_stream, game):
+    """Check if the specified game's status is 'playing'.
+
+    Arguments:
+        game: The game whose status is being checked.
+
+    """
+    if len(game.players) == 1:
+        # Call function to generate appropriate event if game's status is
+        # "playing".
+        generate_win_event(output_stream, game.uid)
+
+    
+def generate_win_event(output_stream, game_id):
+    output_event(output_stream, 'gameEnd', game_id)    
