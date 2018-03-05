@@ -200,7 +200,7 @@ export function changePropState(JSONSend, button, state) {
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: [state, propertyName, id]},
-        successCallback:updateDropDown,
+        successCallback: updateDropDown,
     });
 }
 
@@ -215,7 +215,7 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: ['None', 'None', id]},
-        successCallback:updateDropDown,
+        successCallback: updateDropDown,
     });
 }
 
@@ -232,7 +232,7 @@ export function buyHouse(JSONSend) {
     const propertyName = buyButton.options[buyButton.selectedIndex].value;
     JSONSend({
         serverAddress: 'cgi-bin/buy_house.py',
-        jsonObject: {'player_id': String(id), 'property_name': String(propertyName)},
+        jsonObject: {player_id: id, property_name: propertyName},
     });
 }
 
