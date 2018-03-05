@@ -7,20 +7,23 @@ import * as control from './moveFunctions';
 import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 import {OwnedPropertiesView} from './ownedPropertiesView';
+import * as cookie from './checkUserIDCookie';
 
 const playerTokenInformation = {};
 const playerPositions = {}; // value id : position on board ie previous position.
 let timer = '';
 let currentPlayer = '';
 let propertyView;
-let propertyOwners = {};
+const propertyOwners = {}; // propertyOwners does get modified
+let gameID;
 
 /**
  * Displays the page for an active game.
  *
- * @param gameID The ID for the game that will be displayed.
+ * @param thisGameID The ID for the game that will be displayed.
  */
-export function activeGame(gameID, playerList) {
+export function activeGame(thisGameID, playerList) {
+    gameID = thisGameID;
     const rightPane = document.getElementById('content-right');
     const userDetailsPane = document.createElement('div');
     const propertiesPane = document.createElement('div');
@@ -71,6 +74,13 @@ export function onPlayerMove(playerMoveEvent) {
     }
     playerPositions[currentPlayer].end = parseInt(endPosition, 10);
     startAnimation();
+
+    const [playerID, newPosition, ..._others] = JSON.parse(playerMoveEvent);
+    if (playerID === cookie.checkUserDetails().user_id) {
+        if (!(newPosition in propertyOwners)) {
+            generateUserDetails.enableBuyPropertyButton(gameID, playerID, newPosition);
+        }
+    }
 }
 
 /**
