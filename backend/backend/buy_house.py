@@ -29,13 +29,14 @@ def add_house(source=sys.stdin, output=sys.stdout):
                 game_id = game
                 break
         with Property(position, game_id) as prop:
-            if prop.houses < 4:
+            if prop.houses < 4 and prop.hotels == 0:
                 prop.houses += 1
                 houses = prop.houses
+                player.balance -= prop.house_price
             else:
                 prop.houses = 0
                 prop.hotels = 1
                 houses = 5
-            player.balance -= prop.house_price
+                player.balance -= prop.house_price
 
     json.dump({"house_number": houses, "property_position": position}, output)
