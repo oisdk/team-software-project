@@ -159,7 +159,6 @@ export function generateUserDetails() {
  * @param req - Response from server-side.
  */
 export function updateDropDown(req) {
-    console.log('test2');
     const request = JSON.parse(req.responseText);
     console.log(`Response:${request}`);
     const names = ['mortgage', 'unmortgage', 'properties-house'];
@@ -168,6 +167,7 @@ export function updateDropDown(req) {
     let propertyNames;
     for (let i = 0; i < names.length; i += 1) {
         select = document.getElementById(names[i]);
+        select.innerHTML = '';
         propertyNames = options[i];
 
         for (let j = 0; j < propertyNames.length; j += 1) {
@@ -212,7 +212,6 @@ export function changePropState(JSONSend, button, state) {
 
  */
 export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
-    console.log('test');
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: ['None', 'None', id]},
@@ -226,14 +225,14 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
  * @param {Function} JSONSend - JSON function makes testing easier.
  * @param {Object} button - Object of the button pressed.
  */
-export function buyHouse(JSONSend, button) {
-    const optionIndex = button.selectedIndex;
+export function buyHouse(JSONSend) {
+    const buyButton = document.getElementById('properties-house');
     // This gets the name by the index of the property name selected
     // from the property options
-    const propertyName = optionIndex.options[optionIndex.selectedIndex].value;
+    const propertyName = buyButton.options[buyButton.selectedIndex].value;
     JSONSend({
         serverAddress: 'cgi-bin/buy_house.py',
-        jsonObject: {player_id: id, property_name: propertyName},
+        jsonObject: {'player_id': id, 'property_name': propertyName},
     });
 }
 
@@ -270,7 +269,7 @@ export function turnDetails(turnEvent) {
     unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage'); };
 
     const buyHouseButton = document.getElementById('buy-house');
-    buyHouseButton.onclick = () => { buyHouse(sendJSON.sendJSON, buyHouseButton); };
+    buyHouseButton.onclick = () => { buyHouse(sendJSON.sendJSON); };
 
     const endTurnButton = document.getElementById('end-turn');
     endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
