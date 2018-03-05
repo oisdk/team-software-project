@@ -61,7 +61,6 @@ CREATE TABLE IF NOT EXISTS properties (
     property_position tinyint UNSIGNED NOT NULL,
     house_count tinyint UNSIGNED DEFAULT 0,
     hotel_count tinyint UNSIGNED DEFAULT 0,
-    FOREIGN KEY (player_id) REFERENCES players(id),
     FOREIGN KEY (game_id) REFERENCES games(id),
     FOREIGN KEY (property_position) REFERENCES property_values(property_position)
 );
