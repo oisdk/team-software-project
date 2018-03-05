@@ -68,8 +68,8 @@ export function enableBuyPropertyButton(gameID, userID, propertyPosition) {
             jsonObject: {
                 game_id: gameID,
                 user_id: userID,
-                property_position: propertyPosition
-            }
+                property_position: propertyPosition,
+            },
         });
         disableBuyPropertyButton(buyProperty);
     }

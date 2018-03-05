@@ -103,7 +103,6 @@ export function waitingGame(gameID) {
     }
 
     function onGameStart(startEvent) {
-        const startedGameId = JSON.parse(startEvent.data);
         sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
         sseEventSource.removeEventListener('gameStart', onGameStart);
         sendJSON.sendJSON({
