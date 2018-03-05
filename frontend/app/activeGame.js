@@ -118,7 +118,7 @@ function onPropertyOwnerChanges(changesEvent) {
     logEvents.logPropertyEvent(changesEvent);
 }
 
-function onWin(playerBalanceEvent) {
+function onWin(gameEndEvent) {
     console.log("winner");
 }
 
