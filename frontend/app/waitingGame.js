@@ -102,7 +102,7 @@ export function waitingGame(gameID) {
         start(gameID, playerList);
     }
 
-    function onGameStart(startEvent) {
+    function onGameStart(_startEvent) {
         sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
         sseEventSource.removeEventListener('gameStart', onGameStart);
         sendJSON.sendJSON({
