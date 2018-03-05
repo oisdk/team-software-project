@@ -42,12 +42,11 @@ export class OwnedPropertiesView {
      * A description of a change in the ownership of a property.
      *
      * @typedef {Object} propertyOwnershipChange
-     * @property {Object} property The details of the property. Has keys
-     *     "position" and "name".
-     * @property {Object} oldOwner The previous owner of the property, or null
-     *           if it was previously unowned. Has keys "id" and "name".
-     * @property {Object} newOwner The new owner of the property, or null if it
-     *           is now unowned. Has keys "id" and "name".
+     * @property {String} property The name of the property.
+     * @property {String} oldOwner The previous owner of the property, or null
+     *           if it was previously unowned.
+     * @property {String} newOwner The new owner of the property, or null if it
+     *           is now unowned.
      * @global
      */
 
@@ -60,19 +59,11 @@ export class OwnedPropertiesView {
     update(changes) {
         for (let i = 0; i < changes.length; i += 1) {
             if (changes[i].oldOwner === null) {
-                this.addNewProperty({
-                    property: changes[i].property.name,
-                    newOwner: changes[i].newOwner.name,
-                });
+                this.addNewProperty(changes[i]);
             } else if (changes[i].newOwner === null) {
-                this.removeProperty({
-                    property: changes[i].property.name,
-                });
+                this.removeProperty(changes[i]);
             } else {
-                this.updateProperty({
-                    property: changes[i].property.name,
-                    newOwner: changes[i].newOwner.name,
-                });
+                this.updateProperty(changes[i]);
             }
         }
     }
