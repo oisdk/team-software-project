@@ -13,5 +13,5 @@ def get_un_mortgage(player_id):
              "mortgage": [list of unmortgaged properties]}
     """
 
-    return {"unmortgage": get_properties_by_state(player_id, "mortgage"),
-            "mortgage": get_properties_by_state(player_id, "unmortgage")}
+    return {"unmortgage": get_properties_by_state(player_id, "mortgaged"),
+            "mortgage": get_properties_by_state(player_id, "unmortgaged")}
