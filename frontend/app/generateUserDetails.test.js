@@ -182,25 +182,6 @@ describe('onPlayerMove', () => {
 });
 */
 
-describe('turnDetails', () => {
-    const oldDocumentBody = document.body;
-    const mockPlayerTurnEvent = {data: '1'};
-
-    beforeAll(() => {
-        document.body.innerHTML = '<table><tr><td id="current-turn"></td></tr></table><button id="roll-dice">Roll Dice</button><button id="mort-check" name="mortgage">Mortgage</button><button id="unmort-check" name="unmortgage">Unmortgage</button><button id="end-turn">End Turn</button><button id="jail">Jail</button>';
-    });
-
-    afterAll(() => {
-        document.body = oldDocumentBody;
-    });
-
-    it('should set active player', () => {
-        generateUserDetails.turnDetails(mockPlayerTurnEvent);
-        expect(document.getElementById('current-turn').innerHTML).toEqual('Player NaN');
-        expect(document.getElementById('roll-dice').hasAttribute('disabled'));
-        expect(document.getElementById('end-turn').hasAttribute('disabled'));
-    });
-});
 
 describe('balanceDetails', () => {
     const oldDocumentBody = document.body;
