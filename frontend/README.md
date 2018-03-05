@@ -1,11 +1,28 @@
+---
+title: Frontend Readme
+...
+
+# About this Document
+
+## Summary
+
+This document provides details on how the frontend of the software works, and provides "How to" for writing code to work with certain components. It is designed to supplement (and not repeat) the contents of the [contributing document](../CONTRIBUTING.md) at the top-level of this project file hierarchy.
+
+## Target Audience
+
+This document is targeted towards developers interested in contributing to the frontend of this software project. See the [External Documentation](#external-documentation) section for links to documents relevant to other areas of this project (e.g. backend).
+
+## Scope of this Document
+
+This document will cover aspects of the software related to frontend only. For instance, how to write server-side event listeners in JavaScript.
+
+## External Documentation:
+
+If you are starting to contribute to this project for the first time, it is stongly recommended that you review the [contributing document](../CONTRIBUTING.md), which covers everything needed to start writing code for this project.
+
+For developers interested in contributing to the project backend, see the [backend README](../backend/README.rst).
+
 # Monopoly Frontend
-
-
-## Table of Contents
-* [Server-Sent Events](#server-sent-events)
-  * [What They are](#what-they-are)
-  * [How to Write an SSE Listener](#how-to-write-a-client-side-sse-listener)
-
 
 ## Server-Sent Events
 

@@ -463,3 +463,62 @@ def get_properties(player_id):
         return result
     finally:
         conn.close()
+
+
+def get_properties_by_state(player_id, state):
+    """Returns an ordered list by price of the player's owned properties by
+    its 'state' specified."""
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT `name`, FROM `properties`'
+                           'WHERE `player_id` = %s'
+                           'AND `property_state` = %s'
+                           'ORDER BY `price` ASC;',
+                           (player_id, state))
+            result = [row['name'] for row in cursor.fetchall()]
+        conn.commit()
+        return result
+    finally:
+        conn.close()
+
+
+def get_position_by_name(player_id, property_name):
+    """Returns the property position of a property from its name and
+    the owner's id"""
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT `property_position`, FROM `properties`'
+                           'WHERE `player_id` = %s;'
+                           'AND `property_name;` = %s',
+                           (player_id, property_name))
+
+            result = cursor.fetchone()
+
+        conn.commit()
+        return result
+    finally:
+        conn.close()
+
+
+def get_propertys_gameid(player_id, property_position):
+    """Returns the gameID of a property from the property's position
+    and the owner's id."""
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT `game_id`, FROM `properties`'
+                           'WHERE `player_id` = %s;'
+                           'AND `property_position` = %s;',
+                           (player_id, property_position))
+
+            result = cursor.fetchone()
+
+        conn.commit()
+        return result
+    finally:
+        conn.close()

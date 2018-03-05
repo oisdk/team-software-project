@@ -1,33 +1,73 @@
-<table>
-    <tr>
-        <th>Username:</th>
-        <th>Balance:</th>
-        <th>Current Turn:</th>
-        <th>Properties Owned:</th>
-    </tr>
-    <tr>
-        <td id="details_username"></td>
-        <td id="balance"></td>
-        <td id="current-turn"></td>
-        <td id="properties"></td>
-    </tr>
-</table>
-<br>
-<table id="user-controls">
-    <tr>
-        <td>
-            <button id="roll-dice" name="roll-dice">Roll Dice</button>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <button id="end-turn" name="end-turn">End Turn</button>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <button id="jail" name="jail">Leave Jail($50)</button>
-        </td>
-    </tr>
-</table>
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 center infoheaders">Username</div>
+        <hr>
+        <div class="col-md-12 center infodata"id="details_username"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 center infoheaders">Balance</div>
+        <hr>
+          <div class="col-md-12 center infodata" id="balance"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 center infoheaders">Current Turn</div>
+        <hr>
+        <div class="col-md-12 center infodata " id="current-turn"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 center infoheaders">Properties Owned</div>
+        <hr>
+        <div class="col-md-12 center infodata" id="properties"> </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 center infoheaders">
+      Mortgage Properties
+    </div>
+    <hr>
+    <div class="col-md-12 center infodata">
+       <select name="mortgage" size="3" id="mortgage"></select>
+    </div>
+    <div class="col-md-12">
+      <button  class="btn btn-info btn-block"id="mort-check" name="mortgage">Mortgage</button>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 center infoheaders">
+    Unmortgage Properties
+    </div>
+    <hr>
+    <div class="col-md-12 center infodata">
+       <select name="unmortgage" size="3" id="unmortgage"></select>
+    </div>
+    <div class="col-md-12">
+      <button  class="btn btn-info btn-block"id="unmort-check" name="unmortgage">Unmortgage</button>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container" id="user-controls">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-success btn-block" id="roll-dice" name="roll-dice">Roll Dice</button>
+        </div>
+    </div>
+  </div>
+  <br>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-danger btn-block" id="end-turn" name="end-turn">End Turn</button>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button  class="btn btn-warning btn-block" id="jail" disabled>Leave Jail($50)</button>
+      </div>
+    </div>
+</div>
