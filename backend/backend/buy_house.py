@@ -11,9 +11,10 @@ from backend.game import get_games
 cgitb.enable()
 
 
-def add_house(source, output=sys.stdout):
+def add_house(source=sys.stdin, output=sys.stdout):
     """Adds a house to a property.
     """
+    output.write('Content-Type: application/json\n\n')
     request = json.load(source)
     player_id = request["player_id"]
     property_name = request["property_name"]
@@ -37,5 +38,4 @@ def add_house(source, output=sys.stdout):
                 houses = 5
             player.balance -= prop.house_price
 
-    output.write('Content-Type: application/json\n\n')
     json.dump({"house_number": houses, "property_position": position}, output)
