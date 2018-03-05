@@ -13,6 +13,7 @@ const playerPositions = {}; // value id : position on board ie previous position
 let timer = '';
 let currentPlayer = '';
 let propertyView;
+let propertyOwners = {};
 
 /**
  * Displays the page for an active game.
@@ -114,7 +115,9 @@ export function onPlayerJailed(playerJailedEvent) {
  * @param {event} changesEvent The event that occurred.
  */
 function onPropertyOwnerChanges(changesEvent) {
-    propertyView.update(JSON.parse(changesEvent.data));
+    const eventData = JSON.parse(changesEvent.data);
+    propertyOwners[eventData.property.position] = eventData.newOwner;
+    propertyView.update(eventData);
     logEvents.logPropertyEvent(changesEvent);
 }
 
