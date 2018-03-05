@@ -232,7 +232,7 @@ export function buyHouse(JSONSend) {
     const propertyName = buyButton.options[buyButton.selectedIndex].value;
     JSONSend({
         serverAddress: 'cgi-bin/buy_house.py',
-        jsonObject: {'player_id': id, 'property_name': propertyName},
+        jsonObject: {'player_id': String(id), 'property_name': String(propertyName)},
     });
 }
 
