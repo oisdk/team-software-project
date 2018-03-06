@@ -275,6 +275,10 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
     def owner(self, owner):
         self._set_property('owner', owner)
 
+    @property_state.setter
+    def property_state(self, new_state):
+        self._set_property('property_state', new_state)
+
     def _is_in_monopoly(self):
         """
         Returns:
