@@ -102,7 +102,7 @@ function onPlayerBalance(playerBalanceEvent) {
  *
  * @param playerJailedEvent The data received from the event
  */
-export function onPlayerJailed(playerJailedEvent) {
+function onPlayerJailed(playerJailedEvent) {
     generateUserDetails.jailedPlayer(playerJailedEvent);
     logEvents.logJailEvent(playerJailedEvent);
 }
@@ -125,6 +125,7 @@ function onPropertyOwnerChanges(changesEvent) {
  * @param houseEvent The data received from the event
  */
 function onHouseEvent(houseEvent) {
+    console.log("Test");
     console.log(`Houses:${JSON.parse(houseEvent.data)}`)
 }
 
@@ -188,6 +189,7 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerJailed', onPlayerJailed);
     eventSource.addEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
     eventSource.addEventListener('gameEnd', disableActiveGameListeners);
+    eventSource.addEventListener('houseEvent', onHouseEvent);
 }
 
 function disableActiveGameListeners(_gameEndEvent) {
@@ -197,6 +199,7 @@ function disableActiveGameListeners(_gameEndEvent) {
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
     eventSource.removeEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
     eventSource.removeEventListener('gameEnd', disableActiveGameListeners);
+    eventSource.removeEventListener('houseEvent', onHouseEvent);
 }
 
 /**
