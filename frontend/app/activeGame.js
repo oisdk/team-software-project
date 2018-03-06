@@ -77,6 +77,8 @@ export function onPlayerMove(playerMoveEvent) {
 
     const [[playerID, newPosition, ..._others], ..._otherPlayers] = JSON.parse(playerMoveEvent.data);
     console.log('checking moved player');
+    console.log(`playerID is ${playerID}`);
+    console.log(`our player id is ${cookie.checkUserDetails().user_id}`);
     if (playerID === cookie.checkUserDetails().user_id) {
         console.log('player is current');
         if (!(newPosition in propertyOwners)) {
