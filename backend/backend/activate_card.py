@@ -107,6 +107,6 @@ def activate_card(player_id, game_id, card_landed_on):
         # by simply multiplying the amount to deduct per opponent
         # (i.e. card_value) by the *number* of opponents
         with Player(player_id) as player:
-            player.balance += card_value * (len(players_in_game) - 1)
+            player.balance += (card_value * (len(players_in_game) - 1))
 
     return card_description
