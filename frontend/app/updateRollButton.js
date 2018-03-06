@@ -33,7 +33,7 @@ export function requestCompareRolls(JSONSend = sendJSON.sendJSON) {
     const id = details.user_id;
     JSONSend({
         serverAddress: 'cgi-bin/roll_dice.py',
-        jsonObject: {player_id: id},
+        jsonObject: {user_id: id},
         checkRollValuesEqual,
     });
 }
