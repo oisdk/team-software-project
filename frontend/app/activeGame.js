@@ -24,15 +24,11 @@ let gameID;
  */
 export function activeGame(thisGameID, playerList) {
     gameID = thisGameID;
-    const rightPane = document.getElementById('content-right');
-    const userDetailsPane = document.createElement('div');
-    const propertiesPane = document.createElement('div');
-    rightPane.appendChild(userDetailsPane);
-    rightPane.appendChild(propertiesPane);
+    const propertiesPane = document.getElementById('properties');
 
     // display board and assign starting positions.
     displayBoard(playerList);
-    generateUserDetails.generateUserDetails(userDetailsPane);
+    generateUserDetails.generateUserDetails();
     logEvents.generateGameLog();
     propertyView = new OwnedPropertiesView(propertiesPane);
     enableActiveGameListeners();
