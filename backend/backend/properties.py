@@ -389,7 +389,11 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
 
 
 def owned_property_positions(game_id):
-    """Return a list of positions of owned properties in a game. """
+    """Return a dictionary of positions of owned properties in a game.
+
+    The dictionary keys are player_ids, and the values are lists of the
+    property positions owned by those players.
+    """
     conn = backend.storage.make_connection()
     try:
         conn.begin()

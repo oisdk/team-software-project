@@ -465,18 +465,20 @@ def check_property_ownership(output_stream, game_id, old_properties):
         The current property ownership data, as a dictionary where the keys
         are property positions, and the values are owner player ids.
     """
-    positions = owned_property_positions(game_id)
+    owners = owned_property_positions(game_id)
     new_properties = {}
-    for position in positions:
-        with Property(position, game_id) as prop:
-            with Player(prop.owner) as player:
-                new_properties[position] = {
-                    'name': prop.name,
-                    'owner': {
-                        'id': player.uid,
-                        'name': player.username,
-                    },
-                }
+    for positions in owners.values():
+        for position in positions:
+            with Property(position, game_id) as prop:
+                print('Owner is {}'.format(prop.owner))
+                with Player(prop.owner) as player:
+                    new_properties[position] = {
+                        'name': prop.name,
+                        'owner': {
+                            'id': player.uid,
+                            'name': player.username,
+                        },
+                    }
     if old_properties != new_properties:
         generate_ownership_events(
             output_stream,
