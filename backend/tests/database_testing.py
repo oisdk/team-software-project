@@ -52,10 +52,23 @@ def test_start_game(game):
     print("Game's status is {}".format(game.state))
 
 
+def test_buy_property(game, user, position):
+    """Tests buying a property.
+
+    Arguments:
+        game: The id of the game to buy a property in.
+        user: The id of the user to buy the property for.
+        position: The position of the property to buy.
+    """
+    from backend.properties import buy_property_db
+    buy_property_db(game, user, position)
+
+
 def main():
     """Creates a test game with some players and starts it."""
     game = test_create_game(['Alex', 'Beth', 'Fred', 'Eimear'])
     test_start_game(game)
+    test_buy_property(game.uid, game.players[0], 1)
 
 
 if __name__ == '__main__':
