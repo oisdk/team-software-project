@@ -608,16 +608,16 @@ def generate_house_event(
     ...     {1: {'houses': 1, 'hotels': 0}},
     ...     {1: {'houses': 2, 'hotels': 0}})
     event: houseEvent
-    data: {"1": {"houses": 2, "hotels": 0}}
+    data: {"1": {"hotels": 0, "houses": 2}}
     <BLANKLINE>
 
     >>> import sys
-    >>> generate_player_jailed_event(
+    >>> generate_house_event(
     ...     sys.stdout,
     ...     {},
     ...     {1: {'houses': 1, 'hotels': 0}})
     event: houseEvent
-    data: [[{1: {"houses": 1, "hotels": 0}}]]
+    data: {"1": {"hotels": 0, "houses": 1}}
     <BLANKLINE>
 
     """
@@ -625,7 +625,8 @@ def generate_house_event(
     data = {}
 
     if not old_houses:
-        data = new_houses
+        for position in new_houses:
+            data[position] = new_houses[position]
     else:
         for position in new_houses:
             if new_houses[position] != old_houses[position]:
