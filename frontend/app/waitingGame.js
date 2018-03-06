@@ -31,6 +31,7 @@ function createWaitingGameHTML({
     playerList.id = playerListID;
     const startButton = document.createElement('button');
     startButton.style.type = 'button';
+    startButton.className = 'btn btn-lg btn-outline-success';
     startButton.innerHTML = 'Start Game';
     startButton.id = startButtonID;
     startButton.disabled = true;

@@ -56,12 +56,11 @@ CREATE TABLE IF NOT EXISTS property_values (
 CREATE TABLE IF NOT EXISTS properties (
     player_id int UNSIGNED NOT NULL DEFAULT 0,
 	game_id int UNSIGNED NOT NULL,
-	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'owned',
+	state ENUM('unowned', 'owned') NOT NULL DEFAULT 'unowned',
 	mortgaged ENUM('unmortgaged', 'mortgaged') NOT NULL DEFAULT 'unmortgaged',
 	property_position tinyint UNSIGNED NOT NULL,
 	house_count tinyint UNSIGNED DEFAULT 0,
 	hotel_count tinyint UNSIGNED DEFAULT 0,
-	FOREIGN KEY (player_id) REFERENCES players(id),
     FOREIGN KEY (game_id) REFERENCES games(id),
 	FOREIGN KEY (property_position) REFERENCES property_values(property_position)
 );
