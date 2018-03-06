@@ -102,11 +102,11 @@ def activate_card(player_id, game_id, card_landed_on):
                     # opponent's balance
                     player.balance -= card_value
                 else:
-                    # Add to this player's balance the total amount deducted from the
-                    # opponents.
-                    # Note that the amount to add to this player's balance can be found
-                    # by simply multiplying the amount to deduct per opponent
-                    # (i.e. card_value) by the *number* of opponents
+                    # Add to this player's balance the total amount deducted
+                    # from the opponents.
+                    # Note that the amount to add to this player's balance can
+                    # be found by simply multiplying the amount to deduct per
+                    # opponent (i.e. card_value) by the *number* of opponents
                     player.balance += (card_value * (len(players_in_game) - 1))
 
     return card_description
