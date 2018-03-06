@@ -98,14 +98,13 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             try:
                 with conn.cursor() as cursor:
                     query_string = cursor.mogrify(
-                        'SELECT %s FROM %s',
-                        (field, table))
+                        'SELECT ({}) FROM {}'.format(field, table))
                     query_string += cursor.mogrify(
                         ' WHERE property_position = %s',
                         self._position)
                     if table == 'properties':
                         query_string += cursor.mogrify(
-                            ' AND game_id = %s',
+                            ' AND game_id = %s;',
                             (self._gid))
                     cursor.execute(query_string)
                     return cursor.fetchone()[field]
