@@ -62,10 +62,10 @@ def test_buy_property(game, user, position):
     """
     from backend.properties import buy_property_db, Property
     buy_property_db(game, user, position)
-    prop = Property(position, game)
-    print(
-        "Property's state should be 'owned'"
-        ' and is: {}'.format(prop.property_state))
+    with Property(position, game) as prop:
+        print(
+            "Property's state should be 'owned'"
+            ' and is: {}'.format(prop.property_state))
 
 
 def main():
