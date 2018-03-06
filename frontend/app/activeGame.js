@@ -79,7 +79,7 @@ export function onPlayerMove(playerMoveEvent) {
     console.log('checking moved player');
     console.log(`playerID is ${playerID}`);
     console.log(`our player id is ${cookie.checkUserDetails().user_id}`);
-    if (playerID === cookie.checkUserDetails().user_id) {
+    if (playerID === parseInt(cookie.checkUserDetails().user_id, 10)) {
         console.log('player is current');
         if (!(newPosition in propertyOwners)) {
             console.log('enabling button');
