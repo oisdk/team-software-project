@@ -10,6 +10,9 @@ def create_test_game(usernames):
 
     Arguments:
         usernames: A list of players to add to the game.
+
+    Returns:
+        game_id: The id of the created game.
     """
     from backend.game import create_game
     from backend.player import create_player
