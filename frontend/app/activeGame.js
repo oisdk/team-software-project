@@ -132,13 +132,28 @@ export function onPlayerJailed(playerJailedEvent) {
  */
 function onPropertyOwnerChanges(changesEvent) {
     const eventData = JSON.parse(changesEvent.data);
-    console.log(`propertyOwnerChanges event: ${eventData}`);
-    propertyOwners[eventData.property.position] = eventData.newOwner;
-    propertyView.update(eventData.map(change => ({
-        property: change.property.name,
-        oldOwner: change.oldOwner.name,
-        newOwner: change.newOwner.name,
-    })));
+    console.log(`propertyOwnerChanges event: ${eventData[0]}`);
+    propertyOwners[eventData[0].property.position] = eventData[0].newOwner;
+    propertyView.update(eventData.map((change) => {
+        let newName;
+        let oldName;
+        if (change.oldOwner === null) {
+            oldName = null;
+        } else {
+            oldName = change.oldOwner.name;
+        }
+        if (change.newOwner === null) {
+            newName = null;
+        } else {
+            newName = change.newOwner.name;
+        }
+
+        return {
+            property: change.property.name,
+            oldOwner: oldName,
+            newOwner: newName,
+        };
+    }));
     logEvents.logPropertyEvent(changesEvent);
 }
 
