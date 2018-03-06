@@ -28,7 +28,6 @@ export function activeGame(thisGameID, playerList) {
     // display board and assign starting positions.
     displayBoard(playerList);
     generateUserDetails.generateUserDetails(() => {
-        console.log('htmlLoadedCallback called');
         const propertiesPane = document.getElementById('properties');
         propertyView = new OwnedPropertiesView(propertiesPane);
         logEvents.generateGameLog();
@@ -56,7 +55,6 @@ export function onPlayerMove(playerMoveEvent) {
     logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
-    // console.log(playerMoveEvent);
 
     // had to assign variables to stop linter from complaining.
     const player = items[0];
@@ -75,13 +73,8 @@ export function onPlayerMove(playerMoveEvent) {
 
     const [[playerID, newPosition, ..._others], ..._otherPlayers]
         = JSON.parse(playerMoveEvent.data);
-    console.log('checking moved player');
-    console.log(`playerID is ${playerID}`);
-    console.log(`our player id is ${cookie.checkUserDetails().user_id}`);
     if (playerID === parseInt(cookie.checkUserDetails().user_id, 10)) {
-        console.log('player is current');
         if (!(newPosition in propertyOwners)) {
-            console.log('enabling button');
             generateUserDetails.enableBuyPropertyButton(gameID, playerID, newPosition);
         }
     }
@@ -130,7 +123,6 @@ export function onPlayerJailed(playerJailedEvent) {
  */
 function onPropertyOwnerChanges(changesEvent) {
     const eventData = JSON.parse(changesEvent.data);
-    console.log(`propertyOwnerChanges event: ${eventData[0]}`);
     propertyOwners[eventData[0].property.position] = eventData[0].newOwner;
     propertyView.update(eventData.map((change) => {
         let newName;
@@ -251,7 +243,6 @@ function animate() {
         control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
         if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
             clearInterval(timer);
-            console.log('ended');
             currentPlayer = '';
         }
     } else {
@@ -259,7 +250,6 @@ function animate() {
         control.movePlayer(currentPlayer, 99, playerTokenInformation[currentPlayer]);
         playerPositions[currentPlayer].current = 99;
         clearInterval(timer);
-        console.log('Jailed 99');
         currentPlayer = '';
     }
 }

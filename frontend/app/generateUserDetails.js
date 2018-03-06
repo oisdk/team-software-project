@@ -92,7 +92,6 @@ export function disableBuyPropertyButton(listenerFunction) {
  * @param {XMLHttpRequest} req1 response.
  */
 export function successCallback(req1) {
-    console.log(req1);
     const response = JSON.parse(req1.responseText);
     const roll = response.your_rolls;
     const rollDie = document.querySelector('#roll-dice');
@@ -181,11 +180,10 @@ export function generateUserDetails(htmlLoadedCallback) {
     fileReader.open('GET', 'user-info.html', true);
     fileReader.onreadystatechange = () => {
         if (fileReader.status === 200 && fileReader.readyState === 4) {
-            console.log('updating user details');
             updateUserDetails(fileReader);
             htmlLoadedCallback();
         }
-    }
+    };
     fileReader.send();
     details = getCookie.checkUserDetails();
     id = details.user_id;
@@ -275,7 +273,6 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
 export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
     document.getElementById('current-turn').innerHTML = `Player ${turn[0] + 1}`;
-    // console.log(`Turn:${turn}`);
 
     // displayOwnedProperties(sendJSON.sendJSON);
 
@@ -324,9 +321,7 @@ export function turnDetails(turnEvent) {
 export function balanceDetails(balanceEvent) {
     const data = JSON.parse(balanceEvent.data);
     let balance = '';
-    // console.log(`Balances:${data}`);
     data.forEach((item) => {
-        // console.log(item);
         if (String(item[0]) === String(id)) {
             ({1: balance} = item);
             document.getElementById('balance').innerHTML = balance;
@@ -346,7 +341,6 @@ export function balanceDetails(balanceEvent) {
 export function jailedPlayer(jailedEvent) {
     const data = JSON.parse(jailedEvent.data);
     data.forEach((item) => {
-        // console.log(item);
         if (String(item[0]) === String(id) && String(item[1]) === 'in_jail') {
             jail = true;
             enableEndTurn();
