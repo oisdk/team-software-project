@@ -3,6 +3,7 @@
 Intended to be run directly on the server or local Docker image.
 """
 
+
 def create_test_game(usernames):
     """Creates a test game containing the given players.
 
@@ -24,10 +25,14 @@ def create_test_game(usernames):
         add_player(player, game_id)
     return game_id
 
-def test_create_game():
-    """Tests creating a game with 4 players."""
+
+def test_create_game(players):
+    """Tests creating a game with 4 players.
+
+    Arguments:
+        players: A list of usernames for players to add to the game.
+    """
     from backend.game import Game
-    players = ['Kate', 'Beth', 'Alice', 'Naomi']
     game_id = create_test_game(players)
     print('Created game with id {}'.format(game_id))
     game = Game(game_id)
@@ -35,13 +40,22 @@ def test_create_game():
     return game
 
 
+def test_start_game(game):
+    """Tests starting a game.
+
+    Arguments:
+        game: The Game object to try to start.
+    """
+    from backend.start_game import start_game_db
+    start_game_db(game.uid)
+    print("Game's status should be 'playing':")
+    print("Game's status is {}".format(game.state))
+
+
 def main():
     """Creates a test game with some players and starts it."""
-    from backend.start_game import start_game_db
-    from backend.game import Game
-    game = test_create_game()
-    start_game_db(game.uid)
-    print("Game's status is {}".format(game.state))
+    game = test_create_game(['Alex', 'Beth', 'Fred', 'Eimear'])
+    test_start_game(game)
 
 
 if __name__ == '__main__':
