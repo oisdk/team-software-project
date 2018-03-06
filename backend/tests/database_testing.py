@@ -15,3 +15,13 @@ def create_test_game(usernames):
     from backend.player import create_player
     player_ids = [create_player(username) for username in usernames]
     game_id = create_game(player_ids[0])
+    return game_id
+
+def main():
+    """Creates a test game with some players."""
+    players = ['Kate', 'Beth', 'Alice', 'Naomi']
+    game_id = create_test_game(players)
+    print('Created game with id {}'.format(game_id))
+
+if __name__ == '__main__':
+    main()
