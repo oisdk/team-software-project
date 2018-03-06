@@ -75,7 +75,8 @@ export function onPlayerMove(playerMoveEvent) {
     playerPositions[currentPlayer].end = parseInt(endPosition, 10);
     startAnimation();
 
-    const [[playerID, newPosition, ..._others], ..._otherPlayers] = JSON.parse(playerMoveEvent.data);
+    const [[playerID, newPosition, ..._others], ..._otherPlayers]
+        = JSON.parse(playerMoveEvent.data);
     console.log('checking moved player');
     console.log(`playerID is ${playerID}`);
     console.log(`our player id is ${cookie.checkUserDetails().user_id}`);
