@@ -54,9 +54,9 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             self._price = result['purchase_price']
             self._property_type = result['state']
             self._base = result['base_rent']
+            self._name = result['name']
             if self._property_type == 'property':
                 self._house_price = result['house_price']
-                self._name = result['name']
                 self._one = result['one_rent']
                 self._two = result['two_rent']
                 self._three = result['three_rent']
