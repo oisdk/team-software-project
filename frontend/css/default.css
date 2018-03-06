@@ -2,11 +2,50 @@ html,body{
   text-align: center;
   padding: none;
   margin: none;
+  background-color: rgb(48, 48, 48);
+
 }
 .header{
   text-align: center;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  background-color: rgb(31, 31, 31);
+  padding-top: 1%;
+  padding-bottom: 1%;
+  background-color: rgb(38, 37, 37);
   color: rgb(242, 190, 5);
+  font-family: Schaeffer;
+}
+
+@@font-face {
+  font-family: Schaeffer;
+  src: url('fonts/Schaeffer.ttf');
+}
+.ctf{
+  padding-top: 1%;
+}
+.form-control{
+  padding-bottom: 1%;
+}
+.center{
+  text-align: center;
+}
+.infoheaders{
+  font-family: Schaeffer;
+
+  background-color: rgb(38, 37, 37);
+  padding-top: 1%;
+  color: rgb(242, 190, 5);
+}
+.infodata{
+  padding-top: 1%;
+  padding-bottom: 1%;
+  background-color: rgb(182, 178, 178);
+  color: rgb(0, 0, 0);
+
+}
+.properties{
+  max-height: 50px;
+  overflow-y: scroll;
+}
+.container-fluid{
+  background-color: rgb(48, 48, 48);
+  color:rgb(233, 233, 233);
 }

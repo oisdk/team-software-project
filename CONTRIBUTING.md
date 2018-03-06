@@ -1,3 +1,34 @@
+---
+title: Contributing Guide
+...
+
+# About this Document
+
+## Summary:
+
+This document provides details on how to contribute code to the software project.
+
+## Target Audience
+
+This document is geared towards developers interested in contributing code to this project. While not directed towards end-users and operators deploying the software, those interested may find it's worth reading this document to get a feel for how changes are made to code in this project.
+
+## Document Scope
+
+This document covers the following aspects of the project:
+
+* Working on a local copy of this project.
+* The Continuous Integration server.
+* Directory and database structure.
+* Testing your code.
+
+## External Documentation
+
+For a high-level overview of the project (inc. Architecture, Design), see the [top level README](README.md).
+
+For usage instructions, targeted at end-user of the software, see the [user manual](USAGE.md).
+
+For deployment instructions, see the [deployment manual](#).
+
 # Downloading the project and making changes
 
 Before you can make changes to the code, you'll have to download it to your local machine so you can open it up in your editor. If you're already familiar with git and github, all you need to know is: don't make commits to master. Make a branch, commit on there, and make a pull request back to master. If you're not familiar, here's a short guide:
@@ -610,13 +641,15 @@ export function generateHTML() {
 
 ### "players"
 
-| Field          | Type                | Null | Key | Default | Extra          |
-| -------------- | ------------------- | ---- | --- | ------- | -------------- |
-| id             | int(10) unsigned    | NO   | PRI | NULL    | auto_increment |
-| username       | varchar(255)        | NO   |     | NULL    |                |
-| balance        | int(11)             | NO   |     | 200     |                |
-| turn_position  | tinyint(4)          | YES  |     | 0       |                |
-| board_position | tinyint(3) unsigned | NO   |     | 0       |                |
+| Field          | Type                          | Null | Key | Default     | Extra          |
+| -------------- | ----------------------------- | ---- | --- | ----------- | -------------- |
+| id             | int(10) unsigned              | NO   | PRI | NULL        | auto_increment |
+| username       | varchar(255)                  | NO   |     | NULL        |                |
+| balance        | int(11)                       | NO   |     | 1500        |                |
+| turn_position  | tinyint(4)                    | YES  |     | 0           |                |
+| board_position | tinyint(4)                    | NO   |     | 0           |                |
+| jail_state     | enum('not_in_jail','in_jail') | NO   |     | not_in_jail |                |
+
 
 ### "playing_in"
 
