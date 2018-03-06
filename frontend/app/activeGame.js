@@ -125,8 +125,11 @@ function onPropertyOwnerChanges(changesEvent) {
  * @param houseEvent The data received from the event
  */
 function onHouseEvent(houseEvent) {
-    console.log("Test");
-    console.log(`Houses:${JSON.parse(houseEvent.data)}`)
+    const houses = JSON.parse(houseEvent.data);
+    Object.keys(houses).forEach((key) => {
+        console.log(`Houses:${houses[key].houses}`);
+        console.log(`Hotels:${houses[key].hotels}`);
+    });
 }
 
 /**
