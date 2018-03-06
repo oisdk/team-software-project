@@ -13,6 +13,7 @@ LAST_CHEST_INDEX_IN_TABLE = 14
 
 def activate_card(player_id, game_id, card_landed_on):
     # pylint: disable=too-many-locals
+    # pylint: disable=too-many-branches
     """Read a chance or community chest card that the player landed on.
 
     Arguments:
