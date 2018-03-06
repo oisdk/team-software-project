@@ -119,6 +119,16 @@ function onPropertyOwnerChanges(changesEvent) {
 }
 
 /**
+ * Called when a houseEvent event happens.
+ * Calls the function to update the players houses.
+ *
+ * @param houseEvent The data received from the event
+ */
+function onHouseEvent(houseEvent) {
+    console.log(`Houses:${JSON.parse(houseEvent.data)}`)
+}
+
+/**
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
  */
