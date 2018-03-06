@@ -166,22 +166,26 @@ export function goToJail(JSONSend) {
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
  */
 export function updateUserDetails(fileReader) {
-    if (fileReader.status === 200 && fileReader.readyState === 4) {
-        document.getElementById('content-right').innerHTML = fileReader.responseText;
-        document.getElementById('details_username').innerHTML = userName;
-    }
+    document.getElementById('content-right').innerHTML = fileReader.responseText;
+    document.getElementById('details_username').innerHTML = userName;
 }
 
 /**
- * Function to generate game details. Makes a request to
- * filesystem for a HTML file to display.
- * @param {int} gameID - id used to create eventSource.
+ * Function to generate game details. Makes an AJAX request for the html to display.
+ *
+ * @param {function} htmlLoadedCallback A callback to call once the html has loaded.
  */
-export function generateUserDetails() {
+export function generateUserDetails(htmlLoadedCallback) {
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
     fileReader.open('GET', 'user-info.html', true);
-    fileReader.onreadystatechange = () => updateUserDetails(fileReader);
+    fileReader.onreadystatechange = () => {
+        if (fileReader.status === 200 && fileReader.readyState === 4) {
+            console.log('updating user details');
+            updateUserDetails(fileReader);
+            htmlLoadedCallback();
+        }
+    }
     fileReader.send();
     details = getCookie.checkUserDetails();
     id = details.user_id;

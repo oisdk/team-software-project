@@ -24,14 +24,16 @@ let gameID;
  */
 export function activeGame(thisGameID, playerList) {
     gameID = thisGameID;
-    const propertiesPane = document.getElementById('properties');
 
     // display board and assign starting positions.
     displayBoard(playerList);
-    generateUserDetails.generateUserDetails();
-    logEvents.generateGameLog();
-    propertyView = new OwnedPropertiesView(propertiesPane);
-    enableActiveGameListeners();
+    generateUserDetails.generateUserDetails(() => {
+        console.log('htmlLoadedCallback called');
+        const propertiesPane = document.getElementById('properties');
+        propertyView = new OwnedPropertiesView(propertiesPane);
+        logEvents.generateGameLog();
+        enableActiveGameListeners();
+    });
 }
 
 
