@@ -468,8 +468,15 @@ def check_property_ownership(output_stream, game_id, old_properties):
     positions = owned_property_positions(game_id)
     new_properties = {}
     for position in positions:
-        this_property = Property(position, game_id)
-        new_properties[position] = this_property.owner
+        with Property(position, game_id) as prop:
+            with Player(prop.owner) as player:
+                new_properties[position] = {
+                    'name': prop.name,
+                    'owner': {
+                        'id': player.uid,
+                        'name': player.username,
+                    },
+                }
     if old_properties != new_properties:
         generate_ownership_events(
             output_stream,
