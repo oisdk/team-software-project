@@ -64,6 +64,7 @@ def start_sse_stream(output_stream=sys.stdout):
     jailed_players = {}
     new_jailed_players = {}
     push_initial_user_details = True
+    property_ownership = {}
 
     # These statements are executed constantly once the first request to this
     # function is made.
@@ -96,6 +97,11 @@ def start_sse_stream(output_stream=sys.stdout):
             output_stream, jailed_players, new_jailed_players)
         positions = check_new_positions(output_stream, positions,
                                         new_positions, new_jailed_players)
+        property_ownership = check_property_ownership(
+            output_stream,
+            game_id,
+            property_ownership,
+        )
 
         # Pushes data to update the players info table on game start
         if push_initial_user_details and last_game_state == "playing":
