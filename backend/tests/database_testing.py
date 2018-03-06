@@ -32,10 +32,17 @@ def test_create_game():
     print('Created game with id {}'.format(game_id))
     game = Game(game_id)
     print('Game object has player ids: {}'.format(game.players))
+    return game
 
 
 def main():
-    """Creates a test game with some players."""
+    """Creates a test game with some players and starts it."""
+    from backend.start_game import start_game_db
+    from backend.game import Game
+    game = test_create_game()
+    start_game_db(game.uid)
+    print("Game's status is {}".format(game.state))
+
 
 if __name__ == '__main__':
     main()
