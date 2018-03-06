@@ -67,16 +67,14 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
         try:
             with self._conn.cursor() as cursor:
                 cursor.execute('UPDATE `properties` '
-                               'SET `player_id` = %s, '
-                               '`mortgaged` = `%s`',
-                               '`state` = %s, '
-                               '`house_count` = %s, '
-                               '`hotel_count` = %s'
-                               'WHERE `game_id` = %s '
-                               'AND `property_position` = %s',
-                               (self._owner, self._name, self._property_state,
-                                self._houses, self._hotels, self._gid,
-                                self._position))
+                               'SET `player_id` = %s,`mortgaged` = %s, '
+                               '`state` = %s,`house_count` = %s, '
+                               '`hotel_count` = %s '
+                               'WHERE `game_id` = %s AND '
+                               '`property_position` = %s;',
+                               (self._owner, self._mortgage,
+                                self._property_state, self._houses,
+                                self._hotels, self._gid, self._position))
             self._conn.commit()
         finally:
             self._in_context = False
@@ -472,10 +470,11 @@ def get_properties_by_state(player_id, state):
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('SELECT `name`, FROM `properties`'
-                           'WHERE `player_id` = %s'
-                           'AND `property_state` = %s'
-                           'ORDER BY `price` ASC;',
+            cursor.execute('SELECT property_values.name'
+                           ' FROM properties INNER JOIN property_values'
+                           ' ON properties.property_position ='
+                           ' property_values.property_position '
+                           'WHERE player_id = %s and mortgaged = %s ',
                            (player_id, state))
             result = [row['name'] for row in cursor.fetchall()]
         conn.commit()
@@ -491,9 +490,11 @@ def get_position_by_name(player_id, property_name):
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('SELECT `property_position`, FROM `properties`'
-                           'WHERE `player_id` = %s;'
-                           'AND `property_name;` = %s',
+            cursor.execute('SELECT properties.property_position'
+                           ' FROM properties INNER JOIN property_values'
+                           ' ON properties.property_position ='
+                           ' property_values.property_position '
+                           'WHERE player_id = %s and name = %s ',
                            (player_id, property_name))
 
             result = cursor.fetchone()

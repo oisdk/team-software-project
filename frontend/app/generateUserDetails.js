@@ -16,6 +16,7 @@ export function disableGameInterface() {
     document.getElementById('roll-dice').disabled = true;
     document.getElementById('end-turn').disabled = true;
     document.getElementById('jail').disabled = true;
+    document.getElementById('properties-house').disabled = true;
 }
 
 /**
@@ -24,6 +25,7 @@ export function disableGameInterface() {
 export function enableGameInterface() {
     document.getElementById('roll-dice').disabled = false;
     document.getElementById('end-turn').disabled = true;
+    document.getElementById('properties-house').disabled = false;
 }
 
 /**
@@ -160,12 +162,14 @@ export function generateUserDetails() {
  */
 export function updateDropDown(req) {
     const request = JSON.parse(req.responseText);
-    const names = ['mortgage', 'unmortgage'];
-    const options = [request.mortgage, request.unmortgage];
+    console.log(`Response:${request}`);
+    const names = ['mortgage', 'unmortgage', 'properties-house'];
+    const options = [request.mortgage, request.unmortgage, request.mortgage];
     let select;
     let propertyNames;
     for (let i = 0; i < names.length; i += 1) {
         select = document.getElementById(names[i]);
+        select.innerHTML = '';
         propertyNames = options[i];
 
         for (let j = 0; j < propertyNames.length; j += 1) {
@@ -198,7 +202,7 @@ export function changePropState(JSONSend, button, state) {
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: [state, propertyName, id]},
-        updateDropDown,
+        successCallback: updateDropDown,
     });
 }
 
@@ -213,7 +217,24 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: ['None', 'None', id]},
-        updateDropDown,
+        successCallback: updateDropDown,
+    });
+}
+
+/**
+ * Called when the buy house button is presses.
+ *
+ * @param {Function} JSONSend - JSON function makes testing easier.
+ * @param {Object} button - Object of the button pressed.
+ */
+export function buyHouse(JSONSend) {
+    const buyButton = document.getElementById('properties-house');
+    // This gets the name by the index of the property name selected
+    // from the property options
+    const propertyName = buyButton.options[buyButton.selectedIndex].value;
+    JSONSend({
+        serverAddress: 'cgi-bin/buy_house.py',
+        jsonObject: {player_id: id, property_name: propertyName},
     });
 }
 
@@ -235,10 +256,10 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
  */
 export function turnDetails(turnEvent) {
     const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn[0] + 1}`;
+    document.getElementById('current-turn').innerHTML = `Player ${turn[0]}`;
     // console.log(`Turn:${turn}`);
 
-    // displayOwnedProperties(sendJSON.sendJSON);
+    displayOwnedProperties(sendJSON.sendJSON);
 
     const rollDiceButton = document.getElementById('roll-dice');
     rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };
@@ -248,6 +269,9 @@ export function turnDetails(turnEvent) {
     mortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, mortgageButton, 'unmortgage'); };
     const unmortgageButton = document.getElementById('unmort-check');
     unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage'); };
+
+    const buyHouseButton = document.getElementById('buy-house');
+    buyHouseButton.onclick = () => { buyHouse(sendJSON.sendJSON); };
 
     const endTurnButton = document.getElementById('end-turn');
     endTurnButton.onclick = () => { endTurn(sendJSON.sendJSON); };
