@@ -87,25 +87,26 @@ def activate_card(player_id, game_id, card_landed_on):
             player.balance -= card_value
 
     elif card_type == "collect_from_opponents":
-        # Get a list of *opponents* in this game
+        # Get a list of players in this game
+        players_in_game = []
         with Game(game_id) as game:
-            # ".remove" will remove this player's id from the list of all
-            # players
-            opponents = game.players.remove(player_id)
+            players_in_game = game.players
 
-        # Iterate through each player and deduct from their balance
-        for opponent_id in opponents:
-            with Player(opponent_id) as opponent:
-                # card_value here indicates the amount to deduct from
-                # opponent's balance
-                opponent.balance -= card_value
+        # Iterate through each player and deduct from their balance if they
+        # are not the current (aka. this) player
+        for ID in players_in_game:
+            if player_id != ID:
+                with Player(ID) as opponent:
+                    # card_value here indicates the amount to deduct from
+                    # opponent's balance
+                    opponent.balance -= card_value
 
         # Add to this player's balance the total amount deducted from the
         # opponents.
         # Note that the amount to add to this player's balance can be found
         # by simply multiplying the amount to deduct per opponent
-        # (aka. card_value) by the *number* of opponents
+        # (i.e. card_value) by the *number* of opponents
         with Player(player_id) as player:
-            player.balance += card_value * len(opponents)
+            player.balance += card_value * (len(players_in_game) - 1)
 
     return card_description
