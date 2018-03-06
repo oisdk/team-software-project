@@ -541,12 +541,24 @@ def buy_property(source=sys.stdin, output=sys.stdout):
         output: The stream output data should be written to.
     """
     request = json.load(source)
-    property_position = request["property_position"]
-    user_id = request["user_id"]
-    game_id = request["game_id"]
-    with Property(property_position, game_id) as prop:
-        prop.property_state = 'owned'
-        prop.owner = user_id
+    buy_property_db(
+        game=request["game_id"],
+        user=request["user_id"],
+        position=request["property_position"],
+    )
 
     output.write('Content-Type: text/plain\n\n')
     json.dump('Property bought', output)
+
+
+def buy_property_db(game, user, position):
+    """Changes a property's state to 'owned' in the database.
+
+    Arguments:
+        game: The id of the game the property should be bought in.
+        user: The id of the user to buy the property for.
+        position: The position of the property to buy.
+    """
+    with Property(position, game) as prop:
+        prop.property_state = 'owned'
+        prop.owner = user
