@@ -13,8 +13,12 @@ def create_test_game(usernames):
     """
     from backend.game import create_game
     from backend.player import create_player
+    from backend.join_game import add_player
+
     player_ids = [create_player(username) for username in usernames]
     game_id = create_game(player_ids[0])
+    for player in player_ids[1:]:
+        add_player(player, game_id)
     return game_id
 
 def main():
