@@ -64,7 +64,7 @@ export function enableBuyPropertyButton(gameID, userID, propertyPosition) {
 
     function buyProperty() {
         sendJSON.sendJSON({
-            serverAddress: 'buy_property',
+            serverAddress: 'cgi-bin/buy_property.py',
             jsonObject: {
                 game_id: gameID,
                 user_id: userID,
