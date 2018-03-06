@@ -576,12 +576,14 @@ def check_property_houses(output_stream, game_id, old_houses):
         are property positions, and the values are owner player ids.
     """
     positions = owned_property_positions(game_id)
+    print("Positions:", positions)
     new_houses = {}
-    for position in positions:
-        this_property = Property(position, game_id)
-        houses = this_property.houses
-        hotels = this_property.hotels
-        new_houses[position] = {'houses': houses, 'hotels': hotels}
+    for pid in positions:
+        for position in positions[pid]:
+            this_property = Property(position, game_id)
+            houses = this_property.houses
+            hotels = this_property.hotels
+            new_houses[position] = {'houses': houses, 'hotels': hotels}
     if old_houses != new_houses:
         generate_house_event(
             output_stream,
@@ -622,6 +624,14 @@ def generate_house_event(
     data: {"1": {"hotels": 0, "houses": 1}}
     <BLANKLINE>
 
+    >>> import sys
+    >>> generate_house_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {1: {'houses': 1, 'hotels': 0}, 39: {'houses': 1, 'hotels': 0}})
+    event: houseEvent
+    data: {"1": {"hotels": 0, "houses": 1}, "39": {"hotels": 0, "houses": 1}}
+    <BLANKLINE>
     """
 
     data = {}
