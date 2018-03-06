@@ -584,7 +584,7 @@ def check_property_houses(output_stream, game_id, old_houses):
         hotels = this_property.hotels
         new_houses[position] = {'houses': houses, 'hotels': hotels}
     if old_houses != new_houses:
-        generate_ownership_events(
+        generate_house_event(
             output_stream,
             old_houses,
             new_houses)
