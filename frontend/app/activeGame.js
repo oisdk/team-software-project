@@ -75,7 +75,7 @@ export function onPlayerMove(playerMoveEvent) {
     playerPositions[currentPlayer].end = parseInt(endPosition, 10);
     startAnimation();
 
-    const [playerID, newPosition, ..._others] = JSON.parse(playerMoveEvent);
+    const [playerID, newPosition, ..._others] = JSON.parse(playerMoveEvent.data);
     if (playerID === cookie.checkUserDetails().user_id) {
         if (!(newPosition in propertyOwners)) {
             generateUserDetails.enableBuyPropertyButton(gameID, playerID, newPosition);
