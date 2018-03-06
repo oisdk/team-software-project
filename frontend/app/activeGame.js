@@ -127,6 +127,7 @@ function onPropertyOwnerChanges(changesEvent) {
 function onHouseEvent(houseEvent) {
     const houses = JSON.parse(houseEvent.data);
     Object.keys(houses).forEach((key) => {
+        console.log(`Position:${key}`);
         console.log(`Houses:${houses[key].houses}`);
         console.log(`Hotels:${houses[key].hotels}`);
     });
