@@ -58,7 +58,7 @@ export function disableLeaveJail() {
  *     landed on.
  */
 export function enableBuyPropertyButton(gameID, userID, propertyPosition) {
-    const button = document.getElementById('buy_property.py');
+    const button = document.getElementById('buy_property');
     button.disabled = false;
     button.addEventListener('click', buyProperty);
 
