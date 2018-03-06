@@ -63,7 +63,7 @@ export function pickGame(xhttp) {
 
         document.getElementById('table').appendChild(newRow);
 
-        document.getElementById('tableI').innerHTML = '<td><input type="submit" value="Join game" id="joinSelectedGame"></td><td></td>';
+        document.getElementById('tableI').innerHTML = '<td><button type="submit" class="btn- btn-lg btn-outline-danger" id="joinSelectedGame">Join Game</button></td><td></td>';
         document.getElementById('joinSelectedGame').onclick = () => { sendGameId(document.querySelector('input[name="gameID"]:checked'), waitingGame, sendJSON.sendJSON); };
     }
 }
