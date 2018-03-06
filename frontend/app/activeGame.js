@@ -75,7 +75,7 @@ export function onPlayerMove(playerMoveEvent) {
     playerPositions[currentPlayer].end = parseInt(endPosition, 10);
     startAnimation();
 
-    const [playerID, newPosition, ..._others] = JSON.parse(playerMoveEvent.data);
+    const [[playerID, newPosition, ..._others], ..._otherPlayers] = JSON.parse(playerMoveEvent.data);
     console.log('checking moved player');
     if (playerID === cookie.checkUserDetails().user_id) {
         console.log('player is current');
