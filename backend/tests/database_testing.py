@@ -70,9 +70,12 @@ def test_buy_property(game, user, position):
 
 def main():
     """Creates a test game with some players and starts it."""
+    from backend.properties import owned_property_positions
     game = test_create_game(['Alex', 'Beth', 'Fred', 'Eimear'])
     test_start_game(game)
     test_buy_property(game.uid, game.players[0], 1)
+    positions = owned_property_positions(game.uid)
+    print('Owned properties: {}'.format(positions))
 
 
 if __name__ == '__main__':
