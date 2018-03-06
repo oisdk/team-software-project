@@ -95,18 +95,17 @@ def activate_card(player_id, game_id, card_landed_on):
         # Iterate through each player and deduct from their balance if they
         # are not the current (aka. this) player
         for id_ in players_in_game:
-            if player_id != id_:
-                with Player(id_) as opponent:
+            with Player(id_) as player:
+                if int(player_id) != id_:
                     # card_value here indicates the amount to deduct from
                     # opponent's balance
-                    opponent.balance -= card_value
-
-        # Add to this player's balance the total amount deducted from the
-        # opponents.
-        # Note that the amount to add to this player's balance can be found
-        # by simply multiplying the amount to deduct per opponent
-        # (i.e. card_value) by the *number* of opponents
-        with Player(player_id) as player:
-            player.balance += (card_value * (len(players_in_game) - 1))
+                    player.balance -= card_value
+                else:
+                    # Add to this player's balance the total amount deducted from the
+                    # opponents.
+                    # Note that the amount to add to this player's balance can be found
+                    # by simply multiplying the amount to deduct per opponent
+                    # (i.e. card_value) by the *number* of opponents
+                    player.balance += (card_value * (len(players_in_game) - 1))
 
     return card_description
