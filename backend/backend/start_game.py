@@ -3,12 +3,12 @@
 """
 
 
+from random import shuffle
 import json
 import sys
 import cgitb
 import backend.game
 import backend.player
-from random import shuffle
 
 
 cgitb.enable()
@@ -28,6 +28,6 @@ def start_game(source=sys.stdin, output=sys.stdout):
         game.state = 'playing'
         players = game.players
         shuffle(players)
-        for x in range (0, 4):
+        for x in range(0, 4):
             with backend.player.Player(players[x]) as player:
-                player.turn_position(x)
+                player.turn_position = x
