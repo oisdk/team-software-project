@@ -76,8 +76,11 @@ export function onPlayerMove(playerMoveEvent) {
     startAnimation();
 
     const [playerID, newPosition, ..._others] = JSON.parse(playerMoveEvent.data);
+    console.log('checking moved player');
     if (playerID === cookie.checkUserDetails().user_id) {
+        console.log('player is current');
         if (!(newPosition in propertyOwners)) {
+            console.log('enabling button');
             generateUserDetails.enableBuyPropertyButton(gameID, playerID, newPosition);
         }
     }
