@@ -99,7 +99,6 @@ def start_sse_stream(output_stream=sys.stdout):
                                         new_positions, new_jailed_players)
         houses = check_property_houses(output_stream, game_id, houses)
 
-
         # Pushes data to update the players info table on game start
         if push_initial_user_details and last_game_state == "playing":
             push_initial_user_details = False
@@ -634,7 +633,6 @@ def generate_house_event(
         for position in new_houses:
             if new_houses[position] != old_houses[position]:
                 data[position] = new_houses[position]
-
 
     output_event(output_stream, 'houseEvent', data)
 
