@@ -3,7 +3,6 @@ import * as generateUserDetails from './generateUserDetails';
 describe('rollDice endTurn successCallback tests', () => {
     // Create a mock for the actual sendJSON function
     const mockSendJSON = jest.fn();
-    const mockResponse = {responseText: '{"your_rolls": "(1,2)"}'};
     const oldDocumentBody = document.body;
 
 
@@ -31,14 +30,6 @@ describe('rollDice endTurn successCallback tests', () => {
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
         expect(document.getElementById('jail').hasAttribute('disabled'));
         expect(document.getElementById('buy-house').hasAttribute('disabled'));
-        done();
-    });
-
-    test('successCallback', (done) => {
-        generateUserDetails.successCallback(mockResponse);
-        jest.spyOn(global.console, 'log');
-        expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
-        expect(document.getElementById('end-turn').hasAttribute('disabled'));
         done();
     });
 });

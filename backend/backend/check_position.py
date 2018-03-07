@@ -1,16 +1,16 @@
 """ Module providing functionality to check the type of space the player is
     on. """
 
-import backend.player
 import backend.game
 import backend.properties
 import backend.miscellaneous
 from backend.charge_rent import charge_rent
 from backend.pay_tax import pay_tax
+from backend.activate_card import activate_card
 from backend.jail import jail_player
 
 
-def check_position(player_id):
+def check_position(player_id, player_position):
     """Check the type of space the player is on.
 
     The two types of space this function recognises are properties and
@@ -20,9 +20,8 @@ def check_position(player_id):
     # Get the id of the game that the player is currently playing in
     game_id = backend.game.get_this_game(player_id)
 
-    # Create a player instance based who has to pay tax
-    player = backend.player.Player(player_id)
-    player_position = player.board_position
+    # Create card_details variable to store the card description for client
+    card_details = None
 
     # Check if player on a property space
     if player_position in backend.properties.property_positions():
@@ -36,18 +35,18 @@ def check_position(player_id):
 
     # Check if player on miscellaneous space
     elif player_position in backend.miscellaneous.get_misc_positions():
-        # Get the details of the miscellaneous space the player is on
+        # Get the *details* of the miscellaneous space the player is on
         misc_position_details = \
                     backend.miscellaneous.get_space_details(player_position)
         position_type = misc_position_details["type"]
-        # Check the type of space the player is on, and act appropriately
+        # Check the *type* of space the player is on, and act appropriately
         if position_type == "tax":
             pay_tax(player_id, misc_position_details["value"])
-        elif position_type == "chance":
-            pass
-        elif position_type == "community_chest":
-            pass
+        elif position_type == "chance" or position_type == "community_chest":
+            card_details = activate_card(player_id, game_id, position_type)
         elif position_type == "to_jail":
             jail_player(player_id)
         elif position_type == "parking":
             pass
+
+    return card_details

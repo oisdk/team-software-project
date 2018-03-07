@@ -1,6 +1,7 @@
 // Imports
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
+import {updateGameLog} from './generateGameLog';
 
 let details = getCookie.checkUserDetails();
 let id = details.user_id;
@@ -52,16 +53,20 @@ export function disableLeaveJail() {
 }
 
 /**
- * Callback to check user rolls and enable end turn.
+ * Callback to check user rolls and enable end turn. Also displays chance and
+ * community chest card details to the client.
  * Enables roll-dice if a double is rolled.
  * increments/resets counter for doubles and
  * sends player to jail if 3 doubles rolled.
  * @param {XMLHttpRequest} req1 response.
  */
-export function successCallback(req1) {
+export function successCallback(req1, logUpdater = updateGameLog) {
     console.log(req1);
     const response = JSON.parse(req1.responseText);
     const roll = response.your_rolls;
+    // Get the description of the card that was landed on
+    const cardDetails = response.card_details;
+
     const rollDie = document.querySelector('#roll-dice');
     if (roll[0] === roll[1] && jail === false) {
         rollDie.disabled = false;
@@ -74,6 +79,10 @@ export function successCallback(req1) {
     if (doubleCounter === 3) {
         doubleCounter = 0;
         goToJail(sendJSON.sendJSON);
+    }
+    if (cardDetails !== null) {
+        logUpdater('Activated card details:');
+        logUpdater(cardDetails);
     }
 }
 
@@ -249,14 +258,12 @@ export function buyHouse(JSONSend) {
  *
  * Checks the jail counter and decides on appropriate action.
  *
- * @param turnEvent The data received from the event
- *
- * turnEvent[0] holds the players unique id.
- * turnEvent[1] holds the players position in the turn order.
+ * @param turnData The data received from the event, with the player’s username and id.
+ *     Example format: {'name': Alex, 'id': 4}
  */
-export function turnDetails(turnEvent) {
-    const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn[0]}`;
+
+export function turnDetails(turnData) {
+    document.getElementById('current-turn').innerHTML = `${turnData.name}`;
     // console.log(`Turn:${turn}`);
 
     displayOwnedProperties(sendJSON.sendJSON);
@@ -284,13 +291,13 @@ export function turnDetails(turnEvent) {
     // enables leave jail and roll buttons
     // If jail counter is 3 enables only the leave jail button.
     // Otherwise only enable the roll button.
-    if (jail === true && String(turn[0]) === String(id) && jailCounter < 3) {
+    if (jail === true && String(turnData.id) === String(id) && jailCounter < 3) {
         enableGameInterface();
         enableLeaveJail();
         jailCounter += 1;
-    } else if (jail === true && String(turn[0]) === String(id)) {
+    } else if (jail === true && String(turnData.id) === String(id)) {
         enableLeaveJail();
-    } else if (String(turn[0]) === String(id)) {
+    } else if (String(turnData.id) === String(id)) {
         enableGameInterface();
     }
 }
