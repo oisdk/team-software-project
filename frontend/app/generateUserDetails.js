@@ -1,3 +1,7 @@
+/**
+ * Manages a pane in an active game that displays the user’s game data.
+ * @module
+ */
 // Imports
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
