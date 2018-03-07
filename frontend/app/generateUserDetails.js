@@ -270,7 +270,7 @@ export function turnDetails(turnEvent) {
     const unmortgageButton = document.getElementById('unmort-check');
     unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage'); };
 
-    const buyHouseButton = document.getElementById('buy-house');
+    const buyHouseButton = document.getElementById('properties-house');
     buyHouseButton.onclick = () => { buyHouse(sendJSON.sendJSON); };
 
     const endTurnButton = document.getElementById('end-turn');
