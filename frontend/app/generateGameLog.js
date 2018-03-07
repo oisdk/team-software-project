@@ -7,6 +7,7 @@
  * Callback function to update HTML body with file's contents.
  *
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
+ * @private
  */
 export function updateLogPage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
@@ -29,6 +30,8 @@ export function updateGameLog(data) {
 /**
  * Function to generate game log. Makes a request to local
  * filesystem for a HTML file to display.
+ *
+ * @private
  */
 export function generateGameLog() {
     // Generate a HTML page with user interface
