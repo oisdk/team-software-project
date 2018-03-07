@@ -3,13 +3,12 @@ import * as generateUserDetails from './generateUserDetails';
 describe('rollDice endTurn successCallback tests', () => {
     // Create a mock for the actual sendJSON function
     const mockSendJSON = jest.fn();
-    const mockResponse = {responseText: '{"your_rolls": "(1,2)"}'};
     const oldDocumentBody = document.body;
 
 
     // Create buttons to test
     beforeAll(() => {
-        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button><button id="jail">Jail</button><button id="properties-house">Buy House</button>';
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button><button id="jail">Jail</button><button id="buy-house">Buy House</button>';
     });
 
     // Restore the HTML body
@@ -30,15 +29,7 @@ describe('rollDice endTurn successCallback tests', () => {
         expect(document.getElementById('roll-dice').hasAttribute('disabled'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
         expect(document.getElementById('jail').hasAttribute('disabled'));
-        expect(document.getElementById('properties-house').hasAttribute('disabled'));
-        done();
-    });
-
-    test('successCallback', (done) => {
-        generateUserDetails.successCallback(mockResponse);
-        jest.spyOn(global.console, 'log');
-        expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
-        expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        expect(document.getElementById('buy-house').hasAttribute('disabled'));
         done();
     });
 });
@@ -50,7 +41,7 @@ describe('disable button tests', () => {
 
     // Create buttons to test
     beforeAll(() => {
-        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button><button id="jail">Jail</button><button id="properties-house">Buy House</button>';
+        document.body.innerHTML = '<button id="roll-dice"></button><button id="end-turn"></button><button id="jail">Jail</button><button id="buy-house">Buy House</button>';
     });
 
     // Restore the HTML body
@@ -63,7 +54,7 @@ describe('disable button tests', () => {
         generateUserDetails.disableGameInterface();
         expect(document.getElementById('roll-dice').hasAttribute('disabled'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
-        expect(document.getElementById('properties-house').hasAttribute('disabled'));
+        expect(document.getElementById('buy-house').hasAttribute('disabled'));
         done();
     });
 
