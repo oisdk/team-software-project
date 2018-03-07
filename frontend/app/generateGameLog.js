@@ -37,13 +37,12 @@ export function generateGameLog() {
 /**
  * Function to update game log for turn event.
  *
- * @param {data} turnEvent - data used to generate event.
+ * @param {data} turnData - data used to generate event.
  * turnEvent[0] holds the players unique id.
  * turnEvent[1] holds the players position in the turn order.
  */
-export function logTurnEvent(turnEvent) {
-    const turn = JSON.parse(turnEvent.data);
-    const outputString = `Player ${turn[1] + 1}'s Turn`;
+export function logTurnEvent(turnData) {
+    const outputString = `${turnData.name}'s Turn`;
     updateGameLog(outputString);
 }
 
