@@ -566,14 +566,17 @@ def generate_ownership_events(
 
 
 def check_property_houses(output_stream, game_id, old_houses):
-    """Issue events if the ownership of any properties has changed.
+    """Issue events if the number of houses/hotels of any properties
+     has changed.
 
     Arguments:
         game_id: The id of the game the events are being issued for.
+        old_houses: The dictionary of houses currently owned.
 
     Returns:
-        The current property ownership data, as a dictionary where the keys
-        are property positions, and the values are owner player ids.
+        The current gouse data, as a dictionary where the keys
+        are property positions, and the values are the number 
+        of houses/hotels.
     """
     positions = owned_property_positions(game_id)
     print("Positions:", positions)
