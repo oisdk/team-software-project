@@ -1,4 +1,9 @@
 /**
+ * Handles displaying houses and hotels.
+ * @module
+ */
+
+/**
  * A function that gets the hotel coordinates of each property.
  *
  * @param {number} position - Position on the board.
