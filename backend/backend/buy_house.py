@@ -13,6 +13,18 @@ cgitb.enable()
 
 def add_house(source=sys.stdin, output=sys.stdout):
     """Adds a house to a property.
+
+        Takes a request from the client and adds a house
+        to that property up to 4 houses then a hotel.
+        After this it skips and does nothing.
+
+        Arguments:
+            player_id: the players id
+            property_name: the properties name
+        Returns:
+            Dictionary with number of houses and property position
+            keys = house,position
+
     """
     output.write('Content-Type: application/json\n\n')
     request = json.load(source)
@@ -33,10 +45,12 @@ def add_house(source=sys.stdin, output=sys.stdout):
                 prop.houses += 1
                 houses = prop.houses
                 player.balance -= prop.house_price
-            else:
+            elif prop.hotels == 0:
                 prop.houses = 0
                 prop.hotels = 1
                 houses = 5
                 player.balance -= prop.house_price
+            else:
+                pass
 
     json.dump({"house_number": houses, "property_position": position}, output)
