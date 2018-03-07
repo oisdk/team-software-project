@@ -241,7 +241,6 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
  *     Example format: {'name': Alex, 'id': 4}
  */
 export function turnDetails(turnData) {
-    const turn = JSON.parse(turnEvent.data);
     document.getElementById('current-turn').innerHTML = `${turnData.name}`;
     // console.log(`Turn:${turn}`);
 
