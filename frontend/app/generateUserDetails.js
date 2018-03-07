@@ -16,7 +16,7 @@ export function disableGameInterface() {
     document.getElementById('roll-dice').disabled = true;
     document.getElementById('end-turn').disabled = true;
     document.getElementById('jail').disabled = true;
-    document.getElementById('properties-house').disabled = true;
+    document.getElementById('buy-house').disabled = true;
 }
 
 /**
@@ -25,7 +25,7 @@ export function disableGameInterface() {
 export function enableGameInterface() {
     document.getElementById('roll-dice').disabled = false;
     document.getElementById('end-turn').disabled = true;
-    document.getElementById('properties-house').disabled = false;
+    document.getElementById('buy-house').disabled = false;
 }
 
 /**
@@ -270,7 +270,7 @@ export function turnDetails(turnEvent) {
     const unmortgageButton = document.getElementById('unmort-check');
     unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage'); };
 
-    const buyHouseButton = document.getElementById('properties-house');
+    const buyHouseButton = document.getElementById('buy-house');
     buyHouseButton.onclick = () => { buyHouse(sendJSON.sendJSON); };
 
     const endTurnButton = document.getElementById('end-turn');
