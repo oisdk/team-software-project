@@ -237,14 +237,12 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
  *
  * Checks the jail counter and decides on appropriate action.
  *
- * @param turnEvent The data received from the event
- *
- * turnEvent[0] holds the players unique id.
- * turnEvent[1] holds the players position in the turn order.
+ * @param turnData The data received from the event, with the player’s username and id.
+ *     Example format: {'name': Alex, 'id': 4}
  */
-export function turnDetails(turnEvent) {
+export function turnDetails(turnData) {
     const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn[1] + 1}`;
+    document.getElementById('current-turn').innerHTML = `${turnData.name}`;
     // console.log(`Turn:${turn}`);
 
     // displayOwnedProperties(sendJSON.sendJSON);
@@ -269,13 +267,13 @@ export function turnDetails(turnEvent) {
     // enables leave jail and roll buttons
     // If jail counter is 3 enables only the leave jail button.
     // Otherwise only enable the roll button.
-    if (jail === true && String(turn[0]) === String(id) && jailCounter < 3) {
+    if (jail === true && String(turnData.id) === String(id) && jailCounter < 3) {
         enableGameInterface();
         enableLeaveJail();
         jailCounter += 1;
-    } else if (jail === true && String(turn[0]) === String(id)) {
+    } else if (jail === true && String(turnData.id) === String(id)) {
         enableLeaveJail();
-    } else if (String(turn[0]) === String(id)) {
+    } else if (String(turnData.id) === String(id)) {
         enableGameInterface();
     }
 }
