@@ -51,6 +51,41 @@ export function disableLeaveJail() {
 }
 
 /**
+ * Gives the player the option to buy a property.
+ *
+ * @param gameID The id of the game the player is in.
+ * @param userID The user id of the player.
+ * @param propertyPosition The position of the property that the player has
+ *     landed on.
+ */
+export function enableBuyPropertyButton(gameID, userID, propertyPosition) {
+    const button = document.getElementById('buy_property');
+    button.disabled = false;
+    button.addEventListener('click', buyProperty);
+
+    function buyProperty() {
+        sendJSON.sendJSON({
+            serverAddress: 'cgi-bin/buy_property.py',
+            jsonObject: {
+                game_id: gameID,
+                user_id: userID,
+                property_position: propertyPosition,
+            },
+        });
+        disableBuyPropertyButton(buyProperty);
+    }
+}
+
+/**
+ * Removes the option to buy a property.
+ */
+export function disableBuyPropertyButton(listenerFunction) {
+    const button = document.getElementById('buy_property');
+    button.disabled = true;
+    button.removeEventListener('click', listenerFunction);
+}
+
+/**
  * Callback to check user rolls and enable end turn. Also displays chance and
  * community chest card details to the client.
  * Enables roll-dice if a double is rolled.
@@ -140,22 +175,25 @@ export function goToJail(JSONSend) {
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
  */
 export function updateUserDetails(fileReader) {
-    if (fileReader.status === 200 && fileReader.readyState === 4) {
-        document.getElementById('content-right').innerHTML = fileReader.responseText;
-        document.getElementById('details_username').innerHTML = userName;
-    }
+    document.getElementById('content-right').innerHTML = fileReader.responseText;
+    document.getElementById('details_username').innerHTML = userName;
 }
 
 /**
- * Function to generate game details. Makes a request to
- * filesystem for a HTML file to display.
- * @param {int} gameID - id used to create eventSource.
+ * Function to generate game details. Makes an AJAX request for the html to display.
+ *
+ * @param {function} htmlLoadedCallback A callback to call once the html has loaded.
  */
-export function generateUserDetails() {
+export function generateUserDetails(htmlLoadedCallback) {
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
     fileReader.open('GET', 'user-info.html', true);
-    fileReader.onreadystatechange = () => updateUserDetails(fileReader);
+    fileReader.onreadystatechange = () => {
+        if (fileReader.status === 200 && fileReader.readyState === 4) {
+            updateUserDetails(fileReader);
+            htmlLoadedCallback();
+        }
+    };
     fileReader.send();
     details = getCookie.checkUserDetails();
     id = details.user_id;
@@ -291,9 +329,7 @@ export function turnDetails(turnData) {
 export function balanceDetails(balanceEvent) {
     const data = JSON.parse(balanceEvent.data);
     let balance = '';
-    // console.log(`Balances:${data}`);
     data.forEach((item) => {
-        // console.log(item);
         if (String(item[0]) === String(id)) {
             ({1: balance} = item);
             document.getElementById('balance').innerHTML = balance;
@@ -313,7 +349,6 @@ export function balanceDetails(balanceEvent) {
 export function jailedPlayer(jailedEvent) {
     const data = JSON.parse(jailedEvent.data);
     data.forEach((item) => {
-        // console.log(item);
         if (String(item[0]) === String(id) && String(item[1]) === 'in_jail') {
             jail = true;
             enableEndTurn();

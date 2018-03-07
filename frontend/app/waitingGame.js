@@ -84,7 +84,7 @@ export function waitingGame(gameID) {
         }
 
         // Only enable the "start game" button when 4 players have joined
-        if (numberOfPlayers === 4) {
+        if (numberOfPlayers === 2) {
             document.getElementById(startButtonID).disabled = false;
             // Add an event listener to the "start game" button which makes
             // a request to start-game.py to update the status of this game
@@ -100,14 +100,11 @@ export function waitingGame(gameID) {
 
     function successCallback(req, start = activeGame) {
         const playerList = JSON.parse(req.responseText);
-        console.log('calling actitveGame');
         // call active game with these values
         start(gameID, playerList);
     }
 
-    function onGameStart(startEvent) {
-        const startedGameId = JSON.parse(startEvent.data);
-        console.log(`startedGameId = ${startedGameId}`);
+    function onGameStart(_startEvent) {
         sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
         sseEventSource.removeEventListener('gameStart', onGameStart);
         sendJSON.sendJSON({
