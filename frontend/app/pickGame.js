@@ -13,6 +13,7 @@ import * as sendJSON from './sendJSON';
  * @param gameID - The ID of the game selected to join.
  * @param {string} waitFunction - Takes in a function name to call.
  * @param {string} sendFunction - Takes in a function name to call.
+ * @private
  */
 export function sendGameId(gameID, waitFunction, sendfunction) {
     // cast to number for consistency with create game.
