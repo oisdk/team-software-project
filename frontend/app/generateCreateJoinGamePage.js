@@ -1,3 +1,8 @@
+/**
+ * Creates a page where the user can join a game or create a new game.
+ * @module
+ */
+
 // Import functionality which can read cookie values from browser cookie arrays
 import * as checkUserIDCookie from './checkUserIDCookie';
 // Import pickGame functionality
