@@ -463,7 +463,7 @@ def get_properties(player_id):
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('SELECT `property_position` FROM `playing_in`'
+            cursor.execute('SELECT `property_position` FROM `properties`'
                            'WHERE `player_id` = %s;', (player_id))
             result = {player_id: [row['property_position']
                                   for row in cursor.fetchall()]}
