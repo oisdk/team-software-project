@@ -460,7 +460,6 @@ def check_property_ownership(output_stream, game_id, old_properties):
     for positions in owners.values():
         for position in positions:
             with Property(position, game_id) as prop:
-                print('Owner is {}'.format(prop.owner))
                 with Player(prop.owner) as player:
                     new_properties[position] = {
                         'name': prop.name,
