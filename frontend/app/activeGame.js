@@ -8,11 +8,15 @@ import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 import {OwnedPropertiesView} from './ownedPropertiesView';
 
+import * as building from './displayBuildings';
+
 const playerTokenInformation = {};
 const playerPositions = {}; // value id : position on board ie previous position.
 let timer = '';
 let currentPlayer = '';
 let propertyView;
+const currentHouses = {};
+const currentHotels = {};
 
 /**
  * Displays the page for an active game.
@@ -127,10 +131,18 @@ function onPropertyOwnerChanges(changesEvent) {
 function onHouseEvent(houseEvent) {
     const houses = JSON.parse(houseEvent.data);
     Object.keys(houses).forEach((key) => {
+        currentHouses[key] = houses[key].houses;
+        currentHotels[key] = houses[key].hotels;
+        // quick fix for now! client side
+        if (houses[key].hotels > 0) {
+            currentHouses[key] = 0;
+        }
+        console.log(key);
         console.log(`Position:${key}`);
         console.log(`Houses:${houses[key].houses}`);
         console.log(`Hotels:${houses[key].hotels}`);
     });
+    building.displayBuildings(currentHouses, currentHotels);
 }
 
 /**
