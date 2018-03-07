@@ -133,11 +133,6 @@ function onHouseEvent(houseEvent) {
     Object.keys(houses).forEach((key) => {
         currentHouses[key] = houses[key].houses;
         currentHotels[key] = houses[key].hotels;
-        // quick fix for now! client side
-        if (houses[key].hotels > 0) {
-            currentHouses[key] = 0;
-        }
-        console.log(key);
         console.log(`Position:${key}`);
         console.log(`Houses:${houses[key].houses}`);
         console.log(`Hotels:${houses[key].hotels}`);
