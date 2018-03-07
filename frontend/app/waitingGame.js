@@ -73,7 +73,7 @@ export function waitingGame(gameID) {
         // waiting game lobby.
         const playerList = JSON.parse(joinEvent.data);
         const playerListElement = document.getElementById(playerListID);
-        
+
         for (let i = 0; i < playerList.length; i += 1) {
             const player = playerList[i];
             if (!playersInGame.includes(player)) {
@@ -91,9 +91,7 @@ export function waitingGame(gameID) {
             // Add an event listener to the "start game" button which makes
             // a request to start-game.py to update the status of this game
             // to "playing".
-            console.log('Adding start button event listener');
             document.getElementById(startButtonID).addEventListener('click', () => {
-                console.log('Sending start game request');
                 sendJSON.sendJSON({
                     serverAddress: 'cgi-bin/start-game.py',
                     jsonObject: {game_id: gameID},
