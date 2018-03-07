@@ -71,6 +71,7 @@ export function waitingGame(gameID) {
         // waiting game lobby.
         const playerList = JSON.parse(joinEvent.data);
         const playerListElement = document.getElementById(playerListID);
+
         for (let i = 0; i < playerList.length; i += 1) {
             const player = playerList[i];
             if (!playersInGame.includes(player)) {
@@ -80,19 +81,20 @@ export function waitingGame(gameID) {
                 numberOfPlayers += 1;
             }
             playersInGame.push(player);
-            // Only enable the "start game" button when 4 players have joined
-            if (numberOfPlayers === 2) {
-                document.getElementById(startButtonID).disabled = false;
-                // Add an event listener to the "start game" button which makes
-                // a request to start-game.py to update the status of this game
-                // to "playing".
-                document.getElementById(startButtonID).addEventListener('click', () => {
-                    sendJSON.sendJSON({
-                        serverAddress: 'cgi-bin/start-game.py',
-                        jsonObject: {game_id: gameID},
-                    });
+        }
+
+        // Only enable the "start game" button when 4 players have joined
+        if (numberOfPlayers === 2) {
+            document.getElementById(startButtonID).disabled = false;
+            // Add an event listener to the "start game" button which makes
+            // a request to start-game.py to update the status of this game
+            // to "playing".
+            document.getElementById(startButtonID).addEventListener('click', () => {
+                sendJSON.sendJSON({
+                    serverAddress: 'cgi-bin/start-game.py',
+                    jsonObject: {game_id: gameID},
                 });
-            }
+            });
         }
     }
 
