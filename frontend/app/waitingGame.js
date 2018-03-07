@@ -1,3 +1,7 @@
+/**
+ * Handles user interaction during a game that is waiting to start.
+ * @module
+ */
 import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
 
