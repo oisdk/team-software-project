@@ -1,3 +1,8 @@
+/**
+ * Handles displaying a page to the user where they can choose a game to join.
+ * @module
+ */
+
 import {waitingGame} from './waitingGame';
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
