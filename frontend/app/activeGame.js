@@ -80,7 +80,7 @@ export function onPlayerMove(playerMoveEvent) {
  * @param playerTurnEvent The data received from the event
  */
 function onPlayerTurn(playerTurnEvent) {
-    const data = JSON.parse(playerTurnEvent);
+    const data = JSON.parse(playerTurnEvent.data);
     generateUserDetails.turnDetails(data);
     logEvents.logTurnEvent(data);
 }
