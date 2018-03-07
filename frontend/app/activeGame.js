@@ -22,7 +22,7 @@ let gameID;
  *
  * @param thisGameID The ID for the game that will be displayed.
  */
-export function activeGame(thisGameID, playerList) {
+export function activeGame({thisGameID, playerList, startEvent}) {
     gameID = thisGameID;
 
     // display board and assign starting positions.
