@@ -633,22 +633,22 @@ export function generateHTML() {
 
 ### "games"
 
-| Field        | Type                      | Null | Key | Default | Extra          |
-| ------------ | ------------------------- | ---- | --- | ------- | -------------- |
-| id           | int(10) unsigned          | NO   | PRI | NULL    | auto_increment |
-| state        | enum('waiting','playing') | NO   |     | waiting |                |
-| current_turn | tinyint(3) unsigned       | NO   |     | 0       |                |
+| Field        | Type                       | Null | Key | Default | Extra          |
+| ------------ | -------------------------- | ---- | --- | ------- | -------------- |
+| id           | int(10) unsigned           | NO   | PRI | NULL    | auto_increment |
+| state        | enum('waiting', 'playing') | NO   |     | waiting |                |
+| current_turn | tinyint(3) unsigned        | NO   |     | 0       |                |
 
 ### "players"
 
-| Field          | Type                          | Null | Key | Default     | Extra          |
-| -------------- | ----------------------------- | ---- | --- | ----------- | -------------- |
-| id             | int(10) unsigned              | NO   | PRI | NULL        | auto_increment |
-| username       | varchar(255)                  | NO   |     | NULL        |                |
-| balance        | int(11)                       | NO   |     | 1500        |                |
-| turn_position  | tinyint(4)                    | YES  |     | 0           |                |
-| board_position | tinyint(4)                    | NO   |     | 0           |                |
-| jail_state     | enum('not_in_jail','in_jail') | NO   |     | not_in_jail |                |
+| Field          | Type                           | Null | Key | Default     | Extra          |
+| -------------- | ------------------------------ | ---- | --- | ----------- | -------------- |
+| id             | int(10) unsigned               | NO   | PRI | NULL        | auto_increment |
+| username       | varchar(255)                   | NO   |     | NULL        |                |
+| balance        | int(11)                        | NO   |     | 1500        |                |
+| turn_position  | tinyint(4)                     | YES  |     | 0           |                |
+| board_position | tinyint(4)                     | NO   |     | 0           |                |
+| jail_state     | enum('not_in_jail', 'in_jail') | NO   |     | not_in_jail |                |
 
 
 ### "playing_in"
@@ -660,29 +660,29 @@ export function generateHTML() {
 
 ### "properties"
 
-| Field             | Type                    | Null | Key | Default | Extra |
-| ----------------- | ----------------------- | ---- | --- | ------- | ----- |
-| player_id         | int(10) unsigned        | NO   | MUL | NULL    |       |
-| game_id           | int(10) unsigned        | NO   | MUL | NULL    |       |
-| state             | enum('unowned','owned') | NO   |     | unowned |       |
-| property_position | tinyint(3) unsigned     | NO   | MUL | NULL    |       |
-| house_count       | tinyint(3) unsigned     | YES  |     | 0       |       |
-| hotel_count       | tinyint(3) unsigned     | YES  |     | 0       |       |
+| Field             | Type                     | Null | Key | Default | Extra |
+| ----------------- | ------------------------ | ---- | --- | ------- | ----- |
+| player_id         | int(10) unsigned         | NO   | MUL | NULL    |       |
+| game_id           | int(10) unsigned         | NO   | MUL | NULL    |       |
+| state             | enum('unowned', 'owned') | NO   |     | unowned |       |
+| property_position | tinyint(3) unsigned      | NO   | MUL | NULL    |       |
+| house_count       | tinyint(3) unsigned      | YES  |     | 0       |       |
+| hotel_count       | tinyint(3) unsigned      | YES  |     | 0       |       |
 
 ### "property_values"
 
-| Field             | Type                                  | Null | Key | Default  | Extra |
-| ----------------- | ------------------------------------- | ---- | --- | -------- | ----- |
-| property_position | tinyint(3) unsigned                   | NO   | PRI | NULL     |       |
-| purchase_price    | smallint(5) unsigned                  | NO   |     | NULL     |       |
-| state             | enum('property','railroad','utility') | NO   |     | property |       |
-| base_rent         | smallint(5) unsigned                  | NO   |     | NULL     |       |
-| house_price       | tinyint(3) unsigned                   | NO   |     | 0        |       |
-| one_rent          | smallint(5) unsigned                  | NO   |     | 0        |       |
-| two_rent          | smallint(5) unsigned                  | NO   |     | 0        |       |
-| three_rent        | smallint(5) unsigned                  | NO   |     | 0        |       |
-| four_rent         | smallint(5) unsigned                  | NO   |     | 0        |       |
-| hotel_rent        | smallint(5) unsigned                  | NO   |     | 0        |       |
+| Field             | Type                                    | Null | Key | Default  | Extra |
+| ----------------- | --------------------------------------- | ---- | --- | -------- | ----- |
+| property_position | tinyint(3) unsigned                     | NO   | PRI | NULL     |       |
+| purchase_price    | smallint(5) unsigned                    | NO   |     | NULL     |       |
+| state             | enum('property', 'railroad', 'utility') | NO   |     | property |       |
+| base_rent         | smallint(5) unsigned                    | NO   |     | NULL     |       |
+| house_price       | tinyint(3) unsigned                     | NO   |     | 0        |       |
+| one_rent          | smallint(5) unsigned                    | NO   |     | 0        |       |
+| two_rent          | smallint(5) unsigned                    | NO   |     | 0        |       |
+| three_rent        | smallint(5) unsigned                    | NO   |     | 0        |       |
+| four_rent         | smallint(5) unsigned                    | NO   |     | 0        |       |
+| hotel_rent        | smallint(5) unsigned                    | NO   |     | 0        |       |
 
 ### "rolls"
 
@@ -695,21 +695,21 @@ export function generateHTML() {
 
 ### "miscellaneous"
 
-| Field          | Type                                                              | Null | Key | Default | Extra |
-| -------------- | ----------------------------------------------------------------- | ---- | --- | ------- | ----- |
-| board_position | tinyint(3) unsigned                                               | NO   | PRI | NULL    |       |
-| type           | enum('tax','chance','community_chest','jail','parking','to_jail') | NO   |     | NULL    |       |
-| value          | smallint(5) unsigned                                              | YES  |     | NULL    |       |
+| Field          | Type                                                                   | Null | Key | Default | Extra |
+| -------------- | ---------------------------------------------------------------------- | ---- | --- | ------- | ----- |
+| board_position | tinyint(3) unsigned                                                    | NO   | PRI | NULL    |       |
+| type           | enum('tax', 'chance', 'community_chest', 'jail', 'parking', 'to_jail') | NO   |     | NULL    |       |
+| value          | smallint(5) unsigned                                                   | YES  |     | NULL    |       |
 
 ### "cards"
 
-| Field           | Type                                                                                                  | Null | Key | Default | Extra          |
-| --------------- | ----------------------------------------------------------------------------------------------------- | ---- | --- | ------- | -------------- |
-| unique_id       | tinyint(3) unsigned                                                                                   | NO   | PRI | NULL    | auto_increment |
-| card_type       | enum('chance','chest')                                                                                | NO   |     | NULL    |                |
-| description     | varchar(255)                                                                                          | NO   |     | NULL    |                |
-| operation       | enum('move_specific','get_money','pay_bank','pay_opponents','collect_from_opponents','pay_per_house') | NO   |     | NULL    |                |
-| operation_value | smallint(6)                                                                                           | YES  |     | NULL    |                |
+| Field           | Type                                                                                                       | Null | Key | Default | Extra          |
+| --------------- | ---------------------------------------------------------------------------------------------------------- | ---- | --- | ------- | -------------- |
+| unique_id       | tinyint(3) unsigned                                                                                        | NO   | PRI | NULL    | auto_increment |
+| card_type       | enum('chance','chest')                                                                                     | NO   |     | NULL    |                |
+| description     | varchar(255)                                                                                               | NO   |     | NULL    |                |
+| operation       | enum('move_specific', 'get_money', 'pay_bank', 'pay_opponents', 'collect_from_opponents', 'pay_per_house') | NO   |     | NULL    |                |
+| operation_value | smallint(6)                                                                                                | YES  |     | NULL    |                |
 
 
 ## Glossary
