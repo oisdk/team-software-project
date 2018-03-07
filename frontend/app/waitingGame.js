@@ -47,7 +47,6 @@ function createWaitingGameHTML({
  * @param gameID The ID of the game to display.
  */
 export function waitingGame(gameID) {
-    console.log('waitingGame called');
     const startButtonID = 'startButton';
     const playerListID = 'playerList';
     createWaitingGameHTML({
@@ -67,7 +66,6 @@ export function waitingGame(gameID) {
 
     let numberOfPlayers = 0;
     function onPlayerJoin(joinEvent) {
-        console.log('player joined');
         // Parse the "data" portion of the server-sent event from the server
         // which should contain the list of new users who have joined the
         // waiting game lobby.
