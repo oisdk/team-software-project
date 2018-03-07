@@ -79,7 +79,7 @@ export function onPlayerMove(playerMoveEvent) {
     const [[playerID, newPosition, ..._others], ..._otherPlayers]
         = JSON.parse(playerMoveEvent.data);
     if (playerID === parseInt(cookie.checkUserDetails().user_id, 10)) {
-        if ((newPosition in propertyOwners) && (propertyOwners[newPosition] !== null)) {
+        if ((newPosition in propertyOwners) && (propertyOwners[newPosition] === null)) {
             generateUserDetails.enableBuyPropertyButton(gameID, playerID, newPosition);
         }
     }
