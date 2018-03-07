@@ -267,6 +267,12 @@ export function clear(canvasID) {
     ctx.clearRect(0, 0, c.width, c.height);
 }
 
+/**
+ * A function that displays houses and hotels on the board.
+ *
+ * @param {object} houses - dictionary key: position on the board, value: number of houses.
+ * @param {object} hotels - dictionary key: position on the board, value: number of hotels.
+ */
 export function displayBuildings(houses, hotels) {
     clear('buildingLayer');
     for (let i = 0; i < Object.keys(houses).length; i += 1) {
