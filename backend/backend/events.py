@@ -628,7 +628,12 @@ def start_game_push(output_stream, turn_order):
     the two dicts differ. Along with the event is JSON containing the
     difference between the two dicts.
     """
-    generate_player_turn_event(output_stream, next(iter(turn_order)),
-                               turn_order)
+    for uid, turn_pos in turn_order.items():
+        if turn_pos == 0:
+            player = Player(uid)
+            output_event(
+                output_stream,
+                'playerTurn',
+                {'name': player.username, 'id': player.uid})
     generate_player_balance_event(output_stream, {},
                                   {1: 1500, 2: 1500, 3: 1500, 4: 1500})
