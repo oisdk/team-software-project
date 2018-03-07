@@ -701,6 +701,17 @@ export function generateHTML() {
 | type           | enum('tax','chance','community_chest','jail','parking','to_jail') | NO   |     | NULL    |       |
 | value          | smallint(5) unsigned                                              | YES  |     | NULL    |       |
 
+### "cards"
+
+| Field           | Type                                                                                                  | Null | Key | Default | Extra          |
+| --------------- | ----------------------------------------------------------------------------------------------------- | ---- | --- | ------- | -------------- |
+| unique_id       | tinyint(3) unsigned                                                                                   | NO   | PRI | NULL    | auto_increment |
+| card_type       | enum('chance','chest')                                                                                | NO   |     | NULL    |                |
+| description     | varchar(255)                                                                                          | NO   |     | NULL    |                |
+| operation       | enum('move_specific','get_money','pay_bank','pay_opponents','collect_from_opponents','pay_per_house') | NO   |     | NULL    |                |
+| operation_value | smallint(6)                                                                                           | YES  |     | NULL    |                |
+
+
 ## Glossary
 
 | Term | Meaning                                                                                                                              | Link to relevant MySQL Docs                               |
