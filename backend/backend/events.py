@@ -185,28 +185,12 @@ def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     if new_turn != old_turn:
         for uid, turn_pos in turn_order.items():
             if turn_pos == new_turn:
-                generate_player_turn_event(output_stream, uid, turn_order)
+                player = Player(uid)
+                output_event(
+                    output_stream,
+                    'playerTurn',
+                    {'name': player.username, 'id': player.uid})
     return new_turn
-
-
-def generate_player_turn_event(output_stream, player_id, turn_order):
-    """Generates an event for a change of turn in the game.
-
-    Arguments:
-        new_turn: An int representing the latest position in the playing
-            queue.
-        player_id: An int representing the player whose turn it is.
-
-    >>> import sys
-    >>> generate_player_turn_event(sys.stdout, 2, {2:0})
-    event: playerTurn
-    data: [2, 0]
-    <BLANKLINE>
-    """
-    output_event(
-        output_stream,
-        'playerTurn',
-        [player_id, turn_order[player_id]])
 
 
 def check_new_players(output_stream, old_players, new_players):
@@ -644,7 +628,12 @@ def start_game_push(output_stream, turn_order):
     the two dicts differ. Along with the event is JSON containing the
     difference between the two dicts.
     """
-    generate_player_turn_event(output_stream, next(iter(turn_order)),
-                               turn_order)
+    for uid, turn_pos in turn_order.items():
+        if turn_pos == 0:
+            player = Player(uid)
+            output_event(
+                output_stream,
+                'playerTurn',
+                {'name': player.username, 'id': player.uid})
     generate_player_balance_event(output_stream, {},
                                   {1: 1500, 2: 1500, 3: 1500, 4: 1500})
