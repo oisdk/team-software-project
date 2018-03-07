@@ -21,7 +21,7 @@ During **your turn** the following will occur:
 1. Press the "roll dice" button to see what amount of spaces you will move this turn.
   * Your character will then move.
 2. Depending on what you've landed on, you will be able to purchase unowned property, draw cards for special effects, pay rent, or more!
-3. The option will be available to mortgage your currently owned properties to get extra funds by no longer being able to get rent from the property until the mortgage is repaid.
+3. The option will be available to mortgage your currently owned properties to get extra funds by no longer being able to earn rent from the property until the mortgage is repaid.
   * This is done by means of a drop-down menu. Select what properties you want to mortgage and press the "Mortgage" button to do so.
   * The same can be done in reverse using the "Unmortgage" drop-down and button.
 4. Once the "end turn" button is selected any payments made will be deducted and the next player gets to play.
