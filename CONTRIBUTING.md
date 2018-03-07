@@ -712,7 +712,7 @@ export function generateHTML() {
 | operation_value | smallint(6)                                                                                                | YES  |     | NULL    |                |
 
 
-## Glossary
+## Database Glossary
 
 | Term | Meaning                                                                                                                              | Link to relevant MySQL Docs                               |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------- |
