@@ -1,7 +1,13 @@
 /**
+ * Functions for moving a player around the board.
+ * @module
+ */
+
+/**
  * A function that gets the coordinates of a position.
  *
  * @param {number} position - position on the board.
+ * @private
  */
 export function getCoord(position) {
     const listOfCoordinates = {
