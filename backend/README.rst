@@ -72,7 +72,9 @@ game id.
 +----------------------+----------------------------------------------------------------------------------------------+
 | playerBalance        | [[<userId1>, <newBalance>, <oldBalance>], [<uid2>, <new>, <old>], …]                         |
 +----------------------+----------------------------------------------------------------------------------------------+
-| propertyOwnerChanges | [{"newOwner": <user id or null>, "oldOwner": <user id or null>, "name": <property name>}, …] |
+| propertyOwnerChanges | [{"newOwner": null | {"id": <id>, "name": <username>},                                       |
+|                      |   "oldOwner": null | {"id": <id>, "name": <username>},                                       |
+|                      |   "property": {"name": <name>, "position": <position>}}, …]                                  |
 +----------------------+----------------------------------------------------------------------------------------------+
 
 
