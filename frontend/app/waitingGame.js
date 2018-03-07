@@ -100,7 +100,6 @@ export function waitingGame(gameID) {
         const playerList = JSON.parse(request.responseText);
         // call active game with these values
         activeGame({
-            thisGameID: gameID,
             playerList,
             startEvent,
         });
