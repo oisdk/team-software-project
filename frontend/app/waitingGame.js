@@ -81,7 +81,7 @@ export function waitingGame(gameID) {
             }
             playersInGame.push(player);
             // Only enable the "start game" button when 4 players have joined
-            if (numberOfPlayers === 2) {
+            if (numberOfPlayers === 4) {
                 document.getElementById(startButtonID).disabled = false;
                 // Add an event listener to the "start game" button which makes
                 // a request to start-game.py to update the status of this game
