@@ -575,7 +575,7 @@ def check_property_houses(output_stream, game_id, old_houses):
 
     Returns:
         The current gouse data, as a dictionary where the keys
-        are property positions, and the values are the number 
+        are property positions, and the values are the number
         of houses/hotels.
     """
     positions = owned_property_positions(game_id)
