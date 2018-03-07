@@ -1,4 +1,9 @@
 /**
+ * Manages a game log that describes what’s happening in the game.
+ * @module
+ */
+
+/**
  * Callback function to update HTML body with file's contents.
  *
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
