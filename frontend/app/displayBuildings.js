@@ -8,6 +8,7 @@
  *
  * @param {number} position - Position on the board.
  * @returns {Array} - Coordinates of the parameter position.
+ * @private
  */
 export function getHotelCoord(position) {
     const hotelCoordinates = {
@@ -51,6 +52,7 @@ export function getHotelCoord(position) {
  * @param {number} position - Position on the board.
  * @param {number} houseNumber - number of house on the board.
  * @returns {Array} - Coordinates of the parameter position.
+ * @private
  */
 export function getHouseCoord(position, houseNumber) {
     const houseCoordinates = {
