@@ -25,7 +25,7 @@ let gameID;
  */
 export function activeGame({playerList, startEvent}) {
     const eventData = JSON.parse(startEvent.data);
-    gameID = eventData.gameID;
+    gameID = eventData.gameID; // eslint-disable-line prefer-destructuring
     for (let i = 0; i < eventData.propertyPositions.length; i += 1) {
         propertyOwners[eventData.propertyPositions[i]] = null;
     }
