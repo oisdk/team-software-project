@@ -7,6 +7,7 @@
  * Function to extract a specified cookie value from a browser's cookie header.
  * @param {array} browserCookies - The browser's cookies, one cookie per element.
  * @param {string} cookieNameToFind - The cookie to search for in browserCookies.
+ * @private
  */
 export function getCookieValue(browserCookies, cookieNameToFind) {
     // Iterate over the array of browser cookies
