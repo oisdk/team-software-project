@@ -278,13 +278,9 @@ export function displayBuildings(houses, hotels) {
     for (let i = 0; i < Object.keys(houses).length; i += 1) {
         const position = Object.keys(houses)[i];
         const numberOfHouses = houses[position];
-        displayHouses(position, numberOfHouses);
-    }
-
-    // can do in a single for loop but for clarity ive used 2 for now.
-    for (let i = 0; i < Object.keys(hotels).length; i += 1) {
-        const position = Object.keys(hotels)[i];
         const numberOfHotels = hotels[position];
+
+        displayHouses(position, numberOfHouses);
         if (numberOfHotels > 0) {
             displayHotel(position);
         }
