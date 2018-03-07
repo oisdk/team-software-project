@@ -28,8 +28,7 @@ export function updateGameLog(data) {
 }
 
 /**
- * Function to generate game log. Makes a request to local
- * filesystem for a HTML file to display.
+ * Function to generate game log. Makes an AJAX request for a HTML file to display.
  *
  * @private
  */
