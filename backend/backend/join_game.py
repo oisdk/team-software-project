@@ -17,9 +17,11 @@ def join_game(source=sys.stdin, output=sys.stdout):
     output.write("\n")
 
     request = json.load(source)
-    player_id = request["user_id"]
-    game_id = request["game_id"]
+    add_player(request["user_id"], request["game_id"])
 
+
+def add_player(player_id, game_id):
+    """Adds a player to a game."""
     with Player(player_id) as player:
         with Game(game_id) as game:
             players = game.players

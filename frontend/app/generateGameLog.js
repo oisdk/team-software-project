@@ -111,9 +111,9 @@ export function logPropertyEvent(propertyEvent) {
     let outputString;
     for (let i = 0; i < property.length; i += 1) {
         if (property[i].oldOwner === null) {
-            outputString = `Player ${property[i].newOwner} Bought ${property[i].property}`;
+            outputString = `${property[i].newOwner.name} bought ${property[i].property.name}`;
         } else {
-            outputString = `Player ${property[i].newOwner} Got ${property[i].property} from ${property[i].oldOwner}`;
+            outputString = `${property[i].newOwner.name} got ${property[i].property.name} from ${property[i].oldOwner.name}`;
         }
         updateGameLog(outputString);
     }
