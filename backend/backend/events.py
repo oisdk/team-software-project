@@ -594,6 +594,15 @@ def generate_player_jailed_event(
     >>> generate_player_jailed_event(
     ...     sys.stdout,
     ...     {},
+    ...     {6: 'in_jail'})
+    event: playerJailed
+    data: [[6, "in_jail"]]
+    <BLANKLINE>
+
+    >>> import sys
+    >>> generate_player_jailed_event(
+    ...     sys.stdout,
+    ...     {6: 'in_jail'},
     ...     {6: 'not_in_jail'})
     event: playerJailed
     data: [[6, "not_in_jail"]]
@@ -605,8 +614,11 @@ def generate_player_jailed_event(
         if not jailed_players:
             data.append([uid, state])
         else:
-            old_state = jailed_players[uid]
-            if old_state != state:
+            if uid in jailed_players.keys():
+                old_state = jailed_players[uid]
+                if old_state != state:
+                    data.append([uid, state])
+            else:
                 data.append([uid, state])
 
     output_event(output_stream, 'playerJailed', data)
