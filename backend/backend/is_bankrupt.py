@@ -3,7 +3,7 @@
 """
 
 from backend.player import Player
-from backend.game import get_games
+from backend.game import get_this_game, Game
 from backend.properties import Property, get_properties
 
 
@@ -19,14 +19,10 @@ def player_remove(player):
        and appropriate changes commence (turn order, properties...)
     """
     player_id = player.uid
-
-    games = get_games()
-    for game_id, players in games.items():
-        if player.username in players:
-            with Game(game_id) as game:
-                # Removes player by id from the game's list of players
-                game.players = [p for p in game.players if p != player_id]
-                break
+    game_id = get_this_game(player_id)
+    with Game(game_id) as game:
+        # Removes player by id from the game's list of players
+        game.players = [p for p in game.players if p != player_id]
 
     # This part receives properties owned by player by their
     # position and marks each property as 'unowned'
