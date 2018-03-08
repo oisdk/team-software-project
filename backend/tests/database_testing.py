@@ -85,6 +85,20 @@ def test_player_remove(game, player):
     print('Game has players: {}'.format(game.players))
 
 
+def test_game_end(game, players):
+    """Tests that removing all but one player from a game finishes it.
+
+    Arguments:
+        game: The Game object to test.
+        players: A list of Player objects for the players in the game.
+    """
+    players = players.copy()
+    while len(players) > 1:
+        test_player_remove(game, players.pop())
+
+    print('Game state should be "finished": {}'.format(game.state))
+
+
 def main():
     """Creates a test game with some players and starts it."""
     from backend.properties import owned_property_positions
@@ -93,7 +107,7 @@ def main():
     test_buy_property(game.uid, game.players[0], 1)
     positions = owned_property_positions(game.uid)
     print('Owned properties: {}'.format(positions))
-    test_player_remove(game, players[0])
+    test_game_end(game, players)
 
 
 if __name__ == '__main__':
