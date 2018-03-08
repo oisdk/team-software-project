@@ -5,6 +5,7 @@ title: Deployment
 # Local deployment
 Requirements:
 - [Docker](https://www.docker.com)
+
 To deploy the server locally just type `./local_deploy.sh` into a console. This should work on an OS running the latest linux kernel or on MacOS. This will build and run the Docker image and will have the web server running on localhost.
 
 Alternatively you can run the commands individually with
