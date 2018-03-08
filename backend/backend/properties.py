@@ -2,6 +2,8 @@
 
 from operator import itemgetter
 from itertools import groupby
+import sys
+import json
 
 import backend.storage
 
@@ -52,9 +54,9 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             self._price = result['purchase_price']
             self._property_type = result['state']
             self._base = result['base_rent']
+            self._name = result['name']
             if self._property_type == 'property':
                 self._house_price = result['house_price']
-                self._name = result['name']
                 self._one = result['one_rent']
                 self._two = result['two_rent']
                 self._three = result['three_rent']
@@ -66,15 +68,15 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
     def __exit__(self, *exc):
         try:
             with self._conn.cursor() as cursor:
-                cursor.execute('UPDATE `properties` '
-                               'SET `player_id` = %s,`mortgaged` = %s, '
-                               '`state` = %s,`house_count` = %s, '
-                               '`hotel_count` = %s '
-                               'WHERE `game_id` = %s AND '
-                               '`property_position` = %s;',
-                               (self._owner, self._mortgage,
-                                self._property_state, self._houses,
-                                self._hotels, self._gid, self._position))
+                cursor.execute(
+                    'UPDATE `properties`'
+                    ' SET `player_id` = %s,`mortgaged` = %s,'
+                    ' `state` = %s,`house_count` = %s,`hotel_count` = %s'
+                    ' WHERE `game_id` = %s AND `property_position` = %s;', (
+                        self._owner, self._mortgage, self._property_state,
+                        self._houses, self._hotels, self._gid, self._position
+                    )
+                )
             self._conn.commit()
         finally:
             self._in_context = False
@@ -272,6 +274,10 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
     def owner(self, owner):
         self._set_property('owner', owner)
 
+    @property_state.setter
+    def property_state(self, new_state):
+        self._set_property('property_state', new_state)
+
     def _is_in_monopoly(self):
         """
         Returns:
@@ -382,7 +388,11 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
 
 
 def owned_property_positions(game_id):
-    """Return a list of positions of owned properties in a game. """
+    """Return a dictionary of positions of owned properties in a game.
+
+    The dictionary keys are player_ids, and the values are lists of the
+    property positions owned by those players.
+    """
     conn = backend.storage.make_connection()
     try:
         conn.begin()
@@ -471,9 +481,9 @@ def get_properties_by_state(player_id, state):
         with conn.cursor() as cursor:
             cursor.execute('SELECT property_values.name'
                            ' FROM properties INNER JOIN property_values'
-                           ' ON properties.property_position ='
-                           ' property_values.property_position '
-                           'WHERE player_id = %s and mortgaged = %s ',
+                           ' ON properties.property_position'
+                           ' = property_values.property_position'
+                           ' WHERE player_id = %s and mortgaged = %s;',
                            (player_id, state))
             result = [row['name'] for row in cursor.fetchall()]
         conn.commit()
@@ -491,9 +501,9 @@ def get_position_by_name(player_id, property_name):
         with conn.cursor() as cursor:
             cursor.execute('SELECT properties.property_position'
                            ' FROM properties INNER JOIN property_values'
-                           ' ON properties.property_position ='
-                           ' property_values.property_position '
-                           'WHERE player_id = %s and name = %s ',
+                           ' ON properties.property_position'
+                           ' = property_values.property_position'
+                           ' WHERE player_id = %s and name = %s;',
                            (player_id, property_name))
 
             result = cursor.fetchone()
@@ -522,3 +532,40 @@ def get_propertys_gameid(player_id, property_position):
         return result
     finally:
         conn.close()
+
+
+def buy_property(source=sys.stdin, output=sys.stdout):
+    """Marks a property as bought by a particular player.
+
+    The input should be json and should include the following properties:
+
+    - property_position: The position of the property that was bought.
+    - user_id: The id of the user that bought the property.
+    - game_id: The id of the game the user bought the property in.
+
+    Arguments:
+        source: The stream input data should be read from.
+        output: The stream output data should be written to.
+    """
+    request = json.load(source)
+    buy_property_db(
+        game=request["game_id"],
+        user=request["user_id"],
+        position=request["property_position"],
+    )
+
+    output.write('Content-Type: text/plain\n\n')
+    json.dump('Property bought', output)
+
+
+def buy_property_db(game, user, position):
+    """Changes a property's state to 'owned' in the database.
+
+    Arguments:
+        game: The id of the game the property should be bought in.
+        user: The id of the user to buy the property for.
+        position: The position of the property to buy.
+    """
+    with Property(position, game) as prop:
+        prop.property_state = 'owned'
+        prop.owner = user

@@ -65,6 +65,7 @@ def start_sse_stream(output_stream=sys.stdout):
     new_jailed_players = {}
     push_initial_user_details = True
     houses = {}
+    property_ownership = {}
 
     # These statements are executed constantly once the first request to this
     # function is made.
@@ -98,6 +99,11 @@ def start_sse_stream(output_stream=sys.stdout):
         positions = check_new_positions(output_stream, positions,
                                         new_positions, new_jailed_players)
         houses = check_property_houses(output_stream, game_id, houses)
+        property_ownership = check_property_ownership(
+            output_stream,
+            game_id,
+            property_ownership,
+        )
 
         # Pushes data to update the players info table on game start
         if push_initial_user_details and last_game_state == "playing":
@@ -451,11 +457,19 @@ def check_property_ownership(output_stream, game_id, old_properties):
         The current property ownership data, as a dictionary where the keys
         are property positions, and the values are owner player ids.
     """
-    positions = owned_property_positions(game_id)
+    owners = owned_property_positions(game_id)
     new_properties = {}
-    for position in positions:
-        this_property = Property(position, game_id)
-        new_properties[position] = this_property.owner
+    for positions in owners.values():
+        for position in positions:
+            with Property(position, game_id) as prop:
+                with Player(prop.owner) as player:
+                    new_properties[position] = {
+                        'name': prop.name,
+                        'owner': {
+                            'id': player.uid,
+                            'name': player.username,
+                        },
+                    }
     if old_properties != new_properties:
         generate_ownership_events(
             output_stream,
@@ -485,43 +499,49 @@ def generate_ownership_events(
     >>> generate_ownership_events(
     ...     sys.stdout,
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     },
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u6'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 6, 'name': 'u6'}}
     ...     })
     event: propertyOwnerChanges
-    data: [{"newOwner": "u6", "oldOwner": "u7", "property": "p4"}]
+    data: [{"newOwner": {"id": 6, "name": "u6"}, \
+"oldOwner": {"id": 7, "name": "u7"}, \
+"property": {"name": "p4", "position": 4}}]
     <BLANKLINE>
 
     >>> import sys
     >>> generate_ownership_events(
     ...     sys.stdout,
     ...     {
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     },
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     })
     event: propertyOwnerChanges
-    data: [{"newOwner": "u2", "oldOwner": null, "property": "p1"}]
+    data: [{"newOwner": {"id": 2, "name": "u2"}, \
+"oldOwner": null, \
+"property": {"name": "p1", "position": 1}}]
     <BLANKLINE>
 
     >>> import sys
     >>> generate_ownership_events(
     ...     sys.stdout,
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     },
     ...     {
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     })
     event: propertyOwnerChanges
-    data: [{"newOwner": null, "oldOwner": "u2", "property": "p1"}]
+    data: [{"newOwner": null, \
+"oldOwner": {"id": 2, "name": "u2"}, \
+"property": {"name": "p1", "position": 1}}]
     <BLANKLINE>
     """
     changes = []
@@ -530,21 +550,30 @@ def generate_ownership_events(
         if position in old_ownership and position in new_ownership:
             old_owner = old_ownership[position]['owner']
             new_owner = new_ownership[position]['owner']
-            property_name = new_ownership[position]['name']
+            property_details = {
+                'position': position,
+                'name': new_ownership[position]['name']
+            }
         elif position not in new_ownership:
             old_owner = old_ownership[position]['owner']
             new_owner = None
-            property_name = old_ownership[position]['name']
+            property_details = {
+                'position': position,
+                'name': old_ownership[position]['name']
+            }
         else:  # position not in old_ownership
             old_owner = None
             new_owner = new_ownership[position]['owner']
-            property_name = new_ownership[position]['name']
+            property_details = {
+                'position': position,
+                'name': new_ownership[position]['name']
+            }
 
         if old_owner != new_owner:
             changes.append({
                 'newOwner': new_owner,
                 'oldOwner': old_owner,
-                'property': property_name})
+                'property': property_details})
 
     output_event(output_stream, 'propertyOwnerChanges', changes)
 
