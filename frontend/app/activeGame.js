@@ -7,31 +7,32 @@ import * as control from './moveFunctions';
 import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 import {OwnedPropertiesView} from './ownedPropertiesView';
+import * as cookie from './checkUserIDCookie';
 
 const playerTokenInformation = {};
 const playerPositions = {}; // value id : position on board ie previous position.
 let timer = '';
 let currentPlayer = '';
 let propertyView;
+const propertyOwners = {}; // propertyOwners does get modified
+let gameID;
 
 /**
  * Displays the page for an active game.
  *
- * @param gameID The ID for the game that will be displayed.
+ * @param thisGameID The ID for the game that will be displayed.
  */
-export function activeGame(gameID, playerList) {
-    const rightPane = document.getElementById('content-right');
-    const userDetailsPane = document.createElement('div');
-    const propertiesPane = document.createElement('div');
-    rightPane.appendChild(userDetailsPane);
-    rightPane.appendChild(propertiesPane);
+export function activeGame(thisGameID, playerList) {
+    gameID = thisGameID;
 
     // display board and assign starting positions.
     displayBoard(playerList);
-    generateUserDetails.generateUserDetails(userDetailsPane);
-    logEvents.generateGameLog();
-    propertyView = new OwnedPropertiesView(propertiesPane);
-    enableActiveGameListeners();
+    generateUserDetails.generateUserDetails(() => {
+        const propertiesPane = document.getElementById('properties');
+        propertyView = new OwnedPropertiesView(propertiesPane);
+        logEvents.generateGameLog();
+        enableActiveGameListeners();
+    });
 }
 
 
@@ -54,7 +55,6 @@ export function onPlayerMove(playerMoveEvent) {
     logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
-    // console.log(playerMoveEvent);
 
     // had to assign variables to stop linter from complaining.
     const player = items[0];
@@ -70,6 +70,14 @@ export function onPlayerMove(playerMoveEvent) {
     }
     playerPositions[currentPlayer].end = parseInt(endPosition, 10);
     startAnimation();
+
+    const [[playerID, newPosition, ..._others], ..._otherPlayers]
+        = JSON.parse(playerMoveEvent.data);
+    if (playerID === parseInt(cookie.checkUserDetails().user_id, 10)) {
+        if (!(newPosition in propertyOwners)) {
+            generateUserDetails.enableBuyPropertyButton(gameID, playerID, newPosition);
+        }
+    }
 }
 
 /**
@@ -108,14 +116,35 @@ export function onPlayerJailed(playerJailedEvent) {
     logEvents.logJailEvent(playerJailedEvent);
 }
 
-/*
+/**
  * Called when a propertyOwnerChanges event happens, and passes the data to
  * the property view.
  *
  * @param {event} changesEvent The event that occurred.
  */
 function onPropertyOwnerChanges(changesEvent) {
-    propertyView.update(JSON.parse(changesEvent.data));
+    const eventData = JSON.parse(changesEvent.data);
+    propertyOwners[eventData[0].property.position] = eventData[0].newOwner;
+    propertyView.update(eventData.map((change) => {
+        let newName;
+        let oldName;
+        if (change.oldOwner === null) {
+            oldName = null;
+        } else {
+            oldName = change.oldOwner.name;
+        }
+        if (change.newOwner === null) {
+            newName = null;
+        } else {
+            newName = change.newOwner.name;
+        }
+
+        return {
+            property: change.property.name,
+            oldOwner: oldName,
+            newOwner: newName,
+        };
+    }));
     logEvents.logPropertyEvent(changesEvent);
 }
 
@@ -215,7 +244,6 @@ function animate() {
         control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
         if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
             clearInterval(timer);
-            console.log('ended');
             currentPlayer = '';
         }
     } else {
@@ -223,7 +251,6 @@ function animate() {
         control.movePlayer(currentPlayer, 99, playerTokenInformation[currentPlayer]);
         playerPositions[currentPlayer].current = 99;
         clearInterval(timer);
-        console.log('Jailed 99');
         currentPlayer = '';
     }
 }
