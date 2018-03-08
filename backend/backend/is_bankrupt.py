@@ -21,12 +21,12 @@ def player_remove(player):
     player_id = player.uid
 
     games = get_games()
-    for game in games:
-        if player.username in games[game]:
-            game_id = game
-            # Removes player by id from the game's list of players
-            game.players.remove(player_id)
-            break
+    for game_id, players in games.items():
+        if player.username in players:
+            with Game(game_id) as game:
+                # Removes player by id from the game's list of players
+                game.players = [p for p in game.players if p != player_id]
+                break
 
     # This part receives properties owned by player by their
     # position and marks each property as 'unowned'
