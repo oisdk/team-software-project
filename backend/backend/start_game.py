@@ -23,7 +23,11 @@ def start_game(source=sys.stdin, output=sys.stdout):
     output.write("\n")
 
     request = json.load(source)
-    game_id = request["game_id"]
+    start_game_db(request["game_id"])
+
+
+def start_game_db(game_id):
+    """Changes a game’s status to 'playing' in the database."""
     with backend.game.Game(game_id) as game:
         game.state = 'playing'
         players = game.players

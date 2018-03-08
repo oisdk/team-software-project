@@ -64,6 +64,7 @@ def start_sse_stream(output_stream=sys.stdout):
     jailed_players = {}
     new_jailed_players = {}
     push_initial_user_details = True
+    property_ownership = {}
 
     # These statements are executed constantly once the first request to this
     # function is made.
@@ -96,6 +97,11 @@ def start_sse_stream(output_stream=sys.stdout):
             output_stream, jailed_players, new_jailed_players)
         positions = check_new_positions(output_stream, positions,
                                         new_positions, new_jailed_players)
+        property_ownership = check_property_ownership(
+            output_stream,
+            game_id,
+            property_ownership,
+        )
 
         # Pushes data to update the players info table on game start
         if push_initial_user_details and last_game_state == "playing":
@@ -185,28 +191,12 @@ def check_new_turn(output_stream, old_turn, new_turn, turn_order):
     if new_turn != old_turn:
         for uid, turn_pos in turn_order.items():
             if turn_pos == new_turn:
-                generate_player_turn_event(output_stream, uid, turn_order)
+                player = Player(uid)
+                output_event(
+                    output_stream,
+                    'playerTurn',
+                    {'name': player.username, 'id': player.uid})
     return new_turn
-
-
-def generate_player_turn_event(output_stream, player_id, turn_order):
-    """Generates an event for a change of turn in the game.
-
-    Arguments:
-        new_turn: An int representing the latest position in the playing
-            queue.
-        player_id: An int representing the player whose turn it is.
-
-    >>> import sys
-    >>> generate_player_turn_event(sys.stdout, 2, {2:0})
-    event: playerTurn
-    data: [2, 0]
-    <BLANKLINE>
-    """
-    output_event(
-        output_stream,
-        'playerTurn',
-        [player_id, turn_order[player_id]])
 
 
 def check_new_players(output_stream, old_players, new_players):
@@ -465,11 +455,19 @@ def check_property_ownership(output_stream, game_id, old_properties):
         The current property ownership data, as a dictionary where the keys
         are property positions, and the values are owner player ids.
     """
-    positions = owned_property_positions(game_id)
+    owners = owned_property_positions(game_id)
     new_properties = {}
-    for position in positions:
-        this_property = Property(position, game_id)
-        new_properties[position] = this_property.owner
+    for positions in owners.values():
+        for position in positions:
+            with Property(position, game_id) as prop:
+                with Player(prop.owner) as player:
+                    new_properties[position] = {
+                        'name': prop.name,
+                        'owner': {
+                            'id': player.uid,
+                            'name': player.username,
+                        },
+                    }
     if old_properties != new_properties:
         generate_ownership_events(
             output_stream,
@@ -499,43 +497,49 @@ def generate_ownership_events(
     >>> generate_ownership_events(
     ...     sys.stdout,
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     },
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u6'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 6, 'name': 'u6'}}
     ...     })
     event: propertyOwnerChanges
-    data: [{"newOwner": "u6", "oldOwner": "u7", "property": "p4"}]
+    data: [{"newOwner": {"id": 6, "name": "u6"}, \
+"oldOwner": {"id": 7, "name": "u7"}, \
+"property": {"name": "p4", "position": 4}}]
     <BLANKLINE>
 
     >>> import sys
     >>> generate_ownership_events(
     ...     sys.stdout,
     ...     {
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     },
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     })
     event: propertyOwnerChanges
-    data: [{"newOwner": "u2", "oldOwner": null, "property": "p1"}]
+    data: [{"newOwner": {"id": 2, "name": "u2"}, \
+"oldOwner": null, \
+"property": {"name": "p1", "position": 1}}]
     <BLANKLINE>
 
     >>> import sys
     >>> generate_ownership_events(
     ...     sys.stdout,
     ...     {
-    ...         1: {'name': 'p1', 'owner': 'u2'},
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         1: {'name': 'p1', 'owner': {'id': 2, 'name': 'u2'}},
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     },
     ...     {
-    ...         4: {'name': 'p4', 'owner': 'u7'}
+    ...         4: {'name': 'p4', 'owner': {'id': 7, 'name': 'u7'}}
     ...     })
     event: propertyOwnerChanges
-    data: [{"newOwner": null, "oldOwner": "u2", "property": "p1"}]
+    data: [{"newOwner": null, \
+"oldOwner": {"id": 2, "name": "u2"}, \
+"property": {"name": "p1", "position": 1}}]
     <BLANKLINE>
     """
     changes = []
@@ -544,21 +548,30 @@ def generate_ownership_events(
         if position in old_ownership and position in new_ownership:
             old_owner = old_ownership[position]['owner']
             new_owner = new_ownership[position]['owner']
-            property_name = new_ownership[position]['name']
+            property_details = {
+                'position': position,
+                'name': new_ownership[position]['name']
+            }
         elif position not in new_ownership:
             old_owner = old_ownership[position]['owner']
             new_owner = None
-            property_name = old_ownership[position]['name']
+            property_details = {
+                'position': position,
+                'name': old_ownership[position]['name']
+            }
         else:  # position not in old_ownership
             old_owner = None
             new_owner = new_ownership[position]['owner']
-            property_name = new_ownership[position]['name']
+            property_details = {
+                'position': position,
+                'name': new_ownership[position]['name']
+            }
 
         if old_owner != new_owner:
             changes.append({
                 'newOwner': new_owner,
                 'oldOwner': old_owner,
-                'property': property_name})
+                'property': property_details})
 
     output_event(output_stream, 'propertyOwnerChanges', changes)
 
@@ -644,7 +657,12 @@ def start_game_push(output_stream, turn_order):
     the two dicts differ. Along with the event is JSON containing the
     difference between the two dicts.
     """
-    generate_player_turn_event(output_stream, next(iter(turn_order)),
-                               turn_order)
+    for uid, turn_pos in turn_order.items():
+        if turn_pos == 0:
+            player = Player(uid)
+            output_event(
+                output_stream,
+                'playerTurn',
+                {'name': player.username, 'id': player.uid})
     generate_player_balance_event(output_stream, {},
                                   {1: 1500, 2: 1500, 3: 1500, 4: 1500})

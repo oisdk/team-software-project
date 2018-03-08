@@ -1,6 +1,7 @@
 // Imports
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
+import {updateGameLog} from './generateGameLog';
 
 let details = getCookie.checkUserDetails();
 let id = details.user_id;
@@ -50,16 +51,55 @@ export function disableLeaveJail() {
 }
 
 /**
- * Callback to check user rolls and enable end turn.
+ * Gives the player the option to buy a property.
+ *
+ * @param gameID The id of the game the player is in.
+ * @param userID The user id of the player.
+ * @param propertyPosition The position of the property that the player has
+ *     landed on.
+ */
+export function enableBuyPropertyButton(gameID, userID, propertyPosition) {
+    const button = document.getElementById('buy_property');
+    button.disabled = false;
+    button.addEventListener('click', buyProperty);
+
+    function buyProperty() {
+        sendJSON.sendJSON({
+            serverAddress: 'cgi-bin/buy_property.py',
+            jsonObject: {
+                game_id: gameID,
+                user_id: userID,
+                property_position: propertyPosition,
+            },
+        });
+        disableBuyPropertyButton(buyProperty);
+    }
+}
+
+/**
+ * Removes the option to buy a property.
+ */
+export function disableBuyPropertyButton(listenerFunction) {
+    const button = document.getElementById('buy_property');
+    button.disabled = true;
+    button.removeEventListener('click', listenerFunction);
+}
+
+/**
+ * Callback to check user rolls and enable end turn. Also displays chance and
+ * community chest card details to the client.
  * Enables roll-dice if a double is rolled.
  * increments/resets counter for doubles and
  * sends player to jail if 3 doubles rolled.
  * @param {XMLHttpRequest} req1 response.
  */
-export function successCallback(req1) {
+export function successCallback(req1, logUpdater = updateGameLog) {
     console.log(req1);
     const response = JSON.parse(req1.responseText);
     const roll = response.your_rolls;
+    // Get the description of the card that was landed on
+    const cardDetails = response.card_details;
+
     const rollDie = document.querySelector('#roll-dice');
     if (roll[0] === roll[1] && jail === false) {
         rollDie.disabled = false;
@@ -72,6 +112,10 @@ export function successCallback(req1) {
     if (doubleCounter === 3) {
         doubleCounter = 0;
         goToJail(sendJSON.sendJSON);
+    }
+    if (cardDetails !== null) {
+        logUpdater('Activated card details:');
+        logUpdater(cardDetails);
     }
 }
 
@@ -131,22 +175,25 @@ export function goToJail(JSONSend) {
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
  */
 export function updateUserDetails(fileReader) {
-    if (fileReader.status === 200 && fileReader.readyState === 4) {
-        document.getElementById('content-right').innerHTML = fileReader.responseText;
-        document.getElementById('details_username').innerHTML = userName;
-    }
+    document.getElementById('content-right').innerHTML = fileReader.responseText;
+    document.getElementById('details_username').innerHTML = userName;
 }
 
 /**
- * Function to generate game details. Makes a request to
- * filesystem for a HTML file to display.
- * @param {int} gameID - id used to create eventSource.
+ * Function to generate game details. Makes an AJAX request for the html to display.
+ *
+ * @param {function} htmlLoadedCallback A callback to call once the html has loaded.
  */
-export function generateUserDetails() {
+export function generateUserDetails(htmlLoadedCallback) {
     // Generate a HTML page with user interface
     const fileReader = new XMLHttpRequest();
     fileReader.open('GET', 'user-info.html', true);
-    fileReader.onreadystatechange = () => updateUserDetails(fileReader);
+    fileReader.onreadystatechange = () => {
+        if (fileReader.status === 200 && fileReader.readyState === 4) {
+            updateUserDetails(fileReader);
+            htmlLoadedCallback();
+        }
+    };
     fileReader.send();
     details = getCookie.checkUserDetails();
     id = details.user_id;
@@ -228,14 +275,11 @@ export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
  *
  * Checks the jail counter and decides on appropriate action.
  *
- * @param turnEvent The data received from the event
- *
- * turnEvent[0] holds the players unique id.
- * turnEvent[1] holds the players position in the turn order.
+ * @param turnData The data received from the event, with the player’s username and id.
+ *     Example format: {'name': Alex, 'id': 4}
  */
-export function turnDetails(turnEvent) {
-    const turn = JSON.parse(turnEvent.data);
-    document.getElementById('current-turn').innerHTML = `Player ${turn[0] + 1}`;
+export function turnDetails(turnData) {
+    document.getElementById('current-turn').innerHTML = `${turnData.name}`;
     // console.log(`Turn:${turn}`);
 
     // displayOwnedProperties(sendJSON.sendJSON);
@@ -260,13 +304,13 @@ export function turnDetails(turnEvent) {
     // enables leave jail and roll buttons
     // If jail counter is 3 enables only the leave jail button.
     // Otherwise only enable the roll button.
-    if (jail === true && String(turn[0]) === String(id) && jailCounter < 3) {
+    if (jail === true && String(turnData.id) === String(id) && jailCounter < 3) {
         enableGameInterface();
         enableLeaveJail();
         jailCounter += 1;
-    } else if (jail === true && String(turn[0]) === String(id)) {
+    } else if (jail === true && String(turnData.id) === String(id)) {
         enableLeaveJail();
-    } else if (String(turn[0]) === String(id)) {
+    } else if (String(turnData.id) === String(id)) {
         enableGameInterface();
     }
 }
@@ -285,9 +329,7 @@ export function turnDetails(turnEvent) {
 export function balanceDetails(balanceEvent) {
     const data = JSON.parse(balanceEvent.data);
     let balance = '';
-    // console.log(`Balances:${data}`);
     data.forEach((item) => {
-        // console.log(item);
         if (String(item[0]) === String(id)) {
             ({1: balance} = item);
             document.getElementById('balance').innerHTML = balance;
@@ -307,7 +349,6 @@ export function balanceDetails(balanceEvent) {
 export function jailedPlayer(jailedEvent) {
     const data = JSON.parse(jailedEvent.data);
     data.forEach((item) => {
-        // console.log(item);
         if (String(item[0]) === String(id) && String(item[1]) === 'in_jail') {
             jail = true;
             enableEndTurn();
