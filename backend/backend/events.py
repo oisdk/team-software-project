@@ -657,7 +657,10 @@ def generate_house_event(
             data[position] = new_houses[position]
     else:
         for position in new_houses:
-            if new_houses[position] != old_houses[position]:
+            if position in old_houses.keys():
+                if new_houses[position] != old_houses[position]:
+                    data[position] = new_houses[position]
+            else:
                 data[position] = new_houses[position]
 
     output_event(output_stream, 'houseEvent', data)
