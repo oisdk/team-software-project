@@ -623,31 +623,34 @@ def generate_player_jailed_event(
     >>> generate_player_jailed_event(
     ...     sys.stdout,
     ...     {},
+    ...     {6: 'in_jail'})
+    event: playerJailed
+    data: [[6, "in_jail"]]
+    <BLANKLINE>
+
+    >>> import sys
+    >>> generate_player_jailed_event(
+    ...     sys.stdout,
+    ...     {6: 'in_jail'},
     ...     {6: 'not_in_jail'})
     event: playerJailed
     data: [[6, "not_in_jail"]]
     <BLANKLINE>
 
     """
-    # Send the event name to the client.
-    output_stream.write('event: playerJailed\n')
+    data = []
+    for uid, state in new_jailed_players.items():
+        if not jailed_players:
+            data.append([uid, state])
+        else:
+            if uid in jailed_players.keys():
+                old_state = jailed_players[uid]
+                if old_state != state:
+                    data.append([uid, state])
+            else:
+                data.append([uid, state])
 
-    # Send the JSON object which contains the elements that are not in common
-    # with the two dictionaries.
-    output_stream.write('data: ')
-
-    if not jailed_players:
-        output_stream.write(json.dumps([
-            [uid, state]
-            for uid, state in new_jailed_players.items()]))
-    else:
-        output_stream.write(json.dumps([
-            [uid, state]
-            for uid, state in new_jailed_players.items()
-            if state != jailed_players[uid]]))
-
-    # Standard SSE procedure to have two blank lines after data.
-    output_stream.write('\n\n')
+    output_event(output_stream, 'playerJailed', data)
 
 
 def start_game_push(output_stream, turn_order):
