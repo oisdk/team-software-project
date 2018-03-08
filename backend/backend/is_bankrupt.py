@@ -24,12 +24,14 @@ def player_remove(player):
         # Removes player by id from the game's list of players
         game.players = [p for p in game.players if p != player_id]
 
-    # This part receives properties owned by player by their
-    # position and marks each property as 'unowned'
-    property_positions = get_properties(player_id)
-    for position in property_positions:
-        with Property(position, game_id) as property_:
-            property_.owner = 0
-            property_.state = 'unowned'
-            property_.houses = 0
-            property_.hotels = 0
+        # This part receives properties owned by player by their
+        # position and marks each property as 'unowned'
+        property_positions = get_properties(player_id)
+        for position in property_positions:
+            with Property(position, game_id) as property_:
+                property_.owner = 0
+                property_.state = 'unowned'
+                property_.houses = 0
+                property_.hotels = 0
+
+        game.state = 'finished'
