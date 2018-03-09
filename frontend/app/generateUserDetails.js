@@ -1,3 +1,7 @@
+/**
+ * Manages a pane in an active game that displays the user’s game data.
+ * @module
+ */
 // Imports
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
@@ -12,6 +16,8 @@ let doubleCounter = 0;
 
 /**
  * Function to disable game interface.
+ *
+ * @private
  */
 export function disableGameInterface() {
     document.getElementById('roll-dice').disabled = true;
@@ -22,6 +28,8 @@ export function disableGameInterface() {
 
 /**
  * Function to enable game interface.
+ *
+ * @private
  */
 export function enableGameInterface() {
     document.getElementById('roll-dice').disabled = false;
@@ -31,6 +39,8 @@ export function enableGameInterface() {
 
 /**
  * Function to enable end-turn functionality.
+ *
+ * @private
  */
 export function enableEndTurn() {
     document.getElementById('roll-dice').disabled = true;
@@ -40,6 +50,8 @@ export function enableEndTurn() {
 
 /**
  * Function to enable leave jail functionality.
+ *
+ * @private
  */
 export function enableLeaveJail() {
     document.getElementById('jail').disabled = false;
@@ -47,6 +59,8 @@ export function enableLeaveJail() {
 
 /**
  * Function to disable leave jail functionality.
+ *
+ * @private
  */
 export function disableLeaveJail() {
     document.getElementById('jail').disabled = true;
@@ -93,7 +107,9 @@ export function disableBuyPropertyButton(listenerFunction) {
  * Enables roll-dice if a double is rolled.
  * increments/resets counter for doubles and
  * sends player to jail if 3 doubles rolled.
+ *
  * @param {XMLHttpRequest} req1 response.
+ * @private
  */
 export function successCallback(req1, logUpdater = updateGameLog) {
     console.log(req1);
@@ -123,7 +139,9 @@ export function successCallback(req1, logUpdater = updateGameLog) {
 
 /**
  * Function to call the roll_dice on the server side.
+ *
  * @param {Function} JSONSend - JSON function makes testing easier.
+ * @private
  */
 export function rollDice(JSONSend) {
     JSONSend({
@@ -135,7 +153,9 @@ export function rollDice(JSONSend) {
 
 /**
  * Function to end a players turn.
+ *
  * @param {Function} JSONSend - JSON function makes testing easier.
+ * @private
  */
 export function endTurn(JSONSend) {
     JSONSend({
@@ -147,7 +167,9 @@ export function endTurn(JSONSend) {
 
 /**
  * Function to leave jail.
+ *
  * @param {Function} JSONSend - JSON function makes testing easier.
+ * @private
  */
 export function leaveJail(JSONSend) {
     JSONSend({
@@ -161,7 +183,9 @@ export function leaveJail(JSONSend) {
  * Function to go to jail.
  *
  * Sets jail boolean true and enables end turn.
+ *
  * @param {Function} JSONSend - JSON function makes testing easier.
+ * @private
  */
 export function goToJail(JSONSend) {
     JSONSend({
@@ -174,7 +198,9 @@ export function goToJail(JSONSend) {
 
 /**
  * Callback function to update HTML body with file's contents.
+ *
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
+ * @private
  */
 export function updateUserDetails(fileReader) {
     document.getElementById('content-right').innerHTML = fileReader.responseText;
@@ -205,7 +231,9 @@ export function generateUserDetails(htmlLoadedCallback) {
 /**
  * Function to update properties displayed on the
  * drop downs.
+ *
  * @param req - Response from server-side.
+ * @private
  */
 export function updateDropDown(req) {
     const request = JSON.parse(req.responseText);
@@ -240,6 +268,7 @@ export function updateDropDown(req) {
  * @param {Function} JSONSend - JSON function makes testing easier.
  * @param {Object} button - Object of the button pressed.
  * @param {String} state - The initial state of a property.
+ * @private
  */
 export function changePropState(JSONSend, button, state) {
     const optionIndex = button.selectedIndex;
@@ -258,7 +287,7 @@ export function changePropState(JSONSend, button, state) {
  * player allowing to be mortgaged or unmortgaged.
  *
  * @param {Function} JSONSend - JSON function makes testing easier.
-
+ * @private
  */
 export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
     JSONSend({
