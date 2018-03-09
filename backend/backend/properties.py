@@ -6,6 +6,7 @@ import sys
 import json
 
 import backend.storage
+from backend.player import Player
 
 
 class Property(object):  # pylint: disable=too-many-instance-attributes
@@ -568,3 +569,6 @@ def buy_property_db(game, user, position):
     with Property(position, game) as prop:
         prop.property_state = 'owned'
         prop.owner = user
+
+        with Player(user) as player:
+            player.balance -= prop.price
