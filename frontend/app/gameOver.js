@@ -1,5 +1,7 @@
 import {checkUserDetails} from './checkUserIDCookie';
 import {removeChildren} from './html';
+import {removeGameLog} from './generateGameLog';
+
 /**
  * Handles user interaction once a game has finished.
  * @module
@@ -12,6 +14,8 @@ import {removeChildren} from './html';
  */
 export function gameOver(gameEndEvent) {
     const eventData = JSON.parse(gameEndEvent.data);
+
+    removeGameLog();
 
     const contentPane = document.getElementById('content');
     removeChildren(contentPane);
