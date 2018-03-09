@@ -278,14 +278,14 @@ export function updateDropDown(req) {
  * @param {String} state - The initial state of a property.
  * @private
  */
-export function changePropState(JSONSend, button, state) {
+export function changePropState(JSONSend, button, state, gameID) {
     const optionIndex = button.selectedIndex;
     // This gets the name by the index of the property name selected
     // from the property options
     const propertyName = optionIndex.options[optionIndex.selectedIndex].value;
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
-        jsonObject: {player_id: [state, propertyName, id]},
+        jsonObject: {player_id: [state, propertyName, id, gameID]},
         successCallback: updateDropDown,
     });
 }
@@ -348,9 +348,9 @@ export function turnDetails(turnData, gameID) {
     rollDiceButton.disabled = true;
 
     const mortgageButton = document.getElementById('mort-check');
-    mortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, mortgageButton, 'unmortgage'); };
+    mortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, mortgageButton, 'unmortgage', gameID); };
     const unmortgageButton = document.getElementById('unmort-check');
-    unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage'); };
+    unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage', gameID); };
 
     const buyHouseButton = document.getElementById('buy-house');
     buyHouseButton.onclick = () => { buyHouse(sendJSON.sendJSON); };
