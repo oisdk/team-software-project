@@ -247,7 +247,7 @@ export function updateDropDown(req) {
     const request = JSON.parse(req.responseText);
     console.log(`Response:${request}`);
     const names = ['mortgage', 'unmortgage', 'properties-house'];
-    const options = [request.mortgage, request.unmortgage, request.mortgage];
+    const options = [request.mortgage, request.unmortgage, request.housable];
     let select;
     let propertyNames;
     for (let i = 0; i < names.length; i += 1) {
@@ -297,10 +297,10 @@ export function changePropState(JSONSend, button, state) {
  * @param {Function} JSONSend - JSON function makes testing easier.
  * @private
  */
-export function displayOwnedProperties(JSONSend = sendJSON.sendJSON) {
+export function displayOwnedProperties(JSONSend = sendJSON.sendJSON, gameID) {
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
-        jsonObject: {player_id: ['None', 'None', id]},
+        jsonObject: {player_id: ['None', 'None', id, gameID]},
         successCallback: updateDropDown,
     });
 }
@@ -337,11 +337,11 @@ export function buyHouse(JSONSend) {
  *     Example format: {'name': Alex, 'id': 4}
  */
 
-export function turnDetails(turnData) {
+export function turnDetails(turnData, gameID) {
     document.getElementById('current-turn').innerHTML = `${turnData.name}`;
     // console.log(`Turn:${turn}`);
 
-    displayOwnedProperties(sendJSON.sendJSON);
+    displayOwnedProperties(sendJSON.sendJSON, gameID);
 
     const rollDiceButton = document.getElementById('roll-dice');
     rollDiceButton.onclick = () => { rollDice(sendJSON.sendJSON); };

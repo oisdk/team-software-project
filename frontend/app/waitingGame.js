@@ -65,7 +65,7 @@ export function waitingGame(gameID) {
     // Listen for a playerJoin event coming from the server
     sseEventSource.addEventListener('playerJoin', onPlayerJoin);
     // Listen for a gameStart event coming from the server.
-    sseEventSource.addEventListener('gameStart', onGameStart);
+    sseEventSource.addEventListener('gameStart', onGameStart(startEvent, gameID));
 
     let numberOfPlayers = 0;
     function onPlayerJoin(joinEvent) {
@@ -101,24 +101,26 @@ export function waitingGame(gameID) {
         }
     }
 
-    function startGame({request, startEvent}) {
+    function startGame({request, startEvent, gameID}) {
         const playerList = JSON.parse(request.responseText);
         // call active game with these values
         activeGame({
             playerList,
             startEvent,
+			gameID,
         });
     }
 
-    function onGameStart(startEvent) {
+    function onGameStart(startEvent, gameID) {
         sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
-        sseEventSource.removeEventListener('gameStart', onGameStart);
+        sseEventSource.removeEventListener('gameStart', onGameStart(startEvent, gameID));
         sendJSON.sendJSON({
             serverAddress: 'cgi-bin/request_players.py',
             jsonObject: {game_id: gameID},
             successCallback: request => startGame({
                 request,
                 startEvent,
+				gameID,
             }),
         });
     }

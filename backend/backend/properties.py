@@ -568,3 +568,31 @@ def buy_property_db(game, user, position):
     with Property(position, game) as prop:
         prop.property_state = 'owned'
         prop.owner = user
+
+def get_housable(user, game):
+    """Gets the list of properties that can have houses placed on them.
+	
+	Arguments:
+	        game: The id of the game the property should be bought in.
+            user: The id of the user to buy the property for.
+    """
+    conn = backend.storage.make_connection()
+    try:
+        conn.begin()
+        with conn.cursor() as cursor:
+            cursor.execute('SELECT property_values.property_position'
+                           ' FROM properties INNER JOIN property_values'
+                           ' ON properties.property_position'
+                           ' = property_values.property_position'
+                           ' WHERE player_id = %s;',
+                           (player_id))
+            result = [[row['name'],row['property_position']] for row in cursor.fetchall()]
+			new_result = []
+            for row in result:
+                property = Property(row[1])
+                if property._is_in_monopoly()
+				    new_result += row[0]
+        conn.commit()
+        return new_result
+    finally:
+        conn.close()

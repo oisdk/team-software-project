@@ -28,7 +28,7 @@ let gameID;
  * @param playerList The list of players in the game.
  * @param startEvent The gameStart event that triggered this call.
  */
-export function activeGame({playerList, startEvent}) {
+export function activeGame({playerList, startEvent, gameID}) {
     const eventData = JSON.parse(startEvent.data);
     gameID = eventData.gameID; // eslint-disable-line prefer-destructuring
     for (let i = 0; i < eventData.propertyPositions.length; i += 1) {
@@ -41,7 +41,7 @@ export function activeGame({playerList, startEvent}) {
         const propertiesPane = document.getElementById('properties');
         propertyView = new OwnedPropertiesView(propertiesPane);
         logEvents.generateGameLog();
-        enableActiveGameListeners();
+        enableActiveGameListeners(gameID);
     });
 }
 
@@ -98,9 +98,9 @@ export function onPlayerMove(playerMoveEvent) {
  * @param playerTurnEvent The data received from the event
  * @private
  */
-function onPlayerTurn(playerTurnEvent) {
+function onPlayerTurn(playerTurnEvent, gameID) {
     const data = JSON.parse(playerTurnEvent.data);
-    generateUserDetails.turnDetails(data);
+    generateUserDetails.turnDetails(data, gameID);
     logEvents.logTurnEvent(data);
 }
 
@@ -185,8 +185,8 @@ function onHouseEvent(houseEvent) {
  *
  * @param gameEndEvent The gameEnd event that signalled the end of the game.
  */
-function onGameEnd(gameEndEvent) {
-    disableActiveGameListeners();
+function onGameEnd(gameEndEvent, gameID) {
+    disableActiveGameListeners(gameID);
     gameOver(gameEndEvent);
 }
 
@@ -244,25 +244,25 @@ function createCanvas(canvasID, appendToNode, layerNumber) {
 }
 
 
-function enableActiveGameListeners() {
+function enableActiveGameListeners(gameID) {
     const eventSource = getEventSource();
     eventSource.addEventListener('playerMove', onPlayerMove);
-    eventSource.addEventListener('playerTurn', onPlayerTurn);
+    eventSource.addEventListener('playerTurn', onPlayerTurn(playerTurnEvent, gameID));
     eventSource.addEventListener('playerBalance', onPlayerBalance);
     eventSource.addEventListener('playerJailed', onPlayerJailed);
     eventSource.addEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
     eventSource.addEventListener('houseEvent', onHouseEvent);
-    eventSource.addEventListener('gameEnd', onGameEnd);
+    eventSource.addEventListener('gameEnd', onGameEnd(gameEndEvent, gameID));
 }
 
-function disableActiveGameListeners() {
+function disableActiveGameListeners(gameID) {
     const eventSource = getEventSource();
     eventSource.removeEventListener('playerMove', onPlayerMove);
-    eventSource.removeEventListener('playerTurn', onPlayerTurn);
+    eventSource.removeEventListener('playerTurn', onPlayerTurn(playerTurnEvent, gameID));
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
     eventSource.removeEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
     eventSource.removeEventListener('houseEvent', onHouseEvent);
-    eventSource.removeEventListener('gameEnd', onGameEnd);
+    eventSource.removeEventListener('gameEnd', onGameEnd(gameEndEvent, gameID));
 }
 
 /**

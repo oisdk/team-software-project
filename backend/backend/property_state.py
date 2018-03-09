@@ -28,6 +28,7 @@ def property_state(source=sys.stdin, output=sys.stdout):
     prop_state = request["player_id"][0]
     prop_name = request["player_id"][1]
     player_id = request["player_id"][2]
+    game_id = request["player_id"][3]
 
     # Change property state and player balance if prop_name
     # and prop_state isn't None. It means state for property
@@ -52,4 +53,4 @@ def property_state(source=sys.stdin, output=sys.stdout):
                     player.balance += property_.price//2
 
     # For displaying the mortgaged/ unmortgaged properties.
-    json.dump(get_un_mortgage(player_id), output)
+    json.dump(get_un_mortgage(player_id, game_id), output)
