@@ -1,4 +1,5 @@
 import {checkUserDetails} from './checkUserIDCookie';
+import {removeChildren} from './html';
 /**
  * Handles user interaction once a game has finished.
  * @module
@@ -13,9 +14,7 @@ export function gameOver(gameEndEvent) {
     const eventData = JSON.parse(gameEndEvent.data);
 
     const rootElement = document.getElementById('content');
-    while (rootElement.firstChild) {
-        rootElement.firstChild.remove();
-    }
+    removeChildren(rootElement);
     rootElement.appendChild(createGameOverHTML(eventData.winner));
 }
 
