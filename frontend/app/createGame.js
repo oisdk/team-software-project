@@ -1,3 +1,8 @@
+/**
+ * Handles sending a request to create a new game.
+ * @module
+ */
+
 // Import sendJSON functionality
 import * as sendJSON from './sendJSON';
 import {waitingGame} from './waitingGame';

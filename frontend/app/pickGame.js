@@ -1,3 +1,8 @@
+/**
+ * Handles displaying a page to the user where they can choose a game to join.
+ * @module
+ */
+
 import {waitingGame} from './waitingGame';
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
@@ -8,6 +13,7 @@ import * as sendJSON from './sendJSON';
  * @param gameID - The ID of the game selected to join.
  * @param {string} waitFunction - Takes in a function name to call.
  * @param {string} sendFunction - Takes in a function name to call.
+ * @private
  */
 export function sendGameId(gameID, waitFunction, sendfunction) {
     // cast to number for consistency with create game.
