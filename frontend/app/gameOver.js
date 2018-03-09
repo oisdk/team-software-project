@@ -10,7 +10,7 @@ import {checkUserDetails} from './checkUserIDCookie';
  * @param gameEndEvent The event that signalled the end of the game.
  */
 export function gameOver(gameEndEvent) {
-    const eventData = JSON.parse(gameEndEvent);
+    const eventData = JSON.parse(gameEndEvent.data);
 
     const rootElement = document.getElementById('content');
     while (rootElement.firstChild) {
