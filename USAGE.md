@@ -19,8 +19,15 @@ The log on the left side of the screen will update with what's happening during 
 
 The game board itself is in the middle of the screen, each player is given a random token at the start of the game, be sure to note who is represented by which token!
 
-On the right is your important information as well as how you'll interact with the game.
-
+On the right is home to:
+  * Your important information:
+    * Player name
+	* Current turn player
+	* Your balance (money)
+	* Who owns what properties on the board.
+  * As well as how you'll interact with the game:
+    * Buttons for rolling the dice, ending your turn, and paying to leave jail (as applicable).
+	* Selectable menus to buy houses, mortgage and unmortgage properties.
 During **your turn** the following will occur:
 
 1. Press the "roll dice" button to see what amount of spaces you will move this turn.
@@ -48,6 +55,11 @@ During **your turn** the following will occur:
   * This is done by means of a drop-down menu. Select what properties you want to mortgage and press the "Mortgage" button to do so.
   * The same can be done in reverse using the "Unmortgage" drop-down and button.
 
+5. If you have been put in jail, you will have two options. Roll a double to go free or pay 50 to leave regardless.
+  * You will be able to pay 50 on any turn to leave, but if you fail to roll a double on your third turn in jail, you will be forced to pay the 50 and leave.
+
 5. Once the "end turn" button is selected any payments made will be deducted and the next player gets to play.
   * If you do not have the cash to pay your rent at the end of the turn, you will be rendered bankrupt and will be out of the game.
   * If you rolled a double, your turn will appear to "begin again", with the option to roll the dice.
+
+6. If you are the last player left, where all others have gone bankrupt, **YOU WIN!**
