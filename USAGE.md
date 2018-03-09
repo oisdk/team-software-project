@@ -1,3 +1,7 @@
+---
+title: Usage Manual
+...
+
 # Welcome to the usage guide for Team 2's "A Monopoly Game"!
 
 ## Getting into the Game
