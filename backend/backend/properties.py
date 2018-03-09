@@ -520,7 +520,7 @@ def get_propertys_gameid(player_id, property_position):
     try:
         conn.begin()
         with conn.cursor() as cursor:
-            cursor.execute('SELECT `game_id`, FROM `properties`'
+            cursor.execute('SELECT `game_id` FROM `properties`'
                            ' WHERE `player_id` = %s'
                            ' AND `property_position` = %s;',
                            (player_id, property_position))
