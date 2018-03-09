@@ -17,6 +17,7 @@ import cgitb
 from backend.game import Game
 from backend.player import Player
 from backend.properties import owned_property_positions, Property
+import backend.properties
 
 cgitb.enable()
 
@@ -437,14 +438,12 @@ def generate_game_start_event(game_id, output_stream):
 
     Arguments:
         game_id: An int representing the started game's id.
-
-    >>> import sys
-    >>> generate_game_start_event(5, sys.stdout)
-    event: gameStart
-    data: 5
-    <BLANKLINE>
     """
-    output_event(output_stream, 'gameStart', game_id)
+    property_positions = backend.properties.property_positions()
+    output_event(output_stream, 'gameStart', {
+        'gameID': game_id,
+        'propertyPositions': property_positions,
+    })
 
 
 def check_property_ownership(output_stream, game_id, old_properties):
