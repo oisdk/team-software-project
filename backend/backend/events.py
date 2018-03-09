@@ -17,6 +17,7 @@ import cgitb
 from backend.game import Game
 from backend.player import Player
 from backend.properties import owned_property_positions, Property
+import backend.properties
 
 cgitb.enable()
 
@@ -415,7 +416,7 @@ def generate_player_move_event(output_stream, old_positions, new_positions,
 
 
 def check_game_playing_status(output_stream, game, last_game_state):
-    """Check if the specified game's status is 'playing'.
+    """Checks a game's state and issues events for changes.
 
     Arguments:
         game: The game whose status is being checked.
@@ -425,6 +426,8 @@ def check_game_playing_status(output_stream, game, last_game_state):
         # Call function to generate appropriate event if game's status is
         # "playing".
         generate_game_start_event(game.uid, output_stream)
+    elif last_game_state == "playing" and game.state == "finished":
+        generate_game_end_event(output_stream, game)
 
     return game.state
 
@@ -437,14 +440,12 @@ def generate_game_start_event(game_id, output_stream):
 
     Arguments:
         game_id: An int representing the started game's id.
-
-    >>> import sys
-    >>> generate_game_start_event(5, sys.stdout)
-    event: gameStart
-    data: 5
-    <BLANKLINE>
     """
-    output_event(output_stream, 'gameStart', game_id)
+    property_positions = backend.properties.property_positions()
+    output_event(output_stream, 'gameStart', {
+        'gameID': game_id,
+        'propertyPositions': property_positions,
+    })
 
 
 def check_property_ownership(output_stream, game_id, old_properties):
@@ -758,3 +759,19 @@ def start_game_push(output_stream, turn_order):
                 {'name': player.username, 'id': player.uid})
     generate_player_balance_event(output_stream, {},
                                   {1: 1500, 2: 1500, 3: 1500, 4: 1500})
+
+
+def generate_game_end_event(output_stream, game):
+    """Generates a gameEnd event.
+
+    Arguments:
+        output_stream: The stream to which the event should be written.
+        game: The Game object to check.
+    """
+    winner = Player(game.players[0])
+    output_event(output_stream, 'gameEnd', {
+        'winner': {
+            'name': winner.username,
+            'id': winner.uid,
+        },
+    })

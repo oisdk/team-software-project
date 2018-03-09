@@ -8,6 +8,7 @@ import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 import {OwnedPropertiesView} from './ownedPropertiesView';
 import * as cookie from './checkUserIDCookie';
+import {gameOver} from './gameOver';
 
 import * as building from './displayBuildings';
 
@@ -24,10 +25,15 @@ let gameID;
 /**
  * Displays the page for an active game.
  *
- * @param thisGameID The ID for the game that will be displayed.
+ * @param playerList The list of players in the game.
+ * @param startEvent The gameStart event that triggered this call.
  */
-export function activeGame(thisGameID, playerList) {
-    gameID = thisGameID;
+export function activeGame({playerList, startEvent}) {
+    const eventData = JSON.parse(startEvent.data);
+    gameID = eventData.gameID; // eslint-disable-line prefer-destructuring
+    for (let i = 0; i < eventData.propertyPositions.length; i += 1) {
+        propertyOwners[eventData.propertyPositions[i]] = null;
+    }
 
     // display board and assign starting positions.
     displayBoard(playerList);
@@ -78,7 +84,7 @@ export function onPlayerMove(playerMoveEvent) {
     const [[playerID, newPosition, ..._others], ..._otherPlayers]
         = JSON.parse(playerMoveEvent.data);
     if (playerID === parseInt(cookie.checkUserDetails().user_id, 10)) {
-        if (!(newPosition in propertyOwners)) {
+        if ((newPosition in propertyOwners) && (propertyOwners[newPosition] === null)) {
             generateUserDetails.enableBuyPropertyButton(gameID, playerID, newPosition);
         }
     }
@@ -175,6 +181,16 @@ function onHouseEvent(houseEvent) {
 }
 
 /**
+ * Called when the game ends.
+ *
+ * @param gameEndEvent The gameEnd event that signalled the end of the game.
+ */
+function onGameEnd(gameEndEvent) {
+    disableActiveGameListeners();
+    gameOver(gameEndEvent);
+}
+
+/**
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
  * @private
@@ -235,18 +251,18 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerBalance', onPlayerBalance);
     eventSource.addEventListener('playerJailed', onPlayerJailed);
     eventSource.addEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
-    eventSource.addEventListener('gameEnd', disableActiveGameListeners);
     eventSource.addEventListener('houseEvent', onHouseEvent);
+    eventSource.addEventListener('gameEnd', onGameEnd);
 }
 
-function disableActiveGameListeners(_gameEndEvent) {
+function disableActiveGameListeners() {
     const eventSource = getEventSource();
     eventSource.removeEventListener('playerMove', onPlayerMove);
     eventSource.removeEventListener('playerTurn', onPlayerTurn);
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
     eventSource.removeEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
-    eventSource.removeEventListener('gameEnd', disableActiveGameListeners);
     eventSource.removeEventListener('houseEvent', onHouseEvent);
+    eventSource.removeEventListener('gameEnd', onGameEnd);
 }
 
 /**

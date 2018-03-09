@@ -6,6 +6,7 @@
 import * as getCookie from './checkUserIDCookie';
 import * as sendJSON from './sendJSON';
 import {updateGameLog} from './generateGameLog';
+import {removeChildren} from './html';
 
 let details = getCookie.checkUserDetails();
 let id = details.user_id;
@@ -205,6 +206,13 @@ export function goToJail(JSONSend) {
 export function updateUserDetails(fileReader) {
     document.getElementById('content-right').innerHTML = fileReader.responseText;
     document.getElementById('details_username').innerHTML = userName;
+}
+
+/**
+ * Removes the user details pane.
+ */
+export function removeUserDetailsPane() {
+    removeChildren(document.getElementById('content-right'));
 }
 
 /**
