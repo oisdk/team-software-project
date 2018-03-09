@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS rolls (
     roll1 tinyint UNSIGNED NOT NULL,
     roll2 tinyint UNSIGNED NOT NULL,
     num int UNSIGNED NOT NULL,
-    FOREIGN KEY (id) REFERENCES players(id)
+    FOREIGN KEY (id) REFERENCES players(id),
+    PRIMARY KEY (id, num)
 );
 
 CREATE TABLE IF NOT EXISTS games (
