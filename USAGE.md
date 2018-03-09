@@ -57,10 +57,9 @@ During **your turn** the following will occur:
     * The jail space itself when normally landed on is known as "Just Visiting", and does nothing, just like the space "Free Parking".
 
 3. If you own all the properties of the same colour on the board, they form a monopoly.
-    * This means that they will charge higher rent, and will be available to have houses placed on them.
+    * This means that they will charge higher rent without houses than the same property alone. 
 
-4. Houses can be added to properties in a monopoly to increase the rent earned from them, but there exists a few rules for them.
-    * Houses must be built evenly between all properties in set. 1-1-1, 1-1-2 are fine, 1-3-2 is not, as 1 and 3 are more than 1 apart.
+4. Houses can be added to properties in order to increase the rent earned from them, but there exists a few rules for them.
     * If purchasing a fifth house, all houses (green buildings) on the property are replaced with a single hotel (red building).
 
 4. The option will be available to mortgage your currently owned properties to get extra funds by no longer being able to earn rent from the property until the mortgage is repaid.
