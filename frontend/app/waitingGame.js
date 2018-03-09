@@ -1,5 +1,10 @@
+/**
+ * Handles user interaction during a game that is waiting to start.
+ * @module
+ */
 import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
+import {removeChildren} from './html';
 
 // change according to activeGame as currently used with default function
 import {activeGame} from './activeGame';
@@ -21,9 +26,7 @@ function createWaitingGameHTML({
     playerListID,
     startButtonID,
 }) {
-    while (rootElement.firstChild) {
-        rootElement.firstChild.remove();
-    }
+    removeChildren(rootElement);
 
     const heading = document.createElement('h1');
     heading.innerHTML = `You are in game ${gameID}`;
@@ -98,19 +101,25 @@ export function waitingGame(gameID) {
         }
     }
 
-    function successCallback(req, start = activeGame) {
-        const playerList = JSON.parse(req.responseText);
+    function startGame({request, startEvent}) {
+        const playerList = JSON.parse(request.responseText);
         // call active game with these values
-        start(gameID, playerList);
+        activeGame({
+            playerList,
+            startEvent,
+        });
     }
 
-    function onGameStart(_startEvent) {
+    function onGameStart(startEvent) {
         sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
         sseEventSource.removeEventListener('gameStart', onGameStart);
         sendJSON.sendJSON({
             serverAddress: 'cgi-bin/request_players.py',
             jsonObject: {game_id: gameID},
-            successCallback,
+            successCallback: request => startGame({
+                request,
+                startEvent,
+            }),
         });
     }
 }
