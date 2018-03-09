@@ -4,6 +4,7 @@
  */
 import {initialiseEventSource} from './sse';
 import * as sendJSON from './sendJSON';
+import {removeChildren} from './html';
 
 // change according to activeGame as currently used with default function
 import {activeGame} from './activeGame';
@@ -25,9 +26,7 @@ function createWaitingGameHTML({
     playerListID,
     startButtonID,
 }) {
-    while (rootElement.firstChild) {
-        rootElement.firstChild.remove();
-    }
+    removeChildren(rootElement);
 
     const heading = document.createElement('h1');
     heading.innerHTML = `You are in game ${gameID}`;
