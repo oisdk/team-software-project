@@ -8,11 +8,11 @@ title: Usage Manual
 ### Here we will explain to you how to get started and play the game.
 
 1. First, open a web browser meeting minimum requirements and when loading the web page for the first time you will be asked to enter a username.
-  * Enter your chosen username in the text box and select the enter button.
+    * Enter your chosen username in the text box and select the enter button.
 
 2. You are then asked whether you would like to create a new game, or join an existing one.
-  * If you choose to create a new game, you will be taken to a lobby
-  * If you choose to join an existing game, a list of all available lobbies will appear. Choose one and select enter
+    * If you choose to create a new game, you will be taken to a lobby
+    * If you choose to join an existing game, a list of all available lobbies will appear. Choose one and select enter
 
 ![An image of the create or join game options](documentation-images/create_join.PNG "Which will it be? Create or Join?")
 
