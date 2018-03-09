@@ -34,7 +34,7 @@ function createGameOverHTML(winner) {
     container.appendChild(header);
 
     const paragraph = document.createElement('p');
-    if (winner.id === parseInt(checkUserDetails.user_id, 10)) {
+    if (winner.id === parseInt(checkUserDetails().user_id, 10)) {
         paragraph.textContent = 'You win!';
     } else {
         paragraph.textContent = `You lose – the winner is ${winner.name}!`;
