@@ -13,12 +13,13 @@ CREATE TABLE IF NOT EXISTS rolls (
     roll1 tinyint UNSIGNED NOT NULL,
     roll2 tinyint UNSIGNED NOT NULL,
     num int UNSIGNED NOT NULL,
-    FOREIGN KEY (id) REFERENCES players(id)
+    FOREIGN KEY (id) REFERENCES players(id),
+    PRIMARY KEY (id, num)
 );
 
 CREATE TABLE IF NOT EXISTS games (
     id int UNSIGNED NOT NULL AUTO_INCREMENT,
-    state ENUM('waiting', 'playing') NOT NULL DEFAULT 'waiting',
+    state ENUM('waiting', 'playing', 'finished') NOT NULL DEFAULT 'waiting',
     current_turn tinyint UNSIGNED NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );

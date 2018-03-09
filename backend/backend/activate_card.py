@@ -62,9 +62,7 @@ def activate_card(player_id, game_id, card_landed_on):
         # Variable to store total houses owned (hotels are worth four houses)
         total_houses = 0
         # Get a *list* of all properties owned by the current player
-        # Note that get_properties() returns a dictionary so we index the dict
-        # with the player_id so a list of property positions is returned
-        this_player_properties = get_properties(player_id)[player_id]
+        this_player_properties = get_properties(player_id)
         # Go through each property
         for property_position in this_player_properties:
             with Property(game_id, property_position) as property_:

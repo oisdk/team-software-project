@@ -6,6 +6,7 @@ import sys
 import json
 
 import backend.storage
+from backend.player import Player
 
 
 class Property(object):  # pylint: disable=too-many-instance-attributes
@@ -100,14 +101,13 @@ class Property(object):  # pylint: disable=too-many-instance-attributes
             try:
                 with conn.cursor() as cursor:
                     query_string = cursor.mogrify(
-                        'SELECT %s FROM %s',
-                        (field, table))
+                        'SELECT ({}) FROM {}'.format(field, table))
                     query_string += cursor.mogrify(
                         ' WHERE property_position = %s',
                         self._position)
                     if table == 'properties':
                         query_string += cursor.mogrify(
-                            ' AND game_id = %s',
+                            ' AND game_id = %s;',
                             (self._gid))
                     cursor.execute(query_string)
                     return cursor.fetchone()[field]
@@ -465,8 +465,7 @@ def get_properties(player_id):
         with conn.cursor() as cursor:
             cursor.execute('SELECT `property_position` FROM `properties`'
                            'WHERE `player_id` = %s;', (player_id))
-            result = {player_id: [row['property_position']
-                                  for row in cursor.fetchall()]}
+            result = [row['property_position'] for row in cursor.fetchall()]
         conn.commit()
         return result
     finally:
@@ -570,3 +569,6 @@ def buy_property_db(game, user, position):
     with Property(position, game) as prop:
         prop.property_state = 'owned'
         prop.owner = user
+
+        with Player(user) as player:
+            player.balance -= prop.price

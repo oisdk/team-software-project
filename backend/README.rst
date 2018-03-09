@@ -63,7 +63,7 @@ playerJoin
     ``[<username1>, <username2>, …]``
 
 gameStart
-    ``<gameID>``
+    ``{"gameID": <gameID>, "propertyPositions": [<prop1>, <prop2>, …]}``
 
 playerMove
     ``[[<playerId1>, <new position>, <old position>], [<pid2>, <new>, <old>], …]``

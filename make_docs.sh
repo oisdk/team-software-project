@@ -58,6 +58,7 @@ echo "[1/3] Running pandoc…"
 call_pandoc README.md "$dest"/README.pdf .
 call_pandoc CONTRIBUTING.md "$dest"/CONTRIBUTING.pdf .
 call_pandoc USAGE.md "$dest"/USAGE.pdf .
+call_pandoc DEPLOYMENT.md "$dest"/DEPLOYMENT.pdf .
 call_pandoc frontend/README.md "$dest"/frontend/README.pdf frontend
 call_pandoc backend/README.rst "$dest"/backend/README.pdf backend
 

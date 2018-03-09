@@ -18,5 +18,6 @@ pages = {
     'charge_rent': 'backend.charge_rent:charge_rent',
     'leave_jail': 'backend.jail:pay_to_leave_jail',
     'go_to_jail': 'backend.jail:go_to_jail',
+    'buy_house': 'backend.buy_house:add_house',
     'buy_property': 'backend.properties:buy_property',
 }
