@@ -592,7 +592,6 @@ def check_property_houses(output_stream, game_id, old_houses):
         of houses/hotels.
     """
     positions = owned_property_positions(game_id)
-    print("Positions:", positions)
     new_houses = {}
     for pid in positions:
         for position in positions[pid]:
