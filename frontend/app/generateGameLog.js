@@ -1,7 +1,13 @@
 /**
+ * Manages a game log that describes what’s happening in the game.
+ * @module
+ */
+
+/**
  * Callback function to update HTML body with file's contents.
  *
  * @param {XMLHttpRequest} fileReader - Contains local file with HTML to display.
+ * @private
  */
 export function updateLogPage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
@@ -22,8 +28,9 @@ export function updateGameLog(data) {
 }
 
 /**
- * Function to generate game log. Makes a request to local
- * filesystem for a HTML file to display.
+ * Function to generate game log. Makes an AJAX request for a HTML file to display.
+ *
+ * @private
  */
 export function generateGameLog() {
     // Generate a HTML page with user interface
@@ -37,13 +44,12 @@ export function generateGameLog() {
 /**
  * Function to update game log for turn event.
  *
- * @param {data} turnEvent - data used to generate event.
+ * @param {data} turnData - data used to generate event.
  * turnEvent[0] holds the players unique id.
  * turnEvent[1] holds the players position in the turn order.
  */
-export function logTurnEvent(turnEvent) {
-    const turn = JSON.parse(turnEvent.data);
-    const outputString = `Player ${turn[1] + 1}'s Turn`;
+export function logTurnEvent(turnData) {
+    const outputString = `${turnData.name}'s Turn`;
     updateGameLog(outputString);
 }
 
@@ -112,9 +118,9 @@ export function logPropertyEvent(propertyEvent) {
     let outputString;
     for (let i = 0; i < property.length; i += 1) {
         if (property[i].oldOwner === null) {
-            outputString = `Player ${property[i].newOwner} Bought ${property[i].property}`;
+            outputString = `${property[i].newOwner.name} bought ${property[i].property.name}`;
         } else {
-            outputString = `Player ${property[i].newOwner} Got ${property[i].property} from ${property[i].oldOwner}`;
+            outputString = `${property[i].newOwner.name} got ${property[i].property.name} from ${property[i].oldOwner.name}`;
         }
         updateGameLog(outputString);
     }

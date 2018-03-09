@@ -3,7 +3,8 @@ import * as generateUserDetails from './generateUserDetails';
 describe('rollDice endTurn successCallback tests', () => {
     // Create a mock for the actual sendJSON function
     const mockSendJSON = jest.fn();
-    const mockResponse = {responseText: '{"your_rolls": "(1,2)"}'};
+    const mockLogUpdater = jest.fn();
+    const mockResponse = {responseText: '{"your_rolls": "(1,2)", "card_details": "card description"}'};
     const oldDocumentBody = document.body;
 
 
@@ -33,10 +34,11 @@ describe('rollDice endTurn successCallback tests', () => {
     });
 
     test('successCallback', (done) => {
-        generateUserDetails.successCallback(mockResponse);
+        generateUserDetails.successCallback(mockResponse, mockLogUpdater);
         jest.spyOn(global.console, 'log');
         expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        expect(mockLogUpdater).toHaveBeenCalledWith('card description');
         done();
     });
 });
@@ -82,7 +84,8 @@ describe('disable button tests', () => {
 describe('rollDice endTurn successCallback tests', () => {
     // Create a mock for the actual sendJSON function
     const mockSendJSON = jest.fn();
-    const mockResponse = {responseText: '{"your_rolls": "(1,2)"}'};
+    const mockLogUpdater = jest.fn();
+    const mockResponse = {responseText: '{"your_rolls": "(1,2)", "card_details": "card description"}'};
     const oldDocumentBody = document.body;
 
 
@@ -112,10 +115,11 @@ describe('rollDice endTurn successCallback tests', () => {
     });
 
     test('successCallback', (done) => {
-        generateUserDetails.successCallback(mockResponse);
+        generateUserDetails.successCallback(mockResponse, mockLogUpdater);
         jest.spyOn(global.console, 'log');
         expect(document.getElementById('roll-dice').hasAttribute('disabled=""'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
+        expect(mockLogUpdater).toHaveBeenCalledWith('card description');
         done();
     });
 });
@@ -195,8 +199,7 @@ describe('turnDetails', () => {
     });
 
     it('should set active player', () => {
-        generateUserDetails.turnDetails(mockPlayerTurnEvent);
-        expect(document.getElementById('current-turn').innerHTML).toEqual('Player NaN');
+        generateUserDetails.turnDetails(JSON.parse(mockPlayerTurnEvent.data));
         expect(document.getElementById('roll-dice').hasAttribute('disabled'));
         expect(document.getElementById('end-turn').hasAttribute('disabled'));
     });

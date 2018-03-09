@@ -7,31 +7,32 @@ import * as control from './moveFunctions';
 import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 import {OwnedPropertiesView} from './ownedPropertiesView';
+import * as cookie from './checkUserIDCookie';
 
 const playerTokenInformation = {};
 const playerPositions = {}; // value id : position on board ie previous position.
 let timer = '';
 let currentPlayer = '';
 let propertyView;
+const propertyOwners = {}; // propertyOwners does get modified
+let gameID;
 
 /**
  * Displays the page for an active game.
  *
- * @param gameID The ID for the game that will be displayed.
+ * @param thisGameID The ID for the game that will be displayed.
  */
-export function activeGame(gameID, playerList) {
-    const rightPane = document.getElementById('content-right');
-    const userDetailsPane = document.createElement('div');
-    const propertiesPane = document.createElement('div');
-    rightPane.appendChild(userDetailsPane);
-    rightPane.appendChild(propertiesPane);
+export function activeGame(thisGameID, playerList) {
+    gameID = thisGameID;
 
     // display board and assign starting positions.
     displayBoard(playerList);
-    generateUserDetails.generateUserDetails(userDetailsPane);
-    logEvents.generateGameLog();
-    propertyView = new OwnedPropertiesView(propertiesPane);
-    enableActiveGameListeners();
+    generateUserDetails.generateUserDetails(() => {
+        const propertiesPane = document.getElementById('properties');
+        propertyView = new OwnedPropertiesView(propertiesPane);
+        logEvents.generateGameLog();
+        enableActiveGameListeners();
+    });
 }
 
 
@@ -43,7 +44,7 @@ export function activeGame(gameID, playerList) {
  * appropriately in the animation.
  *
  * @param playerMoveEvent The data received from the event
- *
+ * @private
  * moveEvent[0] holds the players unique id.
  * moveEvent[1] holds the players new board position.
  * moveEvent[2] holds the players old board position.
@@ -54,7 +55,6 @@ export function onPlayerMove(playerMoveEvent) {
     logEvents.logMoveEvent(playerMoveEvent);
     const move = String(JSON.parse(playerMoveEvent.data));
     const items = move.split(',');
-    // console.log(playerMoveEvent);
 
     // had to assign variables to stop linter from complaining.
     const player = items[0];
@@ -70,6 +70,14 @@ export function onPlayerMove(playerMoveEvent) {
     }
     playerPositions[currentPlayer].end = parseInt(endPosition, 10);
     startAnimation();
+
+    const [[playerID, newPosition, ..._others], ..._otherPlayers]
+        = JSON.parse(playerMoveEvent.data);
+    if (playerID === parseInt(cookie.checkUserDetails().user_id, 10)) {
+        if (!(newPosition in propertyOwners)) {
+            generateUserDetails.enableBuyPropertyButton(gameID, playerID, newPosition);
+        }
+    }
 }
 
 /**
@@ -78,10 +86,12 @@ export function onPlayerMove(playerMoveEvent) {
  * Logs this turn in the game log
  *
  * @param playerTurnEvent The data received from the event
+ * @private
  */
 function onPlayerTurn(playerTurnEvent) {
-    generateUserDetails.turnDetails(playerTurnEvent);
-    logEvents.logTurnEvent(playerTurnEvent);
+    const data = JSON.parse(playerTurnEvent.data);
+    generateUserDetails.turnDetails(data);
+    logEvents.logTurnEvent(data);
 }
 
 /**
@@ -90,6 +100,7 @@ function onPlayerTurn(playerTurnEvent) {
  * Logs this balance change in the game log
  *
  * @param playerBalanceEvent The data received from the event
+ * @private
  */
 function onPlayerBalance(playerBalanceEvent) {
     generateUserDetails.balanceDetails(playerBalanceEvent);
@@ -101,26 +112,50 @@ function onPlayerBalance(playerBalanceEvent) {
  * Calls the function to update the player jailed attributes.
  *
  * @param playerJailedEvent The data received from the event
+ * @private
  */
 export function onPlayerJailed(playerJailedEvent) {
     generateUserDetails.jailedPlayer(playerJailedEvent);
     logEvents.logJailEvent(playerJailedEvent);
 }
 
-/*
+/**
  * Called when a propertyOwnerChanges event happens, and passes the data to
  * the property view.
  *
  * @param {event} changesEvent The event that occurred.
+ * @private
  */
 function onPropertyOwnerChanges(changesEvent) {
-    propertyView.update(JSON.parse(changesEvent.data));
+    const eventData = JSON.parse(changesEvent.data);
+    propertyOwners[eventData[0].property.position] = eventData[0].newOwner;
+    propertyView.update(eventData.map((change) => {
+        let newName;
+        let oldName;
+        if (change.oldOwner === null) {
+            oldName = null;
+        } else {
+            oldName = change.oldOwner.name;
+        }
+        if (change.newOwner === null) {
+            newName = null;
+        } else {
+            newName = change.newOwner.name;
+        }
+
+        return {
+            property: change.property.name,
+            oldOwner: oldName,
+            newOwner: newName,
+        };
+    }));
     logEvents.logPropertyEvent(changesEvent);
 }
 
 /**
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
+ * @private
  */
 export function displayBoard(playerList) {
     let tokenSelector = 0;
@@ -156,6 +191,7 @@ export function displayBoard(playerList) {
  * @param {string} canvasID - id of canvas.
  * @param {string} appendToNode - id of node to append to.
  * @param {number} layerNumber - z-index of the canvas.
+ * @private
  */
 function createCanvas(canvasID, appendToNode, layerNumber) {
     const canvas = document.createElement('canvas');
@@ -192,6 +228,7 @@ function disableActiveGameListeners(_gameEndEvent) {
 /**
  * A function to start the animation of a players token.
  *
+ * @private
  */
 function startAnimation() {
     timer = setInterval(animate, 500);
@@ -201,6 +238,8 @@ function startAnimation() {
  * A function that animates the movement of a players token around
  * the board. When position 39 on the board is reached, it will continue
  * to wrap around the board.
+ *
+ * @private
  */
 function animate() {
     if (playerPositions[currentPlayer].end !== 99) {
@@ -214,7 +253,6 @@ function animate() {
         control.movePlayer(currentPlayer, nextPosition, playerTokenInformation[currentPlayer]);
         if (playerPositions[currentPlayer].current === playerPositions[currentPlayer].end) {
             clearInterval(timer);
-            console.log('ended');
             currentPlayer = '';
         }
     } else {
@@ -222,7 +260,6 @@ function animate() {
         control.movePlayer(currentPlayer, 99, playerTokenInformation[currentPlayer]);
         playerPositions[currentPlayer].current = 99;
         clearInterval(timer);
-        console.log('Jailed 99');
         currentPlayer = '';
     }
 }

@@ -3,10 +3,12 @@
 """
 
 
+from random import shuffle
 import json
 import sys
 import cgitb
 import backend.game
+import backend.player
 
 
 cgitb.enable()
@@ -21,6 +23,15 @@ def start_game(source=sys.stdin, output=sys.stdout):
     output.write("\n")
 
     request = json.load(source)
-    game_id = request["game_id"]
+    start_game_db(request["game_id"])
+
+
+def start_game_db(game_id):
+    """Changes a game’s status to 'playing' in the database."""
     with backend.game.Game(game_id) as game:
         game.state = 'playing'
+        players = game.players
+        shuffle(players)
+        for x, player_id in enumerate(players):
+            with backend.player.Player(player_id) as player:
+                player.turn_position = x
