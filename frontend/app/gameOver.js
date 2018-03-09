@@ -1,7 +1,8 @@
 import {checkUserDetails} from './checkUserIDCookie';
-import {removeChildren} from './html';
+import {removeChildren, createButton} from './html';
 import {removeGameLog} from './generateGameLog';
 import {removeUserDetailsPane} from './generateUserDetails';
+import {generateCreateJoinGamePage} from './generateCreateJoinGamePage';
 
 /**
  * Handles user interaction once a game has finished.
@@ -46,5 +47,20 @@ function createGameOverHTML(winner) {
     }
     container.appendChild(paragraph);
 
+    const button = createButton('Return to Menu');
+    button.addEventListener('click', function returnToMenu() {
+        clearGameOverPage();
+        button.removeEventListener('click', returnToMenu);
+        generateCreateJoinGamePage();
+    });
+    container.appendChild(button);
+
     return container;
+}
+
+/**
+ * Removes the html for the game over page.
+ */
+function clearGameOverPage() {
+    removeChildren(document.getElementById('content'));
 }
