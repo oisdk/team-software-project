@@ -4,6 +4,7 @@ title: Deployment
 
 # Local deployment
 Requirements:
+
 - [Docker](https://www.docker.com)
 
 To deploy the server locally just type `./local_deploy.sh` into a console. This should work on an OS running the latest linux kernel or on MacOS. This will build and run the Docker image and will have the web server running on localhost.
@@ -16,6 +17,7 @@ docker run -dit --name monopoly -p 80:80 -d my_apache
 
 # Remote Deployment on AWS
 Requirements:
+
 - [AWS Command Line Interface](https://github.com/aws/aws-cli/releases)
 - [AWS Account](https://aws.amazon.com)
 - [Docker](https://www.docker.com)
