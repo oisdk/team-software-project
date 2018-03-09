@@ -32,6 +32,6 @@ def start_game_db(game_id):
         game.state = 'playing'
         players = game.players
         shuffle(players)
-        for x, playerID in enumerate(players):
-            with backend.player.Player(playerID) as player:
+        for x, player_id in enumerate(players):
+            with backend.player.Player(player_id) as player:
                 player.turn_position = x
