@@ -102,19 +102,25 @@ export function waitingGame(gameID) {
         }
     }
 
-    function successCallback(req, start = activeGame) {
-        const playerList = JSON.parse(req.responseText);
+    function startGame({request, startEvent}) {
+        const playerList = JSON.parse(request.responseText);
         // call active game with these values
-        start(gameID, playerList);
+        activeGame({
+            playerList,
+            startEvent,
+        });
     }
 
-    function onGameStart(_startEvent) {
+    function onGameStart(startEvent) {
         sseEventSource.removeEventListener('playerJoin', onPlayerJoin);
         sseEventSource.removeEventListener('gameStart', onGameStart);
         sendJSON.sendJSON({
             serverAddress: 'cgi-bin/request_players.py',
             jsonObject: {game_id: gameID},
-            successCallback,
+            successCallback: request => startGame({
+                request,
+                startEvent,
+            }),
         });
     }
 }

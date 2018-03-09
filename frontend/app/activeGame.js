@@ -20,10 +20,15 @@ let gameID;
 /**
  * Displays the page for an active game.
  *
- * @param thisGameID The ID for the game that will be displayed.
+ * @param playerList The list of players in the game.
+ * @param startEvent The gameStart event that triggered this call.
  */
-export function activeGame(thisGameID, playerList) {
-    gameID = thisGameID;
+export function activeGame({playerList, startEvent}) {
+    const eventData = JSON.parse(startEvent.data);
+    gameID = eventData.gameID; // eslint-disable-line prefer-destructuring
+    for (let i = 0; i < eventData.propertyPositions.length; i += 1) {
+        propertyOwners[eventData.propertyPositions[i]] = null;
+    }
 
     // display board and assign starting positions.
     displayBoard(playerList);
@@ -74,7 +79,7 @@ export function onPlayerMove(playerMoveEvent) {
     const [[playerID, newPosition, ..._others], ..._otherPlayers]
         = JSON.parse(playerMoveEvent.data);
     if (playerID === parseInt(cookie.checkUserDetails().user_id, 10)) {
-        if (!(newPosition in propertyOwners)) {
+        if ((newPosition in propertyOwners) && (propertyOwners[newPosition] === null)) {
             generateUserDetails.enableBuyPropertyButton(gameID, playerID, newPosition);
         }
     }
