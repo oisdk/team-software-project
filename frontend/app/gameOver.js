@@ -13,9 +13,9 @@ import {removeChildren} from './html';
 export function gameOver(gameEndEvent) {
     const eventData = JSON.parse(gameEndEvent.data);
 
-    const rootElement = document.getElementById('content');
-    removeChildren(rootElement);
-    rootElement.appendChild(createGameOverHTML(eventData.winner));
+    const contentPane = document.getElementById('content');
+    removeChildren(contentPane);
+    contentPane.appendChild(createGameOverHTML(eventData.winner));
 }
 
 /**
