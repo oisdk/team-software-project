@@ -45,7 +45,7 @@ export function activeGame(thisGameID, playerList) {
  * appropriately in the animation.
  *
  * @param playerMoveEvent The data received from the event
- *
+ * @private
  * moveEvent[0] holds the players unique id.
  * moveEvent[1] holds the players new board position.
  * moveEvent[2] holds the players old board position.
@@ -87,6 +87,7 @@ export function onPlayerMove(playerMoveEvent) {
  * Logs this turn in the game log
  *
  * @param playerTurnEvent The data received from the event
+ * @private
  */
 function onPlayerTurn(playerTurnEvent) {
     const data = JSON.parse(playerTurnEvent.data);
@@ -100,6 +101,7 @@ function onPlayerTurn(playerTurnEvent) {
  * Logs this balance change in the game log
  *
  * @param playerBalanceEvent The data received from the event
+ * @private
  */
 function onPlayerBalance(playerBalanceEvent) {
     generateUserDetails.balanceDetails(playerBalanceEvent);
@@ -111,6 +113,7 @@ function onPlayerBalance(playerBalanceEvent) {
  * Calls the function to update the player jailed attributes.
  *
  * @param playerJailedEvent The data received from the event
+ * @private
  */
 export function onPlayerJailed(playerJailedEvent) {
     generateUserDetails.jailedPlayer(playerJailedEvent);
@@ -122,6 +125,7 @@ export function onPlayerJailed(playerJailedEvent) {
  * the property view.
  *
  * @param {event} changesEvent The event that occurred.
+ * @private
  */
 function onPropertyOwnerChanges(changesEvent) {
     const eventData = JSON.parse(changesEvent.data);
@@ -162,6 +166,7 @@ function onGameEnd(gameEndEvent) {
 /**
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
+ * @private
  */
 export function displayBoard(playerList) {
     let tokenSelector = 0;
@@ -197,6 +202,7 @@ export function displayBoard(playerList) {
  * @param {string} canvasID - id of canvas.
  * @param {string} appendToNode - id of node to append to.
  * @param {number} layerNumber - z-index of the canvas.
+ * @private
  */
 function createCanvas(canvasID, appendToNode, layerNumber) {
     const canvas = document.createElement('canvas');
@@ -233,6 +239,7 @@ function disableActiveGameListeners() {
 /**
  * A function to start the animation of a players token.
  *
+ * @private
  */
 function startAnimation() {
     timer = setInterval(animate, 500);
@@ -242,6 +249,8 @@ function startAnimation() {
  * A function that animates the movement of a players token around
  * the board. When position 39 on the board is reached, it will continue
  * to wrap around the board.
+ *
+ * @private
  */
 function animate() {
     if (playerPositions[currentPlayer].end !== 99) {
