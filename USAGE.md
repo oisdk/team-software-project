@@ -30,6 +30,9 @@ On the right is home to:
   * As well as how you'll interact with the game:
     * Buttons for rolling the dice, ending your turn, and paying to leave jail (as applicable).
 	* Selectable menus to buy houses, mortgage and unmortgage properties.
+
+![An image of the main game display](documentation-images/game.PNG "The layout of the game board as described above.")
+	
 During **your turn** the following will occur:
 
 1. Press the "roll dice" button to see what amount of spaces you will move this turn.
