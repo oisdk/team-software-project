@@ -9,7 +9,7 @@
 2. You are then asked whether you would like to create a new game, or join an existing one.
   * If you choose to create a new game, you will be taken to a lobby
   * If you choose to join an existing game, a list of all available lobbies will appear. Choose one and select enter
-![An image of the create or join game options](documentation-images/create-join.png "Which will it be? Create or Join?")
+![An image of the create or join game options](documentation-images/create-join.PNG "Which will it be? Create or Join?")
 
 3. Once 4 players have entered the lobby, the option to "Start Game" will be made available. Any player can press it to begin the game.
 
