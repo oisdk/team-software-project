@@ -12,7 +12,7 @@
 ![An image of the create or join game options](documentation-images/create_join.PNG "Which will it be? Create or Join?")
 
 3. Once 4 players have entered the lobby, the option to "Start Game" will be made available. Any player can press it to begin the game.
-![An image of a 2 player lobby with Start Game button active](documentation-images/Full-lobby.PNG "An example of a 2-player lobby with an active start game button.")
+![An image of a 2 player lobby with Start Game button active](documentation-images/Full-lobby.png "An example of a 2-player lobby with an active start game button.")
 
 ## Playing the Game
 ### Now that you're in the game, it's time to play!
