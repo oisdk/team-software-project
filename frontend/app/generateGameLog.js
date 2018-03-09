@@ -1,3 +1,5 @@
+import {removeChildren} from './html';
+
 /**
  * Manages a game log that describes what’s happening in the game.
  * @module
@@ -13,6 +15,13 @@ export function updateLogPage(fileReader) {
     if (fileReader.status === 200 && fileReader.readyState === 4) {
         document.getElementById('content-left').innerHTML = fileReader.responseText;
     }
+}
+
+/**
+ * Removes the log from the page.
+ */
+export function removeGameLog() {
+    removeChildren(document.getElementById('content-left'));
 }
 
 /**

@@ -8,6 +8,7 @@ import {getEventSource} from './sse';
 import * as logEvents from './generateGameLog';
 import {OwnedPropertiesView} from './ownedPropertiesView';
 import * as cookie from './checkUserIDCookie';
+import {gameOver} from './gameOver';
 
 const playerTokenInformation = {};
 const playerPositions = {}; // value id : position on board ie previous position.
@@ -158,6 +159,16 @@ function onPropertyOwnerChanges(changesEvent) {
 }
 
 /**
+ * Called when the game ends.
+ *
+ * @param gameEndEvent The gameEnd event that signalled the end of the game.
+ */
+function onGameEnd(gameEndEvent) {
+    disableActiveGameListeners();
+    gameOver(gameEndEvent);
+}
+
+/**
  * Function for displaying the monopoly board onscreen.
  * @param playerList The list of players in the game
  * @private
@@ -218,16 +229,16 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerBalance', onPlayerBalance);
     eventSource.addEventListener('playerJailed', onPlayerJailed);
     eventSource.addEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
-    eventSource.addEventListener('gameEnd', disableActiveGameListeners);
+    eventSource.addEventListener('gameEnd', onGameEnd);
 }
 
-function disableActiveGameListeners(_gameEndEvent) {
+function disableActiveGameListeners() {
     const eventSource = getEventSource();
     eventSource.removeEventListener('playerMove', onPlayerMove);
     eventSource.removeEventListener('playerTurn', onPlayerTurn);
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
     eventSource.removeEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
-    eventSource.removeEventListener('gameEnd', disableActiveGameListeners);
+    eventSource.removeEventListener('gameEnd', onGameEnd);
 }
 
 /**
