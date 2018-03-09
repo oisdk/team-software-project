@@ -245,7 +245,8 @@ export function displayHotel(position) {
  */
 // should only take valid property numbers
 // 1,3,6,8,9,11,13,14,16,18,19,21,23,24,26,27,29,31,32,34,37,39
-export function displayHouse(position, numberOfHouses) {
+export function displayHouses(position, numberOfHouses) {
+    console.log('building');
     const c = document.getElementById('buildingLayer');
     const ctx = c.getContext('2d');
     const img = new Image();
@@ -271,4 +272,24 @@ export function clear(canvasID) {
     const c = document.getElementById(canvasID);
     const ctx = c.getContext('2d');
     ctx.clearRect(0, 0, c.width, c.height);
+}
+
+/**
+ * A function that displays houses and hotels on the board.
+ *
+ * @param {object} houses - dictionary key: position on the board, value: number of houses.
+ * @param {object} hotels - dictionary key: position on the board, value: number of hotels.
+ */
+export function displayBuildings(houses, hotels) {
+    clear('buildingLayer');
+    for (let i = 0; i < Object.keys(houses).length; i += 1) {
+        const position = Object.keys(houses)[i];
+        const numberOfHouses = houses[position];
+        const numberOfHotels = hotels[position];
+
+        displayHouses(position, numberOfHouses);
+        if (numberOfHotels > 0) {
+            displayHotel(position);
+        }
+    }
 }
