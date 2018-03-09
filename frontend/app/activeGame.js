@@ -10,11 +10,15 @@ import {OwnedPropertiesView} from './ownedPropertiesView';
 import * as cookie from './checkUserIDCookie';
 import {gameOver} from './gameOver';
 
+import * as building from './displayBuildings';
+
 const playerTokenInformation = {};
 const playerPositions = {}; // value id : position on board ie previous position.
 let timer = '';
 let currentPlayer = '';
 let propertyView;
+const currentHouses = {};
+const currentHotels = {};
 const propertyOwners = {}; // propertyOwners does get modified
 let gameID;
 
@@ -120,7 +124,7 @@ function onPlayerBalance(playerBalanceEvent) {
  * @param playerJailedEvent The data received from the event
  * @private
  */
-export function onPlayerJailed(playerJailedEvent) {
+function onPlayerJailed(playerJailedEvent) {
     generateUserDetails.jailedPlayer(playerJailedEvent);
     logEvents.logJailEvent(playerJailedEvent);
 }
@@ -156,6 +160,24 @@ function onPropertyOwnerChanges(changesEvent) {
         };
     }));
     logEvents.logPropertyEvent(changesEvent);
+}
+
+/**
+ * Called when a houseEvent event happens.
+ * Calls the function to update the players houses.
+ *
+ * @param houseEvent The data received from the event
+ */
+function onHouseEvent(houseEvent) {
+    const houses = JSON.parse(houseEvent.data);
+    Object.keys(houses).forEach((key) => {
+        currentHouses[key] = houses[key].houses;
+        currentHotels[key] = houses[key].hotels;
+        console.log(`Position:${key}`);
+        console.log(`Houses:${houses[key].houses}`);
+        console.log(`Hotels:${houses[key].hotels}`);
+    });
+    building.displayBuildings(currentHouses, currentHotels);
 }
 
 /**
@@ -229,6 +251,7 @@ function enableActiveGameListeners() {
     eventSource.addEventListener('playerBalance', onPlayerBalance);
     eventSource.addEventListener('playerJailed', onPlayerJailed);
     eventSource.addEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
+    eventSource.addEventListener('houseEvent', onHouseEvent);
     eventSource.addEventListener('gameEnd', onGameEnd);
 }
 
@@ -238,6 +261,7 @@ function disableActiveGameListeners() {
     eventSource.removeEventListener('playerTurn', onPlayerTurn);
     eventSource.removeEventListener('playerBalance', onPlayerBalance);
     eventSource.removeEventListener('propertyOwnerChanges', onPropertyOwnerChanges);
+    eventSource.removeEventListener('houseEvent', onHouseEvent);
     eventSource.removeEventListener('gameEnd', onGameEnd);
 }
 

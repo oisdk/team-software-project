@@ -65,6 +65,7 @@ def start_sse_stream(output_stream=sys.stdout):
     jailed_players = {}
     new_jailed_players = {}
     push_initial_user_details = True
+    houses = {}
     property_ownership = {}
 
     # These statements are executed constantly once the first request to this
@@ -98,6 +99,7 @@ def start_sse_stream(output_stream=sys.stdout):
             output_stream, jailed_players, new_jailed_players)
         positions = check_new_positions(output_stream, positions,
                                         new_positions, new_jailed_players)
+        houses = check_property_houses(output_stream, game_id, houses)
         property_ownership = check_property_ownership(
             output_stream,
             game_id,
@@ -575,6 +577,93 @@ def generate_ownership_events(
                 'property': property_details})
 
     output_event(output_stream, 'propertyOwnerChanges', changes)
+
+
+def check_property_houses(output_stream, game_id, old_houses):
+    """Issue events if the number of houses/hotels of any properties
+     has changed.
+
+    Arguments:
+        game_id: The id of the game the events are being issued for.
+        old_houses: The dictionary of houses currently owned.
+
+    Returns:
+        The current gouse data, as a dictionary where the keys
+        are property positions, and the values are the number
+        of houses/hotels.
+    """
+    positions = owned_property_positions(game_id)
+    new_houses = {}
+    for pid in positions:
+        for position in positions[pid]:
+            this_property = Property(position, game_id)
+            houses = this_property.houses
+            hotels = this_property.hotels
+            new_houses[position] = {'houses': houses, 'hotels': hotels}
+    if old_houses != new_houses:
+        generate_house_event(
+            output_stream,
+            old_houses,
+            new_houses)
+    return new_houses
+
+
+def generate_house_event(
+        output_stream, old_houses, new_houses):
+    """Generates an event for a change of houses on a property.
+
+    Compares two dictionaries and outputs a houseEvent server-sent event if
+    the two dicts differ. Along with the event is JSON containing the
+    difference between the two dicts.
+
+    Arguments:
+        old_houses: A dictionary representing the
+            current house/hotel state for each property.
+        new_houses: A dictionary representing the
+            latest house/hotel state for each property.
+
+    >>> import sys
+    >>> generate_house_event(
+    ...     sys.stdout,
+    ...     {1: {'houses': 1, 'hotels': 0}},
+    ...     {1: {'houses': 2, 'hotels': 0}})
+    event: houseEvent
+    data: {"1": {"hotels": 0, "houses": 2}}
+    <BLANKLINE>
+
+    >>> import sys
+    >>> generate_house_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {1: {'houses': 1, 'hotels': 0}})
+    event: houseEvent
+    data: {"1": {"hotels": 0, "houses": 1}}
+    <BLANKLINE>
+
+    >>> import sys
+    >>> generate_house_event(
+    ...     sys.stdout,
+    ...     {},
+    ...     {1: {'houses': 1, 'hotels': 0}, 39: {'houses': 1, 'hotels': 0}})
+    event: houseEvent
+    data: {"1": {"hotels": 0, "houses": 1}, "39": {"hotels": 0, "houses": 1}}
+    <BLANKLINE>
+    """
+
+    data = {}
+
+    if not old_houses:
+        for position in new_houses:
+            data[position] = new_houses[position]
+    else:
+        for position in new_houses:
+            if position in old_houses.keys():
+                if new_houses[position] != old_houses[position]:
+                    data[position] = new_houses[position]
+            else:
+                data[position] = new_houses[position]
+
+    output_event(output_stream, 'houseEvent', data)
 
 
 def check_new_jailed_players(output_stream,
