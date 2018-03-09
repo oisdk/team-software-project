@@ -585,12 +585,13 @@ def get_housable(user, game):
                            ' FROM properties INNER JOIN property_values'
                            ' ON properties.property_position'
                            ' = property_values.property_position'
-                           ' WHERE player_id = %s;',
-                           (player_id))
-            result = [[row['name'],row['property_position']] for row in cursor.fetchall()]
+                           ' WHERE player_id = %s; AND game_id = %s',
+                           (user, game))
+            result = [[row['name'], row['property_position']] 
+            for row in cursor.fetchall()]
             new_result = []
             for row in result:
-                property = Property(row[1])
+                property = Property(row[1], game)
                 if property._is_in_monopoly()
                     new_result += row[0]
         conn.commit()
