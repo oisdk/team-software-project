@@ -2,8 +2,6 @@
    when they land on owned properties
 """
 
-import json
-import sys
 import cgitb
 from backend.player import Player
 from backend.game import get_games
@@ -12,14 +10,10 @@ from backend.properties import Property
 cgitb.enable()
 
 
-def charge_rent(source=sys.stdin, output=sys.stdout):
+def charge_rent(player_id):
     """Entry point for a player to be charged
        rent and property owner gains rent amount
     """
-
-    output.write('Content-Type: application/json\n\n')
-    request = json.load(source)
-    player_id = request["player_id"]
     games = get_games()
     game_id = None
 
@@ -43,5 +37,3 @@ def charge_rent(source=sys.stdin, output=sys.stdout):
                 if owner.uid != player_id:
                     player.balance -= rent
                     owner.balance += rent
-
-    json.dump({"player_id": "rent"}, output)
