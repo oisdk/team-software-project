@@ -19,7 +19,7 @@ def add_house(source=sys.stdin, output=sys.stdout):
     player_id = request["player_id"]
     property_name = request["property_name"]
     property_position = get_position_by_name(player_id, property_name)
-    position = next(iter(property_position.values()))
+    position = property_position["property_position"]
     games = get_games()
     houses = None
 
