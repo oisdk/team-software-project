@@ -274,15 +274,13 @@ export function updateDropDown(req) {
  * Result is list of properties by property_state
  *
  * @param {Function} JSONSend - JSON function makes testing easier.
- * @param {Object} button - Object of the button pressed.
  * @param {String} state - The initial state of a property.
- * @private
+ * @param {Object} select - Object of the dropdown where the value selected
  */
-export function changePropState(JSONSend, button, state) {
-    const optionIndex = button.selectedIndex;
+export function changePropState(JSONSend, state, select) {
     // This gets the name by the index of the property name selected
     // from the property options
-    const propertyName = optionIndex.options[optionIndex.selectedIndex].value;
+    const propertyName = select[select.selectedIndex].value;
     JSONSend({
         serverAddress: 'cgi-bin/property_state.py',
         jsonObject: {player_id: [state, propertyName, id]},
@@ -348,9 +346,11 @@ export function turnDetails(turnData) {
     rollDiceButton.disabled = true;
 
     const mortgageButton = document.getElementById('mort-check');
-    mortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, mortgageButton, 'unmortgage'); };
+    const dropdownMort = document.getElementById('mortgage');
+    mortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, 'unmortgage', dropdownMort); };
     const unmortgageButton = document.getElementById('unmort-check');
-    unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, unmortgageButton, 'mortgage'); };
+    const dropdownUnmort = document.getElementById('unmortgage');
+    unmortgageButton.onclick = () => { changePropState(sendJSON.sendJSON, 'mortgage', dropdownUnmort); };
 
     const buyHouseButton = document.getElementById('buy-house');
     buyHouseButton.onclick = () => { buyHouse(sendJSON.sendJSON); };
