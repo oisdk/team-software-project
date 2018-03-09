@@ -64,11 +64,20 @@ def test_buy_property(game, user, position):
         position: The position of the property to buy.
     """
     from backend.properties import buy_property_db, Property
+    from backend.player import Player
+    with Player(user) as player:
+        print("Player's balance was initially {}".format(player.balance))
     buy_property_db(game, user, position)
     with Property(position, game) as prop:
         print(
             "Property's state should be 'owned'"
             ' and is: {}'.format(prop.property_state))
+        print(
+            "Player's balance should have reduced by {}"
+            .format(prop.price)
+        )
+        with Player(user) as player:
+            print("Player's balance is now {}".format(player.balance))
 
 
 def test_player_remove(game, player):
